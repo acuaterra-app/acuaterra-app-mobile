@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/fondo2"
+    android:padding="16dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp">
+
+        <!-- Imagen de perfil (usuario) -->
+        <ImageView
+            android:id="@+id/userImage"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/usuario"
+            android:contentDescription="Foto de usuario"
+            android:layout_alignParentStart="true" />
+
+        <!-- Texto de bienvenida -->
+        <TextView
+            android:id="@+id/welcomeText"
+            android:layout_width="160sp"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/userImage"
+            android:layout_marginStart="8dp"
+            android:layout_centerVertical="true"
+            android:text="Bienvenido"
+            android:textSize="24sp"
+            android:textColor="@color/black" />
+
+        <!-- Logo superior -->
+        <ImageView
+            android:id="@+id/logoSuperior"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/logoacua"
+            android:contentDescription="Logo de la aplicación"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5" />
+    <!-- Título principal -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ACUATERRA"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/koulen"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:layout_marginBottom="44dp" />
+
+    <!-- Espaciador flexible para centrar botones -->
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5" />
+
+    <!-- Botones distribuidos uniformemente -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginBottom="16dp">
+
+        <Button
+            android:id="@+id/btnModulo"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#5d7a7e"
+            android:fontFamily="@font/roboto"
+            android:text="Modulo"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="24dp" />
+
+        <Button
+            android:id="@+id/btnGuia"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#5d7a7e"
+            android:text="Guía"
+            android:fontFamily="@font/roboto"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="24dp" />
+
+        <Button
+            android:id="@+id/btnSoporte"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#5d7a7e"
+            android:fontFamily="@font/roboto"
+            android:text="Soporte técnico"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="24dp" />
+
+        <Button
+            android:id="@+id/btnCerrarSesion"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#5d7a7e"
+            android:fontFamily="@font/roboto"
+            android:text="Cerrar Sesión"
+            android:textSize="20sp"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+    <!-- Espaciador flexible para empujar el texto al pie -->
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!-- Pie de página -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="versión: 1.0\nAdvanced Aquaponics Monitoring System"
+            android:textSize="12sp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ACUA TERRA © 2023"
+            android:textSize="12sp"
+            android:textColor="@color/black"
+            android:gravity="center" />
+    </LinearLayout>
+
+</LinearLayout>

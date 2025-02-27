@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+
+**************************************************
+Nombre: Diego Alonso Ruiz, duber Alberto Imbachí, William David Perdigón
+E-mail: diego_aruiza@soy.sena.edu.co, Wdperdigon1227@gmail.com, duberimbachi7@gmail.com
+Fecha: 6 de diciembre de 2024
+Android Studio: Java
+Descripción: Archivo XML - Correspondiente a "Splash" - Inicio App AcuaTerra
+**************************************************
+
+-->
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".views.MainActivity"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@drawable/startapp"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/welcome_image"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:src="@drawable/logo3"
+        android:contentDescription="@string/bienvenido_a_acuaterra1" />
+
+    <TextView
+        android:id="@+id/welcome_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bienvenido_a_acuaterra"
+        android:textColor="@color/black"
+        android:fontFamily="@font/koulen"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp" />
+
+
+</LinearLayout>
