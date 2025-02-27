@@ -22,13 +22,13 @@ Descripción: Archivo XML - Correspondiente a "Splash" - Inicio App AcuaTerra
     tools:context=".views.MainActivity"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="@drawable/startapp"
+    android:background="@drawable/fondoiniciop"
     android:padding="16dp">
 
     <ImageView
         android:id="@+id/welcome_image"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
         android:src="@drawable/logo3"
         android:contentDescription="@string/bienvenido_a_acuaterra1" />
 
@@ -39,7 +39,7 @@ Descripción: Archivo XML - Correspondiente a "Splash" - Inicio App AcuaTerra
         android:text="@string/bienvenido_a_acuaterra"
         android:textColor="@color/black"
         android:fontFamily="@font/koulen"
-        android:textSize="24sp"
+        android:textSize="35sp"
         android:textStyle="bold"
         android:layout_marginTop="16dp" />
 
