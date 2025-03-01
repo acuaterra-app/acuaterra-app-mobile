@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.monitoreoacua.R;
 import com.example.monitoreoacua.views.pruebas.PruebaBitacora;
 import com.example.monitoreoacua.views.pruebas.PruebaJson;
+import com.example.monitoreoacua.views.soportetec.soporteActivity;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -24,10 +25,11 @@ public class HomeActivity extends AppCompatActivity {
         Button btnCerrarSesion = findViewById(R.id.btnCerrarSesion);
         Button btnModulos = findViewById(R.id.btnModulo);
         Button btnGuia = findViewById(R.id.btnGuia);
+        Button btnSoporte = findViewById(R.id.btnSoporte);
 
 
 
-        // Agregar funcionalidad al botón
+        // Agregar funcionalidad al botón cerrarsesion
         btnCerrarSesion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -44,6 +46,15 @@ public class HomeActivity extends AppCompatActivity {
                         })
                         .setNegativeButton("No", null) // No hacer nada si se presiona "No"
                         .show();
+            }
+        });
+
+        //  Navegar a SoporteActivity
+        btnSoporte.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, soporteActivity.class);
+                startActivity(intent);
             }
         });
 

@@ -51,7 +51,20 @@ Descripción: Archivo XML - Interfaz "login" - AcuaTerra
             android:gravity="center"
             android:textColor="@color/white"
             android:fontFamily="@font/koulen"
-            android:layout_marginBottom="30dp" />
+            android:layout_marginBottom="1dp" />
+
+        <!-- Título -->
+        <TextView
+            android:id="@+id/form_subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Inicio de sesión"
+            android:textSize="28sp"
+            android:textStyle="normal"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:fontFamily="@font/roboto"
+            android:layout_marginBottom="10dp" />
 
         <!-- Campo de Email -->
         <com.google.android.material.textfield.TextInputLayout
