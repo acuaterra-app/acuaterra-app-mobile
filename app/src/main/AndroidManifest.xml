@@ -25,7 +25,7 @@
             android:name=".views.pruebas.PruebaJson"
             android:exported="false" />
         <activity
-            android:name=".views.modulos.PruebaActivity"
+            android:name=".views.pruebas.PruebaActivity"
             android:exported="false" />
         <activity
             android:name=".views.modulos.ModuloFuncionesActivity"

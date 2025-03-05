@@ -1,4 +1,3 @@
-/*
 package com.example.monitoreoacua.views.modulos;
 
 import android.content.Intent;
@@ -82,13 +81,13 @@ public class HomeModulosActivity extends AppCompatActivity {
     private void obtenerModulos(String token) {
         Log.i("funcion obtener modulos","token:" + token);
         //Call<ModuloResponse> call = apiService.getAllModules("Bearer " + token);
-        Call<ModuloResponse> call = apiService.getAllModules(token);
-        call.enqueue(new Callback<ModuloResponse>() {
+        Call<List<Modulo>> call = apiService.getAllModules("Bearer " + token);
+        call.enqueue(new Callback<List<Modulo>>() {
             @Override
-            public void onResponse(@NonNull Call<ModuloResponse> call, @NonNull Response<ModuloResponse> response) {
+            public void onResponse(@NonNull Call<List<Modulo>> call, @NonNull Response<List<Modulo>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Log.d("API_RESPONSE", "Éxito: " + new Gson().toJson(response.body()));
-                    List<Modulo> modulos = response.body().getModules();
+                    List<Modulo> modulos = response.body();
                     moduloAdapter.updateData(modulos);
                 } else {
                     Toast.makeText(HomeModulosActivity.this, "Error al obtener datos: " + response.code(), Toast.LENGTH_SHORT).show();
@@ -97,7 +96,7 @@ public class HomeModulosActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(@NonNull Call<ModuloResponse> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<List<Modulo>> call, @NonNull Throwable t) {
                 Toast.makeText(HomeModulosActivity.this, "Error de conexión", Toast.LENGTH_SHORT).show();
                 //Log.e("API Error", t.getMessage());
                 Log.e("API_RESPONSE", "Error en la llamada: " + t.getMessage(), t);
@@ -105,5 +104,3 @@ public class HomeModulosActivity extends AppCompatActivity {
         });
     }
 }
-
-*/

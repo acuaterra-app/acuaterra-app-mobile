@@ -1,6 +1,4 @@
-/*
-
-package com.example.monitoreoacua.views.modulos;
+package com.example.monitoreoacua.views.pruebas;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -53,28 +51,27 @@ public class PruebaActivity extends AppCompatActivity {
     private void loadModules(String token, Integer userId) {
         ApiModulosService apiModulosService = ApiClient.getClient().create(ApiModulosService.class);
 
-        apiModulosService.getAllModules(token).enqueue(new Callback<ModuloResponse>() {
+        apiModulosService.getAllModules(token).enqueue(new Callback<List<Modulo>>() {
             @Override
-            public void onResponse(@NonNull Call<ModuloResponse> call, @NonNull Response<ModuloResponse> response) {
-                if (response.isSuccessful() && response.body() != null && response.body().getModules() != null) {
-                    List<Modulo> allModules = response.body().getModules().get(0); // Obtener la primera lista
-
+            public void onResponse(@NonNull Call<List<Modulo>> call, @NonNull Response<List<Modulo>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<Modulo> allModules = response.body(); // Get the list directly
+                
                     Gson gson = new GsonBuilder().setPrettyPrinting().create();
                     String jsonResponse = gson.toJson(allModules);
                     jsonTextView.setText(jsonResponse);
-
+                
                     adapter = new ModuloAdapter(allModules);
                     recyclerViewModulos.setAdapter(adapter);
                 } else {
                     jsonTextView.setText("Error en la respuesta: " + response.code());
                 }
             }
-
+            
             @Override
-            public void onFailure(Call<ModuloResponse> call, Throwable t) {
+            public void onFailure(Call<List<Modulo>> call, Throwable t) {
                 jsonTextView.setText("Error en la llamada a la API: " + t.getMessage());
             }
         });
     }
 }
-*/
