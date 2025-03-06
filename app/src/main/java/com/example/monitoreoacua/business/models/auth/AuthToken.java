@@ -1,4 +1,4 @@
-package com.example.monitoreoacua.models.models.auth;
+package com.example.monitoreoacua.business.models.auth;
 
 public class AuthToken {
     private String token;

@@ -1,14 +1,12 @@
 package com.example.monitoreoacua.service;
 
-import com.example.monitoreoacua.models.request.LoginRequest;
-import com.example.monitoreoacua.models.request.LogoutRequest;
-import com.example.monitoreoacua.models.response.ApiResponse;
-import com.example.monitoreoacua.models.response.LoginResponse;
-import com.example.monitoreoacua.models.response.LogoutResponse;
+import com.example.monitoreoacua.service.request.LoginRequest;
+import com.example.monitoreoacua.service.request.LogoutRequest;
+import com.example.monitoreoacua.service.response.LoginResponse;
+import com.example.monitoreoacua.service.response.LogoutResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
 /**

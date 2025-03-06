@@ -1,4 +1,4 @@
-package com.example.monitoreoacua.models.request;
+package com.example.monitoreoacua.service.request;
 
 /**
  * Base class for all request objects in the application.

@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 
-import com.example.monitoreoacua.models.request.BaseRequest;
+import com.example.monitoreoacua.service.request.BaseRequest;
 import com.example.monitoreoacua.utils.ApplicationContextProvider;
 
 import com.google.gson.Gson;

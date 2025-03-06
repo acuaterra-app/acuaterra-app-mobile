@@ -1,6 +1,4 @@
-package com.example.monitoreoacua.models.response;
-
-import com.google.gson.annotations.SerializedName;
+package com.example.monitoreoacua.service.response;
 
 /**
  * Response class for logout endpoint.

@@ -1,4 +1,4 @@
-package com.example.monitoreoacua.models.response;
+package com.example.monitoreoacua.service.response;
 
 import com.google.gson.annotations.SerializedName;
 import java.util.List;

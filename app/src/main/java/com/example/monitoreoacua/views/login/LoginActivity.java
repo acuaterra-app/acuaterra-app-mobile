@@ -11,9 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.monitoreoacua.R;
-import com.example.monitoreoacua.models.models.auth.AuthToken;
-import com.example.monitoreoacua.models.request.LoginRequest;
-import com.example.monitoreoacua.models.response.LoginResponse;
+import com.example.monitoreoacua.business.models.auth.AuthToken;
+import com.example.monitoreoacua.service.request.LoginRequest;
+import com.example.monitoreoacua.service.response.LoginResponse;
 import com.example.monitoreoacua.service.ApiClient;
 import com.example.monitoreoacua.service.ApiUsersService;
 import com.example.monitoreoacua.views.menu.HomeActivity;

@@ -1,7 +1,7 @@
-package com.example.monitoreoacua.models.response;
+package com.example.monitoreoacua.service.response;
 
-import com.example.monitoreoacua.models.models.auth.AuthToken;
-import com.example.monitoreoacua.models.models.User;
+import com.example.monitoreoacua.business.models.auth.AuthToken;
+import com.example.monitoreoacua.business.models.User;
 
 public class LoginResponse extends ApiResponse<LoginResponse.Data> {
 

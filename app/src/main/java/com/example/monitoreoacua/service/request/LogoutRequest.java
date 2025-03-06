@@ -1,6 +1,4 @@
-package com.example.monitoreoacua.models.request;
-
-import androidx.annotation.NonNull;
+package com.example.monitoreoacua.service.request;
 
 public class LogoutRequest extends BaseRequest {
 

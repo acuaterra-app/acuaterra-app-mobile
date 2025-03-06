@@ -1,4 +1,4 @@
-package com.example.monitoreoacua.models.request;
+package com.example.monitoreoacua.service.request;
 
 public class LoginRequest extends BaseRequest {
 

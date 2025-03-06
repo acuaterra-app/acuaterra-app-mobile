@@ -1,4 +1,4 @@
-package com.example.monitoreoacua.models.models;
+package com.example.monitoreoacua.business.models;
 
 import com.google.gson.annotations.SerializedName;
 
