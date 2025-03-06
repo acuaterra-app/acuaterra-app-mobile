@@ -1,84 +1,99 @@
 package com.example.monitoreoacua.views.menu;
 
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.monitoreoacua.R;
-import com.example.monitoreoacua.views.pruebas.PruebaBitacora;
-import com.example.monitoreoacua.views.pruebas.PruebaJson;
-import com.example.monitoreoacua.views.soportetec.soporteActivity;
+import com.example.monitoreoacua.service.request.LogoutRequest;
+import com.example.monitoreoacua.service.response.LogoutResponse;
+import com.example.monitoreoacua.service.ApiClient;
+import com.example.monitoreoacua.service.ApiUsersService;
+import com.example.monitoreoacua.views.login.LoginActivity;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class HomeActivity extends AppCompatActivity {
+
+    private Button btnLogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        // Referenciar el botón "Cerrar Sesión"
-        Button btnCerrarSesion = findViewById(R.id.btnCerrarSesion);
-        Button btnModulos = findViewById(R.id.btnModulo);
-        Button btnGuia = findViewById(R.id.btnGuia);
-        Button btnSoporte = findViewById(R.id.btnSoporte);
+        btnLogout = findViewById(R.id.btnLogout);
+        
+        btnLogout.setOnClickListener(v -> logout());
+    }
 
-
-
-        // Agregar funcionalidad al botón cerrarsesion
-        btnCerrarSesion.setOnClickListener(new View.OnClickListener() {
+    private void logout() {
+        
+        btnLogout.setEnabled(false);
+        
+        ApiUsersService apiService = ApiClient.getClient().create(ApiUsersService.class);
+        
+        LogoutRequest logoutRequest = new LogoutRequest();
+        
+        apiService.logout(logoutRequest).enqueue(new Callback<LogoutResponse>() {
             @Override
-            public void onClick(View v) {
-                // Mostrar un cuadro de diálogo de confirmación
-                new AlertDialog.Builder(HomeActivity.this)
-                        .setTitle("Cerrar sesión")
-                        .setMessage("¿Estás seguro de que deseas salir de la aplicación?")
-                        .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Cerrar la aplicación
-                                finishAffinity(); // Cierra todas las actividades relacionadas
-                            }
-                        })
-                        .setNegativeButton("No", null) // No hacer nada si se presiona "No"
-                        .show();
+            public void onResponse(@NonNull Call<LogoutResponse> call, @NonNull Response<LogoutResponse> response) {
+                btnLogout.setEnabled(true);
+
+                if (response.isSuccessful() && response.body() != null) {
+                    if (response.body().hasErrors()) {
+                        String errorMsg = "Logout encountered errors";
+                        if (response.body().getErrors() != null && !response.body().getErrors().isEmpty()) {
+                            errorMsg = response.body().getErrors().get(0);
+                        }
+                        Toast.makeText(HomeActivity.this, errorMsg, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+
+                if (response.isSuccessful() && response.body() != null) {
+
+                    String message = response.body().getMessage();
+                    
+                    SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.remove("token");
+                    editor.apply();
+                    
+                    Toast.makeText(HomeActivity.this, message, Toast.LENGTH_SHORT).show();
+                    
+                    Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    // Handle error response
+                    String errorMessage = "Logout failed";
+                    if (response.errorBody() != null) {
+                        try {
+                            errorMessage += ": " + response.errorBody().string();
+                        } catch (Exception e) {
+                        }
+                    }
+                    Toast.makeText(HomeActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<LogoutResponse> call, @NonNull Throwable t) {
+                // Re-enable the button
+                btnLogout.setEnabled(true);
+                
+                String errorMessage = "Error connecting to server: " + t.getLocalizedMessage();
+                Toast.makeText(HomeActivity.this, errorMessage, Toast.LENGTH_LONG).show();
             }
         });
-
-        //  Navegar a SoporteActivity
-        btnSoporte.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, soporteActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        btnModulos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Navegar a HomeModulosActivity
-                //Intent intent = new Intent(HomeActivity.this, HomeModulosActivity.class);
-                Intent intent = new Intent(HomeActivity.this, PruebaJson.class);
-
-                startActivity(intent);
-            }
-        });
-
-        btnGuia.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Navegar a HomeModulosActivity
-                //Intent intent = new Intent(HomeActivity.this, HomeModulosActivity.class);
-                Intent intent = new Intent(HomeActivity.this, PruebaBitacora.class);
-
-                startActivity(intent);
-            }
-        });
-
     }
 }

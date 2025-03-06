@@ -1,10 +1,12 @@
-package com.example.monitoreoacua.models.request;
+package com.example.monitoreoacua.service.request;
 
-public class LoginRequest {
+public class LoginRequest extends BaseRequest {
+
     private String email;
     private String password;
 
     public LoginRequest(String email, String password) {
+        super(); // Call the BaseRequest constructor
         this.email = email;
         this.password = password;
     }

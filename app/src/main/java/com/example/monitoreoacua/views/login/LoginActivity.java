@@ -3,16 +3,17 @@ package com.example.monitoreoacua.views.login;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.monitoreoacua.R;
-import com.example.monitoreoacua.models.request.LoginRequest;
-import com.example.monitoreoacua.models.response.LoginResponse;
+import com.example.monitoreoacua.business.models.auth.AuthToken;
+import com.example.monitoreoacua.service.request.LoginRequest;
+import com.example.monitoreoacua.service.response.LoginResponse;
 import com.example.monitoreoacua.service.ApiClient;
 import com.example.monitoreoacua.service.ApiUsersService;
 import com.example.monitoreoacua.views.menu.HomeActivity;
@@ -23,9 +24,11 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private static final int MAX_LOGIN_ATTEMPTS = 3;
+    
     private EditText etEmail, etPassword;
     private Button btnLogin;
-    private int contadorIntentos = 0;
+    private int loginAttempts = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,84 +40,87 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
 
 
-        btnLogin.setOnClickListener(v -> iniciarSesion());
+        btnLogin.setOnClickListener(v -> login());
+        btnLogin.setOnClickListener(v -> login());
     }
 
-    private void iniciarSesion() {
+    private void login() {
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
-
-        // Validar campos obligatorios
+        
+        
         if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please complete all fields", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Validar formato del email
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            Toast.makeText(this, "Por favor, introduce un email válido", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please enter a valid email", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (contadorIntentos >= 3) {
+        if (loginAttempts >= MAX_LOGIN_ATTEMPTS) {
             btnLogin.setEnabled(false);
-            Toast.makeText(this, "Acceso bloqueado por múltiples intentos fallidos", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Access blocked due to multiple failed attempts", Toast.LENGTH_LONG).show();
             return;
         }
 
-        // Configurar Retrofit
         ApiUsersService apiUserService = ApiClient.getClient().create(ApiUsersService.class);
         LoginRequest loginRequest = new LoginRequest(email, password);
 
-        btnLogin.setEnabled(false); // Deshabilitar botón mientras se procesa
+        btnLogin.setEnabled(false);
         apiUserService.login(loginRequest).enqueue(new Callback<LoginResponse>() {
             @Override
-            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                btnLogin.setEnabled(true); // Rehabilitar botón
+            public void onResponse(@NonNull Call<LoginResponse> call, @NonNull Response<LoginResponse> response) {
+                btnLogin.setEnabled(true);
+                
                 if (response.isSuccessful() && response.body() != null) {
-                    String token = response.body().getToken();
-                    token = token.trim();
-                    String nombreUsuario = response.body().getUser().getNombre();
-                    Toast.makeText(LoginActivity.this, "Bienvenido, " + nombreUsuario, Toast.LENGTH_SHORT).show();
-                    contadorIntentos = 0;
-
-                    // Guardar el token de manera persistente, eliminando cualquier token previo
-                    SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    //editor.clear(); // Elimina cualquier dato previo guardado
-                    editor.putString("token", token);
-                    //editor.putInt("user_id", response.body().getUser().getId());
-                    editor.apply();
-
-
-                    // Recuperar el token
-                    String storedToken = sharedPreferences.getString("token", "No token found");
-
-                    // Usar un Handler para crear un retraso de 3 segundos
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            // Mostrar el token en un Toast después de 3 segundos
-                            Toast.makeText(getApplicationContext(), storedToken, Toast.LENGTH_LONG).show();
+                    LoginResponse loginResponse = response.body();
+                    
+                    try {
+                        AuthToken authToken = loginResponse.getToken();
+                        String token = authToken != null ? authToken.getToken() : null;
+                        if (token == null) {
+                            Toast.makeText(LoginActivity.this, "Authentication error: Invalid response", Toast.LENGTH_SHORT).show();
+                            return;
                         }
-                    }, 1000); // 3000 milisegundos = 3 segundos
+                        
+                        token = token.trim();
+                        String userName = loginResponse.getUser().getName();
+                        
+                        Toast.makeText(LoginActivity.this, "Welcome, " + userName, Toast.LENGTH_SHORT).show();
+                        loginAttempts = 0;
 
-
-
-                    // Redirigir al HomeActivity
-                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                    startActivity(intent);
-                    finish(); // Evitar regresar al login
+                        SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("token", token);
+                        editor.apply();
+                        
+                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } catch (Exception e) {
+                        Toast.makeText(LoginActivity.this, "Error processing login data", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    contadorIntentos++;
-                    Toast.makeText(LoginActivity.this, "Credenciales inválidas. Intento " + contadorIntentos + " de 3", Toast.LENGTH_SHORT).show();
+                    loginAttempts++;
+                    
+                    String errorMessage = "Invalid credentials. Attempt " + loginAttempts + " of " + MAX_LOGIN_ATTEMPTS;
+                    if (response.errorBody() != null) {
+                        try {
+                            errorMessage += " - " + response.errorBody().string();
+                        } catch (Exception e) {
+                        }
+                    }
+                    
+                    Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<LoginResponse> call, Throwable t) {
-                btnLogin.setEnabled(true); // Rehabilitar botón
-                Toast.makeText(LoginActivity.this, "Error al conectar con el servidor: " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+            public void onFailure(@NonNull Call<LoginResponse> call, @NonNull Throwable t) {
+                btnLogin.setEnabled(true);
+                Toast.makeText(LoginActivity.this, "Error connecting to server: " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
