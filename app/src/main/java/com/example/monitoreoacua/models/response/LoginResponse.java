@@ -1,42 +1,34 @@
 package com.example.monitoreoacua.models.response;
 
-public class LoginResponse {
-    private String message;
-    private String token;
-    private User user;
+import com.example.monitoreoacua.models.models.auth.AuthToken;
+import com.example.monitoreoacua.models.models.User;
 
-    public String getMessage() {
-        return message;
+public class LoginResponse extends ApiResponse<LoginResponse.Data> {
+
+
+    public AuthToken getToken() {
+        Data data = getFirstDataItem();
+        return data != null ? new AuthToken(data.getToken()) : null;
     }
 
-    public String getToken() {
-        return token;
-    }
 
     public User getUser() {
-        return user;
+        Data data = getFirstDataItem();
+        return data != null ? data.getUser() : null;
     }
 
-    public static class User {
-        private int id;
-        private String nombre;
-        private String email;
-        private String rol;
 
-        public int getId() {
-            return id;
+    public static class Data {
+        private String token;
+        private User user;
+
+        public String getToken() {
+            return token;
         }
 
-        public String getNombre() {
-            return nombre;
-        }
-
-        public String getEmail() {
-            return email;
-        }
-
-        public String getRol() {
-            return rol;
+        public User getUser() {
+            return user;
         }
     }
+
 }

@@ -74,52 +74,21 @@
         android:gravity="center"
         android:layout_marginBottom="16dp">
 
+        <!-- Botone de bitacora temporal -->
+
         <Button
             android:id="@+id/btnModulo"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="44dp"
             android:backgroundTint="#5d7a7e"
             android:fontFamily="@font/roboto"
-            android:text="Modulo"
-            android:textSize="20sp"
+            android:text="Granjas"
             android:textColor="@color/black"
-            android:layout_marginBottom="44dp" />
-        <!-- Botone de bitacora temporal -->
-        <Button
-            android:id="@+id/btnGuia"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#5d7a7e"
-            android:text="Bitacora - TEMP"
-            android:fontFamily="@font/roboto"
-            android:textSize="20sp"
-            android:textColor="@color/black"
-            android:layout_marginBottom="44dp" />
+            android:textSize="20sp" />
 
         <Button
-            android:id="@+id/btnGuia2"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#5d7a7e"
-            android:text="Guia"
-            android:fontFamily="@font/roboto"
-            android:textSize="20sp"
-            android:textColor="@color/black"
-            android:layout_marginBottom="44dp" />
-
-        <Button
-            android:id="@+id/btnSoporte"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#5d7a7e"
-            android:fontFamily="@font/roboto"
-            android:text="Soporte técnico"
-            android:textSize="20sp"
-            android:textColor="@color/black"
-            android:layout_marginBottom="44dp" />
-
-        <Button
-            android:id="@+id/btnCerrarSesion"
+            android:id="@+id/btnLogout"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:backgroundTint="#5d7a7e"
