@@ -18,6 +18,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".views.granjas.ListFarmsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".views.granjas.MenuFarmsActivity"
+            android:exported="false" />
+        <activity
             android:name=".views.soportetec.soporteActivity"
             android:exported="false" />
         <activity

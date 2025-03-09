@@ -3,6 +3,7 @@ package com.example.monitoreoacua.views.menu;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -14,6 +15,7 @@ import com.example.monitoreoacua.service.request.LogoutRequest;
 import com.example.monitoreoacua.service.response.LogoutResponse;
 import com.example.monitoreoacua.service.ApiClient;
 import com.example.monitoreoacua.service.ApiUsersService;
+import com.example.monitoreoacua.views.granjas.MenuFarmsActivity;
 import com.example.monitoreoacua.views.login.LoginActivity;
 
 import retrofit2.Call;
@@ -23,6 +25,7 @@ import retrofit2.Response;
 public class HomeActivity extends AppCompatActivity {
 
     private Button btnLogout;
+    private Button btnFarms;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +33,15 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         btnLogout = findViewById(R.id.btnLogout);
+        btnFarms = findViewById(R.id.btnFarms);
         
         btnLogout.setOnClickListener(v -> logout());
+        btnFarms.setOnClickListener(v -> toGoMenuFarmsActivity());
+    }
+
+    public void toGoMenuFarmsActivity() {
+        Intent intent = new Intent(HomeActivity.this, MenuFarmsActivity.class);
+        startActivity(intent);
     }
 
     private void logout() {

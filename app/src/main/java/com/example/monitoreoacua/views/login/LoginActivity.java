@@ -41,7 +41,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
         btnLogin.setOnClickListener(v -> login());
-        btnLogin.setOnClickListener(v -> login());
     }
 
     private void login() {
