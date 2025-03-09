@@ -27,7 +27,6 @@ public class ApiClient {
     public static Retrofit getClient() {
         if (retrofit == null) {
             OkHttpClient client = new OkHttpClient.Builder()
-                    .addInterceptor(new AuthInterceptor())
                     .build();
 
             retrofit = new Retrofit.Builder()
@@ -38,30 +37,4 @@ public class ApiClient {
         }
         return retrofit;
     }
-    
-    /**
-     * Interceptor for adding authentication token to requests
-     */
-    private static class AuthInterceptor implements Interceptor {
-
-        @NonNull
-        @Override
-        public Response intercept(Chain chain) throws IOException {
-            Request originalRequest = chain.request();
-            
-
-            Request.Builder requestBuilder = originalRequest.newBuilder();
-            
-            /*if (requiresAuth) {
-                String token = getAuthToken();
-                if (token != null && !token.isEmpty()) {
-                    requestBuilder.addHeader("Authorization", token);
-                }
-            }*/
-            
-            Request newRequest = requestBuilder.build();
-            return chain.proceed(newRequest);
-        }
-    }
-    
 }
