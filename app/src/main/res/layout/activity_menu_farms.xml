@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.granjas.MenuFarmsActivity"
+    tools:context=".views.farms.MenuFarmsActivity"
     android:orientation="vertical"
     android:background="@drawable/fondo2home"
     android:padding="16dp"

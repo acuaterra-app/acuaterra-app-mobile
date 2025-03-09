@@ -13,7 +13,7 @@ import retrofit2.http.Header;
  */
 public interface ApiFarmsService {
 
-    @GET("api/v2/admin/farms")
+    @GET("api/v2/owner/farms")
     Call<ListFarmResponse> getFarms(@Header("Authorization") String token);
 
 }

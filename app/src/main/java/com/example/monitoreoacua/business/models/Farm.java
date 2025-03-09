@@ -19,13 +19,9 @@ public class Farm {
     @SerializedName("longitude")
     private String longitude;
 
-    @SerializedName("users")
-    private List<User> users;
-
     public int getId() { return id; }
     public String getName() { return name; }
     public String getAddress() { return address; }
     public String getLatitude() { return latitude; }
     public String getLongitude() { return longitude; }
-    public List<User> getUsers() { return users; }
 }
