@@ -19,7 +19,6 @@ import com.example.monitoreoacua.service.ApiClient;
 import com.example.monitoreoacua.service.ApiFarmsService;
 import com.example.monitoreoacua.service.request.ListFarmsRequest;
 import com.example.monitoreoacua.service.response.ListFarmResponse;
-import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -30,7 +29,6 @@ import retrofit2.Response;
 public class ListFarmsActivity extends AppCompatActivity {
 
     private TextView textViewFarms;
-    private Button btnLoadFarms;
     private RecyclerView recyclerViewFarms;
     private FarmAdapter farmAdapter;
 
@@ -42,15 +40,14 @@ public class ListFarmsActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_list_farms);
         textViewFarms = findViewById(R.id.textViewFarms);
-        btnLoadFarms = findViewById(R.id.btnLoadFarms);
         recyclerViewFarms = findViewById(R.id.recyclerViewFarms);
         
         // Setup RecyclerView
         recyclerViewFarms.setLayoutManager(new LinearLayoutManager(this));
         farmAdapter = new FarmAdapter();
         recyclerViewFarms.setAdapter(farmAdapter);
-        
-        btnLoadFarms.setOnClickListener(v -> fetchFarms());
+
+        fetchFarms();
     }
 
     /**

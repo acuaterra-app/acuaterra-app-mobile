@@ -26,13 +26,6 @@
         android:textSize="16sp"
         android:visibility="gone" />
 
-    <Button
-        android:id="@+id/btnLoadFarms"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:text="Cargar Granjas" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewFarms"
         android:layout_width="match_parent"
