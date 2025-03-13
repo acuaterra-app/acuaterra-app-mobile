@@ -69,12 +69,15 @@ public class ListFarmsActivity extends AppCompatActivity {
                     ListFarmResponse listFarmResponse = response.body();
                     List<Farm> farms = listFarmResponse.getAllFarms();
 
-                    String message = listFarmResponse.getMessage();
+                    //String message = listFarmResponse.getMessage();
                     
                     if (farms != null && !farms.isEmpty()) {
-                        // Update the RecyclerView with the farm data
-                        farmAdapter.setFarmList(farms);
-                        
+
+
+                        // Get only the 10 most recent.
+                        List<Farm> latestFarms = farms.subList(0, Math.min(farms.size(), 10));
+                        // Update the RecyclerView with only the 10 most recent.
+                        farmAdapter.setFarmList(latestFarms);
                         // Set up item click listener if needed
                         farmAdapter.setOnFarmClickListener(farm -> {
                             Toast.makeText(ListFarmsActivity.this, 
@@ -82,9 +85,13 @@ public class ListFarmsActivity extends AppCompatActivity {
                                     Toast.LENGTH_SHORT).show();
                             // You can add more actions here when a farm is clicked
                         });
+
                     } else {
                         Toast.makeText(ListFarmsActivity.this, "No se encontraron granjas", Toast.LENGTH_SHORT).show();
                     }
+
+
+
                 }
             }
 
