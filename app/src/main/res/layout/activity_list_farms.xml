@@ -17,6 +17,22 @@
         android:gravity="center"
         android:padding="16dp"/>
 
+    <!-- Search bar to filter farms by name -->
+    <EditText
+        android:id="@+id/editTextSearchFarm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Buscar granja por nombre"
+        android:padding="8dp" />
+
+    <!-- Button to sort farms by creation date -->
+    <Button
+        android:id="@+id/buttonSortByDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ordenar por fecha de creación"
+        android:padding="8dp"/>
+
     <TextView
         android:id="@+id/textViewFarms"
         android:layout_width="match_parent"
@@ -33,3 +49,4 @@
         android:padding="8dp" />
 
 </LinearLayout>
+
