@@ -1,5 +1,6 @@
 package com.example.monitoreoacua.views.farms;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,6 +59,8 @@ public class FarmAdapter extends RecyclerView.Adapter<FarmAdapter.FarmViewHolder
                 listener.onFarmClick(farm);
             }
         });
+
+        holder.bind(farm);
     }
 
     @Override
