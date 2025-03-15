@@ -70,7 +70,7 @@ public class ListFarmsActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                filterFarms(s.toString());
+                filterFarmsByName(s.toString());
             }
 
             @Override
@@ -120,7 +120,7 @@ public class ListFarmsActivity extends AppCompatActivity {
      * Filters the list of farms based on the entered search term.
      * @param query The search term entered by the user.
      */
-    private void filterFarms(String query) {
+    private void filterFarmsByName(String query) {
         List<Farm> filteredFarms = new ArrayList<>();
         for (Farm farm : farmsList) {
             if (farm.getName().toLowerCase().contains(query.toLowerCase())) {
