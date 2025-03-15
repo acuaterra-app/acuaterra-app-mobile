@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".views.farms.farm.FarmDetailsActivity"
+    android:orientation="vertical">
+
+    <!-- Título de la granja -->
+    <TextView
+        android:id="@+id/textViewTitleDetailsFarm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Detalles de la Granja"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_gravity="center"
+        android:paddingBottom="16dp"/>
+
+    <!-- Nombre de la granja -->
+    <TextView
+        android:id="@+id/textViewFarmNameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nombre:"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/textViewFarmName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="--"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:paddingBottom="8dp"/>
+
+    <!-- Dirección de la granja -->
+    <TextView
+        android:id="@+id/textViewFarmAddressLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ubicación:"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/textViewFarmAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="--"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:paddingBottom="8dp"/>
+
+    <!-- Coordenadas -->
+    <TextView
+        android:id="@+id/textViewFarmCoordinatesLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Coordenadas:"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/textViewFarmCoordinates"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Lat: --, Lng: --"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:paddingBottom="8dp"/>
+
+    <!-- Fecha de Creación -->
+    <TextView
+        android:id="@+id/textViewCreatedAtLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fecha de Creación:"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/textViewCreatedAt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="--"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:paddingBottom="16dp"/>
+
+    <!-- Botón para ver Monitores -->
+    <Button
+        android:id="@+id/buttonMonitors"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Monitores"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/colorAccent"
+        android:layout_marginTop="16dp"/>
+
+    <!-- Botón para ver Módulos -->
+    <Button
+        android:id="@+id/buttonModules"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Módulos"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/colorAccent"
+        android:layout_marginTop="8dp"/>
+
+</LinearLayout>

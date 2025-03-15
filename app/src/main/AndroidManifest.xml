@@ -18,6 +18,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".views.farms.farm.FarmDetailsActivity"
+            android:exported="false" />
+        <activity
             android:name=".views.farms.ListFarmsActivity"
             android:exported="false" />
         <activity
