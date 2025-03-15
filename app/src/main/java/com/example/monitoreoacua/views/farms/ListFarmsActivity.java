@@ -1,6 +1,8 @@
 package com.example.monitoreoacua.views.farms;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -22,6 +24,7 @@ import com.example.monitoreoacua.service.ApiClient;
 import com.example.monitoreoacua.service.ApiFarmsService;
 import com.example.monitoreoacua.service.request.ListFarmsRequest;
 import com.example.monitoreoacua.service.response.ListFarmResponse;
+import com.example.monitoreoacua.views.farms.farm.FarmDetailsActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -62,6 +65,12 @@ public class ListFarmsActivity extends AppCompatActivity {
 
         // Fetch farms data from API
         fetchFarms();
+
+        farmAdapter.setOnFarmClickListener(farm -> {
+            Intent intent = new Intent(ListFarmsActivity.this, FarmDetailsActivity.class);
+            intent.putExtra("farm", farm); // Ahora Farm es Parcelable
+            startActivity(intent);
+        });
 
         // Search bar event listener
         editTextSearchFarm.addTextChangedListener(new TextWatcher() {
@@ -106,6 +115,8 @@ public class ListFarmsActivity extends AppCompatActivity {
                     } else {
                         Toast.makeText(ListFarmsActivity.this, "No se encontraron granjas", Toast.LENGTH_SHORT).show();
                     }
+                }else {
+                    Toast.makeText(ListFarmsActivity.this, "Error en la respuesta del servidor", Toast.LENGTH_LONG).show();
                 }
             }
 

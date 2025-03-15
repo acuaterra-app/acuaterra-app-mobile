@@ -50,7 +50,14 @@ public class FarmAdapter extends RecyclerView.Adapter<FarmAdapter.FarmViewHolder
     @Override
     public void onBindViewHolder(@NonNull FarmViewHolder holder, int position) {
         Farm farm = farmList.get(position);
-        holder.bind(farm);
+        holder.tvFarmName.setText(farm.getName());
+        holder.tvFarmAddress.setText(farm.getAddress());
+
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onFarmClick(farm);
+            }
+        });
     }
 
     @Override
