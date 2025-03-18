@@ -1,121 +1,267 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.farms.farm.FarmDetailsActivity"
-    android:orientation="vertical">
+    android:background="@drawable/background2"
+    android:padding="1dp"
+    tools:context=".views.farms.farm.FarmDetailsActivity">
 
-    <!-- Título de la granja -->
-    <TextView
-        android:id="@+id/textViewTitleDetailsFarm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Detalles de la Granja"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:layout_gravity="center"
-        android:paddingBottom="16dp"/>
-
-    <!-- Nombre de la granja -->
-    <TextView
-        android:id="@+id/textViewFarmNameLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Nombre:"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:textColor="@color/black" />
-
-    <TextView
-        android:id="@+id/textViewFarmName"
+    <!-- Contenedor principal -->
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="--"
-        android:textSize="16sp"
-        android:textColor="@color/black"
-        android:paddingBottom="8dp"/>
+        android:padding="26dp"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottomNav">
 
-    <!-- Dirección de la granja -->
-    <TextView
-        android:id="@+id/textViewFarmAddressLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Ubicación:"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:textColor="@color/black"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textViewFarmAddress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="--"
-        android:textSize="16sp"
-        android:textColor="@color/black"
-        android:paddingBottom="8dp"/>
+            <!-- Título de la granja -->
+            <TextView
+                android:id="@+id/textViewTitleDetailsFarm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Detalles de la Granja"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/koulen"
+                android:textColor="@color/colorPrimary"
+                android:gravity="center_horizontal"
+                android:paddingBottom="16dp"/>
 
-    <!-- Coordenadas -->
-    <TextView
-        android:id="@+id/textViewFarmCoordinatesLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Coordenadas:"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:textColor="@color/black"/>
+            <ImageView
+                android:id="@+id/imageViewFarm"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:src="@drawable/farmperfil"
+                android:scaleType="centerCrop"
+                android:contentDescription="Imagen de la granja"
+                android:layout_gravity="center"
+                android:layout_marginBottom="16dp"/>
 
-    <TextView
-        android:id="@+id/textViewFarmCoordinates"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Lat: --, Lng: --"
-        android:textSize="16sp"
-        android:textColor="@color/black"
-        android:paddingBottom="8dp"/>
+            <!-- Contenedor de la información de la granja -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
 
-    <!-- Fecha de Creación -->
-    <TextView
-        android:id="@+id/textViewCreatedAtLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Fecha de Creación:"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:textColor="@color/black"/>
+                <!-- Nombre de la granja -->
+                <TextView
+                    android:id="@+id/textViewFarmNameLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nombre:"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"/>
 
-    <TextView
-        android:id="@+id/textViewCreatedAt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="--"
-        android:textSize="16sp"
-        android:textColor="@color/black"
-        android:paddingBottom="16dp"/>
+                <TextView
+                    android:id="@+id/textViewFarmName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="--"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:paddingBottom="8dp"/>
 
-    <!-- Botón para ver Monitores -->
-    <Button
-        android:id="@+id/buttonMonitors"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Monitores"
-        android:textSize="18sp"
-        android:textColor="@color/white"
-        android:backgroundTint="@color/colorAccent"
-        android:layout_marginTop="16dp"/>
+                <!-- Dirección de la granja -->
+                <TextView
+                    android:id="@+id/textViewFarmAddressLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ubicación:"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"/>
 
-    <!-- Botón para ver Módulos -->
-    <Button
-        android:id="@+id/buttonModules"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Módulos"
-        android:textSize="18sp"
-        android:textColor="@color/white"
-        android:backgroundTint="@color/colorAccent"
-        android:layout_marginTop="8dp"/>
+                <TextView
+                    android:id="@+id/textViewFarmAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="--"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:paddingBottom="8dp"/>
 
-</LinearLayout>
+                <!-- Coordenadas -->
+                <TextView
+                    android:id="@+id/textViewFarmCoordinatesLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Coordenadas:"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/textViewFarmCoordinates"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Lat: --, Lng: --"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:paddingBottom="8dp"/>
+
+                <!-- Fecha de Creación -->
+                <TextView
+                    android:id="@+id/textViewCreatedAtLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fecha de Creación:"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/textViewCreatedAt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="--"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:paddingBottom="16dp"/>
+            </LinearLayout>
+
+            <!-- Botones de acción -->
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:id="@+id/buttonMonitors"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Monitores"
+                android:textSize="18sp"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/colorAccent"
+                android:layout_marginTop="16dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+
+                android:id="@+id/buttonModules"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Módulos"
+                android:textSize="18sp"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/colorAccent"
+                android:layout_marginTop="8dp"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Barra de navegación inferior -->
+    <LinearLayout
+        android:id="@+id/bottomNav"
+        android:layout_width="550dp"
+        android:layout_height="85dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="50dp"
+        android:background="@color/colorBackground"
+        android:elevation="6dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="@color/colorBackground"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/navHome"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/icgranja"
+                android:contentDescription="Ir a Inicio"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Granjas"
+                android:textSize="10sp"
+                android:textColor="@color/colorDivider"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/navSettings"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/icusersmonit"
+                android:contentDescription="Configuración"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Usuarios"
+                android:textSize="10sp"
+                android:textColor="@color/colorDivider"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/navProfile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/icsoporte"
+                android:contentDescription="Perfil"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Soporte"
+                android:textSize="10sp"
+                android:textColor="@color/colorDivider"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/navCloseSesion"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/iccerrarsesion"
+                android:contentDescription="Cerrar sesión"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cerrar sesión"
+                android:textSize="10sp"
+                android:textColor="@color/colorDivider"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

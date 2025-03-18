@@ -16,6 +16,7 @@ import com.example.monitoreoacua.service.request.LoginRequest;
 import com.example.monitoreoacua.service.response.LoginResponse;
 import com.example.monitoreoacua.service.ApiClient;
 import com.example.monitoreoacua.service.ApiUsersService;
+import com.example.monitoreoacua.views.farms.ListFarmsActivity;
 import com.example.monitoreoacua.views.menu.HomeActivity;
 
 import retrofit2.Call;
@@ -25,7 +26,7 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity {
 
     private static final int MAX_LOGIN_ATTEMPTS = 3;
-    
+
     private EditText etEmail, etPassword;
     private Button btnLogin;
     private int loginAttempts = 0;
@@ -46,8 +47,8 @@ public class LoginActivity extends AppCompatActivity {
     private void login() {
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
-        
-        
+
+
         if (email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Please complete all fields", Toast.LENGTH_SHORT).show();
             return;
@@ -72,10 +73,10 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<LoginResponse> call, @NonNull Response<LoginResponse> response) {
                 btnLogin.setEnabled(true);
-                
+
                 if (response.isSuccessful() && response.body() != null) {
                     LoginResponse loginResponse = response.body();
-                    
+
                     try {
                         AuthToken authToken = loginResponse.getToken();
                         String token = authToken != null ? authToken.getToken() : null;
@@ -83,10 +84,10 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, "Authentication error: Invalid response", Toast.LENGTH_SHORT).show();
                             return;
                         }
-                        
+
                         token = token.trim();
                         String userName = loginResponse.getUser().getName();
-                        
+
                         Toast.makeText(LoginActivity.this, "Welcome, " + userName, Toast.LENGTH_SHORT).show();
                         loginAttempts = 0;
 
@@ -94,8 +95,8 @@ public class LoginActivity extends AppCompatActivity {
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("token", token);
                         editor.apply();
-                        
-                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+
+                        Intent intent = new Intent(LoginActivity.this, ListFarmsActivity.class);
                         startActivity(intent);
                         finish();
                     } catch (Exception e) {
@@ -103,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 } else {
                     loginAttempts++;
-                    
+
                     String errorMessage = "Invalid credentials. Attempt " + loginAttempts + " of " + MAX_LOGIN_ATTEMPTS;
                     if (response.errorBody() != null) {
                         try {
@@ -111,7 +112,7 @@ public class LoginActivity extends AppCompatActivity {
                         } catch (Exception e) {
                         }
                     }
-                    
+
                     Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
                 }
             }

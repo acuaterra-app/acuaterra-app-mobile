@@ -1,26 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="horizontal"
     android:background="@drawable/background1"
-    android:padding="1dp">
+    android:padding="8dp">
 
+    <!-- Sección de gestión de granjas -->
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="700dp"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
         android:orientation="vertical"
         android:padding="16dp"
-        android:gravity="center_horizontal"
-        android:layout_above="@id/bottomNav">
+        android:gravity="center_horizontal">
 
         <!-- Título -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="GestiÓn de granjas"
+            android:text="Gestión de granjas"
             android:textSize="24sp"
             android:textStyle="bold"
             android:textColor="@color/colorPrimaryDark"
@@ -28,6 +30,7 @@
             android:gravity="center"
             android:layout_marginBottom="12dp"/>
 
+        <!-- Barra de búsqueda y botón -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -35,7 +38,6 @@
             android:gravity="center"
             android:layout_marginBottom="10dp">
 
-            <!-- Barra de búsqueda -->
             <EditText
                 android:id="@+id/editTextSearchFarm"
                 android:layout_width="0dp"
@@ -47,7 +49,6 @@
                 android:textSize="16sp"
                 android:layout_marginEnd="8dp"/>
 
-            <!-- Botón de ordenación con icono -->
             <ImageButton
                 android:id="@+id/buttonSortByDate"
                 android:layout_width="50dp"
@@ -66,7 +67,7 @@
             android:padding="8dp"
             android:text="Cargando datos..."
             android:textSize="16sp"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
         <!-- Lista de granjas -->
         <androidx.recyclerview.widget.RecyclerView
@@ -74,28 +75,27 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:padding="8dp" />
+            android:padding="8dp"/>
     </LinearLayout>
 
-    <!-- Barra de navegación inferior -->
+    <!-- Barra de navegación lateral -->
     <LinearLayout
         android:id="@+id/bottomNav"
-        android:layout_width="550dp"
-        android:layout_height="85dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="50dp"
+        android:layout_width="6dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.4"
         android:background="@color/colorBackground"
         android:elevation="6dp"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:gravity="center"
         android:padding="10dp">
 
+        <!-- Botón 1 -->
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="50dp"
+            android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:background="@color/colorBackground"
             android:orientation="vertical">
 
             <ImageButton
@@ -104,8 +104,7 @@
                 android:layout_height="50dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/icgranja"
-                android:contentDescription="Ir a Inicio"
-                />
+                android:contentDescription="Ir a Inicio"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -115,9 +114,10 @@
                 android:textColor="@color/colorDivider"/>
         </LinearLayout>
 
+        <!-- Botón 2 -->
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="50dp"
+            android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical">
@@ -128,8 +128,7 @@
                 android:layout_height="50dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/icusersmonit"
-                android:contentDescription="Configuración"
-                />
+                android:contentDescription="Usuarios"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -139,9 +138,10 @@
                 android:textColor="@color/colorDivider"/>
         </LinearLayout>
 
+        <!-- Botón 3 -->
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="50dp"
+            android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical">
@@ -152,8 +152,8 @@
                 android:layout_height="50dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/icsoporte"
-                android:contentDescription="Perfil"
-                />
+                android:contentDescription="Soporte"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -162,9 +162,10 @@
                 android:textColor="@color/colorDivider"/>
         </LinearLayout>
 
+        <!-- Botón 4 -->
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="50dp"
+            android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical">
@@ -175,8 +176,8 @@
                 android:layout_height="50dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/iccerrarsesion"
-                android:contentDescription="Cerrar sesión"
-                />
+                android:contentDescription="Cerrar sesión"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -187,5 +188,4 @@
 
     </LinearLayout>
 
-</RelativeLayout>
-
+</LinearLayout>

@@ -1,13 +1,13 @@
 package com.example.monitoreoacua.views.farms;
 
+import static com.example.monitoreoacua.R.id.buttonSortByDate;
+
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageButton;//de la nav
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,6 +25,7 @@ import com.example.monitoreoacua.service.ApiClient;
 import com.example.monitoreoacua.service.ApiFarmsService;
 import com.example.monitoreoacua.service.request.ListFarmsRequest;
 import com.example.monitoreoacua.service.response.ListFarmResponse;
+import com.example.monitoreoacua.views.SoporteActivity;
 import com.example.monitoreoacua.views.farms.farm.FarmDetailsActivity;
 
 import java.util.ArrayList;
@@ -41,11 +43,14 @@ public class ListFarmsActivity extends AppCompatActivity {
     private RecyclerView recyclerViewFarms;
     private FarmAdapter farmAdapter;
     private EditText editTextSearchFarm;
-    private Button buttonSortByDate;
+    private AppCompatImageButton buttonSortByDate;
     private List<Farm> farmsList = new ArrayList<>();
-    private boolean isAscending = true; // Flag to toggle sorting order
+    private boolean isAscending = true;
 
     private static final String TAG = "ListFarmsActivity";
+
+    // Declaración de los elementos de la barra de navegación
+    private AppCompatImageButton navHome, navSettings, navProfile, navCloseSesion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,21 +63,28 @@ public class ListFarmsActivity extends AppCompatActivity {
         editTextSearchFarm = findViewById(R.id.editTextSearchFarm);
         buttonSortByDate = findViewById(R.id.buttonSortByDate);
 
-        // Setup RecyclerView
+        // Inicializar los elementos de la barra de navegación
+        navHome = findViewById(R.id.navHome);
+       // navSettings = findViewById(R.id.navSettings);
+        navProfile = findViewById(R.id.navProfile);
+        //navCloseSesion = findViewById(R.id.navCloseSesion);
+
+        // Configuración del RecyclerView
         recyclerViewFarms.setLayoutManager(new LinearLayoutManager(this));
         farmAdapter = new FarmAdapter();
         recyclerViewFarms.setAdapter(farmAdapter);
 
-        // Fetch farms data from API
+        // Obtener datos de las granjas desde la API
         fetchFarms();
 
+        // Listener para hacer clic en una granja
         farmAdapter.setOnFarmClickListener(farm -> {
             Intent intent = new Intent(ListFarmsActivity.this, FarmDetailsActivity.class);
-            intent.putExtra("farm", farm); // Ahora Farm es Parcelable
+            intent.putExtra("farm", farm);
             startActivity(intent);
         });
 
-        // Search bar event listener
+        // Listener para la barra de búsqueda
         editTextSearchFarm.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -86,15 +98,26 @@ public class ListFarmsActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {}
         });
 
-        // Sort button event listener
-        buttonSortByDate.setOnClickListener(v -> {
-            sortFarmsByDate();
+        // Listener para el botón de ordenamiento
+        buttonSortByDate.setOnClickListener(v -> sortFarmsByDate());
+
+        // Eventos para la barra de navegación
+        navHome.setOnClickListener(v -> {
+            Intent intent = new Intent(ListFarmsActivity.this, ListFarmsActivity.class);
+            startActivity(intent);
+        });
+
+        /*navSettings.setOnClickListener(v -> {
+            Intent intent = new Intent(ListFarmsActivity.this, UsuariosActivity.class);
+            startActivity(intent);
+        });*/
+
+        navProfile.setOnClickListener(v -> {
+            Intent intent = new Intent(ListFarmsActivity.this, SoporteActivity.class);
+            startActivity(intent);
         });
     }
 
-    /**
-     * Fetches farm data from the API and updates the UI.
-     */
     private void fetchFarms() {
         ApiFarmsService apiFarmsService = ApiClient.getClient().create(ApiFarmsService.class);
         ListFarmsRequest listFarmsRequest = new ListFarmsRequest();
@@ -115,22 +138,18 @@ public class ListFarmsActivity extends AppCompatActivity {
                     } else {
                         Toast.makeText(ListFarmsActivity.this, "No se encontraron granjas", Toast.LENGTH_SHORT).show();
                     }
-                }else {
+                } else {
                     Toast.makeText(ListFarmsActivity.this, "Error en la respuesta del servidor", Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<ListFarmResponse> call, @NonNull Throwable t) {
-                Toast.makeText(ListFarmsActivity.this, "Connection error: " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(ListFarmsActivity.this, "Error de conexión: " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
 
-    /**
-     * Filters the list of farms based on the entered search term.
-     * @param query The search term entered by the user.
-     */
     private void filterFarmsByName(String query) {
         List<Farm> filteredFarms = new ArrayList<>();
         for (Farm farm : farmsList) {
@@ -141,26 +160,14 @@ public class ListFarmsActivity extends AppCompatActivity {
         farmAdapter.setFarmList(filteredFarms);
     }
 
-    /**
-     * Sorts the list of farms by creation date.
-     * Alternates between ascending and descending order.
-     */
     private void sortFarmsByDate() {
         if (farmsList.isEmpty()) return;
 
-        Collections.sort(farmsList, new Comparator<Farm>() {
-            @Override
-            public int compare(Farm f1, Farm f2) {
-                return isAscending
-                        ? f1.getCreatedAt().compareTo(f2.getCreatedAt())
-                        : f2.getCreatedAt().compareTo(f1.getCreatedAt());
-            }
-        });
+        Collections.sort(farmsList, (f1, f2) -> isAscending
+                ? f1.getCreatedAt().compareTo(f2.getCreatedAt())
+                : f2.getCreatedAt().compareTo(f1.getCreatedAt()));
 
-        // Toggle sorting order
         isAscending = !isAscending;
-
-        // Update RecyclerView
         farmAdapter.setFarmList(farmsList);
     }
 }
