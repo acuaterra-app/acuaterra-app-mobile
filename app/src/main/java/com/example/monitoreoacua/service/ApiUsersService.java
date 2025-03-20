@@ -7,6 +7,7 @@ import com.example.monitoreoacua.service.response.LogoutResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 
 /**
@@ -29,6 +30,6 @@ public interface ApiUsersService {
      * @return A Call object with LogoutResponse containing a success message
      */
     @POST("/api/v2/auth/logout")
-    Call<LogoutResponse> logout(@Body LogoutRequest logoutRequest);
+    Call<LogoutResponse> logout(@Header("Authorization") String token, @Body LogoutRequest logoutRequest);
 }
 

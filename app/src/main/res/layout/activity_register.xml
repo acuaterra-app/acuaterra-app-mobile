@@ -39,7 +39,7 @@ Descripción: Archivo XML - Correspondiente a la interfaz "Registro" - AcuaTerra
                 android:layout_height="80dp"
                 android:layout_gravity="center"
                 android:contentDescription="@string/logo_aquaterra"
-                android:src="@drawable/logo3" />
+                android:src="@drawable/logoacua" />
 
 
             <!-- Título del formulario -->

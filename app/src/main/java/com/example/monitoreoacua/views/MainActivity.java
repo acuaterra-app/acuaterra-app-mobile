@@ -17,16 +17,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-    // Usar un Handler para retrasar la transición a RegisterActivity
+        // Use a Handler to delay the transition to RegisterActivity
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
-                // Crear el intent para navegar a RegisterActivity
+                // Create the intent to navigate to RegisterActivity
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent); // Iniciar RegisterActivity
-                finish(); // Opcional: cerrar MainActivity para que no se pueda volver a ella
+                startActivity(intent); // start RegisterActivity
+                finish();
             }
-        }, 3000); // Retraso de 2000 milisegundos (2 segundos)
+        }, 3000); // delay of 2000 miliseconds
     }
 
 }
