@@ -1,7 +1,5 @@
 package com.example.monitoreoacua.views.farms;
 
-import static com.example.monitoreoacua.R.id.buttonSortByDate;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -25,12 +23,11 @@ import com.example.monitoreoacua.service.ApiClient;
 import com.example.monitoreoacua.service.ApiFarmsService;
 import com.example.monitoreoacua.service.request.ListFarmsRequest;
 import com.example.monitoreoacua.service.response.ListFarmResponse;
-import com.example.monitoreoacua.views.SoporteActivity;
+import com.example.monitoreoacua.views.SupportActivity;
 import com.example.monitoreoacua.views.farms.farm.FarmDetailsActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import retrofit2.Call;
@@ -49,7 +46,7 @@ public class ListFarmsActivity extends AppCompatActivity {
 
     private static final String TAG = "ListFarmsActivity";
 
-    // Declaración de los elementos de la barra de navegación
+    // Declaration of navigation bar elements
     private AppCompatImageButton navHome, navSettings, navProfile, navCloseSesion;
 
     @Override
@@ -63,28 +60,28 @@ public class ListFarmsActivity extends AppCompatActivity {
         editTextSearchFarm = findViewById(R.id.editTextSearchFarm);
         buttonSortByDate = findViewById(R.id.buttonSortByDate);
 
-        // Inicializar los elementos de la barra de navegación
+        // Initialize navigation bar elements
         navHome = findViewById(R.id.navHome);
-       // navSettings = findViewById(R.id.navSettings);
+        // navSettings = findViewById(R.id.navSettings);
         navProfile = findViewById(R.id.navProfile);
         //navCloseSesion = findViewById(R.id.navCloseSesion);
 
-        // Configuración del RecyclerView
+        // RecyclerView setup
         recyclerViewFarms.setLayoutManager(new LinearLayoutManager(this));
         farmAdapter = new FarmAdapter();
         recyclerViewFarms.setAdapter(farmAdapter);
 
-        // Obtener datos de las granjas desde la API
+        // Fetch farm data from the API
         fetchFarms();
 
-        // Listener para hacer clic en una granja
+        // Listener for clicking on a farm
         farmAdapter.setOnFarmClickListener(farm -> {
             Intent intent = new Intent(ListFarmsActivity.this, FarmDetailsActivity.class);
             intent.putExtra("farm", farm);
             startActivity(intent);
         });
 
-        // Listener para la barra de búsqueda
+        // Listener for the search bar
         editTextSearchFarm.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -98,22 +95,17 @@ public class ListFarmsActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {}
         });
 
-        // Listener para el botón de ordenamiento
+        // Listener for the sorting button
         buttonSortByDate.setOnClickListener(v -> sortFarmsByDate());
 
-        // Eventos para la barra de navegación
+        // Events for the navigation bar
         navHome.setOnClickListener(v -> {
             Intent intent = new Intent(ListFarmsActivity.this, ListFarmsActivity.class);
             startActivity(intent);
         });
 
-        /*navSettings.setOnClickListener(v -> {
-            Intent intent = new Intent(ListFarmsActivity.this, UsuariosActivity.class);
-            startActivity(intent);
-        });*/
-
         navProfile.setOnClickListener(v -> {
-            Intent intent = new Intent(ListFarmsActivity.this, SoporteActivity.class);
+            Intent intent = new Intent(ListFarmsActivity.this, SupportActivity.class);
             startActivity(intent);
         });
     }

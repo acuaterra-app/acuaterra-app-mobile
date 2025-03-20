@@ -8,7 +8,7 @@ import android.widget.Button;
 import com.example.monitoreoacua.R;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class SoporteActivity extends AppCompatActivity {
+public class SupportActivity extends AppCompatActivity {
 
     private Button btnWhatsApp, btnEmail;
 
@@ -17,31 +17,31 @@ public class SoporteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_soporte);
 
-        // Vincular los botones con sus IDs en el XML
+        // Link the buttons with their IDs in the XML
         btnWhatsApp = findViewById(R.id.btnWhatsApp);
         btnEmail = findViewById(R.id.btnEmail);
 
-        // Abrir WhatsApp al hacer clic
+        // Open WhatsApp on click
         btnWhatsApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                abrirWhatsApp("+573001234567"); // Cambia este número por el real del soporte
+                openWhatsApp("+573001234567"); // Change this number to the actual support number
             }
         });
 
-        // Enviar un correo al hacer clic
+        // Send an email on click
         btnEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                enviarCorreo("soporte@acuaterratech.com", "Consulta de soporte", "Hola, necesito ayuda con...");
+                sendCorreo("soporte@acuaterratech.com", "Consulta de soporte", "Hola, necesito ayuda con...");
             }
         });
     }
 
-    // Método para abrir WhatsApp con un número específico
-    private void abrirWhatsApp(String telefono) {
+    // Method to open WhatsApp with a specific number
+    private void openWhatsApp(String numberPhone) {
         try {
-            String url = "https://wa.me/" + telefono.replace("+", "").replace(" ", "");
+            String url = "https://wa.me/" + numberPhone.replace("+", "").replace(" ", "");
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse(url));
             startActivity(intent);
@@ -50,8 +50,8 @@ public class SoporteActivity extends AppCompatActivity {
         }
     }
 
-    // Método para abrir el cliente de correo con los datos prellenados
-    private void enviarCorreo(String destinatario, String asunto, String mensaje) {
+    // Method to open the email client with pre-filled data
+    private void sendCorreo(String destinatario, String asunto, String mensaje) {
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setData(Uri.parse("mailto:")); // Solo las apps de correo pueden manejar esto
         intent.putExtra(Intent.EXTRA_EMAIL, new String[]{destinatario});

@@ -27,7 +27,7 @@
             android:name=".views.farms.MenuFarmsActivity"
             android:exported="false" />
         <activity
-            android:name=".views.SoporteActivity"
+            android:name=".views.SupportActivity"
             android:exported="false" />
         <activity
             android:name=".views.pruebas.PruebaBitacora"

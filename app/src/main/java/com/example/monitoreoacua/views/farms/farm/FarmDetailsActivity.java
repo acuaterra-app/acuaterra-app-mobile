@@ -21,13 +21,13 @@ public class FarmDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_farm_details);
 
-        // Inicializar vistas
+        // Initialize views
         textViewFarmName = findViewById(R.id.textViewFarmName);
         textViewFarmAddress = findViewById(R.id.textViewFarmAddress);
         buttonMonitors = findViewById(R.id.buttonMonitors);
         buttonModules = findViewById(R.id.buttonModules);
 
-        // Recibir la granja del Intent
+        // Receive the farm from the Intent
         Farm farm = getIntent().getParcelableExtra("farm");
 
         if (farm != null) {
@@ -35,19 +35,19 @@ public class FarmDetailsActivity extends AppCompatActivity {
             textViewFarmAddress.setText(farm.getAddress());
         } else {
             Toast.makeText(this, "Error: No se recibió información de la granja", Toast.LENGTH_SHORT).show();
-            finish(); // Cierra la actividad si no hay datos
+            finish(); // Close the activity if there is no data
         }
 
-        // Botón Monitors (agrega la lógica necesaria)
+        // Monitors Button (add the necessary logic)
         buttonMonitors.setOnClickListener(v -> {
             Toast.makeText(this, "Abrir Monitores", Toast.LENGTH_SHORT).show();
-            // Aquí puedes iniciar otra actividad si es necesario
+
         });
 
-        // Botón Modules (agrega la lógica necesaria)
+        // Modules Button (add the necessary logic)
         buttonModules.setOnClickListener(v -> {
             Toast.makeText(this, "Abrir Módulos", Toast.LENGTH_SHORT).show();
-            // Aquí puedes iniciar otra actividad si es necesario
+            // Here you can start another activity if necessary
         });
     }
 }

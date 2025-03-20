@@ -38,7 +38,7 @@ public class Farm implements Parcelable {
         this.updatedAt = updatedAt;
     }
 
-    // Constructor para Parcelable
+    // Constructor for Parcelable
     protected Farm(Parcel in) {
         id = in.readInt();
         name = in.readString();
@@ -49,7 +49,7 @@ public class Farm implements Parcelable {
         updatedAt = in.readString();
     }
 
-    // CREATOR para Parcelable
+    // CREATOR for Parcelable
     public static final Creator<Farm> CREATOR = new Creator<Farm>() {
         @Override
         public Farm createFromParcel(Parcel in) {
