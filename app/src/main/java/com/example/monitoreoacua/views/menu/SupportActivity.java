@@ -6,16 +6,43 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import com.example.monitoreoacua.R;
+import com.example.monitoreoacua.views.farms.ListFarmsActivity;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageButton;
 
 public class SupportActivity extends AppCompatActivity {
 
     private Button btnWhatsApp, btnEmail;
+    // Declaration of navigation bar elements
+    private AppCompatImageButton navHome, navSettings, navProfile, navCloseSesion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_soporte);
+
+        // Initialize navigation bar elements
+        navHome = findViewById(R.id.navHome);
+        // navSettings = findViewById(R.id.navSettings);
+        navProfile = findViewById(R.id.navProfile);
+        navCloseSesion = findViewById(R.id.navCloseSesion);
+
+        // Events for the navigation bar
+        navHome.setOnClickListener(v -> {
+            Intent intent = new Intent(SupportActivity.this, ListFarmsActivity.class);
+            startActivity(intent);
+        });
+
+        navProfile.setOnClickListener(v -> {
+            Intent intent = new Intent(SupportActivity.this, SupportActivity.class);
+            startActivity(intent);
+        });
+
+        navCloseSesion.setOnClickListener(v -> {
+            Intent intent = new Intent(SupportActivity.this, ClosesectionActivity.class);
+            startActivity(intent);
+        });
 
         // Link the buttons with their IDs in the XML
         btnWhatsApp = findViewById(R.id.btnWhatsApp);
