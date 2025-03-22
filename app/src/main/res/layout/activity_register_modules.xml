@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background4">
+
+    <!-- ScrollView para el contenido principal -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:layout_above="@+id/bottomNav">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <!-- Logo -->
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/logoacua"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"/>
+
+            <!-- Título -->
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Registrar Módulo"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"/>
+
+            <!-- Campo 1: Nombre del módulo -->
+            <TextView
+                android:id="@+id/tvModuleName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nombre del módulo"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:layout_marginTop="24dp"/>
+
+            <EditText
+                android:id="@+id/etModuleName"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/colorBackground"
+                android:hint="Ej: Módulo 1"
+                android:textSize="16sp"
+                android:padding="10dp"
+                android:layout_marginTop="8dp"/>
+
+            <!-- Campo 2: Ubicación -->
+            <TextView
+                android:id="@+id/tvLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ubicación"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:layout_marginTop="16dp"/>
+
+            <EditText
+                android:id="@+id/etLocation"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/colorBackground"
+                android:hint="Ej: Zona 2"
+                android:textSize="16sp"
+                android:padding="10dp"
+                android:layout_marginTop="8dp"/>
+
+            <!-- Campo 3: Tipo de pez -->
+            <TextView
+                android:id="@+id/tvFishType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tipo de pez"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:layout_marginTop="16dp"/>
+
+            <EditText
+                android:id="@+id/etFishType"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/colorBackground"
+                android:hint="Ej: Tilapia"
+                android:textSize="16sp"
+                android:padding="10dp"
+                android:layout_marginTop="8dp"/>
+
+            <!-- Campo 4: Cantidad de peces -->
+            <TextView
+                android:id="@+id/tvFishCount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cantidad de peces"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:layout_marginTop="16dp"/>
+
+            <EditText
+                android:id="@+id/etFishCount"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/colorBackground"
+                android:hint="Ej: 100"
+                android:textSize="16sp"
+                android:padding="10dp"
+                android:layout_marginTop="8dp"/>
+
+            <!-- Campo 5: Tiempo de crecimiento -->
+            <TextView
+                android:id="@+id/tvGrowthTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Edad del pez"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:layout_marginTop="16dp"/>
+
+            <EditText
+                android:id="@+id/etGrowthTime"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/colorBackground"
+                android:hint="Ej: 3 meses"
+                android:textSize="16sp"
+                android:padding="10dp"
+                android:layout_marginTop="8dp"/>
+
+            <!-- Campo 6: Dimensiones del módulo -->
+            <TextView
+                android:id="@+id/tvVolumeUnit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Dimensiones del módulo"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:layout_marginTop="16dp"/>
+
+            <EditText
+                android:id="@+id/etVolumeUnit"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/colorBackground"
+                android:hint="Ej: 2m x 1m x 1m"
+                android:textSize="16sp"
+                android:padding="10dp"
+                android:layout_marginTop="8dp"/>
+
+            <!-- Botón Guardar -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnRegisterModulo"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:elevation="4dp"
+                android:text="Guardar Módulo"
+                android:textColor="@color/white"
+                android:textStyle="bold"/>
+
+            <!-- Botón Cancelar -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCancelar"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="@color/colorAccent"
+                android:elevation="4dp"
+                android:text="Cancelar"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:layout_marginBottom="24dp"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Barra de navegación inferior -->
+    <LinearLayout
+        android:id="@+id/bottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="85dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:elevation="6dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="10dp">
+
+        <!-- Botón Granjas -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/navHome"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:scaleType="centerInside"
+                android:background="@color/white"
+                android:src="@drawable/icgranja"
+                android:contentDescription="Ir a Inicio"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Granjas"
+                android:textSize="10sp"
+                android:textColor="@color/colorDivider"/>
+        </LinearLayout>
+
+        <!-- Botón Usuarios -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/navSettings"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:scaleType="centerInside"
+                android:background="@color/white"
+                android:src="@drawable/icusersmonit"
+                android:contentDescription="Configuración"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Usuarios"
+                android:textSize="10sp"
+                android:textColor="@color/colorDivider"/>
+        </LinearLayout>
+
+        <!-- Botón Soporte -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/navProfile"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@color/white"
+                android:scaleType="centerInside"
+                android:src="@drawable/icsoporte"
+                android:contentDescription="Perfil"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Soporte"
+                android:textSize="10sp"
+                android:textColor="@color/colorDivider"/>
+        </LinearLayout>
+
+        <!-- Botón Cerrar sesión -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/navCloseSesion"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@color/white"
+                android:scaleType="centerInside"
+                android:src="@drawable/iccerrarsesion"
+                android:contentDescription="Cerrar sesión"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cerrar sesión"
+                android:textSize="10sp"
+                android:textColor="@color/colorDivider"/>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
