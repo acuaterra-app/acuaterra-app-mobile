@@ -18,6 +18,15 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".views.modules.RegisterModule"
+            android:exported="false" />
+        <activity
+            android:name=".views.modules.ModulesListHome"
+            android:exported="false" />
+        <activity
+            android:name=".views.modules.ModulosListHome"
+            android:exported="false" />
+        <activity
             android:name=".views.menu.ClosesectionActivity"
             android:exported="false" />
         <activity
