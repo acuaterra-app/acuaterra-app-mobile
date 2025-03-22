@@ -4,17 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/background2"
-    android:padding="1dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/backgroundfarms"
+    android:paddingBottom="0dp"
     tools:context=".views.farms.farm.FarmDetailsActivity">
 
     <!-- Contenedor principal -->
     <ScrollView
         android:layout_width="match_parent"
-        android:padding="26dp"
-        android:layout_height="match_parent"
-        android:layout_above="@id/bottomNav">
+        android:padding="50dp"
+        android:layout_height="wrap_content"
+
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -160,36 +161,36 @@
         android:layout_width="550dp"
         android:layout_height="85dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="50dp"
-        android:background="@color/colorBackground"
+        android:layout_marginBottom="90dp"
+        android:background="@color/white"
         android:elevation="6dp"
-        android:orientation="horizontal"
         android:gravity="center"
+        android:orientation="horizontal"
         android:padding="10dp">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@color/white"
             android:gravity="center"
-            android:background="@color/colorBackground"
             android:orientation="vertical">
 
             <ImageButton
                 android:id="@+id/navHome"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/icgranja"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@color/white"
                 android:contentDescription="Ir a Inicio"
-                />
+                android:scaleType="centerInside"
+                android:src="@drawable/icgranja" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Granjas"
-                android:textSize="10sp"
-                android:textColor="@color/colorDivider"/>
+                android:textColor="@color/colorDivider"
+                android:textSize="10sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -201,19 +202,19 @@
 
             <ImageButton
                 android:id="@+id/navSettings"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/icusersmonit"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@color/white"
                 android:contentDescription="Configuración"
-                />
+                android:scaleType="centerInside"
+                android:src="@drawable/icusersmonit" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Usuarios"
-                android:textSize="10sp"
-                android:textColor="@color/colorDivider"/>
+                android:textColor="@color/colorDivider"
+                android:textSize="10sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -225,18 +226,19 @@
 
             <ImageButton
                 android:id="@+id/navProfile"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/icsoporte"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@color/white"
                 android:contentDescription="Perfil"
-                />
+                android:scaleType="centerInside"
+                android:src="@drawable/icsoporte" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Soporte"
-                android:textSize="10sp"
-                android:textColor="@color/colorDivider"/>
+                android:textColor="@color/colorDivider"
+                android:textSize="10sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -248,18 +250,19 @@
 
             <ImageButton
                 android:id="@+id/navCloseSesion"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/iccerrarsesion"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@color/white"
                 android:contentDescription="Cerrar sesión"
-                />
+                android:scaleType="centerInside"
+                android:src="@drawable/iccerrarsesion" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Cerrar sesión"
-                android:textSize="10sp"
-                android:textColor="@color/colorDivider"/>
+                android:textColor="@color/colorDivider"
+                android:textSize="10sp" />
         </LinearLayout>
 
     </LinearLayout>
