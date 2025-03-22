@@ -79,12 +79,12 @@
                 android:padding="10dp"
                 android:layout_marginTop="8dp"/>
 
-            <!-- Campo 3: Tipo de pez -->
+            <!-- Campo 3: Latitud -->
             <TextView
                 android:id="@+id/tvFishType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Tipo de pez"
+                android:text="Latitud"
                 android:textSize="16sp"
                 android:textColor="@android:color/black"
                 android:layout_marginTop="16dp"/>
@@ -94,17 +94,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@color/colorBackground"
-                android:hint="Ej: Tilapia"
+                android:hint="Ej: 20m"
                 android:textSize="16sp"
                 android:padding="10dp"
                 android:layout_marginTop="8dp"/>
 
-            <!-- Campo 4: Cantidad de peces -->
+            <!-- Campo 4: Longitud -->
             <TextView
                 android:id="@+id/tvFishCount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Cantidad de peces"
+                android:text="Longitud"
                 android:textSize="16sp"
                 android:textColor="@android:color/black"
                 android:layout_marginTop="16dp"/>
@@ -114,17 +114,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@color/colorBackground"
-                android:hint="Ej: 100"
+                android:hint="Ej: 100m"
                 android:textSize="16sp"
                 android:padding="10dp"
                 android:layout_marginTop="8dp"/>
 
-            <!-- Campo 5: Tiempo de crecimiento -->
+            <!-- Campo 5: Especie de pez -->
             <TextView
                 android:id="@+id/tvGrowthTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Edad del pez"
+                android:text="Especie de pez"
                 android:textSize="16sp"
                 android:textColor="@android:color/black"
                 android:layout_marginTop="16dp"/>
@@ -134,12 +134,52 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@color/colorBackground"
-                android:hint="Ej: 3 meses"
+                android:hint="Ej: Tilapia"
                 android:textSize="16sp"
                 android:padding="10dp"
                 android:layout_marginTop="8dp"/>
 
-            <!-- Campo 6: Dimensiones del módulo -->
+            <!-- Campo 6: Cantidad de pez -->
+            <TextView
+                android:id="@+id/tvFishQuantity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cantidad de peces"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:layout_marginTop="16dp"/>
+
+            <EditText
+                android:id="@+id/etFishQuantity"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/colorBackground"
+                android:hint="Ej: 50"
+                android:textSize="16sp"
+                android:padding="10dp"
+                android:layout_marginTop="8dp"/>
+
+            <!-- Campo 7: Edad de pez -->
+            <TextView
+                android:id="@+id/tvFishAge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Edad de pez"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:layout_marginTop="16dp"/>
+
+            <EditText
+                android:id="@+id/etFishAge"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/colorBackground"
+                android:hint="Ej: 6 meses"
+                android:textSize="16sp"
+                android:padding="10dp"
+                android:layout_marginTop="8dp"/>
+
+            <!-- Campo 8: Dimensiones del módulo -->
             <TextView
                 android:id="@+id/tvVolumeUnit"
                 android:layout_width="match_parent"
