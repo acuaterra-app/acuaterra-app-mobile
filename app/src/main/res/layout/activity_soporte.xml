@@ -1,93 +1,192 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@color/white"
-    android:padding="16dp">
+    android:background="@drawable/backgroundfarms"
+    android:layout_marginTop="0dp"
+    android:padding="0dp"
+    >
 
-
-    <!-- Sección de Contacto -->
+    <!-- Contact Section -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
-        android:background="@color/white"
-        android:padding="32dp"
-        android:layout_marginTop="20dp">
+        android:padding="16dp"
+        android:layout_marginTop="50dp">
 
-        <!-- Imagen de soporte -->
+        <!-- Support Image -->
         <ImageView
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:src="@drawable/icsoportetec"
-            android:contentDescription="Soporte" />
+            android:contentDescription="Support"
+            android:layout_marginBottom="16dp"/>
 
-        <!-- Texto "Contactar Soporte" -->
+        <!-- "Contact Support" Text -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="CONTACTAR SOPORTE"
-            android:textSize="18sp"
+            android:text="SOPORTE TECNICO"
+            android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="@android:color/black"
-            android:layout_marginTop="8dp"/>
+            android:textColor="@color/colorPrimary"
+            android:layout_marginBottom="24dp"/>
     </LinearLayout>
 
-    <!-- Botones de Acción -->
+    <!-- Action Buttons -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
-        android:background="@color/white"
-        android:layout_marginTop="20dp">
+        android:paddingHorizontal="16dp">
 
-        <!-- Botón Abrir WhatsApp -->
-
-        <!-- Espaciado entre botones -->
+        <!-- Open WhatsApp Button -->
         <Button
             android:id="@+id/btnWhatsApp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:backgroundTint="@color/colorPrimary"
-            android:padding="15dp"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/colorAccent"
+            android:paddingVertical="16dp"
             android:text="Abrir WhatsApp"
             android:textColor="@android:color/white"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+        android:drawablePadding="8dp"
+        android:gravity="center"/>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="12dp" />
-
-
-        <!-- Botón Enviar Correo -->
+        <!-- Send Email Button -->
         <Button
             android:id="@+id/btnEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Enviar correo electrónico"
+            android:text="Enviar Email"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:padding="12dp"
+            android:paddingVertical="16dp"
             android:backgroundTint="@color/colorPrimary"
             android:textColor="@android:color/white"
-            android:layout_marginTop="10dp"/>
-
+        android:drawablePadding="8dp"
+        android:gravity="center"/>
     </LinearLayout>
 
 
-    <!-- Pie de página -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ACUA TERRA © 2025"
-        android:textSize="12sp"
-        android:textColor="@android:color/darker_gray"
-        android:layout_gravity="center"
-        android:layout_marginTop="350dp"/>
 
+    <!-- Bottom Navigation Bar -->
+    <LinearLayout
+        android:id="@+id/bottomNav"
+        android:layout_width="410dp"
+        android:layout_height="85dp"
+        android:layout_marginTop="300dp"
+        android:background="@color/white"
+        android:elevation="6dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <!-- Home Button -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/navHome"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@color/white"
+                android:contentDescription="Go to Home"
+                android:scaleType="centerInside"
+                android:src="@drawable/icgranja" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Farms"
+                android:textColor="@color/colorDivider"
+                android:textSize="10sp" />
+        </LinearLayout>
+
+        <!-- Users Button -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/navSettings"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@color/white"
+                android:contentDescription="Settings"
+                android:scaleType="centerInside"
+                android:src="@drawable/icusersmonit" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Users"
+                android:textColor="@color/colorDivider"
+                android:textSize="10sp" />
+        </LinearLayout>
+
+        <!-- Support Button -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/navProfile"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@color/white"
+                android:contentDescription="Profile"
+                android:scaleType="centerInside"
+                android:src="@drawable/icsoporte" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Support"
+                android:textColor="@color/colorDivider"
+                android:textSize="10sp" />
+        </LinearLayout>
+
+        <!-- Logout Button -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/navCloseSesion"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@color/white"
+                android:contentDescription="Logout"
+                android:scaleType="centerInside"
+                android:src="@drawable/iccerrarsesion" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Logout"
+                android:textColor="@color/colorDivider"
+                android:textSize="10sp" />
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>
