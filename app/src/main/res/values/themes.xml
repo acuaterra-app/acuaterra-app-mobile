@@ -4,6 +4,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>  <!-- Fuerza pantalla completa -->
+        <item name="android:imageButtonStyle">@null</item>
     </style>
 
     <style name="Theme.MonitoreoAcua" parent="Base.Theme.MonitoreoAcua" />

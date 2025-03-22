@@ -2,6 +2,7 @@ package com.example.monitoreoacua.views.farms.farm;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,11 +14,13 @@ import com.example.monitoreoacua.business.models.Farm;
 import com.example.monitoreoacua.views.menu.ClosesectionActivity;
 import com.example.monitoreoacua.views.menu.SupportActivity;
 import com.example.monitoreoacua.views.farms.ListFarmsActivity;
+import com.example.monitoreoacua.views.modules.ModulesListHome;
 
 public class FarmDetailsActivity extends AppCompatActivity {
 
     private TextView textViewFarmName, textViewFarmAddress;
-    private Button buttonMonitors, buttonModules;
+    // private Button buttonMonitors, buttonModules;
+    private Button buttonModules;
     // Declaration of navigation bar elements
     private AppCompatImageButton navHome, navSettings, navProfile, navCloseSesion;
 
@@ -29,7 +32,6 @@ public class FarmDetailsActivity extends AppCompatActivity {
         // Initialize views
         textViewFarmName = findViewById(R.id.textViewFarmName);
         textViewFarmAddress = findViewById(R.id.textViewFarmAddress);
-        //buttonMonitors = findViewById(R.id.buttonMonitors);
         buttonModules = findViewById(R.id.buttonModules);
 
         // Initialize navigation bar elements
@@ -37,6 +39,12 @@ public class FarmDetailsActivity extends AppCompatActivity {
         // navSettings = findViewById(R.id.navSettings);
         navProfile = findViewById(R.id.navProfile);
         navCloseSesion = findViewById(R.id.navCloseSesion);
+
+        // Configure button modules
+        buttonModules.setOnClickListener(v -> {
+                Intent intent = new Intent(FarmDetailsActivity.this, ModulesListHome.class);
+                startActivity(intent);
+        });
 
         // Events for the navigation bar
         navHome.setOnClickListener(v -> {
@@ -65,16 +73,12 @@ public class FarmDetailsActivity extends AppCompatActivity {
         }
 
         // Monitors Button (add the necessary logic)
+        /* 
         buttonMonitors.setOnClickListener(v -> {
             Toast.makeText(this, "Abrir Monitores", Toast.LENGTH_SHORT).show();
 
         });
-
-        // Modules Button (add the necessary logic)
-        buttonModules.setOnClickListener(v -> {
-            Toast.makeText(this, "Abrir Módulos", Toast.LENGTH_SHORT).show();
-            // Here you can start another activity if necessary
-        });
+        */
     }
 
 
