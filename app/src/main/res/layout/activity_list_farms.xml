@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background1"
+    android:background="@drawable/backgroundapp"
     android:padding="1dp">
 
     <LinearLayout
@@ -84,7 +84,7 @@
         android:layout_height="85dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="50dp"
-        android:background="@color/colorBackground"
+        android:background="@color/white"
         android:elevation="6dp"
         android:orientation="horizontal"
         android:gravity="center"
@@ -95,14 +95,14 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:background="@color/colorBackground"
             android:orientation="vertical">
 
             <ImageButton
                 android:id="@+id/navHome"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:scaleType="centerInside"
+                android:background="@color/white"
                 android:src="@drawable/icgranja"
                 android:contentDescription="Ir a Inicio"
                 />
@@ -124,9 +124,10 @@
 
             <ImageButton
                 android:id="@+id/navSettings"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:scaleType="centerInside"
+                android:background="@color/white"
                 android:src="@drawable/icusersmonit"
                 android:contentDescription="Configuración"
                 />
@@ -148,8 +149,9 @@
 
             <ImageButton
                 android:id="@+id/navProfile"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@color/white"
                 android:scaleType="centerInside"
                 android:src="@drawable/icsoporte"
                 android:contentDescription="Perfil"
@@ -171,8 +173,9 @@
 
             <ImageButton
                 android:id="@+id/navCloseSesion"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@color/white"
                 android:scaleType="centerInside"
                 android:src="@drawable/iccerrarsesion"
                 android:contentDescription="Cerrar sesión"
