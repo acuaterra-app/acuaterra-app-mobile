@@ -1,20 +1,25 @@
 package com.example.monitoreoacua.views.farms.farm;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import androidx.appcompat.widget.AppCompatImageButton;//de la nav
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.monitoreoacua.R;
 import com.example.monitoreoacua.business.models.Farm;
+import com.example.monitoreoacua.views.menu.ClosesectionActivity;
+import com.example.monitoreoacua.views.menu.SupportActivity;
+import com.example.monitoreoacua.views.farms.ListFarmsActivity;
 
 public class FarmDetailsActivity extends AppCompatActivity {
 
     private TextView textViewFarmName, textViewFarmAddress;
     private Button buttonMonitors, buttonModules;
+    // Declaration of navigation bar elements
+    private AppCompatImageButton navHome, navSettings, navProfile, navCloseSesion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,8 +29,29 @@ public class FarmDetailsActivity extends AppCompatActivity {
         // Initialize views
         textViewFarmName = findViewById(R.id.textViewFarmName);
         textViewFarmAddress = findViewById(R.id.textViewFarmAddress);
-        buttonMonitors = findViewById(R.id.buttonMonitors);
+        //buttonMonitors = findViewById(R.id.buttonMonitors);
         buttonModules = findViewById(R.id.buttonModules);
+
+        // Initialize navigation bar elements
+        navHome = findViewById(R.id.navHome);
+        // navSettings = findViewById(R.id.navSettings);
+        navProfile = findViewById(R.id.navProfile);
+        navCloseSesion = findViewById(R.id.navCloseSesion);
+
+        // Events for the navigation bar
+        navHome.setOnClickListener(v -> {
+            Intent intent = new Intent(FarmDetailsActivity.this, ListFarmsActivity.class);
+            startActivity(intent);
+        });
+
+        navProfile.setOnClickListener(v -> {
+            Intent intent = new Intent(FarmDetailsActivity.this, SupportActivity.class);
+            startActivity(intent);
+        });
+        navCloseSesion.setOnClickListener(v -> {
+            Intent intent = new Intent(FarmDetailsActivity.this, ClosesectionActivity.class);
+            startActivity(intent);
+        });
 
         // Receive the farm from the Intent
         Farm farm = getIntent().getParcelableExtra("farm");
@@ -50,4 +76,6 @@ public class FarmDetailsActivity extends AppCompatActivity {
             // Here you can start another activity if necessary
         });
     }
+
+
 }

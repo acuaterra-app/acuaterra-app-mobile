@@ -23,7 +23,8 @@ import com.example.monitoreoacua.service.ApiClient;
 import com.example.monitoreoacua.service.ApiFarmsService;
 import com.example.monitoreoacua.service.request.ListFarmsRequest;
 import com.example.monitoreoacua.service.response.ListFarmResponse;
-import com.example.monitoreoacua.views.SupportActivity;
+import com.example.monitoreoacua.views.menu.ClosesectionActivity;
+import com.example.monitoreoacua.views.menu.SupportActivity;
 import com.example.monitoreoacua.views.farms.farm.FarmDetailsActivity;
 
 import java.util.ArrayList;
@@ -64,7 +65,7 @@ public class ListFarmsActivity extends AppCompatActivity {
         navHome = findViewById(R.id.navHome);
         // navSettings = findViewById(R.id.navSettings);
         navProfile = findViewById(R.id.navProfile);
-        //navCloseSesion = findViewById(R.id.navCloseSesion);
+        navCloseSesion = findViewById(R.id.navCloseSesion);
 
         // RecyclerView setup
         recyclerViewFarms.setLayoutManager(new LinearLayoutManager(this));
@@ -106,6 +107,11 @@ public class ListFarmsActivity extends AppCompatActivity {
 
         navProfile.setOnClickListener(v -> {
             Intent intent = new Intent(ListFarmsActivity.this, SupportActivity.class);
+            startActivity(intent);
+        });
+
+        navCloseSesion.setOnClickListener(v -> {
+            Intent intent = new Intent(ListFarmsActivity.this, ClosesectionActivity.class);
             startActivity(intent);
         });
     }

@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingEnd="30dp"
-
     android:orientation="horizontal"
     android:background="@drawable/backgroundapp"
     android:padding="0dp">

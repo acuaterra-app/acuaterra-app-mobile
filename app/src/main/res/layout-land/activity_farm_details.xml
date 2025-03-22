@@ -247,30 +247,30 @@
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/buttonMonitors"
-                        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:backgroundTint="@color/colorAccent"
-                        android:text="Monitores"
-                        android:textColor="@color/white"
-                        android:textSize="18sp" />
+                    <!--                    <com.google.android.material.button.MaterialButton
+                                            android:id="@+id/buttonMonitors"
+                                            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="16dp"
+                                            android:backgroundTint="@color/colorAccent"
+                                            android:text="Monitores"
+                                            android:textColor="@color/white"
+                                            android:textSize="18sp" />  -->
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/buttonModules"
-                        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:backgroundTint="@color/colorAccent"
-                        android:text="Módulos"
-                        android:textColor="@color/white"
-                        android:textSize="18sp" />
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
+                                        <com.google.android.material.button.MaterialButton
+                                            android:id="@+id/buttonModules"
+                                            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="8dp"
+                                            android:backgroundTint="@color/colorAccent"
+                                            android:text="Módulos"
+                                            android:textColor="@color/white"
+                                            android:textSize="18sp" />
+                                    </LinearLayout>
+                                </LinearLayout>
+                            </LinearLayout>
 
 
-</RelativeLayout>
+                    </RelativeLayout>

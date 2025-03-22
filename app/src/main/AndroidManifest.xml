@@ -18,6 +18,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".views.menu.ClosesectionActivity"
+            android:exported="false" />
+        <activity
             android:name=".views.farms.farm.FarmDetailsActivity"
             android:exported="false" />
         <activity
@@ -27,7 +30,7 @@
             android:name=".views.farms.MenuFarmsActivity"
             android:exported="false" />
         <activity
-            android:name=".views.SupportActivity"
+            android:name=".views.menu.SupportActivity"
             android:exported="false" />
         <activity
             android:name=".views.pruebas.PruebaBitacora"

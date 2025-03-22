@@ -1,4 +1,4 @@
-package com.example.monitoreoacua.views;
+package com.example.monitoreoacua.views.menu;
 
 import android.content.Intent;
 import android.net.Uri;
