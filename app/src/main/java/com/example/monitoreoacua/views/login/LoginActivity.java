@@ -193,7 +193,7 @@ public class LoginActivity extends AppCompatActivity {
                 boolean canShowRationale = ActivityCompat.shouldShowRequestPermissionRationale(
                         this, Manifest.permission.POST_NOTIFICATIONS);
                 
-                if ((!askedBefore || forceRequest) && canShowRationale) {
+                if (!askedBefore || (forceRequest && canShowRationale)) {
                     // First time asking or user hasn't permanently denied, save that we've asked
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putBoolean("notification_permission_asked", true);
@@ -204,7 +204,7 @@ public class LoginActivity extends AppCompatActivity {
                     ActivityCompat.requestPermissions(this, 
                             new String[]{Manifest.permission.POST_NOTIFICATIONS}, 
                             NOTIFICATION_PERMISSION_CODE);
-                } else if (!canShowRationale && forceRequest) {
+                } else if (forceRequest && !canShowRationale) {
                     // User has permanently denied permission, direct to app settings
                     openAppSettings();
                 } else {
@@ -218,6 +218,24 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             Log.d(TAG, "Notification permission not needed for this Android version");
             txtNotificationsPermissions.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        
+        if (requestCode == NOTIFICATION_PERMISSION_CODE) {
+            // Verifica si el permiso fue concedido o no
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permiso concedido
+                Log.d(TAG, "Notification permission granted");
+                txtNotificationsPermissions.setVisibility(View.GONE);
+            } else {
+                // Permiso denegado, muestra el mensaje inmediatamente
+                Log.d(TAG, "Notification permission denied");
+                showPermissionMessage();
+            }
         }
     }
 
