@@ -1,4 +1,4 @@
-package com.example.monitoreoacua.views.modules;
+package com.example.monitoreoacua.views.farms.farm.modules;
 
 import android.content.Intent;
 import android.os.Bundle;

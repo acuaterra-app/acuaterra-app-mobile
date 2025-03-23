@@ -1,4 +1,4 @@
-package com.example.monitoreoacua.views.modules;
+package com.example.monitoreoacua.views.farms.farm.modules;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,7 +15,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.monitoreoacua.R;
 import com.example.monitoreoacua.views.farms.ListFarmsActivity;
-import com.example.monitoreoacua.views.farms.farm.FarmDetailsActivity;
 import com.example.monitoreoacua.views.menu.ClosesectionActivity;
 import com.example.monitoreoacua.views.menu.SupportActivity;
 

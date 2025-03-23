@@ -8,7 +8,7 @@
     android:background="@drawable/background4"
     android:padding="0dp"
 
-    tools:context=".views.modules.ModulesListHome">
+    tools:context=".views.farms.farm.modules.ModulesListHome">
 
     <!-- Título -->
     <TextView

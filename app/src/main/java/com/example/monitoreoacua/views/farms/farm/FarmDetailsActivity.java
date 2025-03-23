@@ -2,7 +2,6 @@ package com.example.monitoreoacua.views.farms.farm;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,7 +13,7 @@ import com.example.monitoreoacua.business.models.Farm;
 import com.example.monitoreoacua.views.menu.ClosesectionActivity;
 import com.example.monitoreoacua.views.menu.SupportActivity;
 import com.example.monitoreoacua.views.farms.ListFarmsActivity;
-import com.example.monitoreoacua.views.modules.ModulesListHome;
+import com.example.monitoreoacua.views.farms.farm.modules.ModulesListHome;
 
 public class FarmDetailsActivity extends AppCompatActivity {
 
