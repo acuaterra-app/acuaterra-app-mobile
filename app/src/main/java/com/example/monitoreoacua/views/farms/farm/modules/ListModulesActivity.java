@@ -45,7 +45,6 @@ public class ListModulesActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private ModuleAdapter moduleAdapter;
-    private ProgressBar progressBar;
     private TextView textViewModules;
     private List<Module> modulesList = new ArrayList<>();
 
@@ -120,8 +119,8 @@ public class ListModulesActivity extends AppCompatActivity {
     private void loadModules(int farmId) {
         ApiModulesService apiModulesService = ApiClient.getClient().create(ApiModulesService.class);
         ListModulesRequest  listModulesRequest = new ListModulesRequest();
-
-        apiModulesService.getModules(farmId, listModulesRequest.getAuthToken()).enqueue(new Callback<ListModuleResponse>() {
+        String authToken = listModulesRequest.getAuthToken();
+        apiModulesService.getModules(farmId, authToken).enqueue(new Callback<ListModuleResponse>() {
             @Override
             public void onResponse(@NonNull Call<ListModuleResponse> call, @NonNull Response<ListModuleResponse> response) {
                 Log.d("API_RESPONSE", "On response: " + response);
@@ -144,7 +143,6 @@ public class ListModulesActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<ListModuleResponse> call, @NonNull Throwable t) {
-                progressBar.setVisibility(View.GONE);
                 Toast.makeText(ListModulesActivity.this, "Error de conexión: " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                 Log.e("API_ERROR", t.getMessage());
             }

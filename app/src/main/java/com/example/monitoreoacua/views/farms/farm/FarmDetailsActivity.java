@@ -53,8 +53,10 @@ public class FarmDetailsActivity extends AppCompatActivity {
         // Configure button modules
         buttonModules.setOnClickListener(v -> {
                 Intent intent = new Intent(FarmDetailsActivity.this, ListModulesActivity.class);
-                intent.putExtra("farmId", farm.getId());  // Pasar solo el ID de la granja
+                intent.putExtra("farmId", farm.getId());
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                finish();
         });
 
         // Events for the navigation bar
