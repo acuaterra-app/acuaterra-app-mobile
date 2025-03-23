@@ -23,6 +23,7 @@ import com.example.monitoreoacua.service.ApiClient;
 import com.example.monitoreoacua.service.ApiFarmsService;
 import com.example.monitoreoacua.service.request.ListFarmsRequest;
 import com.example.monitoreoacua.service.response.ListFarmResponse;
+import com.example.monitoreoacua.views.farms.farm.modules.ListModulesActivity;
 import com.example.monitoreoacua.views.menu.ClosesectionActivity;
 import com.example.monitoreoacua.views.menu.SupportActivity;
 import com.example.monitoreoacua.views.farms.farm.FarmDetailsActivity;
@@ -81,6 +82,12 @@ public class ListFarmsActivity extends AppCompatActivity {
             intent.putExtra("farm", farm);
             startActivity(intent);
         });
+
+        //farmAdapter.setOnFarmClickListener(farm -> {
+        //    Intent intent = new Intent(ListFarmsActivity.this, ListModulesActivity.class);
+        //    intent.putExtra("FARM_ID", farm.getId());  // Pasar solo el ID de la granja
+        //    startActivity(intent);
+        //});
 
         // Listener for the search bar
         editTextSearchFarm.addTextChangedListener(new TextWatcher() {

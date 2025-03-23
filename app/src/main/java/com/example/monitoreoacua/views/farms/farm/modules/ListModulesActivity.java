@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
@@ -51,7 +52,7 @@ public class ListModulesActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_modules_list_home);
+        setContentView(R.layout.activity_modules_list);
 
         Log.d("ModulesListHome", "Activity started");
         Toast.makeText(this, "Bienvenido a Módulos", Toast.LENGTH_SHORT).show();
@@ -111,26 +112,34 @@ public class ListModulesActivity extends AppCompatActivity {
      * @param farmId The ID of the farm to load modules for.
      */
     private void loadModules(int farmId) {
-        progressBar.setVisibility(View.VISIBLE);
         String token = "Bearer " + new ListModulesRequest().getAuthToken();
+
         apiModulesService.getModules(farmId, token).enqueue(new Callback<ListModuleResponse>() {
             @Override
-            public void onResponse(Call<ListModuleResponse> call, Response<ListModuleResponse> response) {
+            public void onResponse(@NonNull Call<ListModuleResponse> call, @NonNull Response<ListModuleResponse> response) {
+                Log.d("API_RESPONSE", "On response: " + response);
                 progressBar.setVisibility(View.GONE);
+
                 if (response.isSuccessful() && response.body() != null) {
                     List<Module> modules = response.body().getAllModules();
-                    moduleAdapter.setModuleList(modules);
+
+                    if (modules != null && !modules.isEmpty()) {
+                        moduleAdapter.setModuleList(modules);
+                    } else {
+                        Toast.makeText(ListModulesActivity.this, "No se encontraron módulos", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    Toast.makeText(ListModulesActivity.this, "Error al cargar los módulos", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ListModulesActivity.this, "Error en la respuesta del servidor", Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<ListModuleResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<ListModuleResponse> call, @NonNull Throwable t) {
                 progressBar.setVisibility(View.GONE);
-                Toast.makeText(ListModulesActivity.this, "Error de conexión", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ListModulesActivity.this, "Error de conexión: " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                 Log.e("API_ERROR", t.getMessage());
             }
         });
     }
+
 }
