@@ -24,12 +24,14 @@ import com.example.monitoreoacua.R;
 import com.example.monitoreoacua.business.models.Module;
 import com.example.monitoreoacua.service.ApiClient;
 import com.example.monitoreoacua.service.ApiModulesService;
+import com.example.monitoreoacua.service.request.ListFarmsRequest;
 import com.example.monitoreoacua.service.request.ListModulesRequest;
 import com.example.monitoreoacua.service.response.ListModuleResponse;
 import com.example.monitoreoacua.views.farms.ListFarmsActivity;
 import com.example.monitoreoacua.views.menu.ClosesectionActivity;
 import com.example.monitoreoacua.views.menu.SupportActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -69,10 +71,9 @@ public class ListModulesActivity extends AppCompatActivity {
         moduleAdapter = new ModuleAdapter();
         recyclerView.setAdapter(moduleAdapter);
 
-        ApiModulesService apiModulesService = ApiClient.getClient().create(ApiModulesService.class);
-
         // Get farm ID and load modules
-        int farmId = getIntent().getIntExtra("FARM_ID", -1);
+        int farmId = getIntent().getIntExtra("farmId", -1);
+        Toast.makeText(this, "Id Farm: " + farmId, Toast.LENGTH_SHORT).show();
         if (farmId != -1) {
             loadModules(farmId);
         } else {
@@ -112,9 +113,10 @@ public class ListModulesActivity extends AppCompatActivity {
      * @param farmId The ID of the farm to load modules for.
      */
     private void loadModules(int farmId) {
-        String token = "Bearer " + new ListModulesRequest().getAuthToken();
+        ApiModulesService apiModulesService = ApiClient.getClient().create(ApiModulesService.class);
+        ListModulesRequest  listModulesRequest = new ListModulesRequest();
 
-        apiModulesService.getModules(farmId, token).enqueue(new Callback<ListModuleResponse>() {
+        apiModulesService.getModules(farmId, listModulesRequest.getAuthToken()).enqueue(new Callback<ListModuleResponse>() {
             @Override
             public void onResponse(@NonNull Call<ListModuleResponse> call, @NonNull Response<ListModuleResponse> response) {
                 Log.d("API_RESPONSE", "On response: " + response);

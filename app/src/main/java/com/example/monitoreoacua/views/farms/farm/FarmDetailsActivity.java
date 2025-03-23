@@ -39,9 +39,21 @@ public class FarmDetailsActivity extends AppCompatActivity {
         navProfile = findViewById(R.id.navProfile);
         navCloseSesion = findViewById(R.id.navCloseSesion);
 
+        // Receive the farm from the Intent
+        Farm farm = getIntent().getParcelableExtra("farm");
+
+        if (farm != null) {
+            textViewFarmName.setText(farm.getName());
+            textViewFarmAddress.setText(farm.getAddress());
+        } else {
+            Toast.makeText(this, "Error: No se recibió información de la granja", Toast.LENGTH_SHORT).show();
+            finish(); // Close the activity if there is no data
+        }
+
         // Configure button modules
         buttonModules.setOnClickListener(v -> {
                 Intent intent = new Intent(FarmDetailsActivity.this, ListModulesActivity.class);
+                intent.putExtra("farmId", farm.getId());  // Pasar solo el ID de la granja
                 startActivity(intent);
         });
 
@@ -60,16 +72,7 @@ public class FarmDetailsActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // Receive the farm from the Intent
-        Farm farm = getIntent().getParcelableExtra("farm");
 
-        if (farm != null) {
-            textViewFarmName.setText(farm.getName());
-            textViewFarmAddress.setText(farm.getAddress());
-        } else {
-            Toast.makeText(this, "Error: No se recibió información de la granja", Toast.LENGTH_SHORT).show();
-            finish(); // Close the activity if there is no data
-        }
 
         // Monitors Button (add the necessary logic)
         /* 

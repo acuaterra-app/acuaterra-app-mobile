@@ -83,12 +83,6 @@ public class ListFarmsActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        //farmAdapter.setOnFarmClickListener(farm -> {
-        //    Intent intent = new Intent(ListFarmsActivity.this, ListModulesActivity.class);
-        //    intent.putExtra("FARM_ID", farm.getId());  // Pasar solo el ID de la granja
-        //    startActivity(intent);
-        //});
-
         // Listener for the search bar
         editTextSearchFarm.addTextChangedListener(new TextWatcher() {
             @Override
