@@ -53,4 +53,8 @@ dependencies {
     // GSON y Retrofit deben ser consistentes
     implementation (libs.okhttp)
     implementation ("com.google.code.gson:gson:2.10.1")
+
+    implementation(platform("com.google.firebase:firebase-bom:33.11.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-messaging")
 }

@@ -20,4 +20,5 @@
     <string name="bienvenido_a_acuaterra1">Bienvenido a AcuaTerra</string>
     <string name="ID">Número de Documentos de Identidad</string>
     <string name="Programa">Nombre del programa</string>
+    <string name="default_notification_channel_id">fcm_default_channel</string>
 </resources>
