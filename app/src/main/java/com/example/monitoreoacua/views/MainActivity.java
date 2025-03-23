@@ -1,85 +1,70 @@
 package com.example.monitoreoacua.views;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.example.monitoreoacua.R;
 import com.example.monitoreoacua.views.login.LoginActivity;
+import com.example.monitoreoacua.views.farms.ListFarmsActivity;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
-    private static final int NOTIFICATION_PERMISSION_CODE = 100;
+    private static final String PREF_NAME = "user_prefs";
+    private static final String TOKEN_KEY = "token";
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Check and request notification permission for Android 13+ (API 33+)
-        checkNotificationPermission();
+        // Start login activity after a delay
         
-        // Use a Handler to delay the transition to RegisterActivity
+        // Use a Handler to delay the transition to next activity
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
-                // Create the intent to navigate to RegisterActivity
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent); // start RegisterActivity
+                // Check if token exists in SharedPreferences
+                Log.d(TAG, "Checking for authentication token...");
+                Intent intent;
+                try {
+                    SharedPreferences sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+                    String token = sharedPreferences.getString(TOKEN_KEY, null);
+                    
+                    // Log token details (partially masked for security)
+                    if (token != null) {
+                        String maskedToken = token.length() > 10 ? 
+                            token.substring(0, 4) + "..." + token.substring(token.length() - 4) : 
+                            "***";
+                        Log.d(TAG, "Token found: " + maskedToken + " (length: " + token.length() + ")");
+                    } else {
+                        Log.d(TAG, "Token is null");
+                    }
+                    
+                    // If token exists and is valid, redirect to ListFarmsActivity, otherwise to LoginActivity
+                    if (token != null && !token.isEmpty() && token.trim().length() > 0) {
+                        Log.d(TAG, "Valid token found, redirecting to ListFarmsActivity");
+                        intent = new Intent(MainActivity.this, ListFarmsActivity.class);
+                    } else {
+                        Log.d(TAG, "No valid token found, redirecting to LoginActivity");
+                        intent = new Intent(MainActivity.this, LoginActivity.class);
+                    }
+                } catch (Exception e) {
+                    Log.e(TAG, "Error checking token: " + e.getMessage(), e);
+                    // Default to LoginActivity in case of any error
+                    intent = new Intent(MainActivity.this, LoginActivity.class);
+                }
+                
+                startActivity(intent);
                 finish();
             }
-        }, 3000); // delay of 2000 miliseconds
+        }, 3000); // delay of 3000 milliseconds
     }
 
-    /**
-     * Checks if notification permission is required and requests it if needed on Android 13+
-     */
-    private void checkNotificationPermission() {
-        // Only for Android 13 (TIRAMISU) and above
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            // Check if permission is not granted
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) 
-                != PackageManager.PERMISSION_GRANTED) {
-                
-                // Request the permission
-                ActivityCompat.requestPermissions(
-                    this,
-                    new String[]{Manifest.permission.POST_NOTIFICATIONS},
-                    NOTIFICATION_PERMISSION_CODE
-                );
-                Log.d(TAG, "Requesting notification permission for Android 13+");
-            } else {
-                Log.d(TAG, "Notification permission already granted");
-            }
-        } else {
-            Log.d(TAG, "Notification permission not required for this Android version");
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        
-        if (requestCode == NOTIFICATION_PERMISSION_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Log.d(TAG, "Notification permission granted");
-                Toast.makeText(this, "Permiso de notificaciones concedido", Toast.LENGTH_SHORT).show();
-            } else {
-                Log.d(TAG, "Notification permission denied");
-                Toast.makeText(this, "Las notificaciones están desactivadas", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
 }

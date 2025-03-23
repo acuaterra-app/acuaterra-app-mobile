@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.monitoreoacua.R;
 import com.example.monitoreoacua.business.models.Farm;
-import com.example.monitoreoacua.views.menu.ClosesectionActivity;
+import com.example.monitoreoacua.views.menu.CloseSessionActivity;
 import com.example.monitoreoacua.views.menu.SupportActivity;
 import com.example.monitoreoacua.views.farms.ListFarmsActivity;
 import com.example.monitoreoacua.views.farms.farm.modules.ListModulesActivity;
@@ -56,7 +56,7 @@ public class FarmDetailsActivity extends AppCompatActivity {
             startActivity(intent);
         });
         navCloseSesion.setOnClickListener(v -> {
-            Intent intent = new Intent(FarmDetailsActivity.this, ClosesectionActivity.class);
+            Intent intent = new Intent(FarmDetailsActivity.this, CloseSessionActivity.class);
             startActivity(intent);
         });
 

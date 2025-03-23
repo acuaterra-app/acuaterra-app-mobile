@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/logingbackground"
-    tools:context=".views.menu.ClosesectionActivity">
+    tools:context=".views.menu.CloseSessionActivity">
 
     <!-- Main container to center the content.-->
     <LinearLayout
