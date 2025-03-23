@@ -70,7 +70,7 @@
             android:layout_marginEnd="8dp"/>
 
         <!-- Botón de ordenación con icono -->
-        <ImageButton
+        <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/buttonSortModules"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -127,7 +127,7 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <ImageButton
+            <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/navHome"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
@@ -152,7 +152,7 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <ImageButton
+            <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/navSettings"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
@@ -177,7 +177,7 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <ImageButton
+            <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/navProfile"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
@@ -202,7 +202,7 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <ImageButton
+            <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/navCloseSesion"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
