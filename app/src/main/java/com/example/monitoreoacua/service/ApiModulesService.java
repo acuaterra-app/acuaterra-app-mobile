@@ -17,7 +17,7 @@ public interface ApiModulesService {
 
     @GET("/api/v2/shared/modules/{farm_id}")
     Call<ListModuleResponse> getModules(
-            @Path("farm_id") int farmId,
+            @Path("farmId") int farmId,
             @Header("Authorization") String token
     );
 

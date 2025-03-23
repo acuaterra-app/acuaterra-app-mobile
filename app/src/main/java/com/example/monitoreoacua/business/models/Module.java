@@ -3,7 +3,6 @@ package com.example.monitoreoacua.business.models;
 import com.google.gson.annotations.SerializedName;
 
 public class Module {
-
     @SerializedName("id")
     private int id;
 
@@ -34,6 +33,25 @@ public class Module {
     @SerializedName("id_farm")
     private int idFarm;
 
+    @SerializedName("created_by_user_id")
+    private int createdByUserId;
+
+    @SerializedName("createdAt")
+    private String createdAt;
+
+    @SerializedName("updatedAt")
+    private String updatedAt;
+
+    @SerializedName("deletedAt")
+    private String deletedAt;
+
+    @SerializedName("creator")
+    private User creator;
+
+    @SerializedName("farm")
+    private Farm farm;
+
+    // Getters
     public int getId() { return id; }
     public String getName() { return name; }
     public String getLocation() { return location; }
@@ -44,5 +62,13 @@ public class Module {
     public String getFishAge() { return fishAge; }
     public String getDimensions() { return dimensions; }
     public int getIdFarm() { return idFarm; }
+    public int getCreatedByUserId() { return createdByUserId; }
+    public String getCreatedAt() { return createdAt; }
+    public String getUpdatedAt() { return updatedAt; }
+    public String getDeletedAt() { return deletedAt; }
+    public User getCreator() { return creator; }
+    public Farm getFarm() { return farm; }
+
+
 
 }
