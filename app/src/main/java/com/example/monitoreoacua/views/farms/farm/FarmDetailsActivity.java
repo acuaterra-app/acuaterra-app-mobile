@@ -13,7 +13,7 @@ import com.example.monitoreoacua.business.models.Farm;
 import com.example.monitoreoacua.views.menu.ClosesectionActivity;
 import com.example.monitoreoacua.views.menu.SupportActivity;
 import com.example.monitoreoacua.views.farms.ListFarmsActivity;
-import com.example.monitoreoacua.views.farms.farm.modules.ModulesListHome;
+import com.example.monitoreoacua.views.farms.farm.modules.ListModulesActivity;
 
 public class FarmDetailsActivity extends AppCompatActivity {
 
@@ -41,7 +41,7 @@ public class FarmDetailsActivity extends AppCompatActivity {
 
         // Configure button modules
         buttonModules.setOnClickListener(v -> {
-                Intent intent = new Intent(FarmDetailsActivity.this, ModulesListHome.class);
+                Intent intent = new Intent(FarmDetailsActivity.this, ListModulesActivity.class);
                 startActivity(intent);
         });
 
