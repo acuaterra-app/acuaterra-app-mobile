@@ -3,8 +3,6 @@ package com.example.monitoreoacua.views;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,16 +32,18 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "No valid token found, redirecting to LoginActivity");
                 intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
+                return;
             }
 
             intent = new Intent(MainActivity.this, ListFarmsActivity.class);
             startActivity(intent);
-
+            finish();
         } catch (Exception e) {
             Log.e(TAG, "Error checking token: " + e.getMessage(), e);
 
             intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
+            finish();
         }
     }
 

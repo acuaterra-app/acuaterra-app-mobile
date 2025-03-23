@@ -17,7 +17,7 @@ import android.text.style.StyleSpan;
 import android.graphics.Typeface;
 import android.view.View;
 import android.widget.TextView;
-
+import android.os.Handler;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -61,12 +61,8 @@ public class LoginActivity extends AppCompatActivity {
         txtNotificationsPermissions = findViewById(R.id.txtNotificationsPermissions);
 
         // Check notification permission for Android 13+
-        checkNotificationPermission(false);
+        checkNotificationPermission();
         btnLogin.setOnClickListener(v -> login());
-        
-        txtNotificationsPermissions.setOnClickListener(v -> {
-            checkNotificationPermission(true);
-        });
     }
 
     private void login() {
@@ -91,33 +87,33 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         btnLogin.setEnabled(false);
-        
+
         // Get Firebase token and proceed with login
         FirebaseMessaging.getInstance().getToken()
-            .addOnCompleteListener(new OnCompleteListener<String>() {
-                @Override
-                public void onComplete(@NonNull Task<String> task) {
-                    if (!task.isSuccessful()) {
-                        btnLogin.setEnabled(true);
-                        Toast.makeText(LoginActivity.this, 
-                            "Failed to get device token. Please try again.", 
-                            Toast.LENGTH_SHORT).show();
-                        return;
-                    }
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            btnLogin.setEnabled(true);
+                            Toast.makeText(LoginActivity.this,
+                                    "Failed to get device token. Please try again.",
+                                    Toast.LENGTH_SHORT).show();
+                            return;
+                        }
 
-                    // Get the FCM token
-                    String deviceToken = task.getResult();
-                    
-                    // Proceed with login using the token
-                    proceedWithLogin(email, password, deviceToken);
-                }
-            });
+                        // Get the FCM token
+                        String deviceToken = task.getResult();
+
+                        // Proceed with login using the token
+                        proceedWithLogin(email, password, deviceToken);
+                    }
+                });
     }
-    
+
     private void proceedWithLogin(String email, String password, String deviceToken) {
         ApiUsersService apiUserService = ApiClient.getClient().create(ApiUsersService.class);
         LoginRequest loginRequest = new LoginRequest(email, password, deviceToken);
-        
+
         apiUserService.login(loginRequest).enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(@NonNull Call<LoginResponse> call, @NonNull Response<LoginResponse> response) {
@@ -147,7 +143,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         Intent intent = new Intent(LoginActivity.this, ListFarmsActivity.class);
                         startActivity(intent);
-                        finish();
+                        new Handler().postDelayed(() -> finish(), 100);
                     } catch (Exception e) {
                         Toast.makeText(LoginActivity.this, "Error processing login data", Toast.LENGTH_SHORT).show();
                     }
@@ -174,107 +170,75 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * Checks if notification permission is needed (Android 13+) and requests it if not granted
-     * @param forceRequest if true, will request permission regardless of whether it was asked before
-     */
-    private void checkNotificationPermission(boolean forceRequest) {
+
+    private void checkNotificationPermission() {
         // Check if device is running Android 13 (API 33) or higher
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            // Check if the permission is already granted
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) 
-                    != PackageManager.PERMISSION_GRANTED) {
-                
-                // Check if we should show the permission request
-                SharedPreferences sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE);
-                boolean askedBefore = sharedPreferences.getBoolean("notification_permission_asked", false);
-                
-                // Check if we can show the permission dialog or if we need to direct to settings
-                boolean canShowRationale = ActivityCompat.shouldShowRequestPermissionRationale(
-                        this, Manifest.permission.POST_NOTIFICATIONS);
-                
-                if (!askedBefore || (forceRequest && canShowRationale)) {
-                    // First time asking or user hasn't permanently denied, save that we've asked
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putBoolean("notification_permission_asked", true);
-                    editor.apply();
-                    
-                    Log.d(TAG, "Requesting notification permission for Android 13+");
-                    // Request the permission
-                    ActivityCompat.requestPermissions(this, 
-                            new String[]{Manifest.permission.POST_NOTIFICATIONS}, 
-                            NOTIFICATION_PERMISSION_CODE);
-                } else if (forceRequest && !canShowRationale) {
-                    // User has permanently denied permission, direct to app settings
-                    openAppSettings();
-                } else {
-                    // Already asked before, just show the TextView
-                    showPermissionMessage();
-                }
-            } else {
-                Log.d(TAG, "Notification permission already granted");
-                txtNotificationsPermissions.setVisibility(View.GONE);
-            }
-        } else {
-            Log.d(TAG, "Notification permission not needed for this Android version");
-            txtNotificationsPermissions.setVisibility(View.GONE);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            return;
         }
+        // Check if the permission is already granted
+        if (
+                ContextCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.POST_NOTIFICATIONS
+                ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            return;
+        }
+
+        Log.d(TAG, "Requesting notification permission for Android 13+");
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.POST_NOTIFICATIONS},
+                NOTIFICATION_PERMISSION_CODE);
+
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        
+
         if (requestCode == NOTIFICATION_PERMISSION_CODE) {
-            // Verifica si el permiso fue concedido o no
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permiso concedido
                 Log.d(TAG, "Notification permission granted");
                 txtNotificationsPermissions.setVisibility(View.GONE);
             } else {
-                // Permiso denegado, muestra el mensaje inmediatamente
                 Log.d(TAG, "Notification permission denied");
                 showPermissionMessage();
+                txtNotificationsPermissions.setOnClickListener(v -> {
+                    openAppSettings();
+                });
             }
         }
     }
 
-    /**
-     * Helper method to show the permission message with formatted text
-     */
-    /**
-     * Helper method to show the permission message with formatted text
-     */
     private void showPermissionMessage() {
         txtNotificationsPermissions.setVisibility(View.VISIBLE);
         String baseMessage = "Esta app necesita permisos para un correcto funcionamiento";
         String clickText = " Click para reparar";
-        
-        // Create a SpannableString with the complete message
+
         SpannableString spannableString = new SpannableString(baseMessage + clickText);
-        
-        // Apply white color and bold style to the "Click para reparar" part
+
         spannableString.setSpan(
-            new ForegroundColorSpan(getResources().getColor(R.color.white)),
-            baseMessage.length(), 
-            baseMessage.length() + clickText.length(),
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                new ForegroundColorSpan(getResources().getColor(R.color.white)),
+                baseMessage.length(),
+                baseMessage.length() + clickText.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         );
-        
-        // Apply bold style to the "Click para reparar" part
+
         spannableString.setSpan(
-            new StyleSpan(Typeface.BOLD),
-            baseMessage.length(), 
-            baseMessage.length() + clickText.length(),
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                new StyleSpan(Typeface.BOLD),
+                baseMessage.length(),
+                baseMessage.length() + clickText.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         );
-        
+
         txtNotificationsPermissions.setText(spannableString);
     }
+
     private void openAppSettings() {
         Toast.makeText(this, "Habilite los permisos de notificación en configuración",
                 Toast.LENGTH_LONG).show();
-        
+
         Intent intent = new Intent();
         intent.setAction(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         intent.setData(android.net.Uri.fromParts("package", getPackageName(), null));
