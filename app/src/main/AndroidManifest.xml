@@ -65,6 +65,10 @@
         <activity
             android:name=".views.farms.farm.modules.ListModulesActivity"
             android:exported="false" />
+        <activity
+            android:name=".views.sample.SampleActivity"
+            android:exported="false"
+            android:configChanges="orientation|screenSize" />
         
         <service
             android:name=".firebase.MyFirebaseMessagingService"

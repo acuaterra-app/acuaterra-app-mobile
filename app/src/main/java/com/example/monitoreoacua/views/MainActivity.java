@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.monitoreoacua.R;
 import com.example.monitoreoacua.views.login.LoginActivity;
 import com.example.monitoreoacua.views.farms.ListFarmsActivity;
+import com.example.monitoreoacua.views.sample.SampleActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            intent = new Intent(MainActivity.this, ListFarmsActivity.class);
+            intent = new Intent(MainActivity.this, SampleActivity.class);
             startActivity(intent);
             finish();
         } catch (Exception e) {
