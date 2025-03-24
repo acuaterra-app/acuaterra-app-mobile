@@ -7,7 +7,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.monitoreoacua.views.farms.farm.FarmFormActivity;
-import com.example.monitoreoacua.views.farms.farm.modules.ListModulesActivity;
+import com.example.monitoreoacua.views.farms.farm.modules.ModulesActivity;
 
 import androidx.annotation.NonNull;
 
@@ -190,8 +190,8 @@ public class FarmDetailsActivity extends BaseActivity implements OnFragmentInter
     @Override
     public void onViewFarmModules(Farm farm) {
         // Handle navigation to the farm modules screen
-        // Launch ListModulesActivity with the farmId parameter
-        Intent intent = new Intent(this, ListModulesActivity.class);
+        // Launch ModulesActivity with the farmId parameter
+        Intent intent = new Intent(this, ModulesActivity.class);
         intent.putExtra("farmId", farm.getId());
         startActivity(intent);
     }

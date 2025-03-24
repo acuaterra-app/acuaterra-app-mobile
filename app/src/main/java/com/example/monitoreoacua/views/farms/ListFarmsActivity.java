@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.example.monitoreoacua.views.farms.farm.modules.ModulesActivity;
+
 import androidx.annotation.Nullable;
 
 import com.example.monitoreoacua.business.models.Farm;
@@ -88,6 +90,10 @@ public class ListFarmsActivity extends BaseActivity
     public void onViewFarmModules(Farm farm) {
         // Implementation for viewing farm modules
         Toast.makeText(this, "Ver módulos de: " + farm.getName(), Toast.LENGTH_SHORT).show();
-        // TODO: Navigate to farm modules screen
+        
+        // Navigate to farm modules screen
+        Intent intent = new Intent(this, ModulesActivity.class);
+        intent.putExtra("farmId", String.valueOf(farm.getId()));
+        startActivity(intent);
     }
 }

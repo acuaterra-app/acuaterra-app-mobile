@@ -21,4 +21,9 @@
     <string name="ID">Número de Documentos de Identidad</string>
     <string name="Programa">Nombre del programa</string>
     <string name="default_notification_channel_id">fcm_default_channel</string>
+    <!-- Módulos -->
+    <string name="modules_title">Módulos</string>
+    <string name="no_modules_found">No se encontraron módulos</string>
+    <string name="register_new_module">Registrar nuevo módulo</string>
+    <string name="error_loading_modules">Error al cargar los módulos</string>
 </resources>

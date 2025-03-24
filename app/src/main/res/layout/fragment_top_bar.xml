@@ -9,10 +9,11 @@
     <!-- Title bar with safe insets -->
     <TextView
         android:id="@+id/textViewActivityTitle"
+        android:padding="10dp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/koulen"
-        android:gravity="center"
+        android:gravity="center|center_vertical"
         android:text="Activity Title"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="16sp"
@@ -23,8 +24,8 @@
 
     <ImageView
         android:id="@+id/notificationIcon"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:padding="10dp"
         app:srcCompat="@drawable/notification"
         app:tint="@color/colorPrimary"
