@@ -15,9 +15,9 @@ import com.example.monitoreoacua.service.response.ListModuleResponse;
  */
 public interface ApiModulesService {
 
-    @GET("/api/v2/shared/modules/{farm_id}")
+    @GET("/api/v2/shared/modules/{farmId}")
     Call<ListModuleResponse> getModules(
-            @Path("farm_id") int farmId,
+            @Path("farmId") int farmId,
             @Header("Authorization") String token
     );
 

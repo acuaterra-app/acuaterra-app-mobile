@@ -27,6 +27,8 @@ public class Farm implements Parcelable {
     @SerializedName("updatedAt")
     private String updatedAt;
 
+
+
     // Constructor
     public Farm(int id, String name, String address, String latitude, String longitude, String createdAt, String updatedAt) {
         this.id = id;
