@@ -26,15 +26,6 @@
             android:name=".views.farms.farm.modules.RegisterModulesActivity"
             android:exported="false" />
         <activity
-            android:name=".views.modules.RegisterModule"
-            android:exported="false" />
-        <activity
-            android:name=".views.farms.farm.modules.ListModulesActivity"
-            android:exported="false" />
-        <activity
-            android:name=".views.modules.ModulosListHome"
-            android:exported="false" />
-        <activity
             android:name=".views.menu.CloseSessionActivity"
             android:exported="false" />
         <activity
@@ -44,42 +35,12 @@
             android:name=".views.farms.ListFarmsActivity"
             android:exported="false" />
         <activity
-            android:name=".views.farms.MenuFarmsActivity"
-            android:exported="false" />
-        <activity
             android:name=".views.menu.SupportActivity"
-            android:exported="false" />
-        <activity
-            android:name=".views.pruebas.PruebaBitacora"
-            android:exported="false" />
-        <activity
-            android:name=".views.pruebas.PruebaJson"
-            android:exported="false" />
-        <activity
-            android:name=".views.pruebas.PruebaActivity"
-            android:exported="false" />
-        <activity
-            android:name=".views.modulos.ModuloFuncionesActivity"
-            android:exported="false" />
-        <activity
-            android:name=".views.modulos.RegisterModuloActivity"
-            android:exported="false" />
-        <activity
-            android:name=".views.modulos.ModuloInfoActivity"
-            android:exported="false" />
-        <activity
-            android:name=".views.modulos.HomeModulosActivity"
-            android:exported="false" />
-        <activity
-            android:name=".views.menu.HomeActivity"
             android:exported="false" />
         <activity
             android:name=".views.login.LoginActivity"
             android:launchMode="singleTop"
             android:configChanges="orientation|screenSize"
-            android:exported="false" />
-        <activity
-            android:name=".views.login.RegisterActivity"
             android:exported="false" />
         <activity
             android:name=".views.MainActivity"

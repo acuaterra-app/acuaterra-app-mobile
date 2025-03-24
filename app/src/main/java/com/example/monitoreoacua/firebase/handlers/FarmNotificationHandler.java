@@ -2,8 +2,10 @@ package com.example.monitoreoacua.firebase.handlers;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
+
 import java.util.Map;
 import com.example.monitoreoacua.business.models.Farm;
 import com.example.monitoreoacua.service.ApiClient;
@@ -11,9 +13,6 @@ import com.example.monitoreoacua.service.ApiFarmsService;
 import com.example.monitoreoacua.service.request.BaseRequest;
 import com.example.monitoreoacua.service.response.FarmResponse;
 import com.example.monitoreoacua.views.farms.farm.FarmDetailsActivity;
-
-import org.json.JSONObject;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -75,7 +74,7 @@ public class FarmNotificationHandler implements NotificationHandler {
             
             call.enqueue(new Callback<FarmResponse>() {
                 @Override
-                public void onResponse(Call<FarmResponse> call, Response<FarmResponse> response) {
+                public void onResponse(@NonNull Call<FarmResponse> call, @NonNull Response<FarmResponse> response) {
                     if (response.isSuccessful() && response.body() != null) {
                         Farm farm = response.body().getFarm();
                         if (farm != null) {
@@ -89,7 +88,7 @@ public class FarmNotificationHandler implements NotificationHandler {
                 }
     
                 @Override
-                public void onFailure(Call<FarmResponse> call, Throwable t) {
+                public void onFailure(@NonNull Call<FarmResponse> call, @NonNull Throwable t) {
                     Log.e(TAG, "API call failed", t);
                 }
             });

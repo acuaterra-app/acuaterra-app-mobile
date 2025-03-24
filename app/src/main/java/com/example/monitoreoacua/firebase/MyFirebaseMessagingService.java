@@ -19,8 +19,6 @@ import com.example.monitoreoacua.firebase.handlers.NotificationHandlerFactory;
 import com.example.monitoreoacua.views.MainActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -45,7 +43,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.d(TAG, "From: " + remoteMessage.getFrom());
 
         // Check if message contains data payload
-        if (remoteMessage.getData().size() > 0) {
+        if (!remoteMessage.getData().isEmpty()) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
             handleDataMessage(remoteMessage);
         }
@@ -54,7 +52,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (remoteMessage.getNotification() != null) {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
             // If we only receive a notification without data, we can show a default notification
-            if (remoteMessage.getData().size() == 0) {
+            if (remoteMessage.getData().isEmpty()) {
                 showDefaultNotification(remoteMessage.getNotification().getTitle(),
                         remoteMessage.getNotification().getBody());
             }
