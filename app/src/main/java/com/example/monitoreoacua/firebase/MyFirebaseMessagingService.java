@@ -51,11 +51,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Check if message contains notification payload
         if (remoteMessage.getNotification() != null) {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
-            // If we only receive a notification without data, we can show a default notification
-            if (remoteMessage.getData().isEmpty()) {
-                showDefaultNotification(remoteMessage.getNotification().getTitle(),
-                        remoteMessage.getNotification().getBody());
-            }
+
+            showDefaultNotification(remoteMessage.getNotification().getTitle(),
+                remoteMessage.getNotification().getBody());
         }
     }
 
