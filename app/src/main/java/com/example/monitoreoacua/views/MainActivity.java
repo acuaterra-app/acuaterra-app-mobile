@@ -30,30 +30,8 @@ public class MainActivity extends AppCompatActivity {
         Intent receivedIntent = getIntent();
         logIntentDetails(receivedIntent);
         
-        // Check if we were launched from a notification with a farmId
-        if (receivedIntent != null && receivedIntent.hasExtra("farmId")) {
-            String farmId = receivedIntent.getStringExtra("farmId");
-            Log.d(TAG, "onCreate: Received farmId from notification: " + farmId);
-            
-            // Show a toast for debugging purposes
-            Toast.makeText(this, "Received farmId: " + farmId, Toast.LENGTH_LONG).show();
-            
-            // Navigate to FarmDetailsActivity with the farmId
-            Intent farmDetailsIntent = new Intent(this, FarmDetailsActivity.class);
-            farmDetailsIntent.putExtra("farmId", farmId);
-            
-            // Add any other extras from the original intent
-            if (receivedIntent.hasExtra("notificationSource")) {
-                farmDetailsIntent.putExtra("notificationSource", 
-                    receivedIntent.getStringExtra("notificationSource"));
-            }
-            if (receivedIntent.hasExtra("notificationType")) {
-                farmDetailsIntent.putExtra("notificationType", 
-                    receivedIntent.getStringExtra("notificationType"));
-            }
-            
-            Log.d(TAG, "onCreate: Launching FarmDetailsFragmentActivity with farmId: " + farmId);
-            startActivity(farmDetailsIntent);
+        // Use NotificationManager to process any notification intents
+        if (com.example.monitoreoacua.firebase.NotificationManager.getInstance().processNotificationIntent(this, receivedIntent)) {
             finish();
             return;
         }
@@ -91,30 +69,8 @@ public class MainActivity extends AppCompatActivity {
         // Log details about the new intent
         logIntentDetails(intent);
         
-        // Check if the new intent contains a farmId
-        if (intent != null && intent.hasExtra("farmId")) {
-            String farmId = intent.getStringExtra("farmId");
-            Log.d(TAG, "onNewIntent: Received farmId from notification: " + farmId);
-            
-            // Show a toast for debugging purposes
-            Toast.makeText(this, "Received farmId in onNewIntent: " + farmId, Toast.LENGTH_LONG).show();
-            
-            // Navigate to FarmDetailsActivity with the farmId
-            Intent farmDetailsIntent = new Intent(this, FarmDetailsActivity.class);
-            farmDetailsIntent.putExtra("farmId", farmId);
-            
-            // Add any other extras from the original intent
-            if (intent.hasExtra("notificationSource")) {
-                farmDetailsIntent.putExtra("notificationSource", intent.getStringExtra("notificationSource"));
-            }
-            if (intent.hasExtra("notificationType")) {
-                farmDetailsIntent.putExtra("notificationType", intent.getStringExtra("notificationType"));
-            }
-            
-            Log.d(TAG, "onNewIntent: Launching FarmDetailsFragmentActivity with farmId: " + farmId);
-            startActivity(farmDetailsIntent);
-            finish();
-        }
+        // Use NotificationManager to process any notification intents
+        com.example.monitoreoacua.firebase.NotificationManager.getInstance().processNotificationIntent(this, intent);
     }
     
 

@@ -2,6 +2,7 @@ package com.example.monitoreoacua.utils;
 
 import android.app.Application;
 import android.content.Context;
+import com.example.monitoreoacua.firebase.InAppNotificationHelper;
 
 /**
  * Class to provide static access to the application context.
@@ -15,6 +16,8 @@ public class ApplicationContextProvider extends Application {
     public void onCreate() {
         super.onCreate();
         applicationContext = getApplicationContext();
+        // Initialize the InAppNotificationHelper to track app lifecycle and handle in-app notifications
+        InAppNotificationHelper.init(this);
     }
     
     /**
