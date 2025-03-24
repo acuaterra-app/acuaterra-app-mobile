@@ -186,58 +186,15 @@ public class InAppNotificationHelper {
      * @param messageType   The type of message (success, warning, error, info)
      */
     private static void applyMessageTypeStyle(View dialogView, String messageType) {
-        int backgroundColor;
-        int textColor;
-        int borderColor;
-
-        // Add debug logging to help diagnose message type issues
-        Log.d("InAppNotify", "Applying style for message type: '" + messageType + "', lowercase: '" + messageType.toLowerCase() + "'");
-
-        // Define colors based on message type
-        switch (messageType.toLowerCase()) {
-            case "success":
-                Log.d("InAppNotify", "Matched SUCCESS case");
-                backgroundColor = Color.parseColor("#DFFFD8"); // Vibrant light green
-                textColor = Color.parseColor("#2E8B57"); // Sea green
-                borderColor = Color.parseColor("#4CAF50"); // Bright green
-                break;
-            case "warning":
-                Log.d("InAppNotify", "Matched WARNING case");
-                backgroundColor = Color.parseColor("#FFF3D4"); // Warm amber light
-                textColor = Color.parseColor("#FF8C00"); // Dark amber
-                borderColor = Color.parseColor("#FFC107"); // Amber gold
-                break;
-            case "error":
-                Log.d("InAppNotify", "Matched ERROR case");
-                backgroundColor = Color.parseColor("#FFE6E6"); // Light red
-                textColor = Color.parseColor("#D32F2F"); // Bright red
-                borderColor = Color.parseColor("#F44336"); // Strong red
-                break;
-            case "info":
-            default:
-                Log.d("InAppNotify", "Matched INFO/DEFAULT case");
-                backgroundColor = Color.parseColor("#D4F1F9"); // Sky blue
-                textColor = Color.parseColor("#0277BD"); // Deep blue
-                borderColor = Color.parseColor("#2196F3"); // Bright blue
-                break;
-        }
-
-        // Apply background color
-        GradientDrawable drawable = new GradientDrawable();
-        drawable.setCornerRadius(16); // Rounded corners
-        drawable.setColor(backgroundColor);
-        drawable.setStroke(3, borderColor); // Add slightly thicker border for better visibility
-        dialogView.setBackground(drawable);
-
+        // Apply dialog background and border using utility class
+        com.example.monitoreoacua.utils.NotificationStyleUtils.applyDialogStyle(dialogView, messageType);
+        
         // Apply text color to title and body
         TextView titleTextView = dialogView.findViewById(R.id.notification_title);
         TextView bodyTextView = dialogView.findViewById(R.id.notification_body);
-        if (titleTextView != null) {
-            titleTextView.setTextColor(textColor);
-        }
-        if (bodyTextView != null) {
-            bodyTextView.setTextColor(textColor);
-        }
+        
+        com.example.monitoreoacua.utils.NotificationStyleUtils.applyTextColor(
+            messageType, titleTextView, bodyTextView);
     }
 }
 

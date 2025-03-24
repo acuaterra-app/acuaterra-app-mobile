@@ -28,6 +28,7 @@ import com.example.monitoreoacua.service.ApiNotificationsService;
 import com.example.monitoreoacua.service.request.ListNotificationRequest;
 import com.example.monitoreoacua.service.response.ApiResponse;
 import com.example.monitoreoacua.service.response.ListNotificationResponse;
+import com.example.monitoreoacua.views.notifications.NotificationAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,6 +41,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Fragment for displaying and managing notifications
+ */
 /**
  * Fragment for displaying and managing notifications
  */
@@ -69,10 +73,6 @@ public class ListNotificationsFragment extends Fragment {
         void onNotificationSelected(Notification notification);
     }
     
-    public interface OnNotificationClickListener {
-        void onNotificationClick(Notification notification);
-    }
-
     public ListNotificationsFragment() {
         // Required empty public constructor
     }
@@ -93,7 +93,8 @@ public class ListNotificationsFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_list_notifications, container, false);
     }
 
@@ -111,7 +112,15 @@ public class ListNotificationsFragment extends Fragment {
         // Setup RecyclerView
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerViewNotifications.setLayoutManager(layoutManager);
-        notificationAdapter = new NotificationAdapter();
+        
+        // Initialize adapter with the standalone implementation
+        notificationAdapter = new NotificationAdapter(requireContext(), notification -> {
+            if (notificationSelectedListener != null) {
+                notificationSelectedListener.onNotificationSelected(notification);
+            } else {
+                Toast.makeText(getContext(), "Error: La actividad no implementa OnNotificationSelectedListener", Toast.LENGTH_LONG).show();
+            }
+        });
         recyclerViewNotifications.setAdapter(notificationAdapter);
 
         // Pull to refresh
@@ -134,15 +143,6 @@ public class ListNotificationsFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-            }
-        });
-
-        // Item click listener
-        notificationAdapter.setOnNotificationClickListener(notification -> {
-            if (notificationSelectedListener != null) {
-                notificationSelectedListener.onNotificationSelected(notification);
-            } else {
-                Toast.makeText(getContext(), "Error: La actividad no implementa OnNotificationSelectedListener", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -195,7 +195,7 @@ public class ListNotificationsFragment extends Fragment {
 
                         if (notifications != null && !notifications.isEmpty()) {
                             notificationsList.addAll(notifications);
-                            notificationAdapter.setNotificationList(notificationsList);
+                            notificationAdapter.setNotifications(notificationsList);
 
                             // Check pagination info
                             if (notificationResponse.getMeta() != null &&
@@ -232,7 +232,7 @@ public class ListNotificationsFragment extends Fragment {
         currentPage++;
 
         // Show a loading indicator at the bottom of the list
-        notificationAdapter.setLoading(true);
+        notificationAdapter.setLoadingMore(true);
 
         ApiNotificationsService apiService = ApiClient.getClient().create(ApiNotificationsService.class);
         ListNotificationRequest listNotificationRequest = new ListNotificationRequest();
@@ -251,7 +251,7 @@ public class ListNotificationsFragment extends Fragment {
             @Override
             public void onResponse(@NonNull Call<ListNotificationResponse> call, @NonNull Response<ListNotificationResponse> response) {
                 isLoading = false;
-                notificationAdapter.setLoading(false);
+                notificationAdapter.setLoadingMore(false);
 
                 if (isAdded() && response.isSuccessful() && response.body() != null) {
                     ListNotificationResponse notificationResponse = response.body();
@@ -260,8 +260,7 @@ public class ListNotificationsFragment extends Fragment {
                     if (newNotifications != null && !newNotifications.isEmpty()) {
                         int prevSize = notificationsList.size();
                         notificationsList.addAll(newNotifications);
-                        notificationAdapter.setNotificationList(notificationsList);
-                        notificationAdapter.notifyItemRangeInserted(prevSize, newNotifications.size());
+                        notificationAdapter.setNotifications(notificationsList);
 
                         // Check pagination info
                         if (notificationResponse.getMeta() != null &&
@@ -283,7 +282,7 @@ public class ListNotificationsFragment extends Fragment {
             @Override
             public void onFailure(@NonNull Call<ListNotificationResponse> call, @NonNull Throwable t) {
                 isLoading = false;
-                notificationAdapter.setLoading(false);
+                notificationAdapter.setLoadingMore(false);
                 currentPage--; // Revert page increment since request failed
                 Toast.makeText(getContext(), "Error loading more notifications", Toast.LENGTH_SHORT).show();
             }
@@ -299,7 +298,7 @@ public class ListNotificationsFragment extends Fragment {
         if (notificationsList.isEmpty()) return;
 
         if (query.isEmpty()) {
-            notificationAdapter.setNotificationList(notificationsList);
+            notificationAdapter.setNotifications(notificationsList);
             return;
         }
 
@@ -311,7 +310,7 @@ public class ListNotificationsFragment extends Fragment {
             }
         }
 
-        notificationAdapter.setNotificationList(filteredList);
+        notificationAdapter.setNotifications(filteredList);
 
         if (filteredList.isEmpty()) {
             showEmptyState("No se encontraron notificaciones que coincidan con la búsqueda");
@@ -323,7 +322,7 @@ public class ListNotificationsFragment extends Fragment {
     private void sortNotificationsByDate() {
         if (notificationsList.isEmpty()) return;
 
-        List<Notification> currentList = new ArrayList<>(notificationAdapter.getNotificationList());
+        List<Notification> currentList = new ArrayList<>(notificationAdapter.getNotifications());
 
         // Sort by dateHour from the notification data
         Collections.sort(currentList, new Comparator<Notification>() {
@@ -341,7 +340,7 @@ public class ListNotificationsFragment extends Fragment {
         });
 
         isAscending = !isAscending;
-        notificationAdapter.setNotificationList(currentList);
+        notificationAdapter.setNotifications(currentList);
     }
 
     private void showLoading() {
@@ -381,120 +380,5 @@ public class ListNotificationsFragment extends Fragment {
         }
 
         showError("Error: " + errorMessage);
-    }
-
-    /**
-     * Adapter for displaying notifications in a RecyclerView
-     */
-    private class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-        private static final int VIEW_TYPE_ITEM = 0;
-        private static final int VIEW_TYPE_LOADING = 1;
-
-        private List<Notification> notificationList = new ArrayList<>();
-        private OnNotificationClickListener listener;
-        private boolean isLoadingMore = false;
-
-        public void setOnNotificationClickListener(OnNotificationClickListener listener) {
-            this.listener = listener;
-        }
-        
-        /**
-         * ViewHolder for notification items
-         */
-        private class NotificationViewHolder extends RecyclerView.ViewHolder {
-            private final TextView tvTitle;
-            private final TextView tvMessage;
-            private final TextView tvDate;
-            private final View unreadIndicator;
-            private final View itemContainer;
-
-            public NotificationViewHolder(@NonNull View itemView) {
-                super(itemView);
-                tvTitle = itemView.findViewById(R.id.text_notification_title);
-                tvMessage = itemView.findViewById(R.id.text_notification_message);
-                tvDate = itemView.findViewById(R.id.text_notification_date);
-                unreadIndicator = itemView.findViewById(R.id.view_notification_unread_indicator);
-                itemContainer = itemView; // Using the entire item view as the container
-            }
-
-            public void bind(Notification notification) {
-                tvTitle.setText(notification.getTitle());
-                tvMessage.setText(notification.getMessage());
-                tvDate.setText(notification.getData().getDateHour());
-                
-                // Set read/unread status
-                boolean isRead = "read".equals(notification.getData().getState());
-                unreadIndicator.setVisibility(isRead ? View.INVISIBLE : View.VISIBLE);
-                
-                // Set click listener
-                itemContainer.setOnClickListener(v -> {
-                    if (listener != null) {
-                        listener.onNotificationClick(notification);
-                    }
-                });
-            }
-        }
-        
-        /**
-         * ViewHolder for loading indicator
-         */
-        private class LoadingViewHolder extends RecyclerView.ViewHolder {
-            private final ProgressBar progressBar;
-            
-            public LoadingViewHolder(@NonNull View itemView) {
-                super(itemView);
-                progressBar = itemView.findViewById(R.id.loadMoreProgressBar);
-            }
-        }
-        
-        @Override
-        public int getItemViewType(int position) {
-            // Return the view type based on position and loading state
-            return (isLoadingMore && position == notificationList.size()) ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
-        }
-        
-        @NonNull
-        @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            
-            if (viewType == VIEW_TYPE_LOADING) {
-                View view = inflater.inflate(R.layout.item_loading, parent, false);
-                return new LoadingViewHolder(view);
-            } else {
-                View view = inflater.inflate(R.layout.recycle_view_item_notification, parent, false);
-                return new NotificationViewHolder(view);
-            }
-        }
-        
-        @Override
-        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-            if (holder instanceof NotificationViewHolder) {
-                // Bind notification data to the notification view holder
-                ((NotificationViewHolder) holder).bind(notificationList.get(position));
-            } else if (holder instanceof LoadingViewHolder) {
-                // We could configure the loading indicator here if needed
-            }
-        }
-        
-        @Override
-        public int getItemCount() {
-            // Add 1 to the item count if we're showing the loading indicator
-            return notificationList.size() + (isLoadingMore ? 1 : 0);
-        }
-        
-        public void setNotificationList(List<Notification> notificationList) {
-            this.notificationList = notificationList;
-            notifyDataSetChanged();
-        }
-        
-        public List<Notification> getNotificationList() {
-            return notificationList;
-        }
-        
-        public void setLoading(boolean loading) {
-            this.isLoadingMore = loading;
-            notifyDataSetChanged();
-        }
     }
 }

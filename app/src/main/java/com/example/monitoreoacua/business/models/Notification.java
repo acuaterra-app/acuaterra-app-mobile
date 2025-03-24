@@ -60,6 +60,14 @@ public class Notification implements Parcelable {
         return data;
     }
 
+    /**
+     * Convenience method to check if the notification is unread.
+     * @return true if the notification state is not "read", false otherwise
+     */
+    public boolean isUnread() {
+        return data != null && !"read".equals(data.getState());
+    }
+
     @Override
     public int describeContents() {
         return 0;
