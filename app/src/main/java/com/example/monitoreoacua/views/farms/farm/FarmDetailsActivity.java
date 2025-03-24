@@ -10,10 +10,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.monitoreoacua.R;
 import com.example.monitoreoacua.business.models.Farm;
+import com.example.monitoreoacua.service.ApiClient;
+import com.example.monitoreoacua.service.ApiFarmsService;
+import com.example.monitoreoacua.service.request.BaseRequest;
+import com.example.monitoreoacua.service.response.FarmResponse;
 import com.example.monitoreoacua.views.menu.CloseSessionActivity;
 import com.example.monitoreoacua.views.menu.SupportActivity;
 import com.example.monitoreoacua.views.farms.ListFarmsActivity;
 import com.example.monitoreoacua.views.farms.farm.modules.ListModulesActivity;
+import android.util.Log;
+import androidx.annotation.NonNull;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FarmDetailsActivity extends AppCompatActivity {
 
@@ -73,17 +82,5 @@ public class FarmDetailsActivity extends AppCompatActivity {
             Intent intent = new Intent(FarmDetailsActivity.this, CloseSessionActivity.class);
             startActivity(intent);
         });
-
-
-
-        // Monitors Button (add the necessary logic)
-        /* 
-        buttonMonitors.setOnClickListener(v -> {
-            Toast.makeText(this, "Abrir Monitores", Toast.LENGTH_SHORT).show();
-
-        });
-        */
     }
-
-
 }

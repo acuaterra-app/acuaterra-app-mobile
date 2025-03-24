@@ -30,7 +30,14 @@
             android:exported="false" />
         <activity
             android:name=".views.farms.farm.FarmDetailsActivity"
-            android:exported="false" />
+            android:exported="true"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="com.example.monitoreoacua.VIEW_FARM_DETAILS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".views.farms.ListFarmsActivity"
             android:exported="false" />
@@ -49,6 +56,10 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity

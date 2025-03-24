@@ -70,7 +70,7 @@ public class FarmNotificationHandler implements NotificationHandler {
         
         try {
             int farmIdInt = Integer.parseInt(farmId);
-            Call<FarmResponse> call = farmsService.getFarmById("Bearer " + token, farmIdInt);
+            Call<FarmResponse> call = farmsService.getFarmById(token, farmIdInt);
             
             call.enqueue(new Callback<FarmResponse>() {
                 @Override
@@ -107,6 +107,7 @@ public class FarmNotificationHandler implements NotificationHandler {
         intent.putExtra("farm", farm);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         context.startActivity(intent);
+        Log.d(TAG, "Opening FarmDetailsActivity for farm ID: " + farm.getId());
     }
     
     /**

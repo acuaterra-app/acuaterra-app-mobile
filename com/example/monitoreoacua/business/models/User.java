@@ -37,29 +37,6 @@ public class User implements Parcelable {
         this.role = role;
     }
 
-    // Constructor for Parcelable
-    protected User(Parcel in) {
-        id = in.readInt();
-        name = in.readString();
-        email = in.readString();
-        dni = in.readString();
-        idRol = in.readInt();
-        role = in.readParcelable(Role.class.getClassLoader());
-    }
-
-    // CREATOR for Parcelable
-    public static final Creator<User> CREATOR = new Creator<User>() {
-        @Override
-        public User createFromParcel(Parcel in) {
-            return new User(in);
-        }
-
-        @Override
-        public User[] newArray(int size) {
-            return new User[size];
-        }
-    };
-
     // Getters
     public int getId() {
         return id;
@@ -85,6 +62,16 @@ public class User implements Parcelable {
         return role;
     }
 
+    // Constructor for Parcelable
+    protected User(Parcel in) {
+        id = in.readInt();
+        name = in.readString();
+        email = in.readString();
+        dni = in.readString();
+        idRol = in.readInt();
+        role = in.readParcelable(Role.class.getClassLoader());
+    }
+
     // Parcelable methods
     @Override
     public int describeContents() {
@@ -100,4 +87,18 @@ public class User implements Parcelable {
         dest.writeInt(idRol);
         dest.writeParcelable(role, flags);
     }
+
+    // CREATOR for Parcelable
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 }
+
