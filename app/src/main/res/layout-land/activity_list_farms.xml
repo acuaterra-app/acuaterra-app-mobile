@@ -10,74 +10,12 @@
     android:background="@drawable/backgroundapp"
     android:padding="0dp">
 
-    <!-- Sección de gestión de granjas -->
-    <LinearLayout
+    <!-- Contenedor del fragmento para listar granjas -->
+    <FrameLayout
+        android:id="@+id/fragment_container"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="3"
-        android:orientation="vertical"
-        android:padding="60dp"
-        android:gravity="center_horizontal">
-
-        <!-- Título -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Gestión de granjas"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:textColor="@color/colorPrimaryDark"
-            android:fontFamily="@font/koulen"
-            android:gravity="center"
-            android:layout_marginBottom="12dp"/>
-
-        <!-- Barra de búsqueda y botón -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_marginBottom="10dp">
-
-            <EditText
-                android:id="@+id/editTextSearchFarm"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:hint="Buscar granja por nombre"
-                android:padding="10dp"
-                android:background="@color/colorBackground"
-                android:textSize="16sp"
-                android:layout_marginEnd="8dp"/>
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/buttonSortByDate"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:padding="8dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/icbajar"
-                android:contentDescription="Ordenar por fecha"/>
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/textViewFarms"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="Cargando datos..."
-            android:textSize="16sp"
-            android:visibility="gone"/>
-
-        <!-- Lista de granjas -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewFarms"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:padding="8dp"/>
-    </LinearLayout>
+        android:layout_weight="3" />
 
     <!-- Barra de navegación lateral -->
     <LinearLayout

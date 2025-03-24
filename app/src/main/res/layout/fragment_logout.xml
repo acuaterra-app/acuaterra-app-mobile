@@ -2,11 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/logout_fragment_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/logingbackground"
-    tools:context=".views.menu.ClosesectionActivity">
+    tools:context=".fragments.LogoutFragment">
 
     <!-- Main container to center the content.-->
     <LinearLayout
@@ -27,8 +27,8 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:src="@drawable/logoacua"
-        android:contentDescription="Icono de advertencia"
-        android:layout_marginBottom="24dp"/>
+            android:contentDescription="Icono de advertencia"
+            android:layout_marginBottom="24dp"/>
 
         <!-- Confirmation message -->
         <TextView
@@ -46,37 +46,37 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:gravity="center"
             android:weightSum="2"
             android:layout_marginTop="16dp">
 
-            <!-- Cancel button -->
-            <Button
-                android:id="@+id/buttonCancelLogout"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Cancelar"
-                android:textSize="16sp"
-                android:textColor="@color/white"
-                android:backgroundTint="@color/colorPrimary"
-                android:layout_marginEnd="8dp"
-                android:padding="12dp"/>
-
-            <!-- Button to confirm logout -->
+            <!-- Confirm button --> <!-- Button to confirm logout -->
             <Button
                 android:id="@+id/buttonConfirmLogout"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Cerrar sesión"
                 android:textSize="16sp"
                 android:textColor="@color/white"
                 android:backgroundTint="@color/colorAccent"
-                android:layout_marginStart="8dp"
-                android:padding="12dp"/>
+                android:layout_marginBottom="20dp"
+                />
+            <!-- Cancel button -->
+            <Button
+                android:id="@+id/buttonCancelLogout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Cancelar"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/colorPrimary"
+                android:layout_marginBottom="20dp"
+                />
         </LinearLayout>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+

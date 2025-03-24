@@ -7,6 +7,7 @@ import retrofit2.http.Body;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import com.example.monitoreoacua.business.models.Module;
+import com.example.monitoreoacua.service.request.ListModulesRequest;
 import com.example.monitoreoacua.service.response.ListModuleResponse;
 
 /**
@@ -27,5 +28,4 @@ public interface ApiModulesService {
             @Header("Authorization") String token
     );
 }
-
 

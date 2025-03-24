@@ -11,19 +11,35 @@ import com.example.monitoreoacua.business.models.Module;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Adapter for displaying modules in a RecyclerView
+ */
 public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleViewHolder> {
 
     private List<Module> moduleList;
     private OnModuleClickListener listener;
 
+    /**
+     * Constructor for ModuleAdapter
+     */
     public ModuleAdapter() {
         this.moduleList = new ArrayList<>();
     }
 
+    /**
+     * Set the module click listener
+     * 
+     * @param listener The listener for module click events
+     */
     public void setOnModuleClickListener(OnModuleClickListener listener) {
         this.listener = listener;
     }
 
+    /**
+     * Update the module list and refresh the adapter
+     * 
+     * @param moduleList The new list of modules to display
+     */
     public void setModuleList(List<Module> moduleList) {
         this.moduleList = moduleList;
         notifyDataSetChanged();
@@ -33,7 +49,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
     @Override
     public ModuleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_module, parent, false);
+                .inflate(R.layout.recycle_view_item_module, parent, false);
         return new ModuleViewHolder(itemView);
     }
 
@@ -42,27 +58,27 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
         Module module = moduleList.get(position);
         
         // Set name and location (existing fields)
-        holder.tvModuleName.setText(module.getName() != null ? module.getName() : "No name");
-        holder.tvModuleLocation.setText(module.getLocation() != null ? module.getLocation() : "No location");
+        holder.tvModuleName.setText(module.getName() != null ? module.getName() : "Sin nombre");
+        holder.tvModuleLocation.setText("Ubicación: " + (module.getLocation() != null ? module.getLocation() : "No especificada"));
         
         // Set new fields with null checks
-        holder.tvModuleLatitude.setText(module.getLatitude() != null && !module.getLatitude().isEmpty() ? 
-                module.getLatitude() : "N/A");
+        holder.tvModuleLatitude.setText("Latitud: " + (module.getLatitude() != null && !module.getLatitude().isEmpty() ? 
+                module.getLatitude() : "N/A"));
         
-        holder.tvModuleLongitude.setText(module.getLongitude() != null && !module.getLongitude().isEmpty() ? 
-                module.getLongitude() : "N/A");
+        holder.tvModuleLongitude.setText("Longitud: " + (module.getLongitude() != null && !module.getLongitude().isEmpty() ? 
+                module.getLongitude() : "N/A"));
         
-        holder.tvModuleSpeciesFish.setText(module.getSpeciesFish() != null && !module.getSpeciesFish().isEmpty() ? 
-                module.getSpeciesFish() : "Not specified");
+        holder.tvModuleSpeciesFish.setText("Especie: " + (module.getSpeciesFish() != null && !module.getSpeciesFish().isEmpty() ? 
+                module.getSpeciesFish() : "No especificada"));
         
-        holder.tvModuleFishQuantity.setText(module.getFishQuantity() != null && !module.getFishQuantity().isEmpty() ? 
-                module.getFishQuantity() : "Unknown");
+        holder.tvModuleFishQuantity.setText("Cantidad: " + (module.getFishQuantity() != null && !module.getFishQuantity().isEmpty() ? 
+                module.getFishQuantity() : "0"));
         
-        holder.tvModuleFishAge.setText(module.getFishAge() != null && !module.getFishAge().isEmpty() ? 
-                module.getFishAge() : "Not specified");
+        holder.tvModuleFishAge.setText("Edad: " + (module.getFishAge() != null && !module.getFishAge().isEmpty() ? 
+                module.getFishAge() : "0 días"));
         
-        holder.tvModuleDimensions.setText(module.getDimensions() != null && !module.getDimensions().isEmpty() ? 
-                module.getDimensions() : "Unknown dimensions");
+        holder.tvModuleDimensions.setText("Dimensiones: " + (module.getDimensions() != null && !module.getDimensions().isEmpty() ? 
+                module.getDimensions() : "No especificadas"));
 
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
@@ -76,6 +92,9 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
         return moduleList.size();
     }
 
+    /**
+     * ViewHolder for module items
+     */
     static class ModuleViewHolder extends RecyclerView.ViewHolder {
         private TextView tvModuleName, tvModuleLocation;
         private TextView tvModuleLatitude, tvModuleLongitude;
@@ -95,8 +114,10 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
         }
     }
 
+    /**
+     * Interface for handling module click events
+     */
     public interface OnModuleClickListener {
         void onModuleClick(Module module);
     }
 }
-

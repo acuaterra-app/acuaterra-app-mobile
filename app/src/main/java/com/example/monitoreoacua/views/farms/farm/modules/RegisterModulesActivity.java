@@ -12,12 +12,11 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.monitoreoacua.R;
 import com.example.monitoreoacua.views.farms.ListFarmsActivity;
-import com.example.monitoreoacua.views.menu.ClosesectionActivity;
+import com.example.monitoreoacua.views.menu.LogoutActivity;
 import com.example.monitoreoacua.views.menu.SupportActivity;
 
 public class RegisterModulesActivity extends AppCompatActivity {
 
-    // Declaration of navigation bar elements
     private AppCompatImageButton navHome, navSettings, navProfile, navCloseSesion;
 
     @Override
@@ -49,7 +48,7 @@ public class RegisterModulesActivity extends AppCompatActivity {
         });
 
         navCloseSesion.setOnClickListener(v -> {
-            Intent intent = new Intent(RegisterModulesActivity.this, ClosesectionActivity.class);
+            Intent intent = new Intent(RegisterModulesActivity.this, LogoutActivity.class);
             startActivity(intent);
         });
 

@@ -1,5 +1,6 @@
 package com.example.monitoreoacua.business.models;
 
+import com.example.monitoreoacua.business.models.auth.AuthUser;
 import com.google.gson.annotations.SerializedName;
 
 public class Module {
@@ -51,7 +52,6 @@ public class Module {
     @SerializedName("farm")
     private Farm farm;
 
-    // Getters
     public int getId() { return id; }
     public String getName() { return name; }
     public String getLocation() { return location; }

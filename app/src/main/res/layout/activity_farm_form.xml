@@ -7,27 +7,25 @@
     android:layout_height="wrap_content"
     android:background="@drawable/backgroundfarms"
     android:paddingBottom="0dp"
-    tools:context=".views.farms.farm.FarmDetailsActivity">
+    tools:context=".views.farms.farm.FarmFormActivity">
 
     <!-- Contenedor principal -->
     <ScrollView
         android:layout_width="match_parent"
-        android:padding="50dp"
         android:layout_height="wrap_content"
-
-        >
+        android:padding="50dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Título de la granja -->
+            <!-- Título del formulario -->
             <TextView
-                android:id="@+id/textViewTitleDetailsFarm"
+                android:id="@+id/textViewTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Detalles de la Granja"
+                android:text="Formulario de Granja"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 android:fontFamily="@font/koulen"
@@ -62,14 +60,17 @@
                     android:textSize="16sp"
                     android:textColor="@color/black"/>
 
-                <TextView
-                    android:id="@+id/textViewFarmName"
+                <EditText
+                    android:id="@+id/editTextFarmName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="--"
+                    android:hint="Ingrese el nombre de la granja"
                     android:textSize="16sp"
                     android:textColor="@color/black"
-                    android:paddingBottom="8dp"/>
+                    android:padding="8dp"
+                    android:background="@android:color/white"
+                    android:layout_marginBottom="8dp"
+                    android:inputType="text"/>
 
                 <!-- Dirección de la granja -->
                 <TextView
@@ -81,77 +82,94 @@
                     android:textSize="16sp"
                     android:textColor="@color/black"/>
 
-                <TextView
-                    android:id="@+id/textViewFarmAddress"
+                <EditText
+                    android:id="@+id/editTextFarmAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="--"
+                    android:hint="Ingrese la ubicación de la granja"
                     android:textSize="16sp"
                     android:textColor="@color/black"
-                    android:paddingBottom="8dp"/>
+                    android:padding="8dp"
+                    android:background="@android:color/white"
+                    android:layout_marginBottom="8dp"
+                    android:inputType="text"/>
 
-                <!-- Coordenadas -->
+                <!-- Latitud -->
                 <TextView
-                    android:id="@+id/textViewFarmCoordinatesLabel"
+                    android:id="@+id/textViewLatitudeLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Coordenadas:"
+                    android:text="Latitud:"
                     android:textStyle="bold"
                     android:textSize="16sp"
                     android:textColor="@color/black"/>
 
-                <TextView
-                    android:id="@+id/textViewFarmCoordinates"
+                <EditText
+                    android:id="@+id/editTextFarmLatitude"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Lat: --, Lng: --"
+                    android:hint="Ingrese la latitud"
                     android:textSize="16sp"
                     android:textColor="@color/black"
-                    android:paddingBottom="8dp"/>
+                    android:padding="8dp"
+                    android:background="@android:color/white"
+                    android:layout_marginBottom="8dp"
+                    android:inputType="numberDecimal|numberSigned"/>
 
-                <!-- Fecha de Creación -->
+                <!-- Longitud -->
                 <TextView
-                    android:id="@+id/textViewCreatedAtLabel"
+                    android:id="@+id/textViewLongitudeLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Fecha de Creación:"
+                    android:text="Longitud:"
                     android:textStyle="bold"
                     android:textSize="16sp"
                     android:textColor="@color/black"/>
 
-                <TextView
-                    android:id="@+id/textViewCreatedAt"
+                <EditText
+                    android:id="@+id/editTextFarmLongitude"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="--"
+                    android:hint="Ingrese la longitud"
                     android:textSize="16sp"
                     android:textColor="@color/black"
-                    android:paddingBottom="16dp"/>
+                    android:padding="8dp"
+                    android:background="@android:color/white"
+                    android:layout_marginBottom="16dp"
+                    android:inputType="numberDecimal|numberSigned"/>
             </LinearLayout>
 
-            <!-- Botones de acción
-            <com.google.android.material.button.MaterialButton
-                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
-                android:id="@+id/buttonMonitors"
+            <!-- Botones de acción -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Monitores"
-                android:textSize="18sp"
-                android:textColor="@color/white"
-                android:backgroundTint="@color/colorAccent"
-                android:layout_marginTop="16dp"/>-->
+                android:orientation="horizontal"
+                android:gravity="center">
 
-            <com.google.android.material.button.MaterialButton
-                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                <com.google.android.material.button.MaterialButton
+                    style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                    android:id="@+id/buttonCancel"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Cancelar"
+                    android:textSize="18sp"
+                    android:textColor="@color/white"
+                    android:backgroundTint="@android:color/darker_gray"
+                    android:layout_marginEnd="8dp"/>
 
-                android:id="@+id/buttonModules"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Módulos"
-                android:textSize="18sp"
-                android:textColor="@color/white"
-                android:backgroundTint="@color/colorAccent"
-                android:layout_marginTop="8dp"/>
+                <com.google.android.material.button.MaterialButton
+                    style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                    android:id="@+id/buttonSaveFarm"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Guardar"
+                    android:textSize="18sp"
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/colorAccent"
+                    android:layout_marginStart="8dp"/>
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
@@ -268,3 +286,4 @@
     </LinearLayout>
 
 </RelativeLayout>
+

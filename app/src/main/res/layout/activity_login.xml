@@ -108,6 +108,17 @@
             android:textStyle="bold"
             android:elevation="6dp"
             android:layout_marginBottom="12dp" />
+        <TextView
+            android:id="@+id/txtNotificationsPermissions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Esta app necesita permisos para un correcto funcionamiento"
+            android:textAlignment="center"
+            android:textColor="@color/colorDivider"
+            android:textSize="18sp"
+            android:layout_marginTop="8dp"
+            android:padding="8dp"
+            android:visibility="gone" />
     </LinearLayout>
 
 </LinearLayout>
