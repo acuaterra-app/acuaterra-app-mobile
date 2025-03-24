@@ -40,7 +40,7 @@ public class SupportActivity extends AppCompatActivity {
         });
 
         navCloseSesion.setOnClickListener(v -> {
-            Intent intent = new Intent(SupportActivity.this, ClosesectionActivity.class);
+            Intent intent = new Intent(SupportActivity.this, CloseSectionActivity.class);
             startActivity(intent);
         });
 

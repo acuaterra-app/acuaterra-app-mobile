@@ -20,6 +20,10 @@ import java.util.Map;
 public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleViewHolder> {
 
     private List<Module> moduleList;
+    
+    public List<Module> getModuleList() {
+        return moduleList;
+    }
     private OnModuleClickListener listener;
 
     public ModuleAdapter() {

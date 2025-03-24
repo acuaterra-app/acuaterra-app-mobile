@@ -1,6 +1,7 @@
 package com.example.monitoreoacua.business.models;
 
 import com.google.gson.annotations.SerializedName;
+import java.util.Date;
 
 public class Module {
     @SerializedName("id")
@@ -37,7 +38,7 @@ public class Module {
     private int createdByUserId;
 
     @SerializedName("createdAt")
-    private String createdAt;
+    private Date createdAt;
 
     @SerializedName("updatedAt")
     private String updatedAt;
@@ -54,6 +55,7 @@ public class Module {
     // Getters
     public int getId() { return id; }
     public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
     public String getLocation() { return location; }
     public String getLatitude() { return latitude; }
     public String getLongitude() { return longitude; }
@@ -63,7 +65,8 @@ public class Module {
     public String getDimensions() { return dimensions; }
     public int getIdFarm() { return idFarm; }
     public int getCreatedByUserId() { return createdByUserId; }
-    public String getCreatedAt() { return createdAt; }
+    public Date getCreatedAt() { return createdAt; }
+    public void setCreatedAt(Date createdAt) { this.createdAt = createdAt; }
     public String getUpdatedAt() { return updatedAt; }
     public String getDeletedAt() { return deletedAt; }
     public User getCreator() { return creator; }

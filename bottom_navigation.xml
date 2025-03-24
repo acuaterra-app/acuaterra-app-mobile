@@ -50,6 +50,8 @@
             android:textSize="12sp"
             android:textColor="@drawable/nav_item_color_selector"
             android:layout_marginTop="4dp"/>
+    </LinearLayout>
+    
     <!-- Módulos Navigation Item -->
     <LinearLayout
         android:id="@+id/navModules"
@@ -62,12 +64,29 @@
         android:focusable="true"
         android:background="@drawable/nav_item_background">
             <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/ivNavIcon_modules"
+                android:id="@+id/ivNavIcon"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:scaleType="centerInside"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/icmodulo"
                 android:contentDescription="Ir a Módulos"/>
             <View
-                android:id="@+id/indicator_modules"
-            android:id="@+id/tvNavText_modules"
+                android:id="@+id/indicator"
+                android:layout_width="42dp"
+                android:layout_height="3dp"
+                android:layout_gravity="bottom"
+                android:background="@color/nav_indicator_color"
+                android:visibility="invisible"
+                android:alpha="0.9"
+                android:translationZ="2dp"
+                android:animateLayoutChanges="true"/>
+        <TextView
+            android:id="@+id/tvNavText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Módulos"
+            android:textSize="12sp"
+            android:textColor="@drawable/nav_item_color_selector"
+            android:layout_marginTop="4dp"/>
+    </LinearLayout>

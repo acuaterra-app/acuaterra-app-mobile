@@ -30,7 +30,7 @@
             android:name=".views.modules.ModulosListHome"
             android:exported="false" />
         <activity
-            android:name=".views.menu.ClosesectionActivity"
+            android:name=".views.menu.CloseSectionActivity"
             android:exported="false" />
         <activity
             android:name=".views.farms.farm.FarmDetailsActivity"

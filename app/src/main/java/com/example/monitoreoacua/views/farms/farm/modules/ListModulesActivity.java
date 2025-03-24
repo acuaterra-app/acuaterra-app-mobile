@@ -3,12 +3,16 @@ package com.example.monitoreoacua.views.farms.farm.modules;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.util.Date;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -22,19 +26,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.monitoreoacua.R;
-import com.example.monitoreoacua.business.models.Farm;
 import com.example.monitoreoacua.business.models.Module;
 import com.example.monitoreoacua.service.ApiClient;
 import com.example.monitoreoacua.service.ApiModulesService;
-import com.example.monitoreoacua.service.request.ListFarmsRequest;
 import com.example.monitoreoacua.service.request.ListModulesRequest;
-import com.example.monitoreoacua.service.response.ListFarmResponse;
 import com.example.monitoreoacua.service.response.ListModuleResponse;
-import com.example.monitoreoacua.views.farms.ListFarmsActivity;
-import com.example.monitoreoacua.views.menu.ClosesectionActivity;
-import com.example.monitoreoacua.views.menu.SupportActivity;
+import com.example.monitoreoacua.utils.NavigationHelper;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -47,11 +47,12 @@ public class ListModulesActivity extends AppCompatActivity {
     private ModuleAdapter moduleAdapter;
     private TextView textViewModules;
     private List<Module> modulesList = new ArrayList<>();
-
-    // Navigation bar elements
-    private AppCompatImageButton navHome, navProfile, navCloseSesion;
+    private EditText editTextSearch;
+    private AppCompatImageButton buttonSort;
+    private boolean isAscendingOrder = true;
+    private List<Module> originalModulesList = new ArrayList<>();
+    private LinearLayout navigationContainer;
     private Button buttonAddModule;
-
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,6 +68,10 @@ public class ListModulesActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        // Initialize navigation
+        navigationContainer = findViewById(R.id.bottomNav);
+        setupNavigation();
 
         // Initialize UI elements
         textViewModules = findViewById(R.id.textViewModules);
@@ -84,32 +89,54 @@ public class ListModulesActivity extends AppCompatActivity {
             Toast.makeText(this, "Error al obtener la granja", Toast.LENGTH_SHORT).show();
         }
 
-        // Initialize navigation buttons
+        // Initialize UI buttons
         buttonAddModule = findViewById(R.id.buttonAddModule);
-        navHome = findViewById(R.id.navHome);
-        navProfile = findViewById(R.id.navProfile);
-        navCloseSesion = findViewById(R.id.navCloseSesion);
+        
+        // Initialize search and sort UI elements
+        editTextSearch = findViewById(R.id.editTextSearchModule);
+        buttonSort = findViewById(R.id.buttonSortModules);
+
+        // Set up search text change listener
+        editTextSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                filterModules(s.toString());
+            }
+        });
+
+        // Set up sort button click listener
+        buttonSort.setOnClickListener(v -> {
+            isAscendingOrder = !isAscendingOrder;
+            sortModules();
+            buttonSort.setRotation(isAscendingOrder ? 0 : 180);
+        });
 
         // Set button click listeners
         buttonAddModule.setOnClickListener(v -> {
-            Intent intent = new Intent(ListModulesActivity.this, RegisterModulesActivity.class);
-            startActivity(intent);
+            //int farmId = getIntent().getIntExtra("farmId", -1);
+            if (farmId != -1) {
+                Intent intent = new Intent(ListModulesActivity.this, RegisterModulesActivity.class);
+                intent.putExtra("farmId", farmId);  // Pass the farmId to the registration activity
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, "Error: ID de granja no proporcionado", Toast.LENGTH_LONG).show();
+            }
         });
+    }
 
-        navHome.setOnClickListener(v -> {
-            Intent intent = new Intent(ListModulesActivity.this, ListFarmsActivity.class);
-            startActivity(intent);
-        });
+    /**
+     * Sets up the bottom navigation using NavigationHelper
+     */
+    private void setupNavigation() {
+        NavigationHelper.setupNavigation(navigationContainer, 
+            itemId -> NavigationHelper.navigateToSection(this, itemId, ListModulesActivity.class));
 
-        navProfile.setOnClickListener(v -> {
-            Intent intent = new Intent(ListModulesActivity.this, SupportActivity.class);
-            startActivity(intent);
-        });
-
-        navCloseSesion.setOnClickListener(v -> {
-            Intent intent = new Intent(ListModulesActivity.this, ClosesectionActivity.class);
-            startActivity(intent);
-        });
     }
 
     /**
@@ -131,9 +158,14 @@ public class ListModulesActivity extends AppCompatActivity {
                     List<Module> modules = listModuleResponse != null ? listModuleResponse.getAllModules() : null;
 
                     if (modules != null && !modules.isEmpty()) {
+                        originalModulesList = new ArrayList<>(modules);
                         modulesList = new ArrayList<>(modules);
                         moduleAdapter.setModuleList(modulesList);
+                        recyclerView.setVisibility(View.VISIBLE);
                     } else {
+                        textViewModules.setVisibility(View.VISIBLE);
+                        textViewModules.setText("No se encontraron módulos");
+                        recyclerView.setVisibility(View.GONE);
                         Toast.makeText(ListModulesActivity.this, "No se encontraron módulos", Toast.LENGTH_SHORT).show();
                     }
                 } else {
@@ -149,4 +181,50 @@ public class ListModulesActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Filters modules based on a search query string
+     * @param query The search text to filter by
+     */
+    private void filterModules(String query) {
+        if (query.isEmpty()) {
+            moduleAdapter.setModuleList(originalModulesList);
+            return;
+        }
+
+        List<Module> filteredList = new ArrayList<>();
+        for (Module module : originalModulesList) {
+            if (module.getName().toLowerCase().contains(query.toLowerCase())) {
+                filteredList.add(module);
+            }
+        }
+        moduleAdapter.setModuleList(filteredList);
+    }
+
+    /**
+     * Sorts the modules list by creation date
+     * Toggles between ascending and descending order
+     */
+    private void sortModules() {
+        List<Module> currentList = new ArrayList<>(moduleAdapter.getModuleList());
+        if (isAscendingOrder) {
+            Collections.sort(currentList, (m1, m2) -> {
+                Date date1 = m1.getCreatedAt();
+                Date date2 = m2.getCreatedAt();
+                if (date1 == null && date2 == null) return 0;
+                if (date1 == null) return -1;
+                if (date2 == null) return 1;
+                return date1.compareTo(date2);
+            });
+        } else {
+            Collections.sort(currentList, (m1, m2) -> {
+                Date date1 = m1.getCreatedAt();
+                Date date2 = m2.getCreatedAt();
+                if (date1 == null && date2 == null) return 0;
+                if (date1 == null) return 1;
+                if (date2 == null) return -1;
+                return date2.compareTo(date1);
+            });
+        }
+        moduleAdapter.setModuleList(currentList);
+    }
 }

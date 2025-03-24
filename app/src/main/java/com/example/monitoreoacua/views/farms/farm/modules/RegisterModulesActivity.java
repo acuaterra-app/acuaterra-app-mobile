@@ -2,6 +2,8 @@ package com.example.monitoreoacua.views.farms.farm.modules;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,8 +13,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.monitoreoacua.R;
+import com.example.monitoreoacua.utils.NavigationHelper;
 import com.example.monitoreoacua.views.farms.ListFarmsActivity;
-import com.example.monitoreoacua.views.menu.ClosesectionActivity;
+import com.example.monitoreoacua.views.menu.CloseSectionActivity;
 import com.example.monitoreoacua.views.menu.SupportActivity;
 
 public class RegisterModulesActivity extends AppCompatActivity {
@@ -31,27 +34,19 @@ public class RegisterModulesActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Initialize navigation bar elements
-        navHome = findViewById(R.id.navHome);
-        // navSettings = findViewById(R.id.navSettings);
-        navProfile = findViewById(R.id.navProfile);
-        navCloseSesion = findViewById(R.id.navCloseSesion);
+        // Get farm ID from intent
+        int farmId = getIntent().getIntExtra("farmId", -1);
+        if (farmId == -1) {
+            Toast.makeText(this, "Error: ID de granja no proporcionado", Toast.LENGTH_LONG).show();
+        }
 
-        // Events for the navigation bar
-        navHome.setOnClickListener(v -> {
-            Intent intent = new Intent(RegisterModulesActivity.this, ListFarmsActivity.class);
-            startActivity(intent);
-        });
-
-        navProfile.setOnClickListener(v -> {
-            Intent intent = new Intent(RegisterModulesActivity.this, SupportActivity.class);
-            startActivity(intent);
-        });
-
-        navCloseSesion.setOnClickListener(v -> {
-            Intent intent = new Intent(RegisterModulesActivity.this, ClosesectionActivity.class);
-            startActivity(intent);
-        });
+        // Initialize navigation using NavigationHelper
+        LinearLayout navigationContainer = findViewById(R.id.bottomNav);
+        NavigationHelper.setupNavigation(navigationContainer, 
+            itemId -> NavigationHelper.navigateToSection(this, itemId, RegisterModulesActivity.class));
+        
+        // No item is selected in registration screen
+        // NavigationHelper.updateSelectedItem(navigationContainer, R.id.navModules);
 
     }
 

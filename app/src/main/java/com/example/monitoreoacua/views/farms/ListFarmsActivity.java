@@ -23,7 +23,7 @@ import com.example.monitoreoacua.service.ApiClient;
 import com.example.monitoreoacua.service.ApiFarmsService;
 import com.example.monitoreoacua.service.request.ListFarmsRequest;
 import com.example.monitoreoacua.service.response.ListFarmResponse;
-import com.example.monitoreoacua.views.menu.ClosesectionActivity;
+import com.example.monitoreoacua.views.menu.CloseSectionActivity;
 import com.example.monitoreoacua.views.menu.SupportActivity;
 import com.example.monitoreoacua.views.farms.farm.FarmDetailsActivity;
 
@@ -111,7 +111,7 @@ public class ListFarmsActivity extends AppCompatActivity {
         });
 
         navCloseSesion.setOnClickListener(v -> {
-            Intent intent = new Intent(ListFarmsActivity.this, ClosesectionActivity.class);
+            Intent intent = new Intent(ListFarmsActivity.this, CloseSectionActivity.class);
             startActivity(intent);
         });
     }

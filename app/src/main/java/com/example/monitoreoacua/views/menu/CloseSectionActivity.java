@@ -14,7 +14,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.monitoreoacua.R;
 import com.example.monitoreoacua.views.login.LoginActivity; // Asegúrate de importar la actividad de inicio de sesión
 
-public class ClosesectionActivity extends AppCompatActivity {
+public class CloseSectionActivity extends AppCompatActivity {
 
     private Button buttonConfirmLogout, buttonCancelLogout;
 
@@ -57,7 +57,7 @@ public class ClosesectionActivity extends AppCompatActivity {
 
 
         // Redirigir al usuario a la pantalla de inicio de sesión
-        Intent intent = new Intent(ClosesectionActivity.this, LoginActivity.class);
+        Intent intent = new Intent(CloseSectionActivity.this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Limpiar el stack de actividades
         startActivity(intent);
         finish(); // Finalizar la actividad actual
