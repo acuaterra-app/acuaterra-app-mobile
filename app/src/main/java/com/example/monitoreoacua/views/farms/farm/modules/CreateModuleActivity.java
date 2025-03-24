@@ -15,6 +15,7 @@ import com.example.monitoreoacua.service.ApiClient;
 import com.example.monitoreoacua.service.ApiModulesService;
 import com.example.monitoreoacua.service.request.CreateModuleRequest;
 import com.example.monitoreoacua.service.response.CreateModuleResponse;
+import com.example.monitoreoacua.views.login.LoginActivity;
 
 import java.util.Collections;
 
@@ -26,7 +27,7 @@ public class CreateModuleActivity extends AppCompatActivity {
 
     private EditText etModuleName, etLocation, etLatitude, etLongitude, etFishType, etFishQuantity, etFishAge, etVolumeUnit;
     private Button btnRegisterModule;
-    private int idFarm, createdByUserId;
+    private int farmId, createdByUserId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +44,11 @@ public class CreateModuleActivity extends AppCompatActivity {
         etVolumeUnit = findViewById(R.id.etVolumeUnit);
         btnRegisterModule = findViewById(R.id.btnRegisterModule);
 
-        Intent intent = getIntent();
-        idFarm = intent.getIntExtra("id_farm", 0);
-        createdByUserId = intent.getIntExtra("created_by_user_id", 0);
-
+        farmId = getIntent().getIntExtra("farmId", 0);
+        createdByUserId = getIntent().getIntExtra("created_by_user_id", 0);
         btnRegisterModule.setOnClickListener(v -> registerModule());
+
+        Toast.makeText(CreateModuleActivity.this, "CMA - User id: "+ createdByUserId , Toast.LENGTH_SHORT).show();
     }
 
     private void registerModule() {
@@ -104,7 +105,7 @@ public class CreateModuleActivity extends AppCompatActivity {
         CreateModuleRequest createModuleRequest = new CreateModuleRequest(
                 moduleName, location, latitudeStr, longitudeStr,
                 fishType, fishQuantityStr, fishAgeStr, volumeUnit,
-                idFarm, createdByUserId, Collections.singletonList(0)
+                farmId, createdByUserId, Collections.singletonList(0)
         );
 
         String authToken = createModuleRequest.getAuthToken();

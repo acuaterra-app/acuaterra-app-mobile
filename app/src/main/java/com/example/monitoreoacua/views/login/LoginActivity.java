@@ -11,12 +11,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.monitoreoacua.R;
+import com.example.monitoreoacua.business.models.User;
 import com.example.monitoreoacua.business.models.auth.AuthToken;
 import com.example.monitoreoacua.service.request.LoginRequest;
 import com.example.monitoreoacua.service.response.LoginResponse;
 import com.example.monitoreoacua.service.ApiClient;
 import com.example.monitoreoacua.service.ApiUsersService;
 import com.example.monitoreoacua.views.farms.ListFarmsActivity;
+import com.example.monitoreoacua.views.farms.farm.modules.ListModulesActivity;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText etEmail, etPassword;
     private Button btnLogin;
     private int loginAttempts = 0;
+    private int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +78,21 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (response.isSuccessful() && response.body() != null) {
                     LoginResponse loginResponse = response.body();
+                    Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
+
+                    //Ensure that the User object is not null before accessing its ID
+                    if (loginResponse.getUser() != null) {
+                        userId = loginResponse.getUser().getId();
+                        Toast.makeText(LoginActivity.this, "LA - User id: "+ userId , Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent(LoginActivity.this, ListModulesActivity.class);
+                        intent.putExtra("created_by_user_id", userId);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Error: User data is missing", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
                     try {
                         AuthToken authToken = loginResponse.getToken();

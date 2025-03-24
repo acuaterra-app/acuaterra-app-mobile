@@ -89,6 +89,16 @@ public class ListModulesActivity extends AppCompatActivity {
             Toast.makeText(this, "Error al obtener la granja", Toast.LENGTH_SHORT).show();
         }
 
+        // Get User ID
+        int userId = getIntent().getIntExtra("created_by_user_id", -1);
+        Toast.makeText(this, "LMA - Id User: " + userId, Toast.LENGTH_SHORT).show();
+        if (userId != -1) {
+            //logica
+        } else {
+            Toast.makeText(this, "Error al obtener el Id del usuario", Toast.LENGTH_SHORT).show();
+        }
+
+
         // Initialize UI buttons
         buttonAddModule = findViewById(R.id.buttonAddModule);
         
@@ -119,10 +129,10 @@ public class ListModulesActivity extends AppCompatActivity {
 
         // Set button click listeners
         buttonAddModule.setOnClickListener(v -> {
-            //int farmId = getIntent().getIntExtra("farmId", -1);
-            if (farmId != -1) {
+            if (farmId != -1 && userId != -1) {
                 Intent intent = new Intent(ListModulesActivity.this, CreateModuleActivity.class);
                 intent.putExtra("farmId", farmId);  // Pass the farmId to the registration activity
+                intent.putExtra("created_by_user_id", userId);
                 startActivity(intent);
             } else {
                 Toast.makeText(this, "Error: ID de granja no proporcionado", Toast.LENGTH_LONG).show();
