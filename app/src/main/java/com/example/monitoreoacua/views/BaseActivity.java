@@ -6,16 +6,28 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import java.util.List;
+import java.util.Objects;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.monitoreoacua.R;
+import com.example.monitoreoacua.business.models.Notification;
 import com.example.monitoreoacua.firebase.NotificationManager;
 import com.example.monitoreoacua.fragments.NavigationBarFragment;
 import com.example.monitoreoacua.fragments.NavigationBarFragment.NavigationBarListener;
 import com.example.monitoreoacua.fragments.TopBarFragment;
+import com.example.monitoreoacua.service.ApiClient;
+import com.example.monitoreoacua.service.ApiNotificationsService;
+import com.example.monitoreoacua.service.request.NotificationRequest;
+import com.example.monitoreoacua.service.response.ListNotificationResponse;
 import com.example.monitoreoacua.views.farms.ListFarmsActivity;
 import com.example.monitoreoacua.views.menu.LogoutActivity;
 import com.example.monitoreoacua.views.menu.SupportActivity;
@@ -32,6 +44,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     
     protected TopBarFragment topBarFragment;
     protected NavigationBarFragment navigationBarFragment;
+    protected int unreadNotificationsCount = 0;
+    protected ApiNotificationsService notificationsService;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,6 +58,9 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         loadTopBarFragment();
         loadNavigationBarFragment();
         
+        // Initialize notification service
+        notificationsService = ApiClient.getClient().create(ApiNotificationsService.class);
+        
         setActivityTitle(getActivityTitle());
         
         if (savedInstanceState == null) {
@@ -52,6 +69,9 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         
         // Process any notification intents that started this activity
         processNotificationIntent(getIntent());
+        
+        // Fetch notifications when activity is created
+        fetchNotifications();
     }
     
     @Override
@@ -62,6 +82,15 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         processNotificationIntent(intent);
     }
     
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: " + getClass().getSimpleName());
+        
+        // Fetch notifications when activity resumes to ensure the badge is always up-to-date
+        fetchNotifications();
+    }
+    
     /**
      * Process the notification intent that may have started this activity
      */
@@ -70,7 +99,58 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
             boolean wasNotification = NotificationManager.getInstance().processNotificationIntent(this, intent);
             if (wasNotification) {
                 Log.d(TAG, "Processed notification intent");
+                // Fetch notifications when a new notification is received
+                fetchNotifications();
             }
+        }
+    }
+
+
+    protected void fetchNotifications() {
+        ApiNotificationsService apiNotificationsService = ApiClient.getClient().create(ApiNotificationsService.class);
+        NotificationRequest notificationRequest = new NotificationRequest();
+
+        apiNotificationsService.getNotifications(notificationRequest.getAuthToken()).enqueue(new Callback<ListNotificationResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<ListNotificationResponse> call, @NonNull Response<ListNotificationResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    ListNotificationResponse apiResponse = response.body();
+                    List<Notification> notifications = apiResponse.getAllNotification() ;
+                    if (notifications != null) {
+                        // Count unread notifications
+                        int count = 0;
+                        for (Notification item : notifications) {
+                            if (Objects.equals(item.getData().getState(), "unread")) {
+                                count++;
+                            }
+                        }
+
+                        // Update unread count and UI
+                        unreadNotificationsCount = count;
+                        updateNotificationBadge();
+
+                        Log.d(TAG, "Fetched notifications: " + count + " unread");
+                    }
+                } else {
+                    Log.e(TAG, "Failed to fetch notifications: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ListNotificationResponse> call, Throwable t) {
+
+            }
+        });
+    }
+    
+    /**
+     * Updates the notification badge in the TopBarFragment
+     */
+    protected void updateNotificationBadge() {
+        if (topBarFragment != null) {
+            runOnUiThread(() -> {
+                topBarFragment.updateNotificationBadge(unreadNotificationsCount);
+            });
         }
     }
 

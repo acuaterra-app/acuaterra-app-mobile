@@ -4,13 +4,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
-
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.monitoreoacua.R;
-import com.example.monitoreoacua.views.farms.FarmDetailsActivity;
 import com.example.monitoreoacua.views.login.LoginActivity;
 import com.example.monitoreoacua.views.farms.ListFarmsActivity;
 
