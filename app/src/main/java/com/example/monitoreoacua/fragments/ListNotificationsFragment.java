@@ -50,13 +50,14 @@ import retrofit2.Response;
 public class ListNotificationsFragment extends Fragment {
 
     private static final String TAG = "ListNotificationsFrag";
-    private static final int ITEMS_PER_PAGE = 10;
+    // We don't hardcode ITEMS_PER_PAGE anymore as we get this from the API's metadata
 
     private RecyclerView recyclerViewNotifications;
     private NotificationAdapter notificationAdapter;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ProgressBar progressBar;
     private TextView tvEmptyView;
+    private TextView tvPaginationStatus;
     private EditText editTextSearch;
     private AppCompatImageButton buttonSortByDate;
 
@@ -66,7 +67,10 @@ public class ListNotificationsFragment extends Fragment {
     private boolean isLoading = false;
     private boolean hasMorePages = true;
     private String searchQuery = "";
-
+    private int perPage = 20; // Default value, will be updated from API response
+    private int totalPages = 0;
+    private int totalItems = 0;
+    private boolean isRemoteSearch = false;
     private OnNotificationSelectedListener notificationSelectedListener;
 
     public interface OnNotificationSelectedListener {
@@ -106,6 +110,7 @@ public class ListNotificationsFragment extends Fragment {
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         progressBar = view.findViewById(R.id.progressBar);
         tvEmptyView = view.findViewById(R.id.tvEmptyView);
+        tvPaginationStatus = view.findViewById(R.id.tvPaginationStatus);
         editTextSearch = view.findViewById(R.id.searchNotifications);
         buttonSortByDate = view.findViewById(R.id.buttonSortNotifications);
 
@@ -159,8 +164,7 @@ public class ListNotificationsFragment extends Fragment {
 
                     if (!isLoading && hasMorePages) {
                         if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
-                                && firstVisibleItemPosition >= 0
-                                && totalItemCount >= ITEMS_PER_PAGE) {
+                                && firstVisibleItemPosition >= 0) {
                             // Load more items
                             loadMoreNotifications();
                         }
@@ -182,8 +186,20 @@ public class ListNotificationsFragment extends Fragment {
         ApiNotificationsService apiService = ApiClient.getClient().create(ApiNotificationsService.class);
         ListNotificationRequest listNotificationRequest = new ListNotificationRequest();
 
+        Call<ListNotificationResponse> call;
+        if (!searchQuery.isEmpty() && isRemoteSearch) {
+            // Use the search parameter for remote filtering if enabled
+            call = apiService.getNotifications(
+                    listNotificationRequest.getAuthToken(), 
+                    1, 
+                    searchQuery,
+                    null); // Use API default limit
+        } else {
+            // Use standard call without search
+            call = apiService.getNotifications(listNotificationRequest.getAuthToken(), 1);
+        }
 
-        apiService.getNotifications(listNotificationRequest.getAuthToken()).enqueue(new Callback<ListNotificationResponse>() {
+        call.enqueue(new Callback<ListNotificationResponse>() {
             @Override
             public void onResponse(@NonNull Call<ListNotificationResponse> call, @NonNull Response<ListNotificationResponse> response) {
                 hideLoading();
@@ -203,6 +219,20 @@ public class ListNotificationsFragment extends Fragment {
                                 ApiResponse.Meta.Pagination pagination = notificationResponse.getMeta().getPagination();
                                 currentPage = pagination.getCurrentPage();
                                 hasMorePages = pagination.isHasNext();
+                                perPage = pagination.getPerPage();
+                                totalPages = pagination.getTotalPages();
+                                totalItems = pagination.getTotal();
+                                
+                                // Log pagination information
+                                Log.d(TAG, "Current page: " + pagination.getCurrentPage() + 
+                                          ", Total pages: " + pagination.getTotalPages() + 
+                                          ", Items per page: " + pagination.getPerPage() + 
+                                          ", Total items: " + pagination.getTotal() +
+                                          ", Has next: " + pagination.isHasNext() +
+                                          ", Has previous: " + pagination.isHasPrev());
+                                
+                                // Update pagination feedback for user
+                                updatePaginationFeedback();
                             }
 
                             showContent();
@@ -218,15 +248,21 @@ public class ListNotificationsFragment extends Fragment {
             @Override
             public void onFailure(@NonNull Call<ListNotificationResponse> call, @NonNull Throwable t) {
                 hideLoading();
-                if (isAdded()) {
-                    showError("Error de conexión: " + t.getLocalizedMessage());
-                }
+                showError("Error de conexión: " + t.getLocalizedMessage());
             }
         });
     }
 
     private void loadMoreNotifications() {
-        if (isLoading || !hasMorePages) return;
+        if (isLoading || !hasMorePages) {
+            // Show a message if there are no more pages
+            if (!hasMorePages && !isLoading) {
+                if (isAdded()) {
+                    Toast.makeText(getContext(), "No hay más notificaciones para cargar", Toast.LENGTH_SHORT).show();
+                }
+            }
+            return;
+        }
 
         isLoading = true;
         currentPage++;
@@ -237,17 +273,23 @@ public class ListNotificationsFragment extends Fragment {
         ApiNotificationsService apiService = ApiClient.getClient().create(ApiNotificationsService.class);
         ListNotificationRequest listNotificationRequest = new ListNotificationRequest();
 
-        // Assuming the API supports pagination parameters
-        Map<String, String> queryParams = new HashMap<>();
-        queryParams.put("page", String.valueOf(currentPage));
-        queryParams.put("limit", String.valueOf(ITEMS_PER_PAGE));
-
-        if (!searchQuery.isEmpty()) {
-            queryParams.put("search", searchQuery);
+        Call<ListNotificationResponse> call;
+        if (!searchQuery.isEmpty() && isRemoteSearch) {
+            // Use the search parameter for remote filtering if enabled
+            call = apiService.getNotifications(
+                    listNotificationRequest.getAuthToken(), 
+                    currentPage, 
+                    searchQuery,
+                    null); // Use API default limit
+        } else {
+            // Use standard call without search
+            call = apiService.getNotifications(
+                    listNotificationRequest.getAuthToken(),
+                    currentPage
+            );
         }
 
-        // This is a placeholder - you'll need to update the API interface to support pagination params
-        apiService.getNotifications(listNotificationRequest.getAuthToken()).enqueue(new Callback<ListNotificationResponse>() {
+        call.enqueue(new Callback<ListNotificationResponse>() {
             @Override
             public void onResponse(@NonNull Call<ListNotificationResponse> call, @NonNull Response<ListNotificationResponse> response) {
                 isLoading = false;
@@ -268,23 +310,49 @@ public class ListNotificationsFragment extends Fragment {
                             ApiResponse.Meta.Pagination pagination = notificationResponse.getMeta().getPagination();
                             currentPage = pagination.getCurrentPage();
                             hasMorePages = pagination.isHasNext();
+                            perPage = pagination.getPerPage();
+                            totalPages = pagination.getTotalPages();
+                            totalItems = pagination.getTotal();
+                            
+                            // Update pagination feedback
+                            updatePaginationFeedback();
                         } else {
                             hasMorePages = false;
+                            if (isAdded()) {
+                                Toast.makeText(getContext(), "No hay más notificaciones disponibles", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     } else {
                         hasMorePages = false;
+                        if (isAdded()) {
+                            Toast.makeText(getContext(), "No hay más notificaciones disponibles", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 } else {
                     hasMorePages = false;
+                    if (isAdded()) {
+                        String errorMessage = "Error al cargar más notificaciones";
+                        if (response.errorBody() != null) {
+                            try {
+                                errorMessage += ": Error de servidor";
+                            } catch (Exception e) {
+                                errorMessage += ": Código " + response.code();
+                            }
+                        }
+                        Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
-
             @Override
             public void onFailure(@NonNull Call<ListNotificationResponse> call, @NonNull Throwable t) {
                 isLoading = false;
                 notificationAdapter.setLoadingMore(false);
                 currentPage--; // Revert page increment since request failed
-                Toast.makeText(getContext(), "Error loading more notifications", Toast.LENGTH_SHORT).show();
+                String errorMessage = "Error al cargar más notificaciones: Fallo en la conexión";
+                Log.e(TAG, errorMessage + ": " + t.getLocalizedMessage(), t);
+                if (isAdded()) {
+                    Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -295,10 +363,20 @@ public class ListNotificationsFragment extends Fragment {
     }
 
     private void filterNotifications(String query) {
+        searchQuery = query;
+        
+        // If remote search is enabled and the query is not empty, fetch from server
+        if (isRemoteSearch && !query.isEmpty()) {
+            fetchNotifications(); // This will use the searchQuery in the API call
+            return;
+        }
+        
+        // Otherwise, perform local filtering
         if (notificationsList.isEmpty()) return;
 
         if (query.isEmpty()) {
             notificationAdapter.setNotifications(notificationsList);
+            showContent();
             return;
         }
 
@@ -344,28 +422,36 @@ public class ListNotificationsFragment extends Fragment {
     }
 
     private void showLoading() {
+        if (!isAdded()) return;
         progressBar.setVisibility(View.VISIBLE);
         tvEmptyView.setVisibility(View.GONE);
         recyclerViewNotifications.setVisibility(View.GONE);
+        tvPaginationStatus.setVisibility(View.GONE);
     }
 
     private void hideLoading() {
+        if (!isAdded()) return;
         progressBar.setVisibility(View.GONE);
         swipeRefreshLayout.setRefreshing(false);
     }
 
     private void showContent() {
+        if (!isAdded()) return;
         recyclerViewNotifications.setVisibility(View.VISIBLE);
         tvEmptyView.setVisibility(View.GONE);
+        tvPaginationStatus.setVisibility(View.VISIBLE);
     }
 
     private void showEmptyState(String message) {
+        if (!isAdded()) return;
         recyclerViewNotifications.setVisibility(View.GONE);
         tvEmptyView.setVisibility(View.VISIBLE);
+        tvPaginationStatus.setVisibility(View.GONE);
         tvEmptyView.setText(message);
     }
 
     private void showError(String message) {
+        if (!isAdded()) return;
         Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
         showEmptyState(getString(R.string.error_loading_notifications));
     }
@@ -374,11 +460,36 @@ public class ListNotificationsFragment extends Fragment {
         String errorMessage;
         try {
             errorMessage = response.errorBody() != null ?
-                    response.errorBody().string() : "Unknown error";
+                    "Error en la respuesta del servidor" : "Error desconocido";
         } catch (Exception e) {
             errorMessage = "Error " + response.code();
         }
 
         showError("Error: " + errorMessage);
+    }
+    
+    /**
+     * Updates UI with pagination feedback
+     */
+    private void updatePaginationFeedback() {
+        if (!isAdded() || getContext() == null) return;
+        
+        // Use tvPaginationStatus TextView instead of Toast
+        if (totalItems > 0) {
+            String message = "Mostrando " + notificationsList.size() + " de " + totalItems + 
+                    " notificaciones (Página " + currentPage + " de " + totalPages + ")";
+            
+            // Show the pagination status to the user
+            if (hasMorePages) {
+                message += " - Desliza para cargar más";
+            } else {
+                message += " - No hay más páginas";
+            }
+            
+            tvPaginationStatus.setText(message);
+            tvPaginationStatus.setVisibility(View.VISIBLE);
+        } else {
+            tvPaginationStatus.setVisibility(View.GONE);
+        }
     }
 }

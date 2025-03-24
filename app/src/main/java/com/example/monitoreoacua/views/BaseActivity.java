@@ -106,39 +106,113 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     }
 
 
+    /**
+     * Fetches unread notifications from the API and updates the notification badge
+     * with the count. Uses a robust approach with multiple fallbacks to ensure
+     * the notification badge is always displayed correctly.
+     */
     protected void fetchNotifications() {
-        ApiNotificationsService apiNotificationsService = ApiClient.getClient().create(ApiNotificationsService.class);
+        if (notificationsService == null) {
+            notificationsService = ApiClient.getClient().create(ApiNotificationsService.class);
+        }
+        
         ListNotificationRequest listNotificationRequest = new ListNotificationRequest();
+        String authToken = listNotificationRequest.getAuthToken();
+        
+        // Use a reasonable limit to avoid excessive data transfer
+        final int NOTIFICATION_LIMIT = 50;
+        
+        Log.d(TAG, "Fetching unread notifications...");
 
-        apiNotificationsService.getNotifications(listNotificationRequest.getAuthToken()).enqueue(new Callback<ListNotificationResponse>() {
+        // Use the enhanced method with more parameters for better control
+        notificationsService.getNotificationsByState(
+                authToken, 
+                1, 
+                "unread", 
+                null,  // No search filter
+                NOTIFICATION_LIMIT  // Limit the result set
+        ).enqueue(new Callback<ListNotificationResponse>() {
             @Override
             public void onResponse(@NonNull Call<ListNotificationResponse> call, @NonNull Response<ListNotificationResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     ListNotificationResponse apiResponse = response.body();
-                    List<Notification> notifications = apiResponse.getAllNotification() ;
-                    if (notifications != null) {
-                        // Count unread notifications
-                        int count = 0;
-                        for (Notification item : notifications) {
-                            if (Objects.equals(item.getData().getState(), "unread")) {
-                                count++;
+                    int previousCount = unreadNotificationsCount; // Store the previous count for comparison
+                    
+                    // Log the response for debugging
+                    Log.d(TAG, "Received notification response successfully");
+                    
+                    try {
+                        boolean countUpdated = false;
+                        
+                        // Method 1: Try to get count from meta.pagination.total
+                        if (apiResponse.getMeta() != null && apiResponse.getMeta().getPagination() != null) {
+                            // Since total is a primitive int, we don't need to check for null
+                            int count = apiResponse.getMeta().getPagination().getTotal();
+                            unreadNotificationsCount = count;
+                            countUpdated = true;
+                            Log.d(TAG, "Method 1: Got unread count from meta.pagination.total: " + count);
+                        }
+                        
+                        // Method 2: If meta/pagination is missing, count the notifications in the data array
+                        if (!countUpdated && apiResponse.getData() != null) {
+                            List<Notification> notifications = apiResponse.getData();
+                            unreadNotificationsCount = notifications.size();
+                            countUpdated = true;
+                            Log.d(TAG, "Method 2: Counted unread notifications from data: " + unreadNotificationsCount);
+                            
+                            // If we get less than the limit, we can trust this count
+                            // Otherwise, we should indicate that there might be more
+                            if (notifications.size() >= NOTIFICATION_LIMIT) {
+                                Log.w(TAG, "Notification count might be incomplete (reached limit)");
                             }
                         }
-
-                        // Update unread count and UI
-                        unreadNotificationsCount = count;
+                        
+                        // Method 3: If both methods failed, keep the previous count but log a warning
+                        if (!countUpdated) {
+                            Log.w(TAG, "Could not determine unread notification count, keeping previous count: " + previousCount);
+                        }
+                        
+                        // Log if the count changed
+                        if (previousCount != unreadNotificationsCount) {
+                            Log.d(TAG, "Notification count changed: " + previousCount + " -> " + unreadNotificationsCount);
+                        }
+                        
+                        // Always update the badge to ensure UI is consistent
                         updateNotificationBadge();
-
-                        Log.d(TAG, "Fetched notifications: " + count + " unread");
+                        
+                    } catch (Exception e) {
+                        // Catch any unexpected exceptions when processing the response
+                        Log.e(TAG, "Exception while processing notification response: " + e.getMessage(), e);
+                        // Keep the previous count to avoid resetting the badge incorrectly
                     }
                 } else {
-                    Log.e(TAG, "Failed to fetch notifications: " + response.message());
+                    int statusCode = response.code();
+                    String errorMessage = response.message();
+                    Log.e(TAG, "Failed to fetch notifications. Status code: " + statusCode + ", Message: " + errorMessage);
+                    
+                    // If error response body exists, log it for debugging
+                    try {
+                        if (response.errorBody() != null) {
+                            String errorBody = response.errorBody().string();
+                            Log.e(TAG, "Error body: " + errorBody);
+                        }
+                    } catch (Exception e) {
+                        Log.e(TAG, "Error reading error body: " + e.getMessage());
+                    }
+                    
+                    // Despite the error, we should still update the badge with the last known count
+                    // This prevents the badge from disappearing due to temporary network issues
+                    updateNotificationBadge();
                 }
             }
 
             @Override
-            public void onFailure(Call<ListNotificationResponse> call, Throwable t) {
-
+            public void onFailure(@NonNull Call<ListNotificationResponse> call, @NonNull Throwable t) {
+                Log.e(TAG, "Network error when fetching notifications: " + t.getMessage(), t);
+                
+                // Despite the network failure, we should still update the badge with the last known count
+                // to prevent the badge from disappearing due to temporary network issues
+                updateNotificationBadge();
             }
         });
     }
@@ -149,8 +223,17 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     protected void updateNotificationBadge() {
         if (topBarFragment != null) {
             runOnUiThread(() -> {
-                topBarFragment.updateNotificationBadge(unreadNotificationsCount);
+                try {
+                    // Ensure notification count is not negative
+                    int badgeCount = Math.max(0, unreadNotificationsCount);
+                    Log.d(TAG, "Updating notification badge with count: " + badgeCount);
+                    topBarFragment.updateNotificationBadge(badgeCount);
+                } catch (Exception e) {
+                    Log.e(TAG, "Error updating notification badge: " + e.getMessage(), e);
+                }
             });
+        } else {
+            Log.w(TAG, "Cannot update notification badge: topBarFragment is null");
         }
     }
 
