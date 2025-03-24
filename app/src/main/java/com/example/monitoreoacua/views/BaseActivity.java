@@ -3,12 +3,14 @@ package com.example.monitoreoacua.views;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.monitoreoacua.fragments.NavigationBarFragment;
+import com.example.monitoreoacua.fragments.NavigationBarFragment.NavigationBarListener;
+import com.example.monitoreoacua.fragments.TopBarFragment;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -19,10 +21,10 @@ import com.example.monitoreoacua.views.farms.ListFarmsActivity;
  * It handles setting up the shared UI elements like the navigation bar and title,
  * and provides methods for child activities to customize these elements and load fragments.
  */
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity implements NavigationBarListener {
 
-    protected TextView textViewActivityTitle;
-    protected AppCompatImageButton navHome, navSettings, navProfile, navCloseSesion;
+    protected TopBarFragment topBarFragment;
+    protected NavigationBarFragment navigationBarFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,11 +34,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         // Set up system UI for edge-to-edge display
         setupEdgeToEdgeDisplay();
         
-        // Initialize views
-        textViewActivityTitle = findViewById(R.id.textViewActivityTitle);
-        
-        // Set up navigation buttons
-        setupNavigationButtons();
+        // Load top bar and navigation bar fragments
+        loadTopBarFragment();
+        loadNavigationBarFragment();
         
         // Set the title for this activity
         setActivityTitle(getActivityTitle());
@@ -59,27 +59,32 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
     
     /**
-     * Sets up navigation buttons with default behavior.
-     * Child activities can override this method to customize navigation behavior.
+     * Loads the NavigationBarFragment into the navigation bar container.
      */
-    protected void setupNavigationButtons() {
-        navHome = findViewById(R.id.navHome);
-        navSettings = findViewById(R.id.navSettings);
-        navProfile = findViewById(R.id.navProfile);
-        navCloseSesion = findViewById(R.id.navCloseSesion);
-        
-        // Set default click listeners
-        navHome.setOnClickListener(v -> navigateToHome());
-        navSettings.setOnClickListener(v -> navigateToSettings());
-        navProfile.setOnClickListener(v -> navigateToProfile());
-        navCloseSesion.setOnClickListener(v -> logout());
+    protected void loadNavigationBarFragment() {
+        navigationBarFragment = NavigationBarFragment.newInstance();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.navBarContainer, navigationBarFragment)
+                .commit();
     }
     
     /**
+     * Loads the TopBarFragment into the top bar container.
+     */
+    protected void loadTopBarFragment() {
+        topBarFragment = TopBarFragment.newInstance();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.topBarContainer, topBarFragment)
+                .commit();
+    }
+    
+    /**
+     * Implementation of NavigationBarListener interface.
      * Default navigation to Home/Farms screen.
      * Child activities can override this method to customize behavior.
      */
-    protected void navigateToHome() {
+    @Override
+    public void navigateToHome() {
         if (!this.getClass().getSimpleName().equals("ListFarmsActivity")) {
             Intent intent = new Intent(this, ListFarmsActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -87,30 +92,36 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
     /**
+     * Implementation of NavigationBarListener interface.
      * Default navigation to Settings screen.
      * Child activities can override this method to customize behavior.
      */
-    protected void navigateToSettings() {
+    @Override
+    public void navigateToSettings() {
         // This would typically navigate to a Settings or Users Activity
         // For now, just show a toast message
         Toast.makeText(this, "Navigate to Users/Settings (not implemented)", Toast.LENGTH_SHORT).show();
     }
 
     /**
+     * Implementation of NavigationBarListener interface.
      * Default navigation to Profile/Support screen.
      * Child activities can override this method to customize behavior.
      */
-    protected void navigateToProfile() {
+    @Override
+    public void navigateToProfile() {
         // This would typically navigate to a Profile or Support Activity
         // For now, just show a toast message
         Toast.makeText(this, "Navigate to Support (not implemented)", Toast.LENGTH_SHORT).show();
     }
 
     /**
+     * Implementation of NavigationBarListener interface.
      * Default logout behavior.
      * Child activities can override this method to customize behavior.
      */
-    protected void logout() {
+    @Override
+    public void logout() {
         // This would typically handle logout and navigate to login screen
         // For now, just show a toast message
         Toast.makeText(this, "Logging out (not implemented)", Toast.LENGTH_SHORT).show();
@@ -121,8 +132,8 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @param title The title to display
      */
     protected void setActivityTitle(String title) {
-        if (textViewActivityTitle != null) {
-            textViewActivityTitle.setText(title);
+        if (topBarFragment != null) {
+            topBarFragment.setTitle(title);
         }
     }
 

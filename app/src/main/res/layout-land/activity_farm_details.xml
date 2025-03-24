@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/backgroundfarms"
     android:paddingBottom="0dp"
-    tools:context=".views.farms.farm.FarmDetailsActivity">
+    tools:context=".views.farms.FarmDetailsActivity">
 
     <!-- Barra de navegación lateral (derecha) -->
     <LinearLayout

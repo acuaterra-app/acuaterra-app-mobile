@@ -131,8 +131,14 @@ public class LoginActivity extends AppCompatActivity {
                         }
 
                         token = token.trim();
-                        String userName = loginResponse.getUser().getName();
-
+                        
+                        // Add null check before accessing user object
+                        String userName = "User";
+                        if (loginResponse.getUser() != null) {
+                            userName = loginResponse.getUser().getName() != null ? 
+                                       loginResponse.getUser().getName() : "User";
+                        }
+                        
                         Toast.makeText(LoginActivity.this, "Welcome, " + userName, Toast.LENGTH_SHORT).show();
                         loginAttempts = 0;
 
@@ -145,6 +151,7 @@ public class LoginActivity extends AppCompatActivity {
                         startActivity(intent);
                         new Handler().postDelayed(() -> finish(), 100);
                     } catch (Exception e) {
+                        Log.e(TAG, "Error processing login data", e);
                         Toast.makeText(LoginActivity.this, "Error processing login data", Toast.LENGTH_SHORT).show();
                     }
                 } else {
@@ -165,6 +172,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Call<LoginResponse> call, @NonNull Throwable t) {
                 btnLogin.setEnabled(true);
+                Log.e(TAG, "Error logging in", t);
                 Toast.makeText(LoginActivity.this, "Error connecting to server: " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
             }
         });

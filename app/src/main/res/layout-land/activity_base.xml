@@ -7,17 +7,11 @@
     android:background="@drawable/backgroundapp"
     android:fitsSystemWindows="true">
 
-    <!-- Title bar with safe insets -->
-    <TextView
-        android:id="@+id/textViewActivityTitle"
+    <!-- TopBar fragment container -->
+    <FrameLayout
+        android:id="@+id/topBarContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Activity Title"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="@color/colorPrimaryDark"
-        android:fontFamily="@font/koulen"
-        android:gravity="center"
         android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
@@ -31,7 +25,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="16dp"
-        app:layout_constraintTop_toBottomOf="@id/textViewActivityTitle"
+        app:layout_constraintTop_toBottomOf="@id/topBarContainer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/sideNav"
         app:layout_constraintBottom_toBottomOf="parent" />

@@ -12,7 +12,8 @@ import com.example.monitoreoacua.service.ApiClient;
 import com.example.monitoreoacua.service.ApiFarmsService;
 import com.example.monitoreoacua.service.request.BaseRequest;
 import com.example.monitoreoacua.service.response.FarmResponse;
-import com.example.monitoreoacua.views.farms.farm.FarmDetailsActivity;
+import com.example.monitoreoacua.views.farms.FarmDetailsActivity;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -103,11 +104,10 @@ public class FarmNotificationHandler implements NotificationHandler {
      * @param farm The farm details to display
      */
     private void openFarmDetailsActivity(Context context, Farm farm) {
-        Intent intent = new Intent(context, FarmDetailsActivity.class);
-        intent.putExtra("farm", farm);
+        Intent intent = FarmDetailsActivity.createIntent(context, farm);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         context.startActivity(intent);
-        Log.d(TAG, "Opening FarmDetailsActivity for farm ID: " + farm.getId());
+        Log.d(TAG, "Opening FarmDetailsFragmentActivity for farm ID: " + farm.getId());
     }
     
     /**

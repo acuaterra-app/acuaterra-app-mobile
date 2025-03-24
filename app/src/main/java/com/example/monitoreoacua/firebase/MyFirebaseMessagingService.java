@@ -178,7 +178,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             // Specify the component explicitly for reliable navigation
             intent.setClassName(getPackageName(),
-                    "com.example.monitoreoacua.views.farms.farm.FarmDetailsActivity");
+                    "com.example.monitoreoacua.views.farms.FarmDetailsActivity");
 
             // Set flags for proper activity launching
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);

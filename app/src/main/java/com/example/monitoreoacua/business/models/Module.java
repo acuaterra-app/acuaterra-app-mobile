@@ -1,5 +1,6 @@
 package com.example.monitoreoacua.business.models;
 
+import com.example.monitoreoacua.business.models.auth.AuthUser;
 import com.google.gson.annotations.SerializedName;
 
 public class Module {

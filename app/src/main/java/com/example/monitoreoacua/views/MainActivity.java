@@ -6,14 +6,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.monitoreoacua.views.farms.farm.FarmDetailsActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.monitoreoacua.R;
+import com.example.monitoreoacua.views.farms.FarmDetailsActivity;
 import com.example.monitoreoacua.views.login.LoginActivity;
 import com.example.monitoreoacua.views.farms.ListFarmsActivity;
-import com.example.monitoreoacua.views.sample.SampleActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -53,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
                     receivedIntent.getStringExtra("notificationType"));
             }
             
-            Log.d(TAG, "onCreate: Launching FarmDetailsActivity with farmId: " + farmId);
+            Log.d(TAG, "onCreate: Launching FarmDetailsFragmentActivity with farmId: " + farmId);
             startActivity(farmDetailsIntent);
             finish();
             return;
@@ -72,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            intent = new Intent(MainActivity.this, SampleActivity.class);
+            intent = new Intent(MainActivity.this, ListFarmsActivity.class);
             startActivity(intent);
             finish();
         } catch (Exception e) {
@@ -112,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
                 farmDetailsIntent.putExtra("notificationType", intent.getStringExtra("notificationType"));
             }
             
-            Log.d(TAG, "onNewIntent: Launching FarmDetailsActivity with farmId: " + farmId);
+            Log.d(TAG, "onNewIntent: Launching FarmDetailsFragmentActivity with farmId: " + farmId);
             startActivity(farmDetailsIntent);
             finish();
         }
