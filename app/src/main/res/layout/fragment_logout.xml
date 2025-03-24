@@ -2,11 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/logout_fragment_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/logingbackground"
-    tools:context=".views.menu.CloseSessionActivity">
+    tools:context=".fragments.LogoutFragment">
 
     <!-- Main container to center the content.-->
     <LinearLayout
@@ -27,8 +27,8 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:src="@drawable/logoacua"
-        android:contentDescription="Icono de advertencia"
-        android:layout_marginBottom="24dp"/>
+            android:contentDescription="Icono de advertencia"
+            android:layout_marginBottom="24dp"/>
 
         <!-- Confirmation message -->
         <TextView
@@ -79,3 +79,4 @@
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+

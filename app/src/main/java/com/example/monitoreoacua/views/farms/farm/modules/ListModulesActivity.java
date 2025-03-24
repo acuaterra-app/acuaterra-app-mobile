@@ -31,7 +31,7 @@ import com.example.monitoreoacua.service.request.ListModulesRequest;
 import com.example.monitoreoacua.service.response.ListFarmResponse;
 import com.example.monitoreoacua.service.response.ListModuleResponse;
 import com.example.monitoreoacua.views.farms.ListFarmsActivity;
-import com.example.monitoreoacua.views.menu.CloseSessionActivity;
+import com.example.monitoreoacua.views.menu.LogoutActivity;
 import com.example.monitoreoacua.views.menu.SupportActivity;
 
 import java.util.ArrayList;
@@ -107,7 +107,7 @@ public class ListModulesActivity extends AppCompatActivity {
         });
 
         navCloseSesion.setOnClickListener(v -> {
-            Intent intent = new Intent(ListModulesActivity.this, CloseSessionActivity.class);
+            Intent intent = new Intent(ListModulesActivity.this, LogoutActivity.class);
             startActivity(intent);
         });
     }

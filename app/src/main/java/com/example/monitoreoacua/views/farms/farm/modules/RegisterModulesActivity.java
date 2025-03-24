@@ -12,7 +12,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.monitoreoacua.R;
 import com.example.monitoreoacua.views.farms.ListFarmsActivity;
-import com.example.monitoreoacua.views.menu.CloseSessionActivity;
+import com.example.monitoreoacua.views.menu.LogoutActivity;
 import com.example.monitoreoacua.views.menu.SupportActivity;
 
 public class RegisterModulesActivity extends AppCompatActivity {
@@ -49,7 +49,7 @@ public class RegisterModulesActivity extends AppCompatActivity {
         });
 
         navCloseSesion.setOnClickListener(v -> {
-            Intent intent = new Intent(RegisterModulesActivity.this, CloseSessionActivity.class);
+            Intent intent = new Intent(RegisterModulesActivity.this, LogoutActivity.class);
             startActivity(intent);
         });
 

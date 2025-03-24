@@ -18,7 +18,7 @@ import com.example.monitoreoacua.service.ApiClient;
 import com.example.monitoreoacua.service.ApiFarmsService;
 import com.example.monitoreoacua.service.request.BaseRequest;
 import com.example.monitoreoacua.service.response.FarmResponse;
-import com.example.monitoreoacua.views.menu.CloseSessionActivity;
+import com.example.monitoreoacua.views.menu.LogoutActivity;
 import com.example.monitoreoacua.views.menu.SupportActivity;
 import com.example.monitoreoacua.views.farms.ListFarmsActivity;
 
@@ -105,7 +105,7 @@ public class FarmFormActivity extends AppCompatActivity {
         });
         
         navCloseSesion.setOnClickListener(v -> {
-            Intent intent = new Intent(FarmFormActivity.this, CloseSessionActivity.class);
+            Intent intent = new Intent(FarmFormActivity.this, LogoutActivity.class);
             startActivity(intent);
         });
     }

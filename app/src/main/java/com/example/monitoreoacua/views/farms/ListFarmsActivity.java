@@ -11,7 +11,7 @@ import com.example.monitoreoacua.fragments.FarmDetailsFragment;
 import com.example.monitoreoacua.fragments.ListFarmsFragment;
 import com.example.monitoreoacua.interfaces.OnFragmentInteractionListener;
 import com.example.monitoreoacua.views.BaseActivity;
-import com.example.monitoreoacua.views.menu.CloseSessionActivity;
+import com.example.monitoreoacua.views.menu.LogoutActivity;
 import com.example.monitoreoacua.views.menu.SupportActivity;
 
 /**
@@ -47,7 +47,7 @@ public class ListFarmsActivity extends BaseActivity
 
     @Override
     public void logout() {
-        Intent intent = new Intent(this, CloseSessionActivity.class);
+        Intent intent = new Intent(this, LogoutActivity.class);
         startActivity(intent);
     }
 

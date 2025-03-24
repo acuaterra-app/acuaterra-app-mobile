@@ -16,6 +16,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.monitoreoacua.R;
 import com.example.monitoreoacua.views.farms.ListFarmsActivity;
+import com.example.monitoreoacua.views.menu.SupportActivity;
+import com.example.monitoreoacua.views.menu.LogoutActivity;
 /**
  * BaseActivity provides common functionality for activities in the application.
  * It handles setting up the shared UI elements like the navigation bar and title,
@@ -85,7 +87,11 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
      */
     @Override
     public void navigateToHome() {
-        if (!this.getClass().getSimpleName().equals("ListFarmsActivity")) {
+        if (this.getClass().getSimpleName().equals("ListFarmsActivity")) {
+            // If already in ListFarmsActivity, reload the initial fragment (list of farms)
+            loadInitialFragment();
+        } else {
+            // Navigate to the ListFarmsActivity
             Intent intent = new Intent(this, ListFarmsActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
@@ -110,9 +116,15 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
      */
     @Override
     public void navigateToProfile() {
-        // This would typically navigate to a Profile or Support Activity
-        // For now, just show a toast message
-        Toast.makeText(this, "Navigate to Support (not implemented)", Toast.LENGTH_SHORT).show();
+        if (this.getClass().getSimpleName().equals("SupportActivity")) {
+            // If already in SupportActivity, reload the initial fragment
+            loadInitialFragment();
+        } else {
+            // Navigate to the SupportActivity
+            Intent intent = new Intent(this, SupportActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
     }
 
     /**
@@ -122,9 +134,10 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
      */
     @Override
     public void logout() {
-        // This would typically handle logout and navigate to login screen
-        // For now, just show a toast message
-        Toast.makeText(this, "Logging out (not implemented)", Toast.LENGTH_SHORT).show();
+        // Navigate to LogoutActivity when the logout button is pressed
+        Intent intent = new Intent(this, com.example.monitoreoacua.views.menu.LogoutActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
     /**

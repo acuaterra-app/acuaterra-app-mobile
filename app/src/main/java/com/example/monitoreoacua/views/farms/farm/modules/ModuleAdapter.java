@@ -33,7 +33,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
     @Override
     public ModuleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_module, parent, false);
+                .inflate(R.layout.recycle_view_item_module, parent, false);
         return new ModuleViewHolder(itemView);
     }
 
