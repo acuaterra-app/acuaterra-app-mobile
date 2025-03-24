@@ -75,6 +75,8 @@
             android:exported="false" />
         <activity
             android:name=".views.login.LoginActivity"
+            android:launchMode="singleTop"
+            android:configChanges="orientation|screenSize"
             android:exported="false" />
         <activity
             android:name=".views.login.RegisterActivity"
