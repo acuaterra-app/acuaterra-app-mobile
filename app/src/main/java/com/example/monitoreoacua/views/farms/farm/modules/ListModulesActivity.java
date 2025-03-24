@@ -121,7 +121,7 @@ public class ListModulesActivity extends AppCompatActivity {
         buttonAddModule.setOnClickListener(v -> {
             //int farmId = getIntent().getIntExtra("farmId", -1);
             if (farmId != -1) {
-                Intent intent = new Intent(ListModulesActivity.this, RegisterModulesActivity.class);
+                Intent intent = new Intent(ListModulesActivity.this, CreateModuleActivity.class);
                 intent.putExtra("farmId", farmId);  // Pass the farmId to the registration activity
                 startActivity(intent);
             } else {

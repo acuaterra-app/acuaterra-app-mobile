@@ -79,12 +79,52 @@
                 android:padding="10dp"
                 android:layout_marginTop="8dp"/>
 
-            <!-- Campo 3: Latitud -->
+            <!-- Campo 3: Latitude -->
+            <TextView
+                android:id="@+id/tvLatitude"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ubicación"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:layout_marginTop="16dp"/>
+
+            <EditText
+                android:id="@+id/etLatitude"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/colorBackground"
+                android:hint="Ej: 11,15 "
+                android:textSize="16sp"
+                android:padding="10dp"
+                android:layout_marginTop="8dp"/>
+
+            <!-- Campo 4: Longitude -->
+            <TextView
+                android:id="@+id/tvLongitude"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Longitud"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:layout_marginTop="16dp"/>
+
+            <EditText
+                android:id="@+id/etLongitude"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/colorBackground"
+                android:hint="Ej: 15,78"
+                android:textSize="16sp"
+                android:padding="10dp"
+                android:layout_marginTop="8dp"/>
+
+            <!-- Campo 5: Type Fish -->
             <TextView
                 android:id="@+id/tvFishType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Latitud"
+                android:text="Ej: Trucha"
                 android:textSize="16sp"
                 android:textColor="@android:color/black"
                 android:layout_marginTop="16dp"/>
@@ -94,47 +134,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@color/colorBackground"
-                android:hint="Ej: 20m"
-                android:textSize="16sp"
-                android:padding="10dp"
-                android:layout_marginTop="8dp"/>
-
-            <!-- Campo 4: Longitud -->
-            <TextView
-                android:id="@+id/tvFishCount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Longitud"
-                android:textSize="16sp"
-                android:textColor="@android:color/black"
-                android:layout_marginTop="16dp"/>
-
-            <EditText
-                android:id="@+id/etFishCount"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@color/colorBackground"
-                android:hint="Ej: 100m"
-                android:textSize="16sp"
-                android:padding="10dp"
-                android:layout_marginTop="8dp"/>
-
-            <!-- Campo 5: Especie de pez -->
-            <TextView
-                android:id="@+id/tvGrowthTime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Especie de pez"
-                android:textSize="16sp"
-                android:textColor="@android:color/black"
-                android:layout_marginTop="16dp"/>
-
-            <EditText
-                android:id="@+id/etGrowthTime"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@color/colorBackground"
-                android:hint="Ej: Tilapia"
+                android:hint="Tipo de pez"
                 android:textSize="16sp"
                 android:padding="10dp"
                 android:layout_marginTop="8dp"/>
@@ -159,7 +159,7 @@
                 android:padding="10dp"
                 android:layout_marginTop="8dp"/>
 
-            <!-- Campo 7: Edad de pez -->
+            <!-- Campo 7: Age´s Fish -->
             <TextView
                 android:id="@+id/tvFishAge"
                 android:layout_width="match_parent"
@@ -201,7 +201,7 @@
 
             <!-- Botón Guardar -->
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnRegisterModulo"
+                android:id="@+id/btnRegisterModule"
                 style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -214,7 +214,7 @@
 
             <!-- Botón Cancelar -->
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnCancelar"
+                android:id="@+id/btnCancel"
                 style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -18,7 +18,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".views.farms.farm.modules.RegisterModulesActivity"
+            android:name=".views.farms.farm.modules.CreateModuleActivity"
             android:exported="false" />
         <activity
             android:name=".views.modules.RegisterModule"
