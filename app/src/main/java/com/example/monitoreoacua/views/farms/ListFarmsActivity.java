@@ -72,6 +72,9 @@ public class ListFarmsActivity extends AppCompatActivity {
         farmAdapter = new FarmAdapter();
         recyclerViewFarms.setAdapter(farmAdapter);
 
+        int userId = getIntent().getIntExtra("userId", -1);
+        Toast.makeText(ListFarmsActivity.this, "LFA: userId:" + userId, Toast.LENGTH_LONG).show();
+
         // Fetch farm data from the API
         fetchFarms();
 
@@ -79,6 +82,7 @@ public class ListFarmsActivity extends AppCompatActivity {
         farmAdapter.setOnFarmClickListener(farm -> {
             Intent intent = new Intent(ListFarmsActivity.this, FarmDetailsActivity.class);
             intent.putExtra("farm", farm);
+            intent.putExtra("userId", userId);
             startActivity(intent);
         });
 

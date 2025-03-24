@@ -31,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText etEmail, etPassword;
     private Button btnLogin;
     private int loginAttempts = 0;
+    private int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,13 +82,9 @@ public class LoginActivity extends AppCompatActivity {
 
                     //Ensure that the User object is not null before accessing its ID
                     if (loginResponse.getUser() != null) {
-                        int userId = loginResponse.getUser().getId();
+                        userId = loginResponse.getUser().getId();
                         Toast.makeText(LoginActivity.this, "LA - User id: "+ userId , Toast.LENGTH_SHORT).show();
 
-                        Intent intent = new Intent(LoginActivity.this, ListModulesActivity.class);
-                        intent.putExtra("userId", userId);
-                        startActivity(intent);
-                        finish();
                     } else {
                         Toast.makeText(LoginActivity.this, "Error: User data is missing", Toast.LENGTH_SHORT).show();
                         return;
@@ -113,6 +110,7 @@ public class LoginActivity extends AppCompatActivity {
                         editor.apply();
 
                         Intent intent = new Intent(LoginActivity.this, ListFarmsActivity.class);
+                        intent.putExtra("userId", userId);
                         startActivity(intent);
                         finish();
                     } catch (Exception e) {

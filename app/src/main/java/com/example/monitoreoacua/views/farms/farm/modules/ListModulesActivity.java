@@ -129,7 +129,7 @@ public class ListModulesActivity extends AppCompatActivity {
             if (farmId != -1 && userId != -1) {
                 Intent intent = new Intent(ListModulesActivity.this, CreateModuleActivity.class);
                 intent.putExtra("farmId", farmId);  // Pass the farmId to the registration activity
-                intent.putExtra("created_by_user_id", userId);
+                intent.putExtra("userId", userId);
                 startActivity(intent);
             } else {
                 Toast.makeText(this, "Error: ID de granja no proporcionado", Toast.LENGTH_LONG).show();

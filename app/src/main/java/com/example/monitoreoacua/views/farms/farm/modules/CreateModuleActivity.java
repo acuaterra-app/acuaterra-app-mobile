@@ -27,7 +27,7 @@ public class CreateModuleActivity extends AppCompatActivity {
 
     private EditText etModuleName, etLocation, etLatitude, etLongitude, etFishType, etFishQuantity, etFishAge, etVolumeUnit;
     private Button btnRegisterModule;
-    private int farmId, createdByUserId;
+    private int farmId, userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +45,11 @@ public class CreateModuleActivity extends AppCompatActivity {
         btnRegisterModule = findViewById(R.id.btnRegisterModule);
 
         farmId = getIntent().getIntExtra("farmId", 0);
-        createdByUserId = getIntent().getIntExtra("created_by_user_id", 0);
+        userId = getIntent().getIntExtra("userId", 0);
         btnRegisterModule.setOnClickListener(v -> registerModule());
 
-        Toast.makeText(CreateModuleActivity.this, "CMA - User id: "+ createdByUserId , Toast.LENGTH_SHORT).show();
+        Toast.makeText(CreateModuleActivity.this, "CMA - Farm id: "+ farmId , Toast.LENGTH_SHORT).show();
+        Toast.makeText(CreateModuleActivity.this, "CMA - User id: "+ userId , Toast.LENGTH_SHORT).show();
     }
 
     private void registerModule() {
@@ -105,7 +106,7 @@ public class CreateModuleActivity extends AppCompatActivity {
         CreateModuleRequest createModuleRequest = new CreateModuleRequest(
                 moduleName, location, latitudeStr, longitudeStr,
                 fishType, fishQuantityStr, fishAgeStr, volumeUnit,
-                farmId, createdByUserId, Collections.singletonList(0)
+                farmId, userId, Collections.singletonList(0)
         );
 
         String authToken = createModuleRequest.getAuthToken();

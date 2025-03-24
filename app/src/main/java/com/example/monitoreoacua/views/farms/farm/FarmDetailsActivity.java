@@ -39,6 +39,10 @@ public class FarmDetailsActivity extends AppCompatActivity {
         navProfile = findViewById(R.id.navProfile);
         navCloseSesion = findViewById(R.id.navCloseSesion);
 
+        int userId = getIntent().getIntExtra("userId", -1);
+        Toast.makeText(FarmDetailsActivity.this, "FDM: userId:" + userId, Toast.LENGTH_LONG).show();
+
+
         // Receive the farm from the Intent
         Farm farm = getIntent().getParcelableExtra("farm");
 
@@ -56,6 +60,7 @@ public class FarmDetailsActivity extends AppCompatActivity {
                 Intent intent = new Intent(FarmDetailsActivity.this, ListModulesActivity.class);
                 int farmId = farm.getId();
                 intent.putExtra("farmId", farmId);
+                intent.putExtra("userId", userId);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();
