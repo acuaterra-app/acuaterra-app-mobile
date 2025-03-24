@@ -10,4 +10,11 @@
     <color name="colorTextSecondary">#649c94</color>
     <color name="colorTextTertiary">#5d7a7e</color>
     <color name="colorDivider">#303537</color>
+    
+    <!-- Bottom Navigation Colors -->
+    <color name="nav_item_selected">@color/colorPrimary</color>
+    <color name="nav_item_unselected">@color/colorDivider</color>
+    <color name="nav_indicator_color">@color/colorPrimary</color>
+    <color name="nav_background">@color/white</color>
+    <color name="nav_elevation_color">#20000000</color>
 </resources>

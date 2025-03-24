@@ -14,7 +14,7 @@ materialVersion = "1.4.0"
 okhttp = "4.9.3"
 retrofit = "2.9.0"
 recyclerview = "1.4.0"
-
+kotlin = "1.9.22"
 [libraries]
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -34,4 +34,5 @@ recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 

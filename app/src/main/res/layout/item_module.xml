@@ -3,9 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="4dp">
+    android:layout_margin="10dp"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="@android:color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,7 +14,7 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Module Name -->
+        <!-- Module Name Header -->
         <TextView
             android:id="@+id/tvModuleName"
             android:layout_width="match_parent"
@@ -21,52 +22,102 @@
             android:text="Nombre del Módulo"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="@android:color/black"
-            android:layout_marginBottom="8dp"/>
+            android:textColor="#3D5AFE"
+            android:layout_marginBottom="16dp"/>
 
         <!-- Location Section -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginBottom="8dp">
+            android:background="#F5F5F5"
+            android:padding="12dp"
+            android:layout_marginBottom="16dp">
             
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Información de Ubicación"
-                android:textSize="16sp"
+                android:text="INFORMACIÓN DE UBICACIÓN"
+                android:textSize="14sp"
                 android:textStyle="bold"
-                android:textColor="@android:color/darker_gray"
-                android:layout_marginBottom="4dp"/>
-                
-            <TextView
-                android:id="@+id/tvModuleLocation"
+                android:textColor="#455A64"
+                android:layout_marginBottom="8dp"/>
+            
+            <!-- Ubicación row -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Ubicación"
-                android:textSize="16sp"/>
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
                 
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Ubicación:"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="#607D8B"/>
+                    
+                <TextView
+                    android:id="@+id/tvModuleLocation"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="No especificada"
+                    android:textSize="14sp"
+                    android:textColor="#212121"/>
+            </LinearLayout>
+                
+            <!-- Latitud row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+                
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Latitud:"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="#607D8B"/>
+                    
+                <TextView
+                    android:id="@+id/tvModuleLatitude"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="0.0"
+                    android:textSize="14sp"
+                    android:textColor="#212121"/>
+            </LinearLayout>
+            
+            <!-- Longitud row -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 
                 <TextView
-                    android:id="@+id/tvModuleLatitude"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Latitud: 0.0"
-                    android:textSize="14sp"/>
+                    android:text="Longitud:"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="#607D8B"/>
                     
                 <TextView
                     android:id="@+id/tvModuleLongitude"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Longitud: 0.0"
-                    android:textSize="14sp"/>
+                    android:layout_weight="2"
+                    android:text="0.0"
+                    android:textSize="14sp"
+                    android:textColor="#212121"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -75,44 +126,94 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginBottom="8dp">
+            android:background="#F5F5F5"
+            android:padding="12dp"
+            android:layout_marginBottom="16dp">
             
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Información de Peces"
-                android:textSize="16sp"
+                android:text="INFORMACIÓN DE PECES"
+                android:textSize="14sp"
                 android:textStyle="bold"
-                android:textColor="@android:color/darker_gray"
-                android:layout_marginBottom="4dp"/>
-                
-            <TextView
-                android:id="@+id/tvModuleSpeciesFish"
+                android:textColor="#455A64"
+                android:layout_marginBottom="8dp"/>
+            
+            <!-- Especie row -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Especie: No especificada"
-                android:textSize="16sp"/>
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
                 
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Especie:"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="#607D8B"/>
+                    
+                <TextView
+                    android:id="@+id/tvModuleSpeciesFish"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="No especificada"
+                    android:textSize="14sp"
+                    android:textColor="#212121"/>
+            </LinearLayout>
+            
+            <!-- Cantidad row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+                
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Cantidad:"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="#607D8B"/>
+                    
+                <TextView
+                    android:id="@+id/tvModuleFishQuantity"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="0"
+                    android:textSize="14sp"
+                    android:textColor="#212121"/>
+            </LinearLayout>
+            
+            <!-- Edad row -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 
                 <TextView
-                    android:id="@+id/tvModuleFishQuantity"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Cantidad: 0"
-                    android:textSize="14sp"/>
+                    android:text="Edad:"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="#607D8B"/>
                     
                 <TextView
                     android:id="@+id/tvModuleFishAge"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Edad: 0 días"
-                    android:textSize="14sp"/>
+                    android:layout_weight="2"
+                    android:text="0 días"
+                    android:textSize="14sp"
+                    android:textColor="#212121"/>
             </LinearLayout>
         </LinearLayout>
         
@@ -120,24 +221,157 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="#F5F5F5"
+            android:padding="12dp">
             
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Dimensiones del Módulo"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@android:color/darker_gray"
-                android:layout_marginBottom="4dp"/>
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
                 
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="DIMENSIONES"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="#455A64"/>
+                
+                <TextView
+                    android:id="@+id/tvDimensionFormat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="(AnchoxLargoxProfundidad)"
+                    android:textSize="12sp"
+                    android:textStyle="italic"
+                    android:textColor="#757575"/>
+            </LinearLayout>
+            
+            <!-- Error message for dimensions -->
             <TextView
-                android:id="@+id/tvModuleDimensions"
+                android:id="@+id/tvDimensionError"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Dimensiones: No especificadas"
-                android:textSize="14sp"/>
+                android:text="Formato incorrecto de dimensiones"
+                android:textSize="13sp"
+                android:textColor="#F44336"
+                android:textStyle="italic"
+                android:visibility="gone"
+                android:background="#FFEBEE"
+                android:padding="4dp"
+                android:layout_marginBottom="8dp"
+                android:drawablePadding="4dp"/>
+            
+            <!-- Ancho row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+                
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Ancho:"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="#607D8B"/>
+                    
+                <TextView
+                    android:id="@+id/tvModuleWidth"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="0 m"
+                    android:textSize="14sp"
+                    android:textColor="#212121"
+                    android:background="@android:color/transparent"/>
+            </LinearLayout>
+            
+            <!-- Largo row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+                
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Largo:"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="#607D8B"/>
+                    
+                <TextView
+                    android:id="@+id/tvModuleLength"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="0 m"
+                    android:textSize="14sp"
+                    android:textColor="#212121"
+                    android:background="@android:color/transparent"/>
+            </LinearLayout>
+            
+            <!-- Profundidad row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+                
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Profundidad:"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="#607D8B"/>
+                    
+                <TextView
+                    android:id="@+id/tvModuleDepth"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="0 m"
+                    android:textSize="14sp"
+                    android:textColor="#212121"
+                    android:background="@android:color/transparent"/>
+            </LinearLayout>
+            
+            <!-- Volumen row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Volumen:"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="#607D8B"/>
+                    
+                <TextView
+                    android:id="@+id/tvModuleVolume"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="0 m³"
+                    android:textSize="14sp"
+                    android:textColor="#212121"
+                    android:textStyle="bold"/>
+            </LinearLayout>
         </LinearLayout>
-
+        
     </LinearLayout>
 </androidx.cardview.widget.CardView>

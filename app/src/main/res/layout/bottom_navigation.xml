@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="@color/nav_background"
+    android:elevation="6dp"
+    android:orientation="horizontal"
+    android:gravity="center"
+    android:padding="10dp">
+
+    <!-- Navigation Item: Farms -->
+    <LinearLayout
+        android:id="@+id/navFarms"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackground">
+
+        <!-- Indicator above icon -->
+        <View
+            android:id="@+id/indicator"
+            android:layout_width="30dp"
+            android:layout_height="3dp"
+            android:background="@color/nav_indicator_color"
+            android:layout_marginBottom="2dp"
+            android:visibility="invisible"/>
+
+        <!-- Icon -->
+        <ImageView
+            android:id="@+id/ivNavIcon"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:src="@drawable/icgranja"
+            android:scaleType="centerInside"
+            android:adjustViewBounds="true"
+            android:contentDescription="Granjas navigation icon"/>
+
+        <!-- Text below icon -->
+        <TextView
+            android:id="@+id/tvNavText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Granjas"
+            android:textSize="8sp"
+            android:textColor="@color/colorDivider"
+            android:gravity="center"/>
+    </LinearLayout>
+
+    <!-- Navigation Item: Modules -->
+    <LinearLayout
+        android:id="@+id/navModules"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackground">
+
+        <!-- Indicator above icon (hidden by default) -->
+        <View
+            android:id="@+id/indicatorModule"
+            android:layout_width="30dp"
+            android:layout_height="3dp"
+            android:background="@color/nav_indicator_color"
+            android:layout_marginBottom="2dp"
+            android:visibility="invisible"/>
+
+        <!-- Icon -->
+        <ImageView
+            android:id="@+id/ivNavIconModule"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:src="@drawable/icmodulo"
+            android:scaleType="centerInside"
+            android:adjustViewBounds="true"
+            android:contentDescription="Módulos navigation icon"/>
+
+        <!-- Text below icon -->
+        <TextView
+            android:id="@+id/tvNavTextModule"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Módulos"
+            android:textSize="8sp"
+            android:textColor="@color/colorDivider"
+            android:gravity="center"/>
+    </LinearLayout>
+
+    <!-- A third navigation item could be added here if needed -->
+
+    <!-- Botón Granjas -->
+    <LinearLayout
+        android:id="@+id/navHomeContainer"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@drawable/nav_item_background">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/navHome"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:scaleType="centerInside"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/icgranja"
+                android:contentDescription="Ir a Inicio"/>
+                
+            <View
+                android:id="@+id/navHomeIndicator"
+                android:layout_width="42dp"
+                android:layout_height="3dp"
+                android:layout_gravity="bottom"
+                android:background="@color/nav_indicator_color"
+                android:visibility="invisible"
+                android:alpha="0.9"
+                android:translationZ="2dp"
+                android:animateLayoutChanges="true"/>
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/navHomeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Granjas"
+            android:textSize="12sp"
+            android:textColor="@drawable/nav_item_color_selector"
+            android:layout_marginTop="4dp"/>
+    </LinearLayout>
+
+    <!-- Botón Usuarios -->
+    <LinearLayout
+        android:id="@+id/navSettingsContainer"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@drawable/nav_item_background">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/navSettings"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:scaleType="centerInside"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/icusersmonit"
+                android:contentDescription="Configuración"/>
+                
+            <View
+                android:id="@+id/navSettingsIndicator"
+                android:layout_width="42dp"
+                android:layout_height="3dp"
+                android:layout_gravity="bottom"
+                android:background="@color/nav_indicator_color"
+                android:visibility="invisible"
+                android:alpha="0.9"
+                android:translationZ="2dp"
+                android:animateLayoutChanges="true"/>
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/navSettingsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Usuarios"
+            android:textSize="12sp"
+            android:textColor="@drawable/nav_item_color_selector"
+            android:layout_marginTop="4dp"/>
+    </LinearLayout>
+
+    <!-- Botón Soporte -->
+    <LinearLayout
+        android:id="@+id/navProfileContainer"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@drawable/nav_item_background">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/navProfile"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:scaleType="centerInside"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/icsoporte"
+                android:contentDescription="Perfil"/>
+                
+            <View
+                android:id="@+id/navProfileIndicator"
+                android:layout_width="42dp"
+                android:layout_height="3dp"
+                android:layout_gravity="bottom"
+                android:background="@color/nav_indicator_color"
+                android:visibility="invisible"
+                android:alpha="0.9"
+                android:translationZ="2dp"
+                android:animateLayoutChanges="true"/>
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/navProfileText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Soporte"
+            android:textSize="12sp"
+            android:textColor="@drawable/nav_item_color_selector"
+            android:layout_marginTop="4dp"/>
+    </LinearLayout>
+
+    <!-- Botón Cerrar sesión -->
+    <LinearLayout
+        android:id="@+id/navCloseSesionContainer"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@drawable/nav_item_background">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/navCloseSesion"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:scaleType="centerInside"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/iccerrarsesion"
+                android:contentDescription="Cerrar sesión"/>
+                
+            <View
+                android:id="@+id/navCloseSesionIndicator"
+                android:layout_width="42dp"
+                android:layout_height="3dp"
+                android:layout_gravity="bottom"
+                android:background="@color/nav_indicator_color"
+                android:visibility="invisible"
+                android:alpha="0.9"
+                android:translationZ="2dp"
+                android:animateLayoutChanges="true"/>
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/navCloseSesionText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cerrar sesión"
+            android:textSize="12sp"
+            android:textColor="@drawable/nav_item_color_selector"
+            android:layout_marginTop="4dp"/>
+    </LinearLayout>
+</LinearLayout>
+
