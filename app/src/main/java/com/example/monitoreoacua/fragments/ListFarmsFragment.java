@@ -51,9 +51,7 @@ public class ListFarmsFragment extends Fragment {
 
     private static final String TAG = "ListFarmsFragment";
 
-    /**
-     * Interface for communication with host activity when a farm is selected
-     */
+
     public interface OnFarmSelectedListener {
         void onFarmSelected(Farm farm);
     }
@@ -62,9 +60,7 @@ public class ListFarmsFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Factory method to create a new instance of this fragment.
-     */
+
     public static ListFarmsFragment newInstance() {
         return new ListFarmsFragment();
     }
@@ -82,7 +78,6 @@ public class ListFarmsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_list_farms, container, false);
     }
 
@@ -90,21 +85,17 @@ public class ListFarmsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Initialize views
         textViewFarms = view.findViewById(R.id.textViewFarms);
         recyclerViewFarms = view.findViewById(R.id.recyclerViewFarms);
         editTextSearchFarm = view.findViewById(R.id.editTextSearchFarm);
         buttonSortByDate = view.findViewById(R.id.buttonSortByDate);
 
-        // RecyclerView setup
         recyclerViewFarms.setLayoutManager(new LinearLayoutManager(getContext()));
         farmAdapter = new FarmAdapter();
         recyclerViewFarms.setAdapter(farmAdapter);
 
-        // Fetch farm data from the API
         fetchFarms();
 
-        // Listener for clicking on a farm
         farmAdapter.setOnFarmClickListener(farm -> {
             if (farmSelectedListener != null) {
                 farmSelectedListener.onFarmSelected(farm);
@@ -113,7 +104,6 @@ public class ListFarmsFragment extends Fragment {
             }
         });
 
-        // Listener for the search bar
         editTextSearchFarm.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -127,7 +117,6 @@ public class ListFarmsFragment extends Fragment {
             public void afterTextChanged(Editable s) {}
         });
 
-        // Listener for the sorting button
         buttonSortByDate.setOnClickListener(v -> sortFarmsByDate());
     }
 

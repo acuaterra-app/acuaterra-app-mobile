@@ -19,7 +19,6 @@ public class SupportActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // BaseActivity handles all the common setup
     }
 
     @Override
@@ -29,15 +28,12 @@ public class SupportActivity extends BaseActivity {
 
     @Override
     protected void loadInitialFragment() {
-        // Load the support fragment into the container
         SupportFragment supportFragment = SupportFragment.newInstance();
         loadFragment(supportFragment, false);
     }
 
     @Override
     public void navigateToProfile() {
-        // Already on the support/profile screen, no need to navigate
-        // This prevents reloading the same activity
     }
 
     @Override

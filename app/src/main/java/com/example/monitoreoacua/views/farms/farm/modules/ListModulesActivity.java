@@ -12,11 +12,11 @@ import com.example.monitoreoacua.views.BaseActivity;
  * Activity for displaying and managing modules.
  * Extends BaseActivity to use the common navigation and layout structure.
  */
-public class ModulesActivity extends BaseActivity implements ListModulesFragment.OnModuleInteractionListener {
+public class ListModulesActivity extends BaseActivity implements ListModulesFragment.OnModuleInteractionListener {
     
     private String farmId;
     private ListModulesFragment modulesFragment;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Get farmId from intent

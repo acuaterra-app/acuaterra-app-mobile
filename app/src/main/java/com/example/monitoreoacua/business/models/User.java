@@ -28,7 +28,6 @@ public class User implements Parcelable {
     @SerializedName("rol")
     private Role role;
 
-    // Constructor
     public User(int id, String name, String email, String dni, int idRol, Role role) {
         this.id = id;
         this.name = name;
@@ -38,7 +37,6 @@ public class User implements Parcelable {
         this.role = role;
     }
 
-    // Constructor for Parcelable
     protected User(Parcel in) {
         id = in.readInt();
         name = in.readString();
@@ -48,7 +46,6 @@ public class User implements Parcelable {
         role = in.readParcelable(Role.class.getClassLoader());
     }
 
-    // CREATOR for Parcelable
     public static final Creator<User> CREATOR = new Creator<User>() {
         @Override
         public User createFromParcel(Parcel in) {
@@ -61,7 +58,6 @@ public class User implements Parcelable {
         }
     };
 
-    // Getters
     public int getId() {
         return id;
     }

@@ -21,19 +21,12 @@ public class TopBarFragment extends Fragment {
     private TextView textViewTitle;
     private String title;
 
-    /**
-     * Factory method to create a new instance of TopBarFragment.
-     * @return A new instance of TopBarFragment
-     */
+
     public static TopBarFragment newInstance() {
         return new TopBarFragment();
     }
 
-    /**
-     * Factory method to create a new instance of TopBarFragment with a specific title.
-     * @param title The title to display in the top bar
-     * @return A new instance of TopBarFragment with the specified title
-     */
+
     public static TopBarFragment newInstance(String title) {
         TopBarFragment fragment = new TopBarFragment();
         Bundle args = new Bundle();
@@ -53,7 +46,6 @@ public class TopBarFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_top_bar, container, false);
     }
 
@@ -61,19 +53,13 @@ public class TopBarFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         
-        // Initialize the title TextView
         textViewTitle = view.findViewById(R.id.textViewActivityTitle);
         
-        // Set the title if it was provided
         if (title != null && !title.isEmpty()) {
             setTitle(title);
         }
     }
 
-    /**
-     * Sets the title text in the top bar.
-     * @param title The title text to display
-     */
     public void setTitle(String title) {
         this.title = title;
         if (textViewTitle != null) {
@@ -81,10 +67,7 @@ public class TopBarFragment extends Fragment {
         }
     }
 
-    /**
-     * Gets the current title text.
-     * @return The current title text
-     */
+
     public String getTitle() {
         return title;
     }

@@ -51,7 +51,6 @@ public class ListModulesFragment extends Fragment implements ModuleAdapter.OnMod
 
     private static final String PREF_NAME = "user_prefs";
 
-    // Interface for communication with the hosting activity
     public interface OnModuleInteractionListener {
         void onModuleSelected(Module module);
         void onRegisterNewModule();
@@ -85,30 +84,25 @@ public class ListModulesFragment extends Fragment implements ModuleAdapter.OnMod
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         
-        // Initialize views
         recyclerViewModules = view.findViewById(R.id.recyclerViewModules);
         progressBar = view.findViewById(R.id.progressBar);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         tvEmptyView = view.findViewById(R.id.tvEmptyView);
         btnRegisterModules = view.findViewById(R.id.btnRegisterModules);
         
-        // Set up RecyclerView
         recyclerViewModules.setLayoutManager(new LinearLayoutManager(getContext()));
         moduleAdapter = new ModuleAdapter();
         moduleAdapter.setOnModuleClickListener(this);
         recyclerViewModules.setAdapter(moduleAdapter);
         
-        // Set up SwipeRefreshLayout
         swipeRefreshLayout.setOnRefreshListener(this::fetchModules);
 
-        // Set up register button
         btnRegisterModules.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onRegisterNewModule();
             }
         });
 
-        // Fetch modules for the first time
         fetchModules();
     }
     
@@ -130,18 +124,15 @@ public class ListModulesFragment extends Fragment implements ModuleAdapter.OnMod
     }
     
     private void fetchModules() {
-        // Show progress indicator
         progressBar.setVisibility(View.VISIBLE);
         recyclerViewModules.setVisibility(View.GONE);
         tvEmptyView.setVisibility(View.GONE);
         
-        // Create request parameters
         Map<String, Object> params = new HashMap<>();
         params.put("farmId", farmId);
         ApiModulesService apiService = ApiClient.getClient().create(ApiModulesService.class);
         ListModulesRequest listModulesRequest = new ListModulesRequest();
 
-        // Make the API call
         Call<ListModuleResponse> call = apiService.getModules(Integer.parseInt(farmId), listModulesRequest.getAuthToken());
         call.enqueue(new Callback<ListModuleResponse>() {
             @Override
@@ -184,7 +175,6 @@ public class ListModulesFragment extends Fragment implements ModuleAdapter.OnMod
         tvEmptyView.setText(R.string.error_loading_modules);
     }
     
-    // Public method to refresh modules list
     public void refreshModules() {
         fetchModules();
     }

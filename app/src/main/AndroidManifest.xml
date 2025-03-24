@@ -76,7 +76,7 @@
             android:name=".views.farms.farm.modules.ListModulesActivity"
             android:exported="false" />
         <activity
-            android:name=".views.farms.farm.modules.ModulesActivity"
+            android:name=".views.farms.farm.modules.ListModulesActivity"
             android:exported="false" />
         <activity
             android:name=".views.farms.farm.FarmDetailsFragmentActivity"

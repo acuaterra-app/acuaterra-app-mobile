@@ -37,21 +37,16 @@ public class FarmFormActivity extends AppCompatActivity {
 
     private static final String TAG = "FarmFormActivity";
     
-    // UI components
     private TextView textViewTitle;
     private EditText editTextName, editTextAddress, editTextLatitude, editTextLongitude;
     private Button buttonSaveFarm;
     
-    // Navigation bar elements
     private AppCompatImageButton navHome, navSettings, navProfile, navCloseSesion;
     
-    // Farm object - will be null for new farm creation
     private Farm farmToEdit;
     
-    // Mode flag - true for edit mode, false for create mode
     private boolean isEditMode = false;
     
-    // Request helper
     private BaseRequest baseRequest = new BaseRequest();
 
     @Override
@@ -59,16 +54,12 @@ public class FarmFormActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_farm_form);
         
-        // Initialize UI components
         initViews();
         
-        // Set up navigation bar
         setupNavigationBar();
         
-        // Check if we're editing an existing farm
         checkEditMode();
         
-        // Set up save button
         buttonSaveFarm.setOnClickListener(v -> saveFarm());
     }
     
@@ -93,7 +84,6 @@ public class FarmFormActivity extends AppCompatActivity {
      * Set up the navigation bar listeners
      */
     private void setupNavigationBar() {
-        // Events for the navigation bar
         navHome.setOnClickListener(v -> {
             Intent intent = new Intent(FarmFormActivity.this, ListFarmsActivity.class);
             startActivity(intent);
@@ -110,9 +100,7 @@ public class FarmFormActivity extends AppCompatActivity {
         });
     }
     
-    /**
-     * Check if we're in edit mode and set up the form accordingly
-     */
+
     private void checkEditMode() {
         // Check for farm object in the intent
         farmToEdit = getIntent().getParcelableExtra("farm");
@@ -129,9 +117,6 @@ public class FarmFormActivity extends AppCompatActivity {
         }
     }
     
-    /**
-     * Populate the form fields with the farm data
-     */
     private void populateFormWithFarmData() {
         editTextName.setText(farmToEdit.getName());
         editTextAddress.setText(farmToEdit.getAddress());
@@ -139,26 +124,20 @@ public class FarmFormActivity extends AppCompatActivity {
         editTextLongitude.setText(farmToEdit.getLongitude());
     }
     
-    /**
-     * Validate the form input
-     * @return true if valid, false otherwise
-     */
+
     private boolean validateForm() {
         boolean isValid = true;
         
-        // Check name
         if (TextUtils.isEmpty(editTextName.getText())) {
             editTextName.setError("El nombre es requerido");
             isValid = false;
         }
         
-        // Check address
         if (TextUtils.isEmpty(editTextAddress.getText())) {
             editTextAddress.setError("La dirección es requerida");
             isValid = false;
         }
         
-        // Check latitude
         String latitude = editTextLatitude.getText().toString();
         if (TextUtils.isEmpty(latitude)) {
             editTextLatitude.setError("La latitud es requerida");
@@ -176,7 +155,6 @@ public class FarmFormActivity extends AppCompatActivity {
             }
         }
         
-        // Check longitude
         String longitude = editTextLongitude.getText().toString();
         if (TextUtils.isEmpty(longitude)) {
             editTextLongitude.setError("La longitud es requerida");
@@ -197,162 +175,26 @@ public class FarmFormActivity extends AppCompatActivity {
         return isValid;
     }
     
-    /**
-     * Save the farm data (create new or update existing)
-     */
+
     private void saveFarm() {
-        // Validate the form first
         if (!validateForm()) {
             return;
         }
         
-        // Get data from form
         String name = editTextName.getText().toString();
         String address = editTextAddress.getText().toString();
         String latitude = editTextLatitude.getText().toString();
         String longitude = editTextLongitude.getText().toString();
         
-        // Show progress or disable button
         buttonSaveFarm.setEnabled(false);
         buttonSaveFarm.setText("Guardando...");
         
-        // Get the API service
         ApiFarmsService service = ApiClient.getClient().create(ApiFarmsService.class);
         
-        // Get auth token
         baseRequest.setRequiresAuthentication(true);
         String authToken = "Bearer " + baseRequest.getAuthToken();
         
-        if (isEditMode) {
-            // Update existing farm
-            updateFarm(service, authToken, name, address, latitude, longitude);
-        } else {
-            // Create new farm
-            createFarm(service, authToken, name, address, latitude, longitude);
-        }
-    }
-    
-    /**
-     * Create a new farm with the API
-     */
-    private void createFarm(ApiFarmsService service, String authToken, 
-                            String name, String address, String latitude, String longitude) {
-        // Since the API methods don't exist yet, we'll add them to the service interface
-        // This is just a placeholder - the actual implementation would use properly defined endpoints
-        
-        Call<FarmResponse> call = null;
-        
-        try {
-            // Try to use the createFarm method via reflection or other means
-            // This is a placeholder for the actual API call
-            
-            // For now, we'll just simulate success after a brief delay
-            Toast.makeText(this, "Creando granja...", Toast.LENGTH_SHORT).show();
-            
-            // Simulate network delay
-            buttonSaveFarm.postDelayed(() -> {
-                Toast.makeText(FarmFormActivity.this, 
-                    "Granja creada exitosamente (simulado)", Toast.LENGTH_SHORT).show();
-                
-                // Navigate back to the farms list
-                Intent intent = new Intent(FarmFormActivity.this, ListFarmsActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                finish();
-            }, 1500);
-            
-        } catch (Exception e) {
-            Log.e(TAG, "Error creating farm", e);
-            buttonSaveFarm.setEnabled(true);
-            buttonSaveFarm.setText("Guardar");
-            Toast.makeText(this, "Error al crear la granja: " + e.getMessage(), 
-                Toast.LENGTH_SHORT).show();
-        }
-    }
-    
-    /**
-     * Update an existing farm with the API
-     */
-    private void updateFarm(ApiFarmsService service, String authToken, 
-                            String name, String address, String latitude, String longitude) {
-        // Since the API methods don't exist yet, we'll add them to the service interface
-        // This is just a placeholder - the actual implementation would use properly defined endpoints
-        
-        Call<FarmResponse> call = null;
-        
-        try {
-            // Try to use the updateFarm method via reflection or other means
-            // This is a placeholder for the actual API call
-            
-            // For now, we'll just simulate success after a brief delay
-            Toast.makeText(this, "Actualizando granja...", Toast.LENGTH_SHORT).show();
-            
-            // Simulate network delay
-            buttonSaveFarm.postDelayed(() -> {
-                Toast.makeText(FarmFormActivity.this, 
-                    "Granja actualizada exitosamente (simulado)", Toast.LENGTH_SHORT).show();
-                
-                // Create a result intent with the updated farm
-                Intent resultIntent = new Intent();
-                Farm updatedFarm = new Farm(
-                    farmToEdit.getId(),
-                    name,
-                    address,
-                    latitude,
-                    longitude,
-                    farmToEdit.getCreatedAt(),
-                    farmToEdit.getUpdatedAt()
-                );
-                resultIntent.putExtra("farm", updatedFarm);
-                
-                // Return to the calling activity
-                setResult(RESULT_OK, resultIntent);
-                finish();
-            }, 1500);
-            
-        } catch (Exception e) {
-            Log.e(TAG, "Error updating farm", e);
-            buttonSaveFarm.setEnabled(true);
-            buttonSaveFarm.setText("Guardar");
-            Toast.makeText(this, "Error al actualizar la granja: " + e.getMessage(), 
-                Toast.LENGTH_SHORT).show();
-        }
-    }
-    
-    /**
-     * Create an extension interface with farm creation and update methods
-     * This would be added to ApiFarmsService in a real implementation
-     */
-    private interface FarmUpdateService {
-        @POST("api/v2/owner/farms")
-        Call<FarmResponse> createFarm(
-            @Header("Authorization") String token,
-            @Body FarmData farmData
-        );
-        
-        @PUT("api/v2/owner/farms/{id}")
-        Call<FarmResponse> updateFarm(
-            @Header("Authorization") String token,
-            @Path("id") int id,
-            @Body FarmData farmData
-        );
-    }
-    
-    /**
-     * Data class for farm creation/update requests
-     */
-    private static class FarmData {
-        private String name;
-        private String address;
-        private String latitude;
-        private String longitude;
-        
-        public FarmData(String name, String address, String latitude, String longitude) {
-            this.name = name;
-            this.address = address;
-            this.latitude = latitude;
-            this.longitude = longitude;
-        }
+
     }
 }
 

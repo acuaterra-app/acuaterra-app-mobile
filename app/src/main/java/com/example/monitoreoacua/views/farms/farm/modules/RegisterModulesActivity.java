@@ -17,7 +17,6 @@ import com.example.monitoreoacua.views.menu.SupportActivity;
 
 public class RegisterModulesActivity extends AppCompatActivity {
 
-    // Declaration of navigation bar elements
     private AppCompatImageButton navHome, navSettings, navProfile, navCloseSesion;
 
     @Override

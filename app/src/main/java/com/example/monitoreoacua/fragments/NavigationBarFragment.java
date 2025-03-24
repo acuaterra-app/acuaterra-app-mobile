@@ -23,36 +23,21 @@ public class NavigationBarFragment extends Fragment {
     private AppCompatImageButton navHome, navSettings, navProfile, navCloseSesion;
     private NavigationBarListener navigationListener;
 
-    /**
-     * Interface for communication with the hosting activity.
-     * The hosting activity must implement these methods to handle navigation events.
-     */
+
     public interface NavigationBarListener {
-        /**
-         * Called when the home navigation button is clicked.
-         */
+
         void navigateToHome();
 
-        /**
-         * Called when the settings navigation button is clicked.
-         */
+
         void navigateToSettings();
 
-        /**
-         * Called when the profile/support navigation button is clicked.
-         */
+
         void navigateToProfile();
 
-        /**
-         * Called when the logout button is clicked.
-         */
         void logout();
     }
 
-    /**
-     * Factory method to create a new instance of NavigationBarFragment.
-     * @return A new instance of NavigationBarFragment
-     */
+
     public static NavigationBarFragment newInstance() {
         return new NavigationBarFragment();
     }
@@ -60,7 +45,6 @@ public class NavigationBarFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_navigation_bar, container, false);
     }
 
@@ -68,7 +52,6 @@ public class NavigationBarFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         
-        // Initialize navigation buttons
         initializeNavigationButtons(view);
         
         // Set up click listeners for navigation buttons
@@ -79,7 +62,6 @@ public class NavigationBarFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         
-        // Verify that the host activity implements the navigation listener interface
         try {
             navigationListener = (NavigationBarListener) context;
         } catch (ClassCastException e) {
@@ -88,10 +70,7 @@ public class NavigationBarFragment extends Fragment {
         }
     }
 
-    /**
-     * Initializes the navigation buttons from the view.
-     * @param view The view containing the navigation buttons
-     */
+
     private void initializeNavigationButtons(View view) {
         navHome = view.findViewById(R.id.navHome);
         navSettings = view.findViewById(R.id.navSettings);
@@ -99,10 +78,6 @@ public class NavigationBarFragment extends Fragment {
         navCloseSesion = view.findViewById(R.id.navCloseSesion);
     }
 
-    /**
-     * Sets up click listeners for the navigation buttons.
-     * Each button will call the corresponding method on the navigation listener.
-     */
     private void setupNavigationClickListeners() {
         navHome.setOnClickListener(v -> {
             if (navigationListener != null) {
@@ -129,13 +104,8 @@ public class NavigationBarFragment extends Fragment {
         });
     }
 
-    /**
-     * Public method to set active navigation item. This can be used by the hosting
-     * activity to highlight the current section in the navigation bar.
-     * @param navigationItem The ID of the navigation item to highlight
-     */
+
     public void setActiveNavigationItem(int navigationItem) {
-        // Reset all buttons to default state
         navHome.setSelected(false);
         navSettings.setSelected(false);
         navProfile.setSelected(false);
@@ -153,12 +123,7 @@ public class NavigationBarFragment extends Fragment {
         }
     }
 
-    /**
-     * Sets a custom click listener for a specific navigation button.
-     * This allows the hosting activity to override the default behavior for a button.
-     * @param buttonId The ID of the button (R.id.navHome, R.id.navSettings, etc.)
-     * @param listener The custom click listener to set
-     */
+
     public void setCustomClickListener(int buttonId, View.OnClickListener listener) {
         AppCompatImageButton button = null;
         

@@ -29,7 +29,6 @@ public class Farm implements Parcelable {
 
 
 
-    // Constructor
     public Farm(int id, String name, String address, String latitude, String longitude, String createdAt, String updatedAt) {
         this.id = id;
         this.name = name;
@@ -40,7 +39,6 @@ public class Farm implements Parcelable {
         this.updatedAt = updatedAt;
     }
 
-    // Constructor for Parcelable
     protected Farm(Parcel in) {
         id = in.readInt();
         name = in.readString();
@@ -51,7 +49,6 @@ public class Farm implements Parcelable {
         updatedAt = in.readString();
     }
 
-    // CREATOR for Parcelable
     public static final Creator<Farm> CREATOR = new Creator<Farm>() {
         @Override
         public Farm createFromParcel(Parcel in) {

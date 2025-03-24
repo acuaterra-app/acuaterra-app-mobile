@@ -29,20 +29,15 @@ public class LogoutFragment extends Fragment {
 
     private OnLogoutInteractionListener mListener;
 
-    /**
-     * Interface for communication with host activity
-     */
+
     public interface OnLogoutInteractionListener {
         void onLogoutCancelled();
     }
 
     public LogoutFragment() {
-        // Required empty public constructor
     }
 
-    /**
-     * Factory method to create a new instance of this fragment
-     */
+
     public static LogoutFragment newInstance() {
         return new LogoutFragment();
     }
@@ -60,7 +55,6 @@ public class LogoutFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_logout, container, false);
     }
 
@@ -68,18 +62,13 @@ public class LogoutFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Initialize UI components
         Button buttonConfirmLogout = view.findViewById(R.id.buttonConfirmLogout);
         Button buttonCancelLogout = view.findViewById(R.id.buttonCancelLogout);
 
-        // Set click listeners
         buttonConfirmLogout.setOnClickListener(v -> logout());
         buttonCancelLogout.setOnClickListener(v -> cancelLogout());
     }
 
-    /**
-     * Handles the logout action, removes authentication token and redirects to login screen
-     */
     private void logout() {
         Log.i(TAG, "Performing user logout");
         
@@ -88,7 +77,6 @@ public class LogoutFragment extends Fragment {
             return;
         }
 
-        // Remove authentication token from SharedPreferences
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove(TOKEN_KEY);
@@ -96,20 +84,14 @@ public class LogoutFragment extends Fragment {
         
         Log.d(TAG, "Token removed from SharedPreferences");
         
-        // Navigate to login screen and clear activity stack
         Intent intent = new Intent(getActivity(), LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         
-        // Close current activity
         if (getActivity() != null) {
             getActivity().finish();
         }
     }
-
-    /**
-     * Handles the cancel action, returns to previous screen
-     */
     private void cancelLogout() {
         Log.d(TAG, "Logout canceled by user");
         if (mListener != null) {

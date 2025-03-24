@@ -28,9 +28,7 @@ public class SupportFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Factory method to create a new instance of this fragment.
-     */
+
     public static SupportFragment newInstance() {
         return new SupportFragment();
     }
@@ -38,7 +36,6 @@ public class SupportFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_support, container, false);
     }
 
@@ -46,11 +43,9 @@ public class SupportFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Initialize views
         btnWhatsApp = view.findViewById(R.id.btnWhatsApp);
         btnEmail = view.findViewById(R.id.btnEmail);
 
-        // Open WhatsApp on click
         btnWhatsApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,7 +53,6 @@ public class SupportFragment extends Fragment {
             }
         });
 
-        // Send an email on click
         btnEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,7 +61,6 @@ public class SupportFragment extends Fragment {
         });
     }
 
-    // Method to open WhatsApp with a specific number
     private void openWhatsApp(String numberPhone) {
         try {
             String url = "https://wa.me/" + numberPhone.replace("+", "").replace(" ", "");
@@ -79,7 +72,6 @@ public class SupportFragment extends Fragment {
         }
     }
 
-    // Method to open the email client with pre-filled data
     private void sendCorreo(String destinatario, String asunto, String mensaje) {
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setData(Uri.parse("mailto:")); // Solo las apps de correo pueden manejar esto

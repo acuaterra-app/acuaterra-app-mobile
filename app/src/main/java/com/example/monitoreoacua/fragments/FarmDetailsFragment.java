@@ -40,12 +40,7 @@ public class FarmDetailsFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Factory method to create a new instance of this fragment using the provided parameters.
-     *
-     * @param farm Farm object to display details for.
-     * @return A new instance of fragment FarmDetailsFragment.
-     */
+
     public static FarmDetailsFragment newInstance(Farm farm) {
         FarmDetailsFragment fragment = new FarmDetailsFragment();
         Bundle args = new Bundle();
@@ -65,7 +60,6 @@ public class FarmDetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_farm_details, container, false);
     }
 
@@ -73,7 +67,6 @@ public class FarmDetailsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         
-        // Initialize views
         tvFarmName = view.findViewById(R.id.textViewFarmName);
         tvFarmAddress = view.findViewById(R.id.textViewFarmAddress);
         tvFarmCoordinates = view.findViewById(R.id.textViewFarmCoordinates);
@@ -83,10 +76,8 @@ public class FarmDetailsFragment extends Fragment {
         btnModules = view.findViewById(R.id.buttonModules);
         ivFarmImage = view.findViewById(R.id.imageViewFarm);
         
-        // Display farm details
         displayFarmDetails();
         
-        // Set click listeners
         setupClickListeners();
     }
 
@@ -98,15 +89,8 @@ public class FarmDetailsFragment extends Fragment {
             tvFarmCoordinates.setText("Lat: " + farm.getLatitude() + ", Lng: " + farm.getLongitude());
             tvCreatedAt.setText(farm.getCreatedAt() != null ? farm.getCreatedAt().toString() : "--");
             
-            // Set default farm image since Farm model doesn't have getImageUrl() method
             // TODO: When image functionality is implemented in the Farm model, update this code
             ivFarmImage.setImageResource(R.drawable.farmperfil);
-            
-            // Example code for future implementation:
-            // if (farm.getImageUrl() != null && !farm.getImageUrl().isEmpty()) {
-            //    // Use an image loading library like Glide or Picasso here
-            //    // For example: Glide.with(this).load(farm.getImageUrl()).into(ivFarmImage);
-            // }
         }
     }
 
@@ -129,7 +113,6 @@ public class FarmDetailsFragment extends Fragment {
             }
         });
 
-        // Add any other click listeners needed for the farm details view
     }
 
     @Override

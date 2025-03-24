@@ -24,42 +24,28 @@ public class LogoutActivity extends BaseActivity implements OnLogoutInteractionL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // BaseActivity already handles setting the content view and loading fragments
     }
 
-    /**
-     * Returns the title for this activity.
-     * @return The title for the activity
-     */
+
     @Override
     protected String getActivityTitle() {
         return "Cerrar Sesión";
     }
 
-    /**
-     * Loads the initial fragment for the activity.
-     * In this case, loads the LogoutFragment.
-     */
+
     @Override
     protected void loadInitialFragment() {
         loadFragment(LogoutFragment.newInstance(), false);
     }
 
-    /**
-     * Handles the case when the user cancels the logout action.
-     * Implemented from OnLogoutInteractionListener.
-     */
+
     @Override
     public void onLogoutCancelled() {
         Log.d(TAG, "Logout cancelled by user");
         finish();
     }
 
-    /**
-     * Override the default logout behavior in BaseActivity.
-     * This method will be called when the user clicks the logout button in the navigation bar.
-     * We redirect to this activity itself if we're not already in it.
-     */
+
     @Override
     public void logout() {
         if (!this.getClass().getSimpleName().equals("LogoutActivity")) {

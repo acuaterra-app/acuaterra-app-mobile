@@ -52,7 +52,6 @@ public class Module {
     @SerializedName("farm")
     private Farm farm;
 
-    // Getters
     public int getId() { return id; }
     public String getName() { return name; }
     public String getLocation() { return location; }

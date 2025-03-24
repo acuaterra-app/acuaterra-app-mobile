@@ -117,9 +117,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     
-    /**
-     * Helper method to log the details of an intent
-     */
+
     private void logIntentDetails(Intent intent) {
         if (intent == null) {
             Log.d(TAG, "logIntentDetails: Intent is null");

@@ -33,25 +33,18 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
         
-        // Set up system UI for edge-to-edge display
         setupEdgeToEdgeDisplay();
         
-        // Load top bar and navigation bar fragments
         loadTopBarFragment();
         loadNavigationBarFragment();
         
-        // Set the title for this activity
         setActivityTitle(getActivityTitle());
         
-        // Load the initial fragment if needed
         if (savedInstanceState == null) {
             loadInitialFragment();
         }
     }
-    
-    /**
-     * Sets up edge-to-edge display to handle cutouts, notches, and system navigation bars.
-     */
+
     private void setupEdgeToEdgeDisplay() {
         View decorView = getWindow().getDecorView();
         decorView.setSystemUiVisibility(
@@ -60,9 +53,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                 | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
     }
     
-    /**
-     * Loads the NavigationBarFragment into the navigation bar container.
-     */
+
     protected void loadNavigationBarFragment() {
         navigationBarFragment = NavigationBarFragment.newInstance();
         getSupportFragmentManager().beginTransaction()
@@ -70,21 +61,14 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                 .commit();
     }
     
-    /**
-     * Loads the TopBarFragment into the top bar container.
-     */
+
     protected void loadTopBarFragment() {
         topBarFragment = TopBarFragment.newInstance();
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.topBarContainer, topBarFragment)
                 .commit();
     }
-    
-    /**
-     * Implementation of NavigationBarListener interface.
-     * Default navigation to Home/Farms screen.
-     * Child activities can override this method to customize behavior.
-     */
+
     @Override
     public void navigateToHome() {
         if (this.getClass().getSimpleName().equals("ListFarmsActivity")) {
@@ -97,11 +81,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
             startActivity(intent);
         }
     }
-    /**
-     * Implementation of NavigationBarListener interface.
-     * Default navigation to Settings screen.
-     * Child activities can override this method to customize behavior.
-     */
+
+
     @Override
     public void navigateToSettings() {
         // This would typically navigate to a Settings or Users Activity
@@ -109,11 +90,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         Toast.makeText(this, "Navigate to Users/Settings (not implemented)", Toast.LENGTH_SHORT).show();
     }
 
-    /**
-     * Implementation of NavigationBarListener interface.
-     * Default navigation to Profile/Support screen.
-     * Child activities can override this method to customize behavior.
-     */
+
     @Override
     public void navigateToProfile() {
         if (this.getClass().getSimpleName().equals("SupportActivity")) {
@@ -127,11 +104,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         }
     }
 
-    /**
-     * Implementation of NavigationBarListener interface.
-     * Default logout behavior.
-     * Child activities can override this method to customize behavior.
-     */
+
     @Override
     public void logout() {
         // Navigate to LogoutActivity when the logout button is pressed
@@ -140,21 +113,14 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         startActivity(intent);
     }
 
-    /**
-     * Sets the title of the activity.
-     * @param title The title to display
-     */
+
     protected void setActivityTitle(String title) {
         if (topBarFragment != null) {
             topBarFragment.setTitle(title);
         }
     }
 
-    /**
-     * Loads a fragment into the container.
-     * @param fragment The fragment to load
-     * @param addToBackStack Whether to add the transaction to the back stack
-     */
+
     protected void loadFragment(Fragment fragment, boolean addToBackStack) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragmentContainer, fragment);
@@ -166,19 +132,11 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         transaction.commit();
     }
 
-    /**
-     * Loads the initial fragment for the activity.
-     * Child activities should override this method to load their default fragment.
-     */
     protected void loadInitialFragment() {
         // Base implementation does nothing
         // Child activities should override this
     }
 
-    /**
-     * Gets the title for this activity.
-     * Child activities must implement this method to provide their specific title.
-     * @return The title for the activity
-     */
+
     protected abstract String getActivityTitle();
 }

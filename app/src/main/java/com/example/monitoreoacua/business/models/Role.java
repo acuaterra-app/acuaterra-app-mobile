@@ -15,19 +15,16 @@ public class Role implements Parcelable {
     @SerializedName("name")
     private String name;
 
-    // Constructor
     public Role(int id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    // Constructor for Parcelable
     protected Role(Parcel in) {
         id = in.readInt();
         name = in.readString();
     }
 
-    // CREATOR for Parcelable
     public static final Creator<Role> CREATOR = new Creator<Role>() {
         @Override
         public Role createFromParcel(Parcel in) {
@@ -49,7 +46,6 @@ public class Role implements Parcelable {
         return name;
     }
 
-    // Parcelable methods
     @Override
     public int describeContents() {
         return 0;

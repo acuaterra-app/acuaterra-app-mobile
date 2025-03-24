@@ -60,7 +60,6 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         txtNotificationsPermissions = findViewById(R.id.txtNotificationsPermissions);
 
-        // Check notification permission for Android 13+
         checkNotificationPermission();
         btnLogin.setOnClickListener(v -> login());
     }
@@ -88,7 +87,6 @@ public class LoginActivity extends AppCompatActivity {
 
         btnLogin.setEnabled(false);
 
-        // Get Firebase token and proceed with login
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {
                     @Override
@@ -101,10 +99,8 @@ public class LoginActivity extends AppCompatActivity {
                             return;
                         }
 
-                        // Get the FCM token
                         String deviceToken = task.getResult();
 
-                        // Proceed with login using the token
                         proceedWithLogin(email, password, deviceToken);
                     }
                 });
