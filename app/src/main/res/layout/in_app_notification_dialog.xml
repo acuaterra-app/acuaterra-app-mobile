@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@drawable/notification_background"
     android:layout_margin="16dp"
     android:padding="16dp">
 
@@ -48,16 +47,5 @@
             android:contentDescription="Dismiss notification" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/notification_action_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="View"
-        android:textColor="#FFFFFF"
-        android:background="@color/colorPrimary"
-        android:padding="10dp"
-        android:textAllCaps="false"
-        android:textSize="14sp" />
 </LinearLayout>
 

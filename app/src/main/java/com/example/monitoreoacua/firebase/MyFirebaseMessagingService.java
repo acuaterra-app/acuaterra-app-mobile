@@ -51,12 +51,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             String title = remoteMessage.getNotification().getTitle();
             String body = remoteMessage.getNotification().getBody();
             
-            // Check if the app is in foreground, show in-app notification if it is
+            // Always show system notification regardless of app state
+            showNotification(title, body, remoteMessage.getData());
+            
+            // Also show in-app notification if app is in foreground
             if (InAppNotificationHelper.isAppInForeground()) {
                 InAppNotificationHelper.showInAppNotification(title, body, remoteMessage.getData());
-            } else {
-                // Show regular notification if app is in background
-                showNotification(title, body, remoteMessage.getData());
             }
         }
         
@@ -69,12 +69,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 String body = remoteMessage.getData().get("body");
                 
                 if (title != null && body != null) {
-                    // Check if the app is in foreground, show in-app notification if it is
+                    // Always show system notification regardless of app state
+                    showNotification(title, body, remoteMessage.getData());
+                    
+                    // Also show in-app notification if app is in foreground
                     if (InAppNotificationHelper.isAppInForeground()) {
                         InAppNotificationHelper.showInAppNotification(title, body, remoteMessage.getData());
-                    } else {
-                        // Show regular notification if app is in background
-                        showNotification(title, body, remoteMessage.getData());
                     }
                 }
             
