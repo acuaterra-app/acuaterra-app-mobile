@@ -9,7 +9,7 @@
     android:padding="0dp"
     tools:context=".views.farms.farm.modules.ListModulesActivity">
 
-    <!-- Título -->
+    <!-- Title -->
     <TextView
         android:id="@+id/textViewModulesTitle"
         android:layout_width="0dp"
@@ -93,7 +93,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Lista de módulos -->
+    <!-- List Modules -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewModules"
         android:layout_width="0dp"
@@ -106,7 +106,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Barra de navegación inferior -->
+    <!-- Bottom navigation bar -->
     <include
         android:id="@+id/bottomNav"
         layout="@layout/bottom_navigation"

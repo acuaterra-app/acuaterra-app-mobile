@@ -11,7 +11,7 @@
     android:gravity="center"
     android:padding="10dp">
 
-    <!-- Opción: Granjas -->
+    <!-- Option: Farms -->
     <LinearLayout
         android:id="@+id/navFarms"
         android:layout_width="0dp"
@@ -36,7 +36,7 @@
             android:textColor="@color/colorDivider"/>
     </LinearLayout>
 
-    <!-- Opción: Usuarios -->
+    <!-- Option: Users -->
     <LinearLayout
         android:id="@+id/navUsers"
         android:layout_width="0dp"
@@ -61,7 +61,7 @@
             android:textColor="@color/colorDivider"/>
     </LinearLayout>
 
-    <!-- Opción: Soporte -->
+    <!-- Option: Support -->
     <LinearLayout
         android:id="@+id/navSupport"
         android:layout_width="0dp"
@@ -86,7 +86,7 @@
             android:textColor="@color/colorDivider"/>
     </LinearLayout>
 
-    <!-- Opción: Cerrar Sesión -->
+    <!-- Option: Logout -->
     <LinearLayout
         android:id="@+id/navClose"
         android:layout_width="0dp"
