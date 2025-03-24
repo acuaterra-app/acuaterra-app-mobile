@@ -14,9 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
 import com.example.monitoreoacua.R;
-import com.example.monitoreoacua.firebase.handlers.NotificationHandler;
-import com.example.monitoreoacua.firebase.handlers.NotificationHandlerFactory;
-import com.example.monitoreoacua.views.MainActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import java.util.Map;
@@ -77,11 +74,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         InAppNotificationHelper.showInAppNotification(title, body, remoteMessage.getData());
                     }
                 }
-            
-            // Process any additional data payload only if app is NOT in foreground
-            if (!InAppNotificationHelper.isAppInForeground()) {
-                processDataPayload(remoteMessage.getData());
-            }
         }
     }
     
@@ -110,10 +102,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      * Show notification with title, body and optional data
      */
     private void showNotification(String title, String body, Map<String, String> data) {
-        // Use NotificationManager to create the intent
         Intent intent = com.example.monitoreoacua.firebase.NotificationManager.getInstance().createNotificationIntent(this, data);
         
-        // Use notification ID from data or generate one
         int notificationId = 0;
         try {
             if (data.containsKey("notification_id")) {
@@ -146,13 +136,5 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (notificationManager != null) {
             notificationManager.notify(notificationId, notificationBuilder.build());
         }
-    }
-    
-    /**
-     * Process data payload for any additional actions
-     */
-    private void processDataPayload(Map<String, String> data) {
-        // Delegate to NotificationManager for routing
-        com.example.monitoreoacua.firebase.NotificationManager.getInstance().routeNotification(this, data);
     }
 }

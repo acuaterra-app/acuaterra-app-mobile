@@ -13,10 +13,11 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.example.monitoreoacua.firebase.NotificationManager;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -137,6 +138,11 @@ public class InAppNotificationHelper {
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.getWindow().setGravity(Gravity.TOP);
                 
+                android.view.WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+                int marginInDp = (int) (10 * activity.getResources().getDisplayMetrics().density);
+                params.y = marginInDp; // Set 10dp top margin
+                dialog.getWindow().setAttributes(params);
+
                 // Set animation for the dialog (slide down from top)
                 dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationSlideDown;
             }
@@ -156,13 +162,6 @@ public class InAppNotificationHelper {
             // Show the dialog
             dialog.show();
             
-            // Set dialog width to match parent with margins
-            if (dialog.getWindow() != null) {
-                int width = ViewGroup.LayoutParams.MATCH_PARENT;
-                int height = ViewGroup.LayoutParams.WRAP_CONTENT;
-                dialog.getWindow().setLayout(width, height);
-            }
-            
             // Auto dismiss after 5 seconds without performing any action
             new Handler().postDelayed(() -> {
                 if (dialog.isShowing()) {
@@ -176,9 +175,7 @@ public class InAppNotificationHelper {
      * Handle click on the notification - same behavior as clicking on a notification in the tray
      */
     private static void handleNotificationClick(Activity activity, Map<String, String> data) {
-        // Use NotificationManager to create and handle the intent
-        // This will only be called when user explicitly clicks on the notification
-        Intent intent = com.example.monitoreoacua.firebase.NotificationManager.getInstance().createNotificationIntent(activity, data);
+        Intent intent = NotificationManager.getInstance().createNotificationIntent(activity, data);
         activity.startActivity(intent);
     }
 
