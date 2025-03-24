@@ -26,4 +26,7 @@
     <string name="no_modules_found">No se encontraron módulos</string>
     <string name="register_new_module">Registrar nuevo módulo</string>
     <string name="error_loading_modules">Error al cargar los módulos</string>
+    <!-- Notificaciones -->
+    <string name="no_notifications_found">No se encontraron notificaciones</string>
+    <string name="error_loading_notifications">Error al cargar las notificaciones</string>
 </resources>

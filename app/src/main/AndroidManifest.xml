@@ -76,9 +76,6 @@
             android:name=".views.farms.farm.modules.ListModulesActivity"
             android:exported="false" />
         <activity
-            android:name=".views.farms.farm.modules.ListModulesActivity"
-            android:exported="false" />
-        <activity
             android:name=".views.farms.farm.FarmDetailsFragmentActivity"
             android:exported="true"
             android:launchMode="singleTop">
@@ -96,6 +93,9 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+        <activity
+            android:name=".views.notifications.NotificationsActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

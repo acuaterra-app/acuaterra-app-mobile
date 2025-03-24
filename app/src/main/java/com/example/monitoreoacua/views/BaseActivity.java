@@ -26,7 +26,7 @@ import com.example.monitoreoacua.fragments.NavigationBarFragment.NavigationBarLi
 import com.example.monitoreoacua.fragments.TopBarFragment;
 import com.example.monitoreoacua.service.ApiClient;
 import com.example.monitoreoacua.service.ApiNotificationsService;
-import com.example.monitoreoacua.service.request.NotificationRequest;
+import com.example.monitoreoacua.service.request.ListNotificationRequest;
 import com.example.monitoreoacua.service.response.ListNotificationResponse;
 import com.example.monitoreoacua.views.farms.ListFarmsActivity;
 import com.example.monitoreoacua.views.menu.LogoutActivity;
@@ -108,9 +108,9 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
 
     protected void fetchNotifications() {
         ApiNotificationsService apiNotificationsService = ApiClient.getClient().create(ApiNotificationsService.class);
-        NotificationRequest notificationRequest = new NotificationRequest();
+        ListNotificationRequest listNotificationRequest = new ListNotificationRequest();
 
-        apiNotificationsService.getNotifications(notificationRequest.getAuthToken()).enqueue(new Callback<ListNotificationResponse>() {
+        apiNotificationsService.getNotifications(listNotificationRequest.getAuthToken()).enqueue(new Callback<ListNotificationResponse>() {
             @Override
             public void onResponse(@NonNull Call<ListNotificationResponse> call, @NonNull Response<ListNotificationResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {

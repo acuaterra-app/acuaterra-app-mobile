@@ -1,8 +1,8 @@
 package com.example.monitoreoacua.service.request;
 
-public class NotificationRequest extends BaseRequest{
+public class ListNotificationRequest extends BaseRequest{
 
-    public NotificationRequest()
+    public ListNotificationRequest()
     {
         super();
         setRequiresAuthentication(true);
