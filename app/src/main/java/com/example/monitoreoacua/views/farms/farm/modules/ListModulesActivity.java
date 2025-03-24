@@ -82,7 +82,7 @@ public class ListModulesActivity extends AppCompatActivity {
 
         // Get farm ID and load modules
         int farmId = getIntent().getIntExtra("farmId", -1);
-        Toast.makeText(this, "Id Farm: " + farmId, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "LMA - Id Farm: " + farmId, Toast.LENGTH_SHORT).show();
         if (farmId != -1) {
             loadModules(farmId);
         } else {
@@ -90,14 +90,11 @@ public class ListModulesActivity extends AppCompatActivity {
         }
 
         // Get User ID
-        int userId = getIntent().getIntExtra("created_by_user_id", -1);
+        int userId = getIntent().getIntExtra("userId", 0);
         Toast.makeText(this, "LMA - Id User: " + userId, Toast.LENGTH_SHORT).show();
-        if (userId != -1) {
-            //logica
-        } else {
+        if (userId == 0) {
             Toast.makeText(this, "Error al obtener el Id del usuario", Toast.LENGTH_SHORT).show();
         }
-
 
         // Initialize UI buttons
         buttonAddModule = findViewById(R.id.buttonAddModule);

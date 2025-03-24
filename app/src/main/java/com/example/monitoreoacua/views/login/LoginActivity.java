@@ -31,7 +31,6 @@ public class LoginActivity extends AppCompatActivity {
     private EditText etEmail, etPassword;
     private Button btnLogin;
     private int loginAttempts = 0;
-    private int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,11 +81,11 @@ public class LoginActivity extends AppCompatActivity {
 
                     //Ensure that the User object is not null before accessing its ID
                     if (loginResponse.getUser() != null) {
-                        userId = loginResponse.getUser().getId();
+                        int userId = loginResponse.getUser().getId();
                         Toast.makeText(LoginActivity.this, "LA - User id: "+ userId , Toast.LENGTH_SHORT).show();
 
                         Intent intent = new Intent(LoginActivity.this, ListModulesActivity.class);
-                        intent.putExtra("created_by_user_id", userId);
+                        intent.putExtra("userId", userId);
                         startActivity(intent);
                         finish();
                     } else {

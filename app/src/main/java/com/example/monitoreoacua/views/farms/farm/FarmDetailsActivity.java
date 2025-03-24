@@ -45,6 +45,7 @@ public class FarmDetailsActivity extends AppCompatActivity {
         if (farm != null) {
             textViewFarmName.setText(farm.getName());
             textViewFarmAddress.setText(farm.getAddress());
+            Toast.makeText(this, "FDM - Id Farm: " + farm.getId(), Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "Error: No se recibió información de la granja", Toast.LENGTH_SHORT).show();
             finish(); // Close the activity if there is no data
@@ -53,7 +54,8 @@ public class FarmDetailsActivity extends AppCompatActivity {
         // Configure button modules
         buttonModules.setOnClickListener(v -> {
                 Intent intent = new Intent(FarmDetailsActivity.this, ListModulesActivity.class);
-                intent.putExtra("farmId", farm.getId());
+                int farmId = farm.getId();
+                intent.putExtra("farmId", farmId);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();
