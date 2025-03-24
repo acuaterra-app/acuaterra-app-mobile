@@ -6,8 +6,10 @@ import retrofit2.http.Header;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
-import com.example.monitoreoacua.business.models.Module;
 import com.example.monitoreoacua.service.response.ListModuleResponse;
+import com.example.monitoreoacua.service.request.CreateModuleRequest;
+import com.example.monitoreoacua.service.response.CreateModuleResponse;
+
 
 /**
  * Interface for user-related API operations.
@@ -22,8 +24,8 @@ public interface ApiModulesService {
     );
 
     @POST("/api/v2/owner/modules")
-    Call<Void> createModule(
-            @Body Module module,
+    Call<CreateModuleResponse> createModule(
+            @Body CreateModuleRequest  createModuleRequest,
             @Header("Authorization") String token
     );
 }
