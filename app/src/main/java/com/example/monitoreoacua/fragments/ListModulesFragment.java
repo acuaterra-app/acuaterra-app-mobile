@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.monitoreoacua.R;
+import com.example.monitoreoacua.business.models.Farm;
 import com.example.monitoreoacua.business.models.Module;
 import com.example.monitoreoacua.service.ApiClient;
 import com.example.monitoreoacua.service.ApiModulesService;
@@ -71,8 +72,6 @@ public class ListModulesFragment extends Fragment implements ModuleAdapter.OnMod
             farmId = getArguments().getString("farmId");
             Log.d("ListModulesFragment", "farmId: " + farmId);
         }
-
-
     }
 
     @Override

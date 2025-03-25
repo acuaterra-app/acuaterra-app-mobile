@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 
 import java.util.Map;
 import com.example.monitoreoacua.business.models.Farm;
+import com.example.monitoreoacua.interfaces.OnApiRequestCallback;
 import com.example.monitoreoacua.service.ApiClient;
 import com.example.monitoreoacua.service.ApiFarmsService;
 import com.example.monitoreoacua.service.request.GetFarmRequest;
@@ -54,38 +55,17 @@ public class FarmNotificationHandler implements NotificationHandler {
     }
 
     private void fetchFarmDetails(Context context, String farmId) {
-        ApiFarmsService farmsService = ApiClient.getClient().create(ApiFarmsService.class);
-        GetFarmRequest getFarmRequest = new GetFarmRequest();
+        new GetFarmRequest().getFarmById(new OnApiRequestCallback<Farm, Throwable>() {
+            @Override
+            public void onSuccess(Farm farm) {
+                openFarmDetailsActivity(context, farm);
+            }
 
-        try {
-            int farmIdInt = Integer.parseInt(farmId);
-            Call<FarmResponse> call = farmsService.getFarmById(getFarmRequest.getAuthToken(), farmIdInt);
-            
-            call.enqueue(new Callback<FarmResponse>() {
-                @Override
-                public void onResponse(@NonNull Call<FarmResponse> call, @NonNull Response<FarmResponse> response) {
-                    if (!response.isSuccessful() || response.body() == null) {
-                        Log.e(TAG, "Error fetching farm details: " + response);
-                        return;
-                    }
-
-                    Farm farm = response.body().getFarm();
-                    if (farm == null) {
-                        Log.e(TAG, "Farm data is null in the response");
-                        return;
-                    }
-
-                    openFarmDetailsActivity(context, farm);
-                }
-    
-                @Override
-                public void onFailure(@NonNull Call<FarmResponse> call, @NonNull Throwable t) {
-                    Log.e(TAG, "API call failed", t);
-                }
-            });
-        } catch (NumberFormatException e) {
-            Log.e(TAG, "Invalid farm ID format: " + farmId, e);
-        }
+            @Override
+            public void onFail(Throwable t) {
+                Log.e(TAG, "API call failed", t);
+            }
+        }, Integer.parseInt(farmId));
     }
 
     private void openFarmDetailsActivity(Context context, Farm farm) {
