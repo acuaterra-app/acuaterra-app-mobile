@@ -57,7 +57,6 @@ public class ListNotificationsFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private ProgressBar progressBar;
     private TextView tvEmptyView;
-    private TextView tvPaginationStatus;
     private EditText editTextSearch;
     private AppCompatImageButton buttonSortByDate;
 
@@ -110,7 +109,6 @@ public class ListNotificationsFragment extends Fragment {
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         progressBar = view.findViewById(R.id.progressBar);
         tvEmptyView = view.findViewById(R.id.tvEmptyView);
-        tvPaginationStatus = view.findViewById(R.id.tvPaginationStatus);
         editTextSearch = view.findViewById(R.id.searchNotifications);
         buttonSortByDate = view.findViewById(R.id.buttonSortNotifications);
 
@@ -426,7 +424,6 @@ public class ListNotificationsFragment extends Fragment {
         progressBar.setVisibility(View.VISIBLE);
         tvEmptyView.setVisibility(View.GONE);
         recyclerViewNotifications.setVisibility(View.GONE);
-        tvPaginationStatus.setVisibility(View.GONE);
     }
 
     private void hideLoading() {
@@ -439,14 +436,12 @@ public class ListNotificationsFragment extends Fragment {
         if (!isAdded()) return;
         recyclerViewNotifications.setVisibility(View.VISIBLE);
         tvEmptyView.setVisibility(View.GONE);
-        tvPaginationStatus.setVisibility(View.VISIBLE);
     }
 
     private void showEmptyState(String message) {
         if (!isAdded()) return;
         recyclerViewNotifications.setVisibility(View.GONE);
         tvEmptyView.setVisibility(View.VISIBLE);
-        tvPaginationStatus.setVisibility(View.GONE);
         tvEmptyView.setText(message);
     }
 
@@ -486,10 +481,6 @@ public class ListNotificationsFragment extends Fragment {
                 message += " - No hay más páginas";
             }
             
-            tvPaginationStatus.setText(message);
-            tvPaginationStatus.setVisibility(View.VISIBLE);
-        } else {
-            tvPaginationStatus.setVisibility(View.GONE);
         }
     }
 }
