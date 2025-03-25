@@ -2,6 +2,7 @@ package com.example.monitoreoacua.firebase;
 
 import android.content.Context;
 
+import com.example.monitoreoacua.business.models.Notification;
 import com.example.monitoreoacua.firebase.handlers.NotificationHandler;
 import com.example.monitoreoacua.firebase.handlers.NotificationHandlerFactory;
 
@@ -15,9 +16,8 @@ public class FireBaseNotificationManager {
     
     // Singleton instance
     private static FireBaseNotificationManager instance;
-    private Context applicationContext;
-    
-    private FireBaseNotificationManager() {
+
+    public FireBaseNotificationManager() {
         // Private constructor to prevent direct instantiation
     }
     
@@ -28,15 +28,14 @@ public class FireBaseNotificationManager {
         return instance;
     }
 
-    public void setContext(Context context) {
-        if (context != null) {
-            this.applicationContext = context.getApplicationContext();
-        }
-    }
-    public void processNotification( String title, String message, Map<String, String> data) {
+    public void processNotification(Context context,Notification notification) {
         NotificationHandlerFactory notificationHandlerFactory = NotificationHandlerFactory.getInstance();
 
-        NotificationHandler notificationHandler = notificationHandlerFactory.getHandler(data.get("type"));
+        NotificationHandler notificationHandler = notificationHandlerFactory.getHandler(
+                notification.getData().getMetaData().get("type")
+        );
+
+        notificationHandler.handle(context, notification);
     }
 }
 

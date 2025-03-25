@@ -8,12 +8,13 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
-import android.util.Log;
+import com.google.gson.Gson;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
 import android.app.NotificationManager;
+import android.util.Log;
 
 import com.example.monitoreoacua.R;
 import com.example.monitoreoacua.business.models.Notification;
@@ -29,7 +30,7 @@ import java.util.Map;
  * Uses FireBaseNotificationManager to delegate processing to appropriate handlers.
  */
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
-    private static final String TAG = "MyFirebaseMsgService";
+    private static final String TAG = "MyFirebaseMsgServiceTag";
     private static final String DEFAULT_CHANNEL_ID = "default_channel";
     private static final String DEFAULT_CHANNEL_NAME = "Default Channel";
 
@@ -45,27 +46,28 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private Notification createNotificationFromRemoteMessage(@NonNull RemoteMessage remoteMessage) {
-        String title = null;
-        String message = null;
+
+        String title = "";
+        String message = "";
         String notificationId = null;
         String state = null;
         String dateHour = null;
         Map<String, String> data = new HashMap<>();
 
+        if(remoteMessage.getNotification() != null) {
+            title = remoteMessage.getNotification().getTitle();
+            message = remoteMessage.getNotification().getBody();
+        }
+
         if (!remoteMessage.getData().isEmpty()) {
-            title = remoteMessage.getData().get("title");
-            message = remoteMessage.getData().get("message");
             notificationId = remoteMessage.getData().get("id");
             state = remoteMessage.getData().get("state");
             dateHour = remoteMessage.getData().get("dateHour");
 
-            // Copy any remaining data fields
+            // Copy all data fields to metaData without filtering
             for (Map.Entry<String, String> entry : remoteMessage.getData().entrySet()) {
                 String key = entry.getKey();
-                if (!key.equals("title") && !key.equals("message") &&
-                        !key.equals("id") && !key.equals("state") && !key.equals("dateHour")) {
-                    data.put(key, entry.getValue());
-                }
+                data.put(key, entry.getValue());
             }
         }
 
@@ -98,9 +100,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra("notification", true);
+        intent.putExtra("notification", notification);
 
-         int notificationId = (int) System.currentTimeMillis() + notification.getData().getId();
+        int notificationId = (int) System.currentTimeMillis() + notification.getData().getId();
 
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 this,

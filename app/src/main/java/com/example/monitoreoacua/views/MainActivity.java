@@ -1,10 +1,15 @@
 package com.example.monitoreoacua.views;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.monitoreoacua.firebase.FireBaseNotificationManager;
+import com.google.gson.Gson;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.monitoreoacua.R;
@@ -26,44 +31,39 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: MainActivity is starting");
         setContentView(R.layout.activity_main);
 
-        handleNotificationIfNeeded(getIntent().getExtras());
+        handleNotificationIfNeeded(this, getIntent().getExtras());
 
         Intent intent;
 
-        try {
-            SharedPreferences sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-            String token = sharedPreferences.getString(TOKEN_KEY, null);
+        SharedPreferences sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        String token = sharedPreferences.getString(TOKEN_KEY, null);
 
-            if (token == null || token.isEmpty() || token.trim().length() < 0) {
-                Log.d(TAG, "No valid token found, redirecting to LoginActivity");
-                intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-                return;
-            }
-
-            intent = new Intent(MainActivity.this, ListFarmsActivity.class);
-            startActivity(intent);
-            finish();
-        } catch (Exception e) {
-            Log.e(TAG, "Error checking token: " + e.getMessage(), e);
-
+        if (token == null || token.isEmpty() || token.trim().length() < 0) {
+            Log.d(TAG, "No valid token found, redirecting to LoginActivity");
             intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
-            finish();
+            return;
         }
+
+        intent = new Intent(MainActivity.this, ListFarmsActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        handleNotificationIfNeeded(getIntent().getExtras());
+    protected void onNewIntent(@NonNull Intent intent) {
+        super.onNewIntent(intent);
+        Log.d(TAG, "onNewIntent: MainActivity is starting");
+        setIntent(intent);
+        handleNotificationIfNeeded(this, intent.getExtras());
     }
 
-    private void handleNotificationIfNeeded(Bundle extras) {
+    private void handleNotificationIfNeeded(Context context, Bundle extras) {
         if (extras != null && extras.containsKey("notification")) {
-            String notificationData = extras.getString("notification");
-            Log.d(TAG, "Notificación recibida a través del intent: " + notificationData);
-        }else{
+            Notification notification = extras.getParcelable("notification", Notification.class);
+            Log.d(TAG, "Notificación recibida a través del intent: " + notification.getMessage());
+            new FireBaseNotificationManager().processNotification(context, notification);
+        } else {
             Log.d(TAG, "No se recibieron notificaciones a través del intent");
         }
     }

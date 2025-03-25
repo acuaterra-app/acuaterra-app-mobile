@@ -1,6 +1,9 @@
 package com.example.monitoreoacua.firebase.handlers;
 
 import android.content.Context;
+
+import com.example.monitoreoacua.business.models.Notification;
+
 import java.util.Map;
 
 /**
@@ -10,6 +13,6 @@ public interface NotificationHandler {
     
     boolean canHandle(String notificationType);
 
-    void handle(Context context, Map<String, String> data);
+    void handle(Context context, Notification notification);
 }
 
