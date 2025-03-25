@@ -35,4 +35,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:contentDescription="Notification"/>
 
+    <TextView
+        android:id="@+id/notificationBadge"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:background="@drawable/notification_badge_background"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:textSize="10sp"
+        android:visibility="gone"
+        android:textStyle="bold"
+        app:layout_constraintCircle="@id/notificationIcon"
+        app:layout_constraintCircleRadius="15dp"
+        app:layout_constraintCircleAngle="315"
+        tools:text="9"
+        tools:visibility="visible" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

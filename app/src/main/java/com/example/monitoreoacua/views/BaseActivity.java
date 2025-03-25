@@ -16,6 +16,8 @@ import com.example.monitoreoacua.firebase.NotificationManager;
 import com.example.monitoreoacua.fragments.NavigationBarFragment;
 import com.example.monitoreoacua.fragments.NavigationBarFragment.NavigationBarListener;
 import com.example.monitoreoacua.fragments.TopBarFragment;
+import com.example.monitoreoacua.interfaces.OnApiRequestCallback;
+import com.example.monitoreoacua.service.request.ListNotificationRequest;
 import com.example.monitoreoacua.views.farms.ListFarmsActivity;
 import com.example.monitoreoacua.views.menu.LogoutActivity;
 import com.example.monitoreoacua.views.menu.SupportActivity;
@@ -32,7 +34,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     
     protected TopBarFragment topBarFragment;
     protected NavigationBarFragment navigationBarFragment;
-
+    protected int unreadNotificationsCount = 0;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +46,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         loadTopBarFragment();
         loadNavigationBarFragment();
         
+        
         setActivityTitle(getActivityTitle());
         
         if (savedInstanceState == null) {
@@ -52,6 +55,9 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         
         // Process any notification intents that started this activity
         processNotificationIntent(getIntent());
+        
+        // Fetch notifications when activity is created
+        fetchNotifications();
     }
     
     @Override
@@ -62,6 +68,15 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         processNotificationIntent(intent);
     }
     
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: " + getClass().getSimpleName());
+        
+        // Fetch notifications when activity resumes to ensure the badge is always up-to-date
+        fetchNotifications();
+    }
+    
     /**
      * Process the notification intent that may have started this activity
      */
@@ -70,7 +85,52 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
             boolean wasNotification = NotificationManager.getInstance().processNotificationIntent(this, intent);
             if (wasNotification) {
                 Log.d(TAG, "Processed notification intent");
+                // Fetch notifications when a new notification is received
+                fetchNotifications();
             }
+        }
+    }
+
+    protected void fetchNotifications() {
+        new ListNotificationRequest().fetchTotalNotifications(new OnApiRequestCallback<Integer, String>() {
+            @Override
+            public void onSuccess(Integer count) {
+                int previousCount = unreadNotificationsCount; // Store the previous count for comparison
+                unreadNotificationsCount = count;
+
+                // Log if the count changed
+                if (previousCount != unreadNotificationsCount) {
+                    Log.d(TAG, "Notification count changed: " + previousCount + " -> " + unreadNotificationsCount);
+                }
+
+                updateNotificationBadge();
+            }
+
+            @Override
+            public void onFail(String error) {
+                Log.e(TAG, "Error fetching notifications: " + error);
+                updateNotificationBadge();
+            }
+        }, 1, "unread", 10);
+    }
+    
+    /**
+     * Updates the notification badge in the TopBarFragment
+     */
+    protected void updateNotificationBadge() {
+        if (topBarFragment != null) {
+            runOnUiThread(() -> {
+                try {
+                    // Ensure notification count is not negative
+                    int badgeCount = Math.max(0, unreadNotificationsCount);
+                    Log.d(TAG, "Updating notification badge with count: " + badgeCount);
+                    topBarFragment.updateNotificationBadge(badgeCount);
+                } catch (Exception e) {
+                    Log.e(TAG, "Error updating notification badge: " + e.getMessage(), e);
+                }
+            });
+        } else {
+            Log.w(TAG, "Cannot update notification badge: topBarFragment is null");
         }
     }
 

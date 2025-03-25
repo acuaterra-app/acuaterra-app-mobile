@@ -29,9 +29,7 @@ import retrofit2.Response;
 public class FarmDetailsActivity extends BaseActivity implements OnFragmentInteractionListener {
 
     private static final String EXTRA_FARM = "extra_farm";
-    private static final String EXTRA_FARM_ID = "farmId";
     private Farm farm;
-    private int farmId;
     private static final String TAG = "FarmDetailsFragment";
 
     /**
@@ -47,45 +45,18 @@ public class FarmDetailsActivity extends BaseActivity implements OnFragmentInter
         return intent;
     }
     
-    /**
-     * Create an intent to start this activity
-     *
-     * @param context The context to create the intent from
-     * @param farmId The ID of the farm to display details for
-     * @return The intent to start this activity
-     */
-    public static Intent createIntent(@NonNull Context context, int farmId) {
-        Intent intent = new Intent(context, FarmDetailsActivity.class);
-        intent.putExtra(EXTRA_FARM_ID, farmId);
-        return intent;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Get farm or farmId from intent
-        if (getIntent() != null) {
-            if (getIntent().hasExtra(EXTRA_FARM)) {
-                farm = getIntent().getParcelableExtra(EXTRA_FARM, Farm.class);
-                initializeWithFarm();
-            } else if (getIntent().hasExtra(EXTRA_FARM_ID)) {
-                farmId = getIntent().getIntExtra(EXTRA_FARM_ID, -1);
-                if (farmId != -1) {
-                    // Set a temporary title while loading
-                    setTitle("Cargando detalles...");
-                    fetchFarmDetails(farmId);
-                } else {
-                    // Invalid farmId
-                    Toast.makeText(this, "ID de granja inválido", Toast.LENGTH_SHORT).show();
-                    finish();
-                }
-            } else {
-                // No farm or farmId provided
-                Toast.makeText(this, "No se proporcionó información de la granja", Toast.LENGTH_SHORT).show();
-                finish();
-            }
+        // Get farm from intent
+        if (getIntent() != null && getIntent().hasExtra(EXTRA_FARM)) {
+            farm = getIntent().getParcelableExtra(EXTRA_FARM, Farm.class);
+            initializeWithFarm();
         } else {
+            // No farm provided
+            Toast.makeText(this, "No se proporcionó información de la granja", Toast.LENGTH_SHORT).show();
             finish();
         }
     }
@@ -106,50 +77,6 @@ public class FarmDetailsActivity extends BaseActivity implements OnFragmentInter
         loadInitialFragment();
     }
     
-    /**
-     * Fetch farm details from the API using the provided farmId
-     * 
-     * @param farmId The ID of the farm to fetch details for
-     */
-    private void fetchFarmDetails(int farmId) {
-        // Get auth token from SharedPreferences
-        String token = getSharedPreferences("user_prefs", MODE_PRIVATE).getString("token", null);
-        
-        if (token == null) {
-            Toast.makeText(this, "No se pudo obtener el token de autenticación", Toast.LENGTH_SHORT).show();
-            finish();
-            return;
-        }
-        
-        // Create API service
-        ApiFarmsService apiFarmsService = ApiClient.getClient().create(ApiFarmsService.class);
-        
-        // Make API call to get farm details
-        apiFarmsService.getFarmById(token, farmId).enqueue(new Callback<FarmResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<FarmResponse> call, @NonNull Response<FarmResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    farm = response.body().getFarm();
-                    if (farm != null) {
-                        initializeWithFarm();
-                    } else {
-                        Toast.makeText(FarmDetailsActivity.this, "No se encontraron detalles para esta granja", Toast.LENGTH_SHORT).show();
-                        finish();
-                    }
-                } else {
-                    Toast.makeText(FarmDetailsActivity.this, "Error al obtener detalles de la granja", Toast.LENGTH_SHORT).show();
-                    finish();
-                }
-            }
-            
-            @Override
-            public void onFailure(@NonNull Call<FarmResponse> call, @NonNull Throwable t) {
-                Toast.makeText(FarmDetailsActivity.this, "Error de conexión: " + t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "Error fetching farm details", t);
-                finish();
-            }
-        });
-    }
 
     @Override
     protected void loadInitialFragment() {
@@ -180,22 +107,21 @@ public class FarmDetailsActivity extends BaseActivity implements OnFragmentInter
         setTitle(farm.getName());
         loadFragment(FarmDetailsFragment.newInstance(farm), false);
     }
-    
+
     @Override
     public void onNavigateBack() {
         // Handle back navigation from fragment
         onBackPressed();
     }
-    
+
     @Override
     public void onViewFarmModules(Farm farm) {
         // Handle navigation to the farm modules screen
-        // Launch ListModulesActivity with the farmId parameter
+        // Launch ListModulesActivity with the farm object
         Intent intent = new Intent(this, ListModulesActivity.class);
-        intent.putExtra("farmId", farm.getId());
+        intent.putExtra("farm", farm);
         startActivity(intent);
     }
-    
     @Override
     protected String getActivityTitle() {
         // Return the farm name as the activity title

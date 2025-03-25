@@ -14,13 +14,15 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
 import com.example.monitoreoacua.R;
+import com.example.monitoreoacua.business.models.Notification;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Service that handles incoming Firebase Cloud Messaging messages.
- * Uses NotificationHandlerFactory to delegate processing to appropriate handlers.
+ * Uses NotificationManager to delegate processing to appropriate handlers.
  */
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = "MyFirebaseMsgService";
@@ -37,43 +39,67 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         super.onMessageReceived(remoteMessage);
         
         Log.d(TAG, "From: " + remoteMessage.getFrom());
+        Log.d(TAG, "Notification: " + remoteMessage.getData());
 
         // Create notification channel for Android Oreo and above
         createNotificationChannel();
 
-        // Handle notification payload (if present)
+        // Prepare notification data map from RemoteMessage
+        Map<String, String> notificationData = prepareNotificationData(remoteMessage);
+        
+        // Use NotificationManager to parse the notification
+        Notification notification = com.example.monitoreoacua.firebase.NotificationManager.getInstance()
+                .parseNotification(notificationData);
+        
+        if (notification != null) {
+            // Process the parsed notification
+            processNotification(notification, notificationData);
+        } else {
+            Log.w(TAG, "Failed to parse notification data");
+        }
+    }
+    
+    /**
+     * Prepares a unified notification data map from RemoteMessage
+     * 
+     * @param remoteMessage The incoming FCM message
+     * @return A map containing all notification data
+     */
+    private Map<String, String> prepareNotificationData(RemoteMessage remoteMessage) {
+        Map<String, String> notificationData = new HashMap<>(remoteMessage.getData());
+        
+        // Add notification payload data if available
         if (remoteMessage.getNotification() != null) {
-            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
+            // Add title and body from notification payload if not already in data
+            if (remoteMessage.getNotification().getTitle() != null && 
+                !notificationData.containsKey("title")) {
+                notificationData.put("title", remoteMessage.getNotification().getTitle());
+            }
             
-            String title = remoteMessage.getNotification().getTitle();
-            String body = remoteMessage.getNotification().getBody();
-            
-            // Always show system notification regardless of app state
-            showNotification(title, body, remoteMessage.getData());
-            
-            // Also show in-app notification if app is in foreground
-            if (InAppNotificationHelper.isAppInForeground()) {
-                InAppNotificationHelper.showInAppNotification(title, body, remoteMessage.getData());
+            if (remoteMessage.getNotification().getBody() != null && 
+                !notificationData.containsKey("body")) {
+                notificationData.put("body", remoteMessage.getNotification().getBody());
             }
         }
         
-        // Handle data payload (if present)
-        if (remoteMessage.getData().size() > 0) {
-            Log.d(TAG, "Message Data: " + remoteMessage.getData());
+        return notificationData;
+    }
+    
+    /**
+     * Process notification in a consistent way for both foreground and background
+     * 
+     * @param notification The parsed notification object
+     * @param notificationData The raw notification data
+     */
+    private void processNotification(Notification notification, Map<String, String> notificationData) {
+        String title = notification.getTitle();
+        String message = notification.getMessage();
+        
+        if (title != null && message != null) {
+            // Always show system notification regardless of app state
+            showNotification(title, message, notificationData);
             
-            // If there's no notification payload, generate one from data
-                String title = remoteMessage.getData().get("title");
-                String body = remoteMessage.getData().get("body");
-                
-                if (title != null && body != null) {
-                    // Always show system notification regardless of app state
-                    showNotification(title, body, remoteMessage.getData());
-                    
-                    // Also show in-app notification if app is in foreground
-                    if (InAppNotificationHelper.isAppInForeground()) {
-                        InAppNotificationHelper.showInAppNotification(title, body, remoteMessage.getData());
-                    }
-                }
+            // Popup functionality has been removed - no in-app notifications will be shown
         }
     }
     
@@ -100,20 +126,38 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     
     /**
      * Show notification with title, body and optional data
+     * 
+     * This method creates and displays a system notification. When the notification is clicked,
+     * it will use the NotificationManager's routing logic to determine how to handle the notification.
+     * 
+     * The notification intent includes:
+     * - ACTION_NOTIFICATION_CLICKED: A custom action to identify notification clicks
+     * - All notification data as extras, enabling proper routing by NotificationManager
+     * 
+     * @param title The notification title
+     * @param body The notification body text
+     * @param data Map containing all notification data
      */
     private void showNotification(String title, String body, Map<String, String> data) {
-        Intent intent = com.example.monitoreoacua.firebase.NotificationManager.getInstance().createNotificationIntent(this, data);
+        // Use the notification click action defined in NotificationManager
         
-        int notificationId = 0;
-        try {
-            if (data.containsKey("notification_id")) {
-                notificationId = Integer.parseInt(data.get("notification_id"));
-            } else {
-                notificationId = (int) System.currentTimeMillis();
-            }
-        } catch (Exception e) {
-            notificationId = (int) System.currentTimeMillis();
+        // Create an intent with the notification click action
+        Intent intent = com.example.monitoreoacua.firebase.NotificationManager.getInstance().createNotificationIntent(this, data);
+        intent.setAction(com.example.monitoreoacua.firebase.NotificationManager.ACTION_NOTIFICATION_CLICKED);
+        
+        // Add notification data to the intent for proper routing
+        for (Map.Entry<String, String> entry : data.entrySet()) {
+            intent.putExtra(entry.getKey(), entry.getValue());
         }
+        
+        // Add a flag to ensure MainActivity properly processes this notification
+        // Add a flag to ensure MainActivity properly processes this notification
+        intent.putExtra("notification_source", "system_tray");
+        intent.putExtra(com.example.monitoreoacua.firebase.NotificationManager.EXTRA_SHOULD_ROUTE, true);
+        // Add flags to handle activity launch modes properly
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        
+        int notificationId = getNotificationId(data);
         
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 this, 
@@ -136,5 +180,37 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (notificationManager != null) {
             notificationManager.notify(notificationId, notificationBuilder.build());
         }
+    }
+    
+    /**
+     * Get notification ID from data or generate a unique one
+     * 
+     * @param data Notification data map
+     * @return Notification ID
+     */
+    private int getNotificationId(Map<String, String> data) {
+        // Try to get ID from data map
+        if (data != null) {
+            // First check for the structured ID
+            if (data.containsKey("id")) {
+                try {
+                    return Integer.parseInt(data.get("id"));
+                } catch (NumberFormatException e) {
+                    // Ignore parse error
+                }
+            }
+            
+            // Then check for the legacy notification_id
+            if (data.containsKey("notification_id")) {
+                try {
+                    return Integer.parseInt(data.get("notification_id"));
+                } catch (NumberFormatException e) {
+                    // Ignore parse error
+                }
+            }
+        }
+        
+        // If no valid ID found, generate one from current timestamp
+        return (int) System.currentTimeMillis();
     }
 }

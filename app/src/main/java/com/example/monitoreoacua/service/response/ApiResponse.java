@@ -64,83 +64,48 @@ public class ApiResponse<T> {
     }
     
     public static class Meta {
-        @SerializedName("pagination")
-        private Pagination pagination;
+        @SerializedName("totalItems")
+        private int totalItems;
         
-        public Pagination getPagination() {
-            return pagination;
+        @SerializedName("totalPages")
+        private int totalPages;
+        
+        @SerializedName("currentPage")
+        private int currentPage;
+        
+        @SerializedName("itemsPerPage") 
+        private int itemsPerPage;
+        
+        public int getTotalItems() {
+            return totalItems;
         }
         
-        public void setPagination(Pagination pagination) {
-            this.pagination = pagination;
+        public void setTotalItems(int totalItems) {
+            this.totalItems = totalItems;
         }
         
-        public static class Pagination {
-            @SerializedName("total")
-            private int total;
-            
-            @SerializedName("totalPages")
-            private int totalPages;
-            
-            @SerializedName("currentPage")
-            private int currentPage;
-            
-            @SerializedName("perPage") 
-            private int perPage;
-            
-            @SerializedName("hasNext")
-            private boolean hasNext;
-            
-            @SerializedName("hasPrev")
-            private boolean hasPrev;
-            
-            public int getTotal() {
-                return total;
-            }
-            
-            public void setTotal(int total) {
-                this.total = total;
-            }
-            
-            public int getTotalPages() {
-                return totalPages;
-            }
-            
-            public void setTotalPages(int totalPages) {
-                this.totalPages = totalPages;
-            }
-            
-            public int getCurrentPage() {
-                return currentPage;
-            }
-            
-            public void setCurrentPage(int currentPage) {
-                this.currentPage = currentPage;
-            }
-            
-            public int getPerPage() {
-                return perPage;
-            }
-            
-            public void setPerPage(int perPage) {
-                this.perPage = perPage;
-            }
-            
-            public boolean isHasNext() {
-                return hasNext;
-            }
-            
-            public void setHasNext(boolean hasNext) {
-                this.hasNext = hasNext;
-            }
-            
-            public boolean isHasPrev() {
-                return hasPrev;
-            }
-            
-            public void setHasPrev(boolean hasPrev) {
-                this.hasPrev = hasPrev;
-            }
+        public int getTotalPages() {
+            return totalPages;
+        }
+        
+        public void setTotalPages(int totalPages) {
+            this.totalPages = totalPages;
+        }
+        
+        public int getCurrentPage() {
+            return currentPage;
+        }
+        
+        public void setCurrentPage(int currentPage) {
+            this.currentPage = currentPage;
+        }
+        
+        public int getItemsPerPage() {
+            return itemsPerPage;
+        }
+        
+        public void setItemsPerPage(int itemsPerPage) {
+            this.itemsPerPage = itemsPerPage;
         }
     }
 }

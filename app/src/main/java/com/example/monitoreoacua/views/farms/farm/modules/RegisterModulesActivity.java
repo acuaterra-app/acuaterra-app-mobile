@@ -2,6 +2,7 @@ package com.example.monitoreoacua.views.farms.farm.modules;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,12 +12,13 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.monitoreoacua.R;
+import com.example.monitoreoacua.business.models.Farm;
 import com.example.monitoreoacua.views.farms.ListFarmsActivity;
 import com.example.monitoreoacua.views.menu.LogoutActivity;
 import com.example.monitoreoacua.views.menu.SupportActivity;
 
 public class RegisterModulesActivity extends AppCompatActivity {
-
+    private Farm farm;
     private AppCompatImageButton navHome, navSettings, navProfile, navCloseSesion;
 
     @Override
@@ -24,6 +26,14 @@ public class RegisterModulesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_register_modules);
+        
+        // Get farm object from intent
+        farm = getIntent().getParcelableExtra("farm", Farm.class);
+        if (farm == null) {
+            Toast.makeText(this, "No se proporcionó información de la granja", Toast.LENGTH_SHORT).show();
+            finish(); // Close activity if farm is missing
+            return;
+        }
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);

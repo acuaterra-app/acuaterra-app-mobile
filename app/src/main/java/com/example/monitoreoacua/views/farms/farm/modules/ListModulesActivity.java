@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.monitoreoacua.R;
+import com.example.monitoreoacua.business.models.Farm;
 import com.example.monitoreoacua.business.models.Module;
 import com.example.monitoreoacua.fragments.ListModulesFragment;
 import com.example.monitoreoacua.views.BaseActivity;
@@ -14,15 +15,15 @@ import com.example.monitoreoacua.views.BaseActivity;
  */
 public class ListModulesActivity extends BaseActivity implements ListModulesFragment.OnModuleInteractionListener {
     
-    private String farmId;
+    private Farm farm;
     private ListModulesFragment modulesFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // Get farmId from intent
-        farmId = getIntent().getStringExtra("farmId");
-        if (farmId == null || farmId.isEmpty()) {
-            finish(); // Close activity if farmId is missing
+        // Get farm object from intent
+        farm = getIntent().getParcelableExtra("farm", Farm.class);
+        if (farm == null) {
+            finish(); // Close activity if farm is missing
             return;
         }
         
@@ -37,7 +38,7 @@ public class ListModulesActivity extends BaseActivity implements ListModulesFrag
     @Override
     protected void loadInitialFragment() {
         // Create and load the ListModulesFragment
-        modulesFragment = ListModulesFragment.newInstance(farmId);
+        modulesFragment = ListModulesFragment.newInstance(String.valueOf(farm.getId()));
         loadFragment(modulesFragment, false);
     }
     
@@ -52,7 +53,7 @@ public class ListModulesActivity extends BaseActivity implements ListModulesFrag
     public void onRegisterNewModule() {
         // Navigate to RegisterModulesActivity
         Intent intent = new Intent(this, RegisterModulesActivity.class);
-        intent.putExtra("farmId", farmId);
+        intent.putExtra("farm", farm);
         startActivity(intent);
     }
     

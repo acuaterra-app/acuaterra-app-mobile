@@ -93,7 +93,7 @@ public class ListFarmsActivity extends BaseActivity
         
         // Navigate to farm modules screen
         Intent intent = new Intent(this, ListModulesActivity.class);
-        intent.putExtra("farmId", String.valueOf(farm.getId()));
+        intent.putExtra("farm", farm);
         startActivity(intent);
     }
 }

@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.monitoreoacua.R;
 import com.example.monitoreoacua.business.models.Farm;
+import com.example.monitoreoacua.interfaces.OnApiRequestCallback;
 import com.example.monitoreoacua.service.ApiClient;
 import com.example.monitoreoacua.service.ApiFarmsService;
 import com.example.monitoreoacua.service.request.ListFarmsRequest;
@@ -106,7 +107,8 @@ public class ListFarmsFragment extends Fragment {
 
         editTextSearchFarm.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -114,47 +116,30 @@ public class ListFarmsFragment extends Fragment {
             }
 
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+            }
         });
 
         buttonSortByDate.setOnClickListener(v -> sortFarmsByDate());
     }
 
     private void fetchFarms() {
-        ApiFarmsService apiFarmsService = ApiClient.getClient().create(ApiFarmsService.class);
-        ListFarmsRequest listFarmsRequest = new ListFarmsRequest();
-
-        apiFarmsService.getFarms(listFarmsRequest.getAuthToken()).enqueue(new Callback<ListFarmResponse>() {
+        new ListFarmsRequest().fetchFarms(new OnApiRequestCallback<List<Farm>, Throwable>() {
             @Override
-            public void onResponse(@NonNull Call<ListFarmResponse> call, @NonNull Response<ListFarmResponse> response) {
-                Log.d(TAG, "On response: " + response);
-                
-                if (isAdded()) { // Check if fragment is still attached to activity
+            public void onSuccess(List<Farm> data) {
+                if (isAdded()) {
                     textViewFarms.setVisibility(View.GONE);
-
-                    if (response.isSuccessful()) {
-                        ListFarmResponse listFarmResponse = response.body();
-                        List<Farm> farms = listFarmResponse.getAllFarms();
-
-                        if (farms != null && !farms.isEmpty()) {
-                            farmsList = new ArrayList<>(farms);
-                            farmAdapter.setFarmList(farmsList);
-                        } else {
-                            Toast.makeText(getContext(), "No se encontraron granjas", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        Toast.makeText(getContext(), "Error en la respuesta del servidor", Toast.LENGTH_LONG).show();
-                    }
+                    farmAdapter.setFarmList(data);
                 }
             }
-
             @Override
-            public void onFailure(@NonNull Call<ListFarmResponse> call, @NonNull Throwable t) {
-                if (isAdded()) { // Check if fragment is still attached to activity
+            public void onFail(Throwable t) {
+                if (isAdded()) {
                     Toast.makeText(getContext(), "Error de conexión: " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                 }
             }
         });
+
     }
 
     private void filterFarmsByName(String query) {

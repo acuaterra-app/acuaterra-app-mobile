@@ -6,9 +6,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.monitoreoacua.business.models.Notification;
 import com.example.monitoreoacua.firebase.handlers.NotificationHandler;
 import com.example.monitoreoacua.firebase.handlers.NotificationHandlerFactory;
 import com.example.monitoreoacua.views.MainActivity;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,10 +20,16 @@ import java.util.Map;
 /**
  * Central manager for handling notifications throughout the application.
  * This class centralizes notification handling, intent parsing, and routing.
+ * 
+ * It handles notifications from both:
+ * - In-app notifications displayed in the RecyclerView
+ * - System tray notifications that appear in the notification panel
  */
 public class NotificationManager {
 
     private static final String TAG = "NotificationManager";
+    public static final String ACTION_NOTIFICATION_CLICKED = "com.example.monitoreoacua.NOTIFICATION_CLICKED";
+    public static final String EXTRA_SHOULD_ROUTE = "should_route";
     
     // Singleton instance
     private static NotificationManager instance;
@@ -38,6 +48,10 @@ public class NotificationManager {
     /**
      * Process a notification intent received by an activity
      * 
+     * This method handles notifications from both in-app sources and system tray notifications.
+     * For system tray notifications, it checks for the ACTION_NOTIFICATION_CLICKED action and
+     * the EXTRA_SHOULD_ROUTE flag to determine if the notification should be routed to a handler.
+     * 
      * @param context The activity context
      * @param intent The intent received by the activity
      * @return true if the intent was a notification intent and was processed, false otherwise
@@ -49,8 +63,31 @@ public class NotificationManager {
         
         logIntentDetails(intent);
         
-        // Check if this is a notification intent
+        // Special handling for notifications clicked from the system tray
+        if (ACTION_NOTIFICATION_CLICKED.equals(intent.getAction())) {
+            Log.d(TAG, "Processing notification from system tray click");
+            
+            // Extract notification data
+            Map<String, String> notificationData = extractNotificationData(intent);
+            
+            // Check if we should route this notification
+            boolean shouldRoute = intent.getBooleanExtra(EXTRA_SHOULD_ROUTE, false);
+            Log.d(TAG, "Should route notification: " + shouldRoute);
+            
+            if (shouldRoute) {
+                // Delegate to appropriate handler based on notification type
+                return routeNotification(context, notificationData);
+            } else {
+                // Just log that we received but didn't route the notification
+                Log.d(TAG, "Notification received but not routed (should_route=false)");
+                return true; // We still processed it, even if we didn't route it
+            }
+        }
+        
+        // Standard handling for notifications with data
         if (hasNotificationData(intent)) {
+            Log.d(TAG, "Processing notification with standard data");
+            
             // Extract notification data
             Map<String, String> notificationData = extractNotificationData(intent);
             
@@ -63,10 +100,18 @@ public class NotificationManager {
     
     /**
      * Check if an intent contains notification data
+     * 
+     * This checks for common notification fields or if the intent has the
+     * ACTION_NOTIFICATION_CLICKED action and contains notification data.
      */
     public boolean hasNotificationData(Intent intent) {
         if (intent == null || intent.getExtras() == null) {
             return false;
+        }
+        
+        // Check if this is a notification click from system tray
+        if (ACTION_NOTIFICATION_CLICKED.equals(intent.getAction())) {
+            return true;
         }
         
         // Check for common notification fields
@@ -128,13 +173,183 @@ public class NotificationManager {
         
         return false;
     }
+
+    /**
+     * Parse raw notification data into a Notification object
+     * 
+     * @param data A map containing the raw notification data
+     * @return A Notification object, or null if parsing failed
+     */
+    public Notification parseNotification(Map<String, String> data) {
+        if (data == null || data.isEmpty()) {
+            Log.w(TAG, "Cannot parse notification: data is null or empty");
+            return null;
+        }
+
+        try {
+            // Get notification data payload
+            String notificationDataJson = data.get("data");
+            if (notificationDataJson == null || notificationDataJson.isEmpty()) {
+                // If no data field, try to build from individual fields
+                return createNotificationFromFields(data);
+            }
+
+            // Parse notification data
+            JsonObject jsonObject = JsonParser.parseString(notificationDataJson).getAsJsonObject();
+            
+            // Extract metadata
+            JsonObject metaDataJson = jsonObject.getAsJsonObject("metaData");
+            Map<String, String> metaData = new HashMap<>();
+            if (metaDataJson != null) {
+                for (String key : metaDataJson.keySet()) {
+                    metaData.put(key, metaDataJson.get(key).getAsString());
+                }
+            }
+
+            // Create notification data object
+            int id = jsonObject.has("id") ? jsonObject.get("id").getAsInt() : 0;
+            String state = jsonObject.has("state") ? jsonObject.get("state").getAsString() : "unread";
+            String dateHour = jsonObject.has("dateHour") ? jsonObject.get("dateHour").getAsString() : "";
+            
+            Notification.NotificationData notificationData = new Notification.NotificationData(
+                    id, state, metaData, dateHour);
+
+            // Get or generate title and message
+            String title = data.get("title");
+            String message = data.get("body");
+            
+            // If title and message are not in the main data, try to generate from metadata
+            if ((title == null || title.isEmpty()) && metaData.containsKey("messageType")) {
+                title = generateTitleFromType(metaData.get("messageType"));
+            }
+            
+            if (message == null || message.isEmpty()) {
+                message = generateMessageFromType(metaData);
+            }
+
+            // Create and return the notification object
+            return new Notification(title, message, notificationData);
+        } catch (Exception e) {
+            Log.e(TAG, "Error parsing notification data", e);
+            return createNotificationFromFields(data);
+        }
+    }
+
+    /**
+     * Create a notification from individual fields when structured data is not available
+     */
+    private Notification createNotificationFromFields(Map<String, String> data) {
+        try {
+            String title = data.get("title");
+            String message = data.get("body");
+            
+            // Extract type for metadata
+            String type = data.get("type");
+            if (type == null || type.isEmpty()) {
+                if (data.containsKey("farmId")) {
+                    type = "farm";
+                }
+            }
+            
+            // Create metadata map
+            Map<String, String> metaData = new HashMap<>();
+            metaData.put("type", type != null ? type : "");
+            
+            // Add other relevant fields to metadata
+            for (String key : data.keySet()) {
+                if (!key.equals("title") && !key.equals("body") && !key.equals("type")) {
+                    metaData.put(key, data.get(key));
+                }
+            }
+            
+            // Create notification data
+            int id = 0;
+            if (data.containsKey("id")) {
+                try {
+                    id = Integer.parseInt(data.get("id"));
+                } catch (NumberFormatException e) {
+                    // Ignore parsing error
+                }
+            }
+            
+            Notification.NotificationData notificationData = 
+                    new Notification.NotificationData(id, "unread", metaData, "");
+            
+            return new Notification(title, message, notificationData);
+        } catch (Exception e) {
+            Log.e(TAG, "Error creating notification from fields", e);
+            return null;
+        }
+    }
     
     /**
+     * Generate a title based on the notification type
+     */
+    private String generateTitleFromType(String messageType) {
+        if (messageType == null) {
+            return "Nueva notificación";
+        }
+        
+        switch (messageType.toLowerCase()) {
+            case "info":
+                return "Información";
+            case "warning":
+                return "Advertencia";
+            case "alert":
+                return "Alerta";
+            case "error":
+                return "Error";
+            default:
+                return "Nueva notificación";
+        }
+    }
+    
+    /**
+     * Generate a message based on the notification metadata
+     */
+    private String generateMessageFromType(Map<String, String> metaData) {
+        if (metaData == null || metaData.isEmpty()) {
+            return "Tienes una nueva notificación.";
+        }
+        
+        String type = metaData.get("type");
+        if ("farm".equals(type) && metaData.containsKey("farmId")) {
+            return "Hay una actualización para la granja #" + metaData.get("farmId");
+        }
+        
+        return "Tienes una nueva notificación.";
+    }
+
+    /**
      * Create an intent for showing a notification in an activity
+     * 
+     * This creates an intent with:
+     * - The ACTION_NOTIFICATION_CLICKED action
+     * - All notification data as extras
+     * - A flag indicating whether the notification should be routed to a handler
+     * 
+     * @param context The context to use for creating the intent
+     * @param data The notification data to include in the intent
+     * @param shouldRoute Whether this notification should be routed to a handler when clicked
+     * @return An Intent configured for the notification
      */
     public Intent createNotificationIntent(Context context, Map<String, String> data) {
+        return createNotificationIntent(context, data, true);
+    }
+    
+    /**
+     * Create an intent for showing a notification in an activity with routing control
+     * 
+     * @param context The context to use for creating the intent
+     * @param data The notification data to include in the intent
+     * @param shouldRoute Whether this notification should be routed to a handler when clicked
+     * @return An Intent configured for the notification
+     */
+    public Intent createNotificationIntent(Context context, Map<String, String> data, boolean shouldRoute) {
         Intent intent = new Intent(context, MainActivity.class);
+        intent.setAction(ACTION_NOTIFICATION_CLICKED);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra(EXTRA_SHOULD_ROUTE, shouldRoute);
         
         // Add all notification data to the intent
         if (data != null && !data.isEmpty()) {
