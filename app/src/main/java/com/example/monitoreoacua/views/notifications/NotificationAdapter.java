@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.monitoreoacua.R;
@@ -147,9 +148,70 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return (position == notifications.size() - 1 && isLoadingMore) ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
     }
 
-    public void setNotifications(List<Notification> notifications) {
-        this.notifications = notifications;
-        notifyDataSetChanged();
+    public void setNotifications(List<Notification> newNotifications) {
+        if (newNotifications == null) {
+            newNotifications = new ArrayList<>();
+        }
+        
+        // Create a copy of the current list to avoid modification during diff calculation
+        final List<Notification> oldList = new ArrayList<>(this.notifications);
+        
+        // Calculate the difference between old and new lists
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
+            @Override
+            public int getOldListSize() {
+                return oldList.size();
+            }
+
+            @Override
+            public int getNewListSize() {
+                return newNotifications.size();
+            }
+
+            @Override
+            public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+                // Return true if the items represent the same object
+                // If one of the items is null (loading item), they're not the same
+                Notification oldItem = oldList.get(oldItemPosition);
+                Notification newItem = newNotifications.get(newItemPosition);
+                
+                if (oldItem == null || newItem == null) {
+                    return false;
+                }
+                
+                // Compare by ID or unique identifier
+                return oldItem.getId() != null && oldItem.getId().equals(newItem.getId());
+            }
+
+            @Override
+            public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+                // Check if items' visual representations are the same
+                Notification oldItem = oldList.get(oldItemPosition);
+                Notification newItem = newNotifications.get(newItemPosition);
+                
+                if (oldItem == null || newItem == null) {
+                    return false;
+                }
+                
+                // Compare relevant fields for visual representation
+                boolean sameTitle = (oldItem.getTitle() == null && newItem.getTitle() == null) ||
+                                   (oldItem.getTitle() != null && oldItem.getTitle().equals(newItem.getTitle()));
+                                   
+                boolean sameMessage = (oldItem.getMessage() == null && newItem.getMessage() == null) ||
+                                     (oldItem.getMessage() != null && oldItem.getMessage().equals(newItem.getMessage()));
+                                     
+                boolean sameReadStatus = oldItem.isUnread() == newItem.isUnread();
+                
+                // Add additional checks for fields that affect the item's appearance
+                return sameTitle && sameMessage && sameReadStatus;
+            }
+        });
+        
+        // Update the data
+        this.notifications = new ArrayList<>(newNotifications);
+        
+        // Dispatch updates to the RecyclerView on the main thread
+        diffResult.dispatchUpdatesTo(this);
     }
 
     public void addNotifications(List<Notification> newNotifications) {
@@ -161,17 +223,60 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void setLoadingMore(boolean loadingMore) {
         if (this.isLoadingMore != loadingMore) {
             this.isLoadingMore = loadingMore;
-            if (loadingMore) {
-                notifications.add(null);
-                notifyItemInserted(notifications.size() - 1);
-            } else {
-                int loadingIndex = notifications.indexOf(null);
-                if (loadingIndex > -1) {
-                    notifications.remove(loadingIndex);
-                    notifyItemRemoved(loadingIndex);
+            
+            // Use post() to ensure adapter modifications happen on the next frame
+            // This prevents IllegalStateException during scroll callbacks
+            Runnable updateRunnable = () -> {
+                if (loadingMore) {
+                    notifications.add(null);
+                    notifyItemInserted(notifications.size() - 1);
+                } else {
+                    int loadingIndex = notifications.indexOf(null);
+                    if (loadingIndex > -1) {
+                        notifications.remove(loadingIndex);
+                        notifyItemRemoved(loadingIndex);
+                    }
                 }
+            };
+            
+            // Post to the RecyclerView if it's available
+            RecyclerView recyclerView = null;
+            for (RecyclerView.ViewHolder holder : new ArrayList<>(getBoundViewHolders())) {
+                recyclerView = (RecyclerView) holder.itemView.getParent();
+                if (recyclerView != null) break;
+            }
+            
+            if (recyclerView != null) {
+                recyclerView.post(updateRunnable);
+            } else {
+                // Fall back to posting on main thread handler if RecyclerView not available
+                new android.os.Handler(android.os.Looper.getMainLooper()).post(updateRunnable);
             }
         }
+    }
+    
+    // Helper method to get all currently bound ViewHolders
+    private List<RecyclerView.ViewHolder> getBoundViewHolders() {
+        List<RecyclerView.ViewHolder> boundViewHolders = new ArrayList<>();
+        try {
+            RecyclerView recyclerView = null;
+            for (RecyclerView.ViewHolder holder : boundViewHolders) {
+                recyclerView = (RecyclerView) holder.itemView.getParent();
+                if (recyclerView != null) break;
+            }
+            if (recyclerView != null) {
+                for (int i = 0; i < recyclerView.getChildCount(); i++) {
+                    View view = recyclerView.getChildAt(i);
+                    RecyclerView.ViewHolder holder = recyclerView.getChildViewHolder(view);
+                    if (holder != null) {
+                        boundViewHolders.add(holder);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            // Just return empty list if anything goes wrong
+        }
+        return boundViewHolders;
     }
 
     public List<Notification> getNotifications() {

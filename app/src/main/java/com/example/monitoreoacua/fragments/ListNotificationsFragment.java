@@ -164,7 +164,8 @@ public class ListNotificationsFragment extends Fragment {
                         if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
                                 && firstVisibleItemPosition >= 0) {
                             // Load more items
-                            loadMoreNotifications();
+                            // Post to next frame to avoid IllegalStateException during scroll callback
+                            recyclerViewNotifications.post(() -> loadMoreNotifications());
                         }
                     }
                 }
