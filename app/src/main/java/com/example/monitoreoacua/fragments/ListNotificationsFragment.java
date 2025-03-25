@@ -176,10 +176,12 @@ public class ListNotificationsFragment extends Fragment {
     }
 
     private void fetchNotifications() {
+        Log.d(TAG, "fetchNotifications: Starting to fetch notifications");
         showLoading();
         currentPage = 1;
         hasMorePages = true;
         notificationsList.clear();
+        Log.d(TAG, "fetchNotifications: Reset state - currentPage=" + currentPage + ", hasMorePages=" + hasMorePages);
 
         ApiNotificationsService apiService = ApiClient.getClient().create(ApiNotificationsService.class);
         ListNotificationRequest listNotificationRequest = new ListNotificationRequest();
@@ -197,47 +199,49 @@ public class ListNotificationsFragment extends Fragment {
             call = apiService.getNotifications(listNotificationRequest.getAuthToken(), 1);
         }
 
+        Log.d(TAG, "fetchNotifications: Making API call with parameters - page=" + 1 + 
+                  ", searchQuery=" + (searchQuery.isEmpty() ? "empty" : searchQuery) + 
+                  ", isRemoteSearch=" + isRemoteSearch);
+
         call.enqueue(new Callback<ListNotificationResponse>() {
             @Override
             public void onResponse(@NonNull Call<ListNotificationResponse> call, @NonNull Response<ListNotificationResponse> response) {
+                Log.d(TAG, "onResponse: Received API response with status code: " + response.code());
                 hideLoading();
 
                 if (isAdded()) { // Check if fragment is still attached to activity
                     if (response.isSuccessful() && response.body() != null) {
+                        Log.d(TAG, "onResponse: API response is successful");
                         ListNotificationResponse notificationResponse = response.body();
                         List<Notification> notifications = notificationResponse.getAllNotification();
+                        
+                        Log.d(TAG, "onResponse: Retrieved response body, notifications list is " + 
+                                  (notifications == null ? "null" : 
+                                   (notifications.isEmpty() ? "empty" : "available with " + notifications.size() + " items")));
 
                         if (notifications != null && !notifications.isEmpty()) {
                             notificationsList.addAll(notifications);
                             notificationAdapter.setNotifications(notificationsList);
 
                             // Check pagination info
-                            if (notificationResponse.getMeta() != null &&
-                                    notificationResponse.getMeta().getPagination() != null) {
-                                ApiResponse.Meta.Pagination pagination = notificationResponse.getMeta().getPagination();
-                                currentPage = pagination.getCurrentPage();
-                                hasMorePages = pagination.isHasNext();
-                                perPage = pagination.getPerPage();
-                                totalPages = pagination.getTotalPages();
-                                totalItems = pagination.getTotal();
-                                
-                                // Log pagination information
-                                Log.d(TAG, "Current page: " + pagination.getCurrentPage() + 
-                                          ", Total pages: " + pagination.getTotalPages() + 
-                                          ", Items per page: " + pagination.getPerPage() + 
-                                          ", Total items: " + pagination.getTotal() +
-                                          ", Has next: " + pagination.isHasNext() +
-                                          ", Has previous: " + pagination.isHasPrev());
-                                
-                                // Update pagination feedback for user
-                                updatePaginationFeedback();
+                            if (notificationResponse.getMeta() != null) {
+                                ApiResponse.Meta meta = notificationResponse.getMeta();
+                                currentPage = meta.getCurrentPage();
+                                hasMorePages = (meta.getTotalPages() - meta.getCurrentPage())  != 0;
+                                perPage = meta.getItemsPerPage();
+                                totalPages = meta.getTotalPages();
+                                totalItems = meta.getTotalItems();
+                                Log.d(TAG, "hasMorePages: " +  hasMorePages);
                             }
 
                             showContent();
+                            Log.d(TAG, "onResponse: Successfully displayed notifications - count: " + notificationsList.size());
                         } else {
+                            Log.w(TAG, "onResponse: Notifications list is empty or null");
                             showEmptyState(getString(R.string.no_notifications_found));
                         }
                     } else {
+                        Log.e(TAG, "onResponse: API response was not successful - status code: " + response.code());
                         handleApiError(response);
                     }
                 }
@@ -245,6 +249,9 @@ public class ListNotificationsFragment extends Fragment {
 
             @Override
             public void onFailure(@NonNull Call<ListNotificationResponse> call, @NonNull Throwable t) {
+                Log.e(TAG, "onFailure: API call failed", t);
+                Log.e(TAG, "onFailure: Detailed error message: " + t.getMessage());
+                Log.e(TAG, "onFailure: Error type: " + t.getClass().getName());
                 hideLoading();
                 showError("Error de conexión: " + t.getLocalizedMessage());
             }
@@ -303,17 +310,15 @@ public class ListNotificationsFragment extends Fragment {
                         notificationAdapter.setNotifications(notificationsList);
 
                         // Check pagination info
-                        if (notificationResponse.getMeta() != null &&
-                                notificationResponse.getMeta().getPagination() != null) {
-                            ApiResponse.Meta.Pagination pagination = notificationResponse.getMeta().getPagination();
-                            currentPage = pagination.getCurrentPage();
-                            hasMorePages = pagination.isHasNext();
-                            perPage = pagination.getPerPage();
-                            totalPages = pagination.getTotalPages();
-                            totalItems = pagination.getTotal();
+                        if (notificationResponse.getMeta() != null) {
+                            ApiResponse.Meta meta = notificationResponse.getMeta();
+                            currentPage = meta.getCurrentPage();
+                            hasMorePages = meta.getTotalPages() - meta.getCurrentPage() == 0;
+                            perPage = meta.getItemsPerPage();
+                            totalPages = meta.getTotalPages();
+                            totalItems = meta.getTotalItems();
                             
                             // Update pagination feedback
-                            updatePaginationFeedback();
                         } else {
                             hasMorePages = false;
                             if (isAdded()) {
@@ -454,33 +459,19 @@ public class ListNotificationsFragment extends Fragment {
     private void handleApiError(Response<ListNotificationResponse> response) {
         String errorMessage;
         try {
-            errorMessage = response.errorBody() != null ?
-                    "Error en la respuesta del servidor" : "Error desconocido";
+            if (response.errorBody() != null) {
+                String errorBody = response.errorBody().string();
+                Log.e(TAG, "handleApiError: Error body: " + errorBody);
+                errorMessage = "Error en la respuesta del servidor";
+            } else {
+                Log.e(TAG, "handleApiError: No error body available");
+                errorMessage = "Error desconocido";
+            }
         } catch (Exception e) {
+            Log.e(TAG, "handleApiError: Exception while reading error body", e);
             errorMessage = "Error " + response.code();
         }
 
         showError("Error: " + errorMessage);
-    }
-    
-    /**
-     * Updates UI with pagination feedback
-     */
-    private void updatePaginationFeedback() {
-        if (!isAdded() || getContext() == null) return;
-        
-        // Use tvPaginationStatus TextView instead of Toast
-        if (totalItems > 0) {
-            String message = "Mostrando " + notificationsList.size() + " de " + totalItems + 
-                    " notificaciones (Página " + currentPage + " de " + totalPages + ")";
-            
-            // Show the pagination status to the user
-            if (hasMorePages) {
-                message += " - Desliza para cargar más";
-            } else {
-                message += " - No hay más páginas";
-            }
-            
-        }
     }
 }
