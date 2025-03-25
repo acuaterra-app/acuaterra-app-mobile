@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: MainActivity is starting");
         setContentView(R.layout.activity_main);
 
+        Intent intent;
 
         try {
             SharedPreferences sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
