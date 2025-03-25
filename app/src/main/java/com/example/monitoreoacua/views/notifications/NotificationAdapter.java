@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.util.Log;
+import com.example.monitoreoacua.firebase.FireBaseNotificationManager;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DiffUtil;
@@ -95,6 +96,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     // Log the click for debugging purposes
                     Log.d("NotificationAdapter", "Notification clicked: " + 
                           "title=" + notification.getTitle());
+                    
+                    // Process notification first using FireBaseNotificationManager
+                    new FireBaseNotificationManager().processNotification(context, notification);
                     
                     // Simply delegate to the notification click listener
                     if (notificationClickListener != null) {
