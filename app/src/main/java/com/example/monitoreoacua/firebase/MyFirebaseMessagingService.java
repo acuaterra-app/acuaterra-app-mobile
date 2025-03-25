@@ -52,7 +52,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String notificationId = null;
         String state = null;
         String dateHour = null;
-        Map<String, String> data = new HashMap<>();
+        Map<String, Object> metaData = null;
 
         if(remoteMessage.getNotification() != null) {
             title = remoteMessage.getNotification().getTitle();
@@ -64,18 +64,26 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             state = remoteMessage.getData().get("state");
             dateHour = remoteMessage.getData().get("dateHour");
 
-            // Copy all data fields to metaData without filtering
-            for (Map.Entry<String, String> entry : remoteMessage.getData().entrySet()) {
-                String key = entry.getKey();
-                data.put(key, entry.getValue());
+            // Extract the metaData object specifically
+            String metaDataJson = remoteMessage.getData().get("metaData");
+            if (metaDataJson != null) {
+                try {
+                    // Parse the metaData JSON string into a Map
+                    metaData = new Gson().fromJson(metaDataJson, new com.google.gson.reflect.TypeToken<Map<String, Object>>(){}.getType());
+                } catch (Exception e) {
+                    Log.e(TAG, "Error parsing metaData: " + e.getMessage());
+                    metaData = new HashMap<>();
+                }
+            } else {
+                metaData = new HashMap<>();
             }
         }
 
         int id = notificationId != null ? Integer.parseInt(notificationId) : 0;
 
         Notification.NotificationData notificationData = new Notification.NotificationData(
-                id, state, data, dateHour);
-
+                id, state, metaData, dateHour);
+        Log.d(TAG, "Notification data: " + notificationData.getMetaData());
         return new Notification(title, message, notificationData);
     }
 

@@ -81,7 +81,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 if (notification.getData() != null && 
                     notification.getData().getMetaData() != null && 
                     notification.getData().getMetaData().containsKey("messageType")) {
-                    messageType = notification.getData().getMetaData().get("messageType");
+                    messageType = String.valueOf(notification.getData().getMetaData().get("messageType"));
                 }
                 
                 // Apply appropriate color to the unread indicator based on message type
@@ -118,7 +118,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 notification.getData().getMetaData() != null && 
                 notification.getData().getMetaData().containsKey("messageType")) {
                 
-                String messageType = notification.getData().getMetaData().get("messageType");
+                String messageType = String.valueOf(notification.getData().getMetaData().get("messageType"));
                 switch (Objects.requireNonNull(messageType)) {
                     case "info":
                         viewHolder.typeIcon.setImageResource(R.drawable.ic_info);

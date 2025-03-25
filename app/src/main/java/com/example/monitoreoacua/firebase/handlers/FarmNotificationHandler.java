@@ -38,7 +38,7 @@ public class FarmNotificationHandler implements NotificationHandler {
     @Override
     public void handle(Context context, Notification notification) {
         try {
-            String farmId = notification.getData().getMetaData().get("farmId");
+            String farmId = String.valueOf(notification.getData().getMetaData().get("farmId"));
             
             if (farmId == null || farmId.isEmpty()) {
                 Log.e(TAG, "Farm ID is missing in the notification payload");

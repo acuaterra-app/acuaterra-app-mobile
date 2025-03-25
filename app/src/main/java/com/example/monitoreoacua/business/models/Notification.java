@@ -92,12 +92,12 @@ public class Notification implements Parcelable {
         private String state;
 
         @SerializedName("metaData")
-        private Map<String, String> metaData;
+        private Map<String, Object> metaData;
 
         @SerializedName("dateHour")
         private String dateHour;
 
-        public NotificationData(int id, String state, Map<String, String> metaData, String dateHour) {
+        public NotificationData(int id, String state, Map<String, Object> metaData, String dateHour) {
             this.id = id;
             this.state = state;
             this.metaData = metaData;
@@ -108,7 +108,7 @@ public class Notification implements Parcelable {
             id = in.readInt();
             state = in.readString();
             metaData = new HashMap<>();
-            in.readMap(metaData, String.class.getClassLoader());
+            in.readMap(metaData, Object.class.getClassLoader());
             dateHour = in.readString();
         }
 
@@ -132,7 +132,7 @@ public class Notification implements Parcelable {
             return state;
         }
 
-        public Map<String, String> getMetaData() {
+        public Map<String, Object> getMetaData() {
             return metaData;
         }
 

@@ -1,6 +1,7 @@
 package com.example.monitoreoacua.firebase;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.monitoreoacua.business.models.Notification;
 import com.example.monitoreoacua.firebase.handlers.NotificationHandler;
@@ -32,9 +33,13 @@ public class FireBaseNotificationManager {
         NotificationHandlerFactory notificationHandlerFactory = NotificationHandlerFactory.getInstance();
 
         NotificationHandler notificationHandler = notificationHandlerFactory.getHandler(
-                notification.getData().getMetaData().get("type")
+                String.valueOf(notification.getData().getMetaData().get("type"))
         );
 
+        if(notificationHandler == null) {
+            Log.e(TAG, "No handler found for notification type: " + String.valueOf(notification.getData().getMetaData().get("type")));
+            return;
+        }
         notificationHandler.handle(context, notification);
     }
 }

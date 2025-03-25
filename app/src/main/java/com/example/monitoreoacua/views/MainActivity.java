@@ -61,8 +61,9 @@ public class MainActivity extends AppCompatActivity {
     private void handleNotificationIfNeeded(Context context, Bundle extras) {
         if (extras != null && extras.containsKey("notification")) {
             Notification notification = extras.getParcelable("notification", Notification.class);
-            Log.d(TAG, "Notificación recibida a través del intent: " + notification.getMessage());
-            new FireBaseNotificationManager().processNotification(context, notification);
+            if (notification != null) {
+                new FireBaseNotificationManager().processNotification(context, notification);
+            }
         } else {
             Log.d(TAG, "No se recibieron notificaciones a través del intent");
         }
