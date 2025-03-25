@@ -126,9 +126,36 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     
     /**
      * Show notification with title, body and optional data
+     * 
+     * This method creates and displays a system notification. When the notification is clicked,
+     * it will use the NotificationManager's routing logic to determine how to handle the notification.
+     * 
+     * The notification intent includes:
+     * - ACTION_NOTIFICATION_CLICKED: A custom action to identify notification clicks
+     * - All notification data as extras, enabling proper routing by NotificationManager
+     * 
+     * @param title The notification title
+     * @param body The notification body text
+     * @param data Map containing all notification data
      */
     private void showNotification(String title, String body, Map<String, String> data) {
+        // Use the notification click action defined in NotificationManager
+        
+        // Create an intent with the notification click action
         Intent intent = com.example.monitoreoacua.firebase.NotificationManager.getInstance().createNotificationIntent(this, data);
+        intent.setAction(com.example.monitoreoacua.firebase.NotificationManager.ACTION_NOTIFICATION_CLICKED);
+        
+        // Add notification data to the intent for proper routing
+        for (Map.Entry<String, String> entry : data.entrySet()) {
+            intent.putExtra(entry.getKey(), entry.getValue());
+        }
+        
+        // Add a flag to ensure MainActivity properly processes this notification
+        // Add a flag to ensure MainActivity properly processes this notification
+        intent.putExtra("notification_source", "system_tray");
+        intent.putExtra(com.example.monitoreoacua.firebase.NotificationManager.EXTRA_SHOULD_ROUTE, true);
+        // Add flags to handle activity launch modes properly
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         
         int notificationId = getNotificationId(data);
         

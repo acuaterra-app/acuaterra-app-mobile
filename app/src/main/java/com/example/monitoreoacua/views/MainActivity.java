@@ -26,7 +26,18 @@ public class MainActivity extends AppCompatActivity {
         logIntentDetails(receivedIntent);
         
         // Use NotificationManager to process any notification intents
-        if (com.example.monitoreoacua.firebase.NotificationManager.getInstance().processNotificationIntent(this, receivedIntent)) {
+        String action = receivedIntent.getAction();
+        if (action != null && action.equals("com.example.monitoreoacua.NOTIFICATION_CLICKED")) {
+            Log.i(TAG, "onCreate: Notification click detected with action: " + action);
+            if (com.example.monitoreoacua.firebase.NotificationManager.getInstance().processNotificationIntent(this, receivedIntent)) {
+                Log.d(TAG, "onCreate: Notification successfully processed, finishing activity");
+                finish();
+                return;
+            } else {
+                Log.w(TAG, "onCreate: Notification processing returned false, continuing with normal flow");
+            }
+        } else if (com.example.monitoreoacua.firebase.NotificationManager.getInstance().processNotificationIntent(this, receivedIntent)) {
+            // For backward compatibility with other notification intents
             finish();
             return;
         }
@@ -65,7 +76,15 @@ public class MainActivity extends AppCompatActivity {
         logIntentDetails(intent);
         
         // Use NotificationManager to process any notification intents
-        com.example.monitoreoacua.firebase.NotificationManager.getInstance().processNotificationIntent(this, intent);
+        String action = intent.getAction();
+        if (action != null && action.equals("com.example.monitoreoacua.NOTIFICATION_CLICKED")) {
+            Log.i(TAG, "onNewIntent: Notification click detected with action: " + action);
+            boolean processed = com.example.monitoreoacua.firebase.NotificationManager.getInstance().processNotificationIntent(this, intent);
+            Log.d(TAG, "onNewIntent: Notification processing result: " + (processed ? "successful" : "not handled"));
+        } else {
+            // For backward compatibility with other notification intents
+            com.example.monitoreoacua.firebase.NotificationManager.getInstance().processNotificationIntent(this, intent);
+        }
     }
     
 

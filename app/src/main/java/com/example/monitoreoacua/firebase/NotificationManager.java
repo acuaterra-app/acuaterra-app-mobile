@@ -20,10 +20,16 @@ import java.util.Map;
 /**
  * Central manager for handling notifications throughout the application.
  * This class centralizes notification handling, intent parsing, and routing.
+ * 
+ * It handles notifications from both:
+ * - In-app notifications displayed in the RecyclerView
+ * - System tray notifications that appear in the notification panel
  */
 public class NotificationManager {
 
     private static final String TAG = "NotificationManager";
+    public static final String ACTION_NOTIFICATION_CLICKED = "com.example.monitoreoacua.NOTIFICATION_CLICKED";
+    public static final String EXTRA_SHOULD_ROUTE = "should_route";
     
     // Singleton instance
     private static NotificationManager instance;
@@ -42,6 +48,10 @@ public class NotificationManager {
     /**
      * Process a notification intent received by an activity
      * 
+     * This method handles notifications from both in-app sources and system tray notifications.
+     * For system tray notifications, it checks for the ACTION_NOTIFICATION_CLICKED action and
+     * the EXTRA_SHOULD_ROUTE flag to determine if the notification should be routed to a handler.
+     * 
      * @param context The activity context
      * @param intent The intent received by the activity
      * @return true if the intent was a notification intent and was processed, false otherwise
@@ -53,8 +63,31 @@ public class NotificationManager {
         
         logIntentDetails(intent);
         
-        // Check if this is a notification intent
+        // Special handling for notifications clicked from the system tray
+        if (ACTION_NOTIFICATION_CLICKED.equals(intent.getAction())) {
+            Log.d(TAG, "Processing notification from system tray click");
+            
+            // Extract notification data
+            Map<String, String> notificationData = extractNotificationData(intent);
+            
+            // Check if we should route this notification
+            boolean shouldRoute = intent.getBooleanExtra(EXTRA_SHOULD_ROUTE, false);
+            Log.d(TAG, "Should route notification: " + shouldRoute);
+            
+            if (shouldRoute) {
+                // Delegate to appropriate handler based on notification type
+                return routeNotification(context, notificationData);
+            } else {
+                // Just log that we received but didn't route the notification
+                Log.d(TAG, "Notification received but not routed (should_route=false)");
+                return true; // We still processed it, even if we didn't route it
+            }
+        }
+        
+        // Standard handling for notifications with data
         if (hasNotificationData(intent)) {
+            Log.d(TAG, "Processing notification with standard data");
+            
             // Extract notification data
             Map<String, String> notificationData = extractNotificationData(intent);
             
@@ -67,10 +100,18 @@ public class NotificationManager {
     
     /**
      * Check if an intent contains notification data
+     * 
+     * This checks for common notification fields or if the intent has the
+     * ACTION_NOTIFICATION_CLICKED action and contains notification data.
      */
     public boolean hasNotificationData(Intent intent) {
         if (intent == null || intent.getExtras() == null) {
             return false;
+        }
+        
+        // Check if this is a notification click from system tray
+        if (ACTION_NOTIFICATION_CLICKED.equals(intent.getAction())) {
+            return true;
         }
         
         // Check for common notification fields
@@ -281,10 +322,34 @@ public class NotificationManager {
 
     /**
      * Create an intent for showing a notification in an activity
+     * 
+     * This creates an intent with:
+     * - The ACTION_NOTIFICATION_CLICKED action
+     * - All notification data as extras
+     * - A flag indicating whether the notification should be routed to a handler
+     * 
+     * @param context The context to use for creating the intent
+     * @param data The notification data to include in the intent
+     * @param shouldRoute Whether this notification should be routed to a handler when clicked
+     * @return An Intent configured for the notification
      */
     public Intent createNotificationIntent(Context context, Map<String, String> data) {
+        return createNotificationIntent(context, data, true);
+    }
+    
+    /**
+     * Create an intent for showing a notification in an activity with routing control
+     * 
+     * @param context The context to use for creating the intent
+     * @param data The notification data to include in the intent
+     * @param shouldRoute Whether this notification should be routed to a handler when clicked
+     * @return An Intent configured for the notification
+     */
+    public Intent createNotificationIntent(Context context, Map<String, String> data, boolean shouldRoute) {
         Intent intent = new Intent(context, MainActivity.class);
+        intent.setAction(ACTION_NOTIFICATION_CLICKED);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra(EXTRA_SHOULD_ROUTE, shouldRoute);
         
         // Add all notification data to the intent
         if (data != null && !data.isEmpty()) {
