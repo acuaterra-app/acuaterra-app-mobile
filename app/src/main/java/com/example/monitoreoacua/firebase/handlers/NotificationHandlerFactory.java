@@ -6,6 +6,9 @@ import java.util.List;
 /**
  * Factory pattern implementation for creating appropriate notification handlers.
  * This class is implemented as a singleton to ensure only one instance exists.
+ * 
+ * Provides methods to register notification handlers and retrieve the appropriate handler
+ * for a given notification type.
  */
 public class NotificationHandlerFactory {
     
@@ -26,12 +29,6 @@ public class NotificationHandlerFactory {
         return instance;
     }
 
-    public void registerHandler(NotificationHandler handler) {
-        if (handler != null && !handlers.contains(handler)) {
-            handlers.add(handler);
-        }
-    }
-
     public NotificationHandler getHandler(String notificationType) {
         for (NotificationHandler handler : handlers) {
             if (handler.canHandle(notificationType)) {
@@ -39,10 +36,6 @@ public class NotificationHandlerFactory {
             }
         }
         return null;
-    }
-
-    public void clearHandlers() {
-        handlers.clear();
     }
 }
 
