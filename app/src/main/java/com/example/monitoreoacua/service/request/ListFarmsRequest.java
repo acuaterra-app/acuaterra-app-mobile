@@ -47,6 +47,7 @@ public class ListFarmsRequest extends BaseRequest {
 
             @Override
             public void onFailure(@NonNull Call<ListFarmResponse> call, @NonNull Throwable t) {
+                Log.d(TAG, "Error with response: " + t);
                 callback.onFail(t);
             }
         });
