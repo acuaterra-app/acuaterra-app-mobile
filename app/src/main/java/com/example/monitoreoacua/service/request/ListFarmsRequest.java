@@ -21,7 +21,7 @@ import retrofit2.Response;
 
 public class ListFarmsRequest extends BaseRequest {
 
-    private static final String TAG = "ListFarmRequest";
+    private static final String TAG = "ListFarmRequestTag";
     public ListFarmsRequest() {
         super();
         setRequiresAuthentication(true);

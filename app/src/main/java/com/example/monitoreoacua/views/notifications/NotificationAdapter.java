@@ -7,6 +7,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.example.monitoreoacua.firebase.FireBaseNotificationManager;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DiffUtil;
@@ -14,13 +17,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.monitoreoacua.R;
 import com.example.monitoreoacua.business.models.Notification;
-import com.example.monitoreoacua.firebase.NotificationManager;
+import com.example.monitoreoacua.interfaces.OnApiRequestCallback;
+import com.example.monitoreoacua.service.request.MarkNotificationAsReadRequest;
+import com.example.monitoreoacua.service.response.MarkNotificationAsReadResponse;
 import com.example.monitoreoacua.utils.DateUtils;
 import com.example.monitoreoacua.utils.NotificationStyleUtils;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -84,7 +87,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 if (notification.getData() != null && 
                     notification.getData().getMetaData() != null && 
                     notification.getData().getMetaData().containsKey("messageType")) {
-                    messageType = notification.getData().getMetaData().get("messageType");
+                    messageType = String.valueOf(notification.getData().getMetaData().get("messageType"));
                 }
                 
                 // Apply appropriate color to the unread indicator based on message type
@@ -94,86 +97,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
             // Set click listener
             viewHolder.cardView.setOnClickListener(v -> {
-                try {
-                    String notificationType = "unknown";
-                    if (notification.getData() != null && 
-                        notification.getData().getMetaData() != null && 
-                        notification.getData().getMetaData().containsKey("type")) {
-                        notificationType = notification.getData().getMetaData().get("type");
-                    }
-                    
-                    Log.d("NotificationAdapter", "Handling notification click: id=" + 
-                            (notification.getData() != null ? notification.getData().getId() : "null") + 
-                            ", type=" + notificationType + 
-                            ", title=" + notification.getTitle());
-                    
-                    // Create a Map with the notification data
-                    Map<String, String> data = new HashMap<>();
-                    
-                    // Basic notification info
-                    data.put("title", notification.getTitle());
-                    data.put("body", notification.getMessage());
-                    
-                    if (notification.getData() != null) {
-                        // Add notification ID
-                        data.put("id", String.valueOf(notification.getData().getId()));
-                        
-                        // Add notification state
-                        data.put("state", notification.getData().getState());
-                        
-                        // Add date information
-                        if (notification.getData().getDateHour() != null) {
-                            data.put("dateHour", notification.getData().getDateHour());
-                        }
-                        
-                        // Add all metadata
-                        if (notification.getData().getMetaData() != null) {
-                            Map<String, String> metaData = notification.getData().getMetaData();
-                            
-                            // Get the type for routing
-                            if (metaData.containsKey("type")) {
-                                data.put("type", metaData.get("type"));
-                            }
-                            
-                            // Add all other metadata
-                            for (Map.Entry<String, String> entry : metaData.entrySet()) {
-                                data.put(entry.getKey(), entry.getValue());
-                            }
-                        }
-                    }
-                    
-                    // Use NotificationManager to route this notification
-                    boolean handled = NotificationManager.getInstance().routeNotification(context, data);
-                    
-                    if (!handled) {
-                        Log.w("NotificationAdapter", "No handler found for notification type: " + notificationType);
-                        // Fall back to default behavior if no handler was found
-                        if (notificationClickListener != null) {
-                            Log.d("NotificationAdapter", "Falling back to default notification click listener");
-                            notificationClickListener.onNotificationClick(notification);
-                        } else {
-                            Log.w("NotificationAdapter", "No fallback handler available for notification");
-                            // Show a message to the user that this notification type is not supported
-                            android.widget.Toast.makeText(
-                                context, 
-                                "This notification type is not supported", 
-                                android.widget.Toast.LENGTH_SHORT
-                            ).show();
-                        }
-                    } else {
-                        Log.d("NotificationAdapter", "Notification successfully handled by NotificationManager");
-                    }
-                } catch (Exception e) {
-                    Log.e("NotificationAdapter", "Error handling notification click", e);
-                    // Fallback to default behavior in case of error
-                    if (notificationClickListener != null) {
-                        try {
-                            notificationClickListener.onNotificationClick(notification);
-                        } catch (Exception fallbackError) {
-                            Log.e("NotificationAdapter", "Error in fallback notification handler", fallbackError);
-                        }
-                    }
-                }
+               onClick(notification, viewHolder);
             });
             
             // Set notification type icon based on metadata
@@ -181,7 +105,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 notification.getData().getMetaData() != null && 
                 notification.getData().getMetaData().containsKey("messageType")) {
                 
-                String messageType = notification.getData().getMetaData().get("messageType");
+                String messageType = String.valueOf(notification.getData().getMetaData().get("messageType"));
                 switch (Objects.requireNonNull(messageType)) {
                     case "info":
                         viewHolder.typeIcon.setImageResource(R.drawable.ic_info);
@@ -213,6 +137,42 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 NotificationStyleUtils.applyStyleToCardView(viewHolder.cardView, defaultType);
                 NotificationStyleUtils.applyTextColor(defaultType, 
                     viewHolder.titleTextView, viewHolder.messageTextView, viewHolder.dateTextView);
+            }
+        }
+    }
+
+    public void onClick(Notification notification, NotificationViewHolder viewholder) {
+        try {
+
+            new FireBaseNotificationManager().processNotification(context, notification);
+
+            new MarkNotificationAsReadRequest().markNotificationAsRead(new OnApiRequestCallback<MarkNotificationAsReadResponse, Throwable>() {
+                @Override
+                public void onSuccess(MarkNotificationAsReadResponse apiResponse) {
+                    Log.d("NotificationAdapter", "Notification marked as read: " +
+                            "title=" + notification.getTitle());
+                    viewholder.unreadIndicator.setVisibility(View.GONE);
+                    Toast.makeText(context, "Notificación leida", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFail(Throwable t) {
+                    Toast.makeText(context, "Error al ver la notificación", Toast.LENGTH_SHORT).show();
+                }
+            }, notification.getData().getId());
+
+            if (notificationClickListener != null) {
+                notificationClickListener.onNotificationClick(notification);
+            }
+        } catch (Exception e) {
+            Log.e("NotificationAdapter", "Error handling notification click", e);
+            // Fallback to default behavior in case of error
+            if (notificationClickListener != null) {
+                try {
+                    notificationClickListener.onNotificationClick(notification);
+                } catch (Exception fallbackError) {
+                    Log.e("NotificationAdapter", "Error in fallback notification handler", fallbackError);
+                }
             }
         }
     }
@@ -369,7 +329,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         notifyItemRangeRemoved(0, size);
     }
 
-    static class NotificationViewHolder extends RecyclerView.ViewHolder {
+    public static class NotificationViewHolder extends RecyclerView.ViewHolder {
         TextView titleTextView;
         TextView messageTextView;
         TextView dateTextView;

@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.monitoreoacua.R;
-import com.example.monitoreoacua.firebase.NotificationManager;
 import com.example.monitoreoacua.fragments.NavigationBarFragment;
 import com.example.monitoreoacua.fragments.NavigationBarFragment.NavigationBarListener;
 import com.example.monitoreoacua.fragments.TopBarFragment;
@@ -38,57 +37,23 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate: " + getClass().getSimpleName());
         setContentView(R.layout.activity_base);
-        
         setupEdgeToEdgeDisplay();
-        
         loadTopBarFragment();
         loadNavigationBarFragment();
-        
-        
         setActivityTitle(getActivityTitle());
         
         if (savedInstanceState == null) {
             loadInitialFragment();
         }
-        
-        // Process any notification intents that started this activity
-        processNotificationIntent(getIntent());
-        
-        // Fetch notifications when activity is created
+
         fetchNotifications();
-    }
-    
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        
-        // Process any notification intent that arrived while the activity was already running
-        processNotificationIntent(intent);
     }
     
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume: " + getClass().getSimpleName());
-        
-        // Fetch notifications when activity resumes to ensure the badge is always up-to-date
         fetchNotifications();
-    }
-    
-    /**
-     * Process the notification intent that may have started this activity
-     */
-    protected void processNotificationIntent(Intent intent) {
-        if (intent != null) {
-            boolean wasNotification = NotificationManager.getInstance().processNotificationIntent(this, intent);
-            if (wasNotification) {
-                Log.d(TAG, "Processed notification intent");
-                // Fetch notifications when a new notification is received
-                fetchNotifications();
-            }
-        }
     }
 
     protected void fetchNotifications() {
@@ -98,7 +63,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                 int previousCount = unreadNotificationsCount; // Store the previous count for comparison
                 unreadNotificationsCount = count;
 
-                // Log if the count changed
                 if (previousCount != unreadNotificationsCount) {
                     Log.d(TAG, "Notification count changed: " + previousCount + " -> " + unreadNotificationsCount);
                 }
@@ -113,10 +77,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
             }
         }, 1, "unread", 10);
     }
-    
-    /**
-     * Updates the notification badge in the TopBarFragment
-     */
+
     protected void updateNotificationBadge() {
         if (topBarFragment != null) {
             runOnUiThread(() -> {
@@ -159,10 +120,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     @Override
     public void navigateToHome() {
         if (this.getClass().getSimpleName().equals("ListFarmsActivity")) {
-            // If already in ListFarmsActivity, reload the initial fragment (list of farms)
             loadInitialFragment();
         } else {
-            // Navigate to the ListFarmsActivity
             Intent intent = new Intent(this, ListFarmsActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
@@ -171,15 +130,12 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
 
     @Override
     public void navigateToSettings() {
-        // This would typically navigate to a Settings or Users Activity
-        // For now, just show a toast message
         Toast.makeText(this, "Navigate to Users/Settings (not implemented)", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void navigateToProfile() {
         if (this.getClass().getSimpleName().equals("SupportActivity")) {
-            // If already in SupportActivity, reload the initial fragment
             loadInitialFragment();
         } else {
             // Navigate to the SupportActivity

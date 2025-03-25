@@ -5,7 +5,8 @@ import android.util.Log;
 
 import com.example.monitoreoacua.firebase.NotificationManager;
 import com.example.monitoreoacua.firebase.handlers.NotificationHandlerFactory;
-
+import com.example.monitoreoacua.firebase.handlers.AlertNotificationHandler;
+import com.example.monitoreoacua.firebase.handlers.CustomNotificationHandler;
 /**
  * Clase principal de la aplicación para inicializar componentes globales
  */
@@ -29,26 +30,8 @@ public class MainApplication extends Application {
         // Inicializar el NotificationManager
         NotificationManager notificationManager = NotificationManager.getInstance();
         
-        // Establecer el contexto de la aplicación
         notificationManager.setContext(getApplicationContext());
         
-        // Registrar los manejadores personalizados disponibles en la aplicación
-        registerNotificationHandlers();
-        
-        Log.d(TAG, "Sistema de notificaciones inicializado a nivel de aplicación");
-    }
-    
-    /**
-     * Registra todos los manejadores de notificaciones personalizados
-     */
-    private void registerNotificationHandlers() {
-        NotificationHandlerFactory factory = NotificationHandlerFactory.getInstance();
-        
-        // Registrar handlers adicionales para tipos de notificaciones específicos
-        factory.registerHandler("custom_type", new CustomNotificationHandler());
-        factory.registerHandler("alert_type", new AlertNotificationHandler());
-        
-        Log.d(TAG, "Manejadores de notificaciones registrados correctamente");
     }
 }
 

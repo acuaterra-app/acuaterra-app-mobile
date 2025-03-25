@@ -18,11 +18,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        // 1. Inicialización del sistema de notificaciones
+        // Inicialización del sistema de notificaciones
         initializeNotificationSystem();
-        
-        // Verificamos si la actividad se inició desde una notificación
-        handleNotificationIfNeeded(getIntent().getExtras());
     }
     
     /**
@@ -40,24 +37,6 @@ public class MainActivity extends AppCompatActivity {
         NotificationHandlerFactory.getInstance().registerHandler("custom_type", new CustomNotificationHandler());
         
         Log.d(TAG, "Sistema de notificaciones inicializado correctamente");
-    }
-    
-    /**
-     * Maneja una notificación si la actividad se inició desde una notificación
-     * @param extras Datos recibidos en el intent
-     */
-    private void handleNotificationIfNeeded(Bundle extras) {
-        if (extras != null && extras.containsKey("notification_data")) {
-            String notificationData = extras.getString("notification_data");
-            Log.d(TAG, "Notificación recibida a través del intent: " + notificationData);
-            
-            // 2. Manejo de la notificación recibida
-            Notification notification = notificationManager.parseNotification(notificationData);
-            if (notification != null) {
-                // Procesar la notificación
-                notificationManager.processNotification(notification, true);
-            }
-        }
     }
     
     // Más código de la actividad...

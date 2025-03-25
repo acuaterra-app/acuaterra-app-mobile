@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 
 import java.util.Map;
 import com.example.monitoreoacua.business.models.Farm;
+import com.example.monitoreoacua.business.models.Notification;
 import com.example.monitoreoacua.interfaces.OnApiRequestCallback;
 import com.example.monitoreoacua.service.ApiClient;
 import com.example.monitoreoacua.service.ApiFarmsService;
@@ -35,18 +36,15 @@ public class FarmNotificationHandler implements NotificationHandler {
     }
 
     @Override
-    public void handle(Context context, Map<String, String> data) {
+    public void handle(Context context, Notification notification) {
         try {
-            String farmId = data.get("farmId");
+            String farmId = String.valueOf(notification.getData().getMetaData().get("farmId"));
             
             if (farmId == null || farmId.isEmpty()) {
                 Log.e(TAG, "Farm ID is missing in the notification payload");
                 return;
             }
-            
             Log.d(TAG, "Fetching details for farm ID: " + farmId);
-
-            
             fetchFarmDetails(context, farmId);
             
         } catch (Exception e) {
