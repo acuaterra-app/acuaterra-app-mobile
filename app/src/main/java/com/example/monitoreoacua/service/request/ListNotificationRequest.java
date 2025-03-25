@@ -52,7 +52,7 @@ public class ListNotificationRequest extends BaseRequest {
 
         Log.d(TAG, "Fetching unread notifications...");
         notificationsService.getNotifications(
-                this.getAuthToken(),
+                getAuthToken(),
                 page,
                 state,
                 limit
