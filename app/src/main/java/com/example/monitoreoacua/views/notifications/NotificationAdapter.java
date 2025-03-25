@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.util.Log;
+import android.widget.Toast;
+
 import com.example.monitoreoacua.firebase.FireBaseNotificationManager;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -15,6 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.monitoreoacua.R;
 import com.example.monitoreoacua.business.models.Notification;
+import com.example.monitoreoacua.interfaces.OnApiRequestCallback;
+import com.example.monitoreoacua.service.request.MarkNotificationAsReadRequest;
+import com.example.monitoreoacua.service.response.MarkNotificationAsReadResponse;
 import com.example.monitoreoacua.utils.DateUtils;
 import com.example.monitoreoacua.utils.NotificationStyleUtils;
 import java.util.ArrayList;
@@ -92,29 +97,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
             // Set click listener
             viewHolder.cardView.setOnClickListener(v -> {
-                try {
-                    // Log the click for debugging purposes
-                    Log.d("NotificationAdapter", "Notification clicked: " + 
-                          "title=" + notification.getTitle());
-                    
-                    // Process notification first using FireBaseNotificationManager
-                    new FireBaseNotificationManager().processNotification(context, notification);
-                    
-                    // Simply delegate to the notification click listener
-                    if (notificationClickListener != null) {
-                        notificationClickListener.onNotificationClick(notification);
-                    }
-                } catch (Exception e) {
-                    Log.e("NotificationAdapter", "Error handling notification click", e);
-                    // Fallback to default behavior in case of error
-                    if (notificationClickListener != null) {
-                        try {
-                            notificationClickListener.onNotificationClick(notification);
-                        } catch (Exception fallbackError) {
-                            Log.e("NotificationAdapter", "Error in fallback notification handler", fallbackError);
-                        }
-                    }
-                }
+               onClick(notification, viewHolder);
             });
             
             // Set notification type icon based on metadata
@@ -154,6 +137,42 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 NotificationStyleUtils.applyStyleToCardView(viewHolder.cardView, defaultType);
                 NotificationStyleUtils.applyTextColor(defaultType, 
                     viewHolder.titleTextView, viewHolder.messageTextView, viewHolder.dateTextView);
+            }
+        }
+    }
+
+    public void onClick(Notification notification, NotificationViewHolder viewholder) {
+        try {
+
+            new FireBaseNotificationManager().processNotification(context, notification);
+
+            new MarkNotificationAsReadRequest().markNotificationAsRead(new OnApiRequestCallback<MarkNotificationAsReadResponse, Throwable>() {
+                @Override
+                public void onSuccess(MarkNotificationAsReadResponse apiResponse) {
+                    Log.d("NotificationAdapter", "Notification marked as read: " +
+                            "title=" + notification.getTitle());
+                    viewholder.unreadIndicator.setVisibility(View.GONE);
+                    Toast.makeText(context, "Notificación leida", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFail(Throwable t) {
+                    Toast.makeText(context, "Error al ver la notificación", Toast.LENGTH_SHORT).show();
+                }
+            }, notification.getData().getId());
+
+            if (notificationClickListener != null) {
+                notificationClickListener.onNotificationClick(notification);
+            }
+        } catch (Exception e) {
+            Log.e("NotificationAdapter", "Error handling notification click", e);
+            // Fallback to default behavior in case of error
+            if (notificationClickListener != null) {
+                try {
+                    notificationClickListener.onNotificationClick(notification);
+                } catch (Exception fallbackError) {
+                    Log.e("NotificationAdapter", "Error in fallback notification handler", fallbackError);
+                }
             }
         }
     }
@@ -310,7 +329,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         notifyItemRangeRemoved(0, size);
     }
 
-    static class NotificationViewHolder extends RecyclerView.ViewHolder {
+    public static class NotificationViewHolder extends RecyclerView.ViewHolder {
         TextView titleTextView;
         TextView messageTextView;
         TextView dateTextView;
