@@ -149,9 +149,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public void setNotifications(List<Notification> newNotifications) {
-        if (newNotifications == null) {
-            newNotifications = new ArrayList<>();
-        }
+        // Create a final local variable that won't be reassigned
+        final List<Notification> finalNewList = newNotifications != null ? newNotifications : new ArrayList<>();
         
         // Create a copy of the current list to avoid modification during diff calculation
         final List<Notification> oldList = new ArrayList<>(this.notifications);
@@ -165,7 +164,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             @Override
             public int getNewListSize() {
-                return newNotifications.size();
+                return finalNewList.size();
             }
 
             @Override
@@ -173,21 +172,23 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 // Return true if the items represent the same object
                 // If one of the items is null (loading item), they're not the same
                 Notification oldItem = oldList.get(oldItemPosition);
-                Notification newItem = newNotifications.get(newItemPosition);
+                Notification newItem = finalNewList.get(newItemPosition);
                 
                 if (oldItem == null || newItem == null) {
                     return false;
                 }
                 
                 // Compare by ID or unique identifier
-                return oldItem.getId() != null && oldItem.getId().equals(newItem.getId());
+                // Since ID is an integer in NotificationData class, compare directly
+                return oldItem.getData() != null && newItem.getData() != null && 
+                       oldItem.getData().getId() == newItem.getData().getId();
             }
 
             @Override
             public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
                 // Check if items' visual representations are the same
                 Notification oldItem = oldList.get(oldItemPosition);
-                Notification newItem = newNotifications.get(newItemPosition);
+                Notification newItem = finalNewList.get(newItemPosition);
                 
                 if (oldItem == null || newItem == null) {
                     return false;
@@ -208,7 +209,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         });
         
         // Update the data
-        this.notifications = new ArrayList<>(newNotifications);
+        this.notifications = new ArrayList<>(finalNewList);
         
         // Dispatch updates to the RecyclerView on the main thread
         diffResult.dispatchUpdatesTo(this);
