@@ -14,13 +14,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.monitoreoacua.R;
 import com.example.monitoreoacua.business.models.Notification;
-import com.example.monitoreoacua.firebase.NotificationManager;
 import com.example.monitoreoacua.utils.DateUtils;
 import com.example.monitoreoacua.utils.NotificationStyleUtils;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -95,73 +92,13 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             // Set click listener
             viewHolder.cardView.setOnClickListener(v -> {
                 try {
-                    String notificationType = "unknown";
-                    if (notification.getData() != null && 
-                        notification.getData().getMetaData() != null && 
-                        notification.getData().getMetaData().containsKey("type")) {
-                        notificationType = notification.getData().getMetaData().get("type");
-                    }
+                    // Log the click for debugging purposes
+                    Log.d("NotificationAdapter", "Notification clicked: " + 
+                          "title=" + notification.getTitle());
                     
-                    Log.d("NotificationAdapter", "Handling notification click: id=" + 
-                            (notification.getData() != null ? notification.getData().getId() : "null") + 
-                            ", type=" + notificationType + 
-                            ", title=" + notification.getTitle());
-                    
-                    // Create a Map with the notification data
-                    Map<String, String> data = new HashMap<>();
-                    
-                    // Basic notification info
-                    data.put("title", notification.getTitle());
-                    data.put("body", notification.getMessage());
-                    
-                    if (notification.getData() != null) {
-                        // Add notification ID
-                        data.put("id", String.valueOf(notification.getData().getId()));
-                        
-                        // Add notification state
-                        data.put("state", notification.getData().getState());
-                        
-                        // Add date information
-                        if (notification.getData().getDateHour() != null) {
-                            data.put("dateHour", notification.getData().getDateHour());
-                        }
-                        
-                        // Add all metadata
-                        if (notification.getData().getMetaData() != null) {
-                            Map<String, String> metaData = notification.getData().getMetaData();
-                            
-                            // Get the type for routing
-                            if (metaData.containsKey("type")) {
-                                data.put("type", metaData.get("type"));
-                            }
-                            
-                            // Add all other metadata
-                            for (Map.Entry<String, String> entry : metaData.entrySet()) {
-                                data.put(entry.getKey(), entry.getValue());
-                            }
-                        }
-                    }
-                    
-                    // Use NotificationManager to route this notification
-                    boolean handled = NotificationManager.getInstance().routeNotification(context, data);
-                    
-                    if (!handled) {
-                        Log.w("NotificationAdapter", "No handler found for notification type: " + notificationType);
-                        // Fall back to default behavior if no handler was found
-                        if (notificationClickListener != null) {
-                            Log.d("NotificationAdapter", "Falling back to default notification click listener");
-                            notificationClickListener.onNotificationClick(notification);
-                        } else {
-                            Log.w("NotificationAdapter", "No fallback handler available for notification");
-                            // Show a message to the user that this notification type is not supported
-                            android.widget.Toast.makeText(
-                                context, 
-                                "This notification type is not supported", 
-                                android.widget.Toast.LENGTH_SHORT
-                            ).show();
-                        }
-                    } else {
-                        Log.d("NotificationAdapter", "Notification successfully handled by NotificationManager");
+                    // Simply delegate to the notification click listener
+                    if (notificationClickListener != null) {
+                        notificationClickListener.onNotificationClick(notification);
                     }
                 } catch (Exception e) {
                     Log.e("NotificationAdapter", "Error handling notification click", e);
