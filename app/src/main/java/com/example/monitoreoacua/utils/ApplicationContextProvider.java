@@ -16,7 +16,7 @@ public class ApplicationContextProvider extends Application {
     public void onCreate() {
         super.onCreate();
         applicationContext = getApplicationContext();
-        // Initialize the InAppNotificationHelper to track app lifecycle and handle in-app notifications
+        // Initialize the InAppNotificationHelper to track app lifecycle
         InAppNotificationHelper.init(this);
     }
     

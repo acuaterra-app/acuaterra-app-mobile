@@ -134,27 +134,6 @@ public class NotificationStyleUtils {
         }
     }
 
-    /**
-     * Apply visual style to a dialog view based on message type
-     *
-     * @param dialogView    The dialog view to style
-     * @param messageType   The type of message (success, warning, error, info)
-     */
-    public static void applyDialogStyle(View dialogView, String messageType) {
-        if (dialogView == null) return;
-
-        Log.d(TAG, "Applying dialog style for message type: '" + messageType + "'");
-
-        int backgroundColor = getBackgroundColor(messageType);
-        int borderColor = getBorderColor(messageType);
-
-        // Apply background with border
-        GradientDrawable drawable = new GradientDrawable();
-        drawable.setCornerRadius(16); // Rounded corners
-        drawable.setColor(backgroundColor);
-        drawable.setStroke(3, borderColor); // Add border
-        dialogView.setBackground(drawable);
-    }
     
     /**
      * Apply the appropriate color to an unread indicator view based on message type
