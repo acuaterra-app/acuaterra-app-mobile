@@ -6,28 +6,18 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import java.util.List;
-import java.util.Objects;
-
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.monitoreoacua.R;
-import com.example.monitoreoacua.business.models.Notification;
 import com.example.monitoreoacua.firebase.NotificationManager;
 import com.example.monitoreoacua.fragments.NavigationBarFragment;
 import com.example.monitoreoacua.fragments.NavigationBarFragment.NavigationBarListener;
 import com.example.monitoreoacua.fragments.TopBarFragment;
-import com.example.monitoreoacua.service.ApiClient;
-import com.example.monitoreoacua.service.ApiNotificationsService;
+import com.example.monitoreoacua.interfaces.OnApiRequestCallback;
 import com.example.monitoreoacua.service.request.ListNotificationRequest;
-import com.example.monitoreoacua.service.response.ListNotificationResponse;
 import com.example.monitoreoacua.views.farms.ListFarmsActivity;
 import com.example.monitoreoacua.views.menu.LogoutActivity;
 import com.example.monitoreoacua.views.menu.SupportActivity;
@@ -102,22 +92,22 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     }
 
     protected void fetchNotifications() {
-        new ListNotificationRequest().fetchNotifications(new ListNotificationRequest.NotificationCallback() {
+        new ListNotificationRequest().fetchTotalNotifications(new OnApiRequestCallback<Integer, String>() {
             @Override
-            public void onNotificationCountUpdated(int count) {
+            public void onSuccess(Integer count) {
                 int previousCount = unreadNotificationsCount; // Store the previous count for comparison
                 unreadNotificationsCount = count;
-                
+
                 // Log if the count changed
                 if (previousCount != unreadNotificationsCount) {
                     Log.d(TAG, "Notification count changed: " + previousCount + " -> " + unreadNotificationsCount);
                 }
-                
+
                 updateNotificationBadge();
             }
-            
+
             @Override
-            public void onError(String error) {
+            public void onFail(String error) {
                 Log.e(TAG, "Error fetching notifications: " + error);
                 updateNotificationBadge();
             }
