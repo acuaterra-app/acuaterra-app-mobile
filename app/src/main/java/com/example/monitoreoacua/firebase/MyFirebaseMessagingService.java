@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -16,6 +17,7 @@ import android.app.NotificationManager;
 
 import com.example.monitoreoacua.R;
 import com.example.monitoreoacua.business.models.Notification;
+import com.example.monitoreoacua.views.MainActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -37,11 +39,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
-        super.onMessageReceived(remoteMessage);
         createNotificationChannel();
-
         Notification notification = createNotificationFromRemoteMessage(remoteMessage);
-
         displayNotification(notification);
     }
 
@@ -97,31 +96,30 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
     private void displayNotification(Notification notification) {
 
-        Intent intent = new Intent(this, com.example.monitoreoacua.views.MainActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra("notification", notification);
+        intent.putExtra("notification", true);
+
+         int notificationId = (int) System.currentTimeMillis() + notification.getData().getId();
 
         PendingIntent pendingIntent = PendingIntent.getActivity(
-                this, 0, intent,
-                PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
+                this,
+                notificationId,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-        // Build the notification
-        NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(this, DEFAULT_CHANNEL_ID)
-                        .setSmallIcon(R.drawable.ic_notification) // Make sure you have this icon in your drawable resources
-                        .setContentTitle(notification.getTitle())
-                        .setContentText(notification.getMessage())
-                        .setAutoCancel(true)
-                        .setSound(defaultSoundUri)
-                        .setContentIntent(pendingIntent);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, DEFAULT_CHANNEL_ID)
+                .setSmallIcon(R.drawable.logoacua)
+                .setContentTitle(notification.getTitle())
+                .setContentText(notification.getMessage())
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setContentIntent(pendingIntent);
 
         NotificationManager androidNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        int notificationId =  notification.getData().getId();
-
-
         androidNotificationManager.notify(notificationId, notificationBuilder.build());
     }
 }
