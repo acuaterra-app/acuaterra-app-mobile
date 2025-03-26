@@ -63,21 +63,7 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
         void onSensorClick(Sensor sensor);
     }
 
-    /**
-     * Creates a new instance of this fragment with the specified module ID.
-     * Kept for backward compatibility.
-     *
-     * @param moduleId The ID of the module to display.
-     * @return A new instance of the fragment.
-     */
-    /**
-     * Creates a new instance of this fragment with the specified module ID.
-     *
-     * @param moduleId The ID of the module to display.
-     * @return A new instance of the fragment.
-     */
     public static ViewModuleFragment newInstance(int moduleId) {
-        Log.d("My_Tag", "newInstance called with moduleId: " + moduleId);
         ViewModuleFragment fragment = new ViewModuleFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_MODULE_ID, moduleId);
@@ -88,10 +74,8 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("My_Tag", "onCreate called, checking for arguments");
         if (getArguments() != null) {
             moduleId = getArguments().getInt(ARG_MODULE_ID);
-            Log.d("My_Tag", "moduleId OnCreate: " + moduleId);
         }
     }
 
@@ -186,17 +170,6 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
             }
         }
     }
-
-    /**
-     * Shows or hides the loading indicator.
-     *
-     * @param show True to show loading, false to hide.
-     */
-    /**
-     * Shows or hides the loading indicator.
-     *
-     * @param show True to show loading, false to hide.
-     */
     public void showLoading(boolean show) {
         isLoading = show;
         if (progressBar != null) {
@@ -232,14 +205,9 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
         }
     }
 
-    /**
-     * Loads the module data from the API.
-     */
     private void loadModuleData() {
         showLoading(true);
-        Log.d(TAG, "Loading module data for module ID: " + moduleId);
 
-        // Create a request to get the module from the API
         new GetModuleRequest().getModuleById(new OnApiRequestCallback<Module, Throwable>() {
             @Override
             public void onSuccess(Module result) {

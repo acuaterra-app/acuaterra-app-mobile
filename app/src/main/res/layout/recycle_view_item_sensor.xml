@@ -117,7 +117,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="View Details"
+                android:text="Ver Mediciones"
                 android:backgroundTint="@color/colorPrimaryDark"
                 android:textColor="@android:color/white"
                 android:padding="8dp" />
