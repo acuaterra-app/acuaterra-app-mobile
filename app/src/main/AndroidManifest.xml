@@ -76,6 +76,10 @@
             android:name=".views.farms.farm.modules.ListModulesActivity"
             android:exported="false" />
         <activity
+            android:name=".views.farms.farm.modules.ViewModuleActivity"
+            android:exported="false"
+            android:parentActivityName=".views.farms.farm.modules.ListModulesActivity" />
+        <activity
             android:name=".views.farms.farm.FarmDetailsFragmentActivity"
             android:exported="true"
             android:launchMode="singleTop">

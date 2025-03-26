@@ -9,6 +9,7 @@ import retrofit2.http.Path;
 import com.example.monitoreoacua.business.models.Module;
 import com.example.monitoreoacua.service.request.ListModulesRequest;
 import com.example.monitoreoacua.service.response.ListModuleResponse;
+import com.example.monitoreoacua.service.response.GetModuleResponse;
 
 /**
  * Interface for user-related API operations.
@@ -27,5 +28,10 @@ public interface ApiModulesService {
             @Body Module module,
             @Header("Authorization") String token
     );
-}
 
+    @GET("/api/v2/owner/modules/{id}")
+    Call<GetModuleResponse> getModuleById(
+            @Header("Authorization") String token,
+            @Path("id") int id
+    );
+}
