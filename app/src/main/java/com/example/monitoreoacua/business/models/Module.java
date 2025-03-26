@@ -3,7 +3,10 @@ package com.example.monitoreoacua.business.models;
 import com.example.monitoreoacua.business.models.auth.AuthUser;
 import com.google.gson.annotations.SerializedName;
 
-public class Module {
+import java.io.Serializable;
+import java.util.List;
+public class Module implements Serializable {
+    private static final long serialVersionUID = 1L;
     @SerializedName("id")
     private int id;
 
@@ -52,6 +55,8 @@ public class Module {
     @SerializedName("farm")
     private Farm farm;
 
+    @SerializedName("sensors")
+    private List<Sensor> sensors;
     public int getId() { return id; }
     public String getName() { return name; }
     public String getLocation() { return location; }
@@ -68,7 +73,6 @@ public class Module {
     public String getDeletedAt() { return deletedAt; }
     public User getCreator() { return creator; }
     public Farm getFarm() { return farm; }
-
-
-
+    public List<Sensor> getSensors() { return sensors; }
+    public void setSensors(List<Sensor> sensors) { this.sensors = sensors; }
 }

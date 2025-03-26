@@ -2,6 +2,7 @@ package com.example.monitoreoacua.views.farms.farm.modules;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.monitoreoacua.R;
 import com.example.monitoreoacua.business.models.Farm;
@@ -17,6 +18,8 @@ public class ListModulesActivity extends BaseActivity implements ListModulesFrag
     
     private Farm farm;
     private ListModulesFragment modulesFragment;
+
+    private static final String ARG_MODULE_ID = "module_id";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +47,10 @@ public class ListModulesActivity extends BaseActivity implements ListModulesFrag
     
     @Override
     public void onModuleSelected(Module module) {
-        // Handle module selection - currently just display a toast
-        // In the future, this could navigate to a module detail view
-        // Toast.makeText(this, "Módulo seleccionado: " + module.getName(), Toast.LENGTH_SHORT).show();
+        Log.d("My_Tag", "onModuleSelected: " + module.getId());
+        Intent intent = new Intent(this, ViewModuleActivity.class);
+        intent.putExtra(ARG_MODULE_ID, module.getId());
+        startActivity(intent);
     }
     
     @Override

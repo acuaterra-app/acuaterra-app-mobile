@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/sensor_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="8dp"
+            tools:text="Sensor Proximity 54" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E0E0E0"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Thresholds"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <LinearLayout
+            android:id="@+id/threshold_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Min Threshold Layout -->
+            <LinearLayout
+                android:id="@+id/min_threshold_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="4dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@android:drawable/arrow_down_float"
+                    android:tint="#2196F3"
+                    android:layout_marginEnd="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Min:"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="8dp" />
+
+                <TextView
+                    android:id="@+id/min_threshold_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="4.50" />
+            </LinearLayout>
+
+            <!-- Max Threshold Layout -->
+            <LinearLayout
+                android:id="@+id/max_threshold_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@android:drawable/arrow_up_float"
+                    android:tint="#F44336"
+                    android:layout_marginEnd="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Max:"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="8dp" />
+
+                <TextView
+                    android:id="@+id/max_threshold_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="12.50" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/view_sensor_details_button"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Ver Mediciones"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:textColor="@android:color/white"
+                android:padding="8dp" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
+
