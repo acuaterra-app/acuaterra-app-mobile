@@ -20,4 +20,13 @@
     <string name="bienvenido_a_acuaterra1">Bienvenido a AcuaTerra</string>
     <string name="ID">Número de Documentos de Identidad</string>
     <string name="Programa">Nombre del programa</string>
+    <string name="default_notification_channel_id">fcm_default_channel</string>
+    <!-- Módulos -->
+    <string name="modules_title">Módulos</string>
+    <string name="no_modules_found">No se encontraron módulos</string>
+    <string name="register_new_module">Registrar nuevo módulo</string>
+    <string name="error_loading_modules">Error al cargar los módulos</string>
+    <!-- Notificaciones -->
+    <string name="no_notifications_found">No se encontraron notificaciones</string>
+    <string name="error_loading_notifications">Error al cargar las notificaciones</string>
 </resources>

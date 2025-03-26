@@ -3,8 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
+        android:name=".utils.ApplicationContextProvider"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -14,39 +17,47 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MonitoreoAcua"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
         <activity
-            android:name=".views.soportetec.soporteActivity"
+            android:name=".views.farms.farm.modules.RegisterModulesActivity"
             android:exported="false" />
         <activity
-            android:name=".views.pruebas.PruebaBitacora"
+            android:name=".views.menu.LogoutActivity"
             android:exported="false" />
         <activity
-            android:name=".views.pruebas.PruebaJson"
+            android:name=".views.farms.FarmDetailsActivity"
+            android:exported="true"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="com.example.monitoreoacua.VIEW_FARM_DETAILS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".views.farms.farm.FarmFormActivity"
+            android:exported="true"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="com.example.monitoreoacua.FARM_FORM" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".views.farms.ListFarmsActivity"
             android:exported="false" />
         <activity
-            android:name=".views.modulos.PruebaActivity"
-            android:exported="false" />
-        <activity
-            android:name=".views.modulos.ModuloFuncionesActivity"
-            android:exported="false" />
-        <activity
-            android:name=".views.modulos.RegisterModuloActivity"
-            android:exported="false" />
-        <activity
-            android:name=".views.modulos.ModuloInfoActivity"
-            android:exported="false" />
-        <activity
-            android:name=".views.modulos.HomeModulosActivity"
-            android:exported="false" />
-        <activity
-            android:name=".views.menu.HomeActivity"
+            android:name=".views.menu.SupportActivity"
             android:exported="false" />
         <activity
             android:name=".views.login.LoginActivity"
-            android:exported="false" />
-        <activity
-            android:name=".views.login.RegisterActivity"
+            android:launchMode="singleTop"
+            android:configChanges="orientation|screenSize"
             android:exported="false" />
         <activity
             android:name=".views.MainActivity"
@@ -56,7 +67,35 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
+        <activity
+            android:name=".views.farms.farm.modules.ListModulesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".views.farms.farm.FarmDetailsFragmentActivity"
+            android:exported="true"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="com.example.monitoreoacua.VIEW_FARM_DETAILS_FRAGMENT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        <service
+            android:name=".firebase.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <activity
+            android:name=".views.notifications.NotificationsActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

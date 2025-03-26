@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "557843091693",
-    "project_id": "monitoreoacua-1a5c0",
-    "storage_bucket": "monitoreoacua-1a5c0.firebasestorage.app"
+    "project_number": "125156334973",
+    "project_id": "acuaterra-tech-3999b",
+    "storage_bucket": "acuaterra-tech-3999b.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:557843091693:android:205d126097631654e9bce4",
+        "mobilesdk_app_id": "1:125156334973:android:a81f047027461bce910014",
         "android_client_info": {
           "package_name": "com.example.monitoreoacua"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAL91ILgGQqocsyt8TEIJvgWA2jnHIDOqA"
+          "current_key": "AIzaSyDxoMTRsrsgw75YilCmsuSz1gVoOVbMJDI"
         }
       ],
       "services": {

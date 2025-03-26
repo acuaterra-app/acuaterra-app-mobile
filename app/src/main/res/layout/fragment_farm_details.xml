@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_farm_details"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/backgroundfarms"
+    tools:context=".fragments.FarmDetailsFragment">
+
+    <!-- Contenedor principal -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginHorizontal="20dp"
+            android:paddingBottom="20dp"
+            >
+
+            <!-- Título de la granja -->
+            <TextView
+                android:id="@+id/textViewFarmName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Detalles de la Granja"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/koulen"
+                android:textColor="@color/colorPrimary"
+                android:gravity="center_horizontal"
+                android:paddingBottom="16dp"/>
+
+            <ImageView
+                android:id="@+id/imageViewFarm"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:src="@drawable/farmperfil"
+                android:scaleType="centerCrop"
+                android:contentDescription="Imagen de la granja"
+                android:layout_gravity="center"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Contenedor de la información de la granja -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <!-- Dirección de la granja -->
+                <TextView
+                    android:id="@+id/textViewFarmAddressLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ubicación:"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/textViewFarmAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="--"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:paddingBottom="8dp"/>
+
+                <!-- Coordenadas -->
+                <TextView
+                    android:id="@+id/textViewFarmCoordinatesLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Coordenadas:"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/textViewFarmCoordinates"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Lat: --, Lng: --"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:paddingBottom="8dp"/>
+
+                <!-- Fecha de Creación -->
+                <TextView
+                    android:id="@+id/textViewCreatedAtLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fecha de Creación:"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/textViewCreatedAt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="--"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:paddingBottom="16dp"/>
+            </LinearLayout>
+
+            <!-- Botones de acción -->
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:id="@+id/buttonModules"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Módulos"
+                android:textSize="18sp"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/colorAccent"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="20dp"
+                />
+
+            <!-- Botones de edición y eliminación -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="16dp">
+
+                <com.google.android.material.button.MaterialButton
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:id="@+id/buttonEditFarm"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Editar"
+                    android:textColor="@color/colorAccent"
+                    android:layout_marginEnd="8dp"/>
+
+                <com.google.android.material.button.MaterialButton
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:id="@+id/buttonDeleteFarm"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Eliminar"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:layout_marginStart="8dp"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>
+

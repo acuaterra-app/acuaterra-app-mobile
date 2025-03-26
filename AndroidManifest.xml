@@ -1,0 +1,17 @@
+        <activity
+            android:name=".views.farms.farm.modules.ModulesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".views.sample.SampleActivity"
+            android:exported="false"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".views.farms.farm.FarmDetailsFragmentActivity"
+            android:exported="true"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="com.example.monitoreoacua.VIEW_FARM_DETAILS_FRAGMENT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>

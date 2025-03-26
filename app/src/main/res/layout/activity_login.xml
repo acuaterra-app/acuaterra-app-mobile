@@ -1,15 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<!--
-**************************************************
-Nombre: Diego Alonso Ruiz, Duber Alberto Imbachí, William David Perdigón
-E-mail: diego_aruiza@soy.sena.edu.co, Wdperdigon1227@gmail.com, duberimbachi7@gmail.com
-Fecha: 6 de diciembre de 2024
-Android Studio: Java
-Descripción: Archivo XML - Interfaz "login" - AcuaTerra
-**************************************************
--->
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -18,9 +7,10 @@ Descripción: Archivo XML - Interfaz "login" - AcuaTerra
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:padding="20dp"
-    android:background="@drawable/logingdown"
+    android:padding="24dp"
+    android:background="@drawable/logingbackground"
     tools:context=".views.login.LoginActivity">
+
 
     <!-- Contenedor principal -->
     <LinearLayout
@@ -28,43 +18,42 @@ Descripción: Archivo XML - Interfaz "login" - AcuaTerra
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center_horizontal"
-        android:paddingBottom="20dp"
-        android:paddingTop="60dp">
+        android:padding="20dp">
 
         <!-- Logo -->
         <ImageView
             android:id="@+id/logo"
-            android:layout_width="260dp"
-            android:layout_height="180dp"
+            android:layout_width="220dp"
+            android:layout_height="160dp"
             android:contentDescription="@string/logo"
-            android:src="@drawable/logo3"
-            android:layout_marginBottom="56dp" />
+            android:src="@drawable/logoacua"
+            android:layout_marginBottom="40dp" />
 
         <!-- Título -->
         <TextView
             android:id="@+id/form_title"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/acuaterra"
-            android:textSize="38sp"
+            android:textSize="36sp"
             android:textStyle="bold"
             android:gravity="center"
-            android:textColor="@color/white"
+            android:textColor="@color/colorDivider"
             android:fontFamily="@font/koulen"
-            android:layout_marginBottom="1dp" />
+            android:layout_marginBottom="8dp" />
 
-        <!-- Título -->
+        <!-- Subtítulo -->
         <TextView
             android:id="@+id/form_subtitle"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Inicio de sesión"
-            android:textSize="28sp"
+            android:textSize="22sp"
             android:textStyle="normal"
             android:gravity="center"
-            android:textColor="@color/white"
+            android:textColor="@color/colorDivider"
             android:fontFamily="@font/roboto"
-            android:layout_marginBottom="10dp" />
+            android:layout_marginBottom="20dp" />
 
         <!-- Campo de Email -->
         <com.google.android.material.textfield.TextInputLayout
@@ -73,7 +62,7 @@ Descripción: Archivo XML - Interfaz "login" - AcuaTerra
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/correo_electr_nico"
-            android:background="@color/white"
+            app:boxStrokeColor="@color/colorPrimary"
             android:layout_marginBottom="12dp">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -81,7 +70,9 @@ Descripción: Archivo XML - Interfaz "login" - AcuaTerra
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
-                android:fontFamily="sans-serif" />
+                android:fontFamily="sans-serif"
+                android:textColor="@color/black"
+                android:padding="12dp"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Campo de Contraseña -->
@@ -91,7 +82,8 @@ Descripción: Archivo XML - Interfaz "login" - AcuaTerra
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/contrase_a"
-            app:passwordToggleEnabled="true"
+            app:endIconMode="password_toggle"
+            app:boxStrokeColor="@color/colorPrimary"
             android:layout_marginBottom="20dp">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -99,8 +91,9 @@ Descripción: Archivo XML - Interfaz "login" - AcuaTerra
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
-                android:background="@color/white"
-                android:fontFamily="sans-serif" />
+                android:fontFamily="sans-serif"
+                android:textColor="@color/black"
+                android:padding="12dp"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Botón de Iniciar Sesión -->
@@ -113,12 +106,19 @@ Descripción: Archivo XML - Interfaz "login" - AcuaTerra
             android:text="@string/iniciar_sesi_n"
             android:textColor="@color/white"
             android:textStyle="bold"
-            android:elevation="4dp"
+            android:elevation="6dp"
             android:layout_marginBottom="12dp" />
-
-
-
+        <TextView
+            android:id="@+id/txtNotificationsPermissions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Esta app necesita permisos para un correcto funcionamiento"
+            android:textAlignment="center"
+            android:textColor="@color/colorDivider"
+            android:textSize="18sp"
+            android:layout_marginTop="8dp"
+            android:padding="8dp"
+            android:visibility="gone" />
     </LinearLayout>
 
 </LinearLayout>
-
