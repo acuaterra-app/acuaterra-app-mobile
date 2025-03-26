@@ -81,14 +81,14 @@ public class SensorAdapter extends RecyclerView.Adapter<SensorAdapter.ViewHolder
             
             btnViewDetails.setOnClickListener(v -> {
                 if (listener != null) {
-                    listener.onViewSensorDetails(sensor);
+                    listener.onSensorClick(sensor);
                 }
             });
             
             // Make the whole item clickable
             itemView.setOnClickListener(v -> {
                 if (listener != null) {
-                    listener.onSensorSelected(sensor);
+                    listener.onSensorClick(sensor);
                 }
             });
         }
@@ -96,8 +96,7 @@ public class SensorAdapter extends RecyclerView.Adapter<SensorAdapter.ViewHolder
 
     // Interface for handling sensor selection
     public interface OnSensorInteractionListener {
-        void onSensorSelected(Sensor sensor);
-        void onViewSensorDetails(Sensor sensor);
+        void onSensorClick(Sensor sensor);
     }
 
     // Method to update data
