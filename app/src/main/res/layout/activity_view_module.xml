@@ -192,6 +192,15 @@
                     android:textStyle="bold"
                     android:layout_marginBottom="8dp"/>
 
+                <TextView
+                    android:id="@+id/tv_no_sensors"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Este módulo no tiene sensores"
+                    android:textAlignment="center"
+                    android:padding="16dp"
+                    android:visibility="gone" />
+                
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view_sensors"
                     android:layout_width="match_parent"

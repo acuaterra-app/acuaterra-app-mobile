@@ -55,6 +55,7 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
     private ProgressBar progressBar;
     private TextView tvErrorMessage;
     private Button btnRetry;
+    private TextView tvNoSensors;
 
     /**
      * Interface for handling sensor interactions.
@@ -94,6 +95,7 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
         textModuleDimensions = view.findViewById(R.id.module_dimensions);
         recyclerViewSensors = view.findViewById(R.id.recycler_view_sensors);
         progressBar = view.findViewById(R.id.progress_bar);
+        tvNoSensors = view.findViewById(R.id.tv_no_sensors);
 
         // Make sure progress bar is visible by default
         if (progressBar != null) {
@@ -165,9 +167,29 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
         if (module != null && module.getSensors() != null) {
             List<Sensor> sensors = module.getSensors();
             if (!sensors.isEmpty()) {
+                // We have sensors, show the RecyclerView and hide the empty message
                 SensorAdapter adapter = new SensorAdapter(getContext(), sensors, this);
                 recyclerViewSensors.setAdapter(adapter);
+                recyclerViewSensors.setVisibility(View.VISIBLE);
+                if (tvNoSensors != null) {
+                    tvNoSensors.setVisibility(View.GONE);
+                }
+                Log.d(TAG, "Displaying " + sensors.size() + " sensors");
+            } else {
+                // Empty sensors list, show message and hide RecyclerView
+                if (tvNoSensors != null) {
+                    tvNoSensors.setVisibility(View.VISIBLE);
+                }
+                recyclerViewSensors.setVisibility(View.GONE);
+                Log.d(TAG, "No sensors to display");
             }
+        } else {
+            // Null sensors list, show message and hide RecyclerView
+            if (tvNoSensors != null) {
+                tvNoSensors.setVisibility(View.VISIBLE);
+            }
+            recyclerViewSensors.setVisibility(View.GONE);
+            Log.d(TAG, "Sensors list is null");
         }
     }
     public void showLoading(boolean show) {
