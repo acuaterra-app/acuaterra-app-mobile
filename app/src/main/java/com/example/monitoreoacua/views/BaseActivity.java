@@ -20,6 +20,7 @@ import com.example.monitoreoacua.service.request.ListNotificationRequest;
 import com.example.monitoreoacua.views.farms.ListFarmsActivity;
 import com.example.monitoreoacua.views.menu.LogoutActivity;
 import com.example.monitoreoacua.views.menu.SupportActivity;
+import com.example.monitoreoacua.views.users.UserFragment;
 
 /**
  * BaseActivity provides common functionality for activities in the application.
@@ -130,7 +131,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
 
     @Override
     public void navigateToSettings() {
-        Toast.makeText(this, "Navigate to Users/Settings (not implemented)", Toast.LENGTH_SHORT).show();
+        loadFragment(new UserFragment(), true);
+        //Toast.makeText(this, "Navigate to Users/Settings (not implemented)", Toast.LENGTH_SHORT).show();
     }
 
     @Override
