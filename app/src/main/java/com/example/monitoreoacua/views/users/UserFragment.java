@@ -57,18 +57,29 @@ public class UserFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item_list, container, false);
 
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            recyclerView.setAdapter(new MyUserRecyclerViewAdapter(PlaceholderContent.ITEMS));
+        // Encuentra el RecyclerView dentro del ConstraintLayout
+        RecyclerView recyclerView = view.findViewById(R.id.list);
+        Context context = view.getContext();
+        if (mColumnCount <= 1) {
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        } else {
+            recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
+        recyclerView.setAdapter(new MyUserRecyclerViewAdapter(PlaceholderContent.ITEMS));
 
+        // Encuentra el FloatingActionButton y establece el listener de clic
+        FloatingActionButton fab = view.findViewById(R.id.register_user_fragment);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Reemplaza el fragmento actual con RegisterUserFragment
+                Fragment registerUserFragment = new RegisterUserFragment();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentContainer, registerUserFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
 
         return view;
     }
