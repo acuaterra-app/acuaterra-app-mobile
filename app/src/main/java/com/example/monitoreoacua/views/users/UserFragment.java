@@ -21,6 +21,7 @@ import com.example.monitoreoacua.service.request.ListUsersRequest;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
+import java.util.Objects;
 
 public class UserFragment extends Fragment {
 
@@ -75,7 +76,7 @@ public class UserFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Fragment registerUserFragment = new RegisterUserFragment();
-                getActivity().getSupportFragmentManager().beginTransaction()
+                requireActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragmentContainer, registerUserFragment)
                         .addToBackStack(null)
                         .commit();
