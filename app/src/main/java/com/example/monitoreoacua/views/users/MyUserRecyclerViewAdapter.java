@@ -7,21 +7,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.monitoreoacua.business.models.User;
 import com.example.monitoreoacua.views.users.placeholder.PlaceholderContent.PlaceholderItem;
 import com.example.monitoreoacua.databinding.FragmentItemBinding;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link PlaceholderItem}.
+ * {@link RecyclerView.Adapter} that can display a {@link com.example.monitoreoacua.business.models.User}.
  * TODO: Replace the implementation with code for your data type.
  */
 public class MyUserRecyclerViewAdapter extends RecyclerView.Adapter<MyUserRecyclerViewAdapter.ViewHolder> {
 
-    private final List<PlaceholderItem> mValues;
+    private List<User> mValues = new ArrayList<>();
 
-    public MyUserRecyclerViewAdapter(List<PlaceholderItem> items) {
-        mValues = items;
+
+    public void setUsers(List<User> users) {
+        mValues = users;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -33,9 +37,12 @@ public class MyUserRecyclerViewAdapter extends RecyclerView.Adapter<MyUserRecycl
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        User user = mValues.get(position);
+        holder.mNameView.setText(user.getName());
+        holder.mEmailView.setText(user.getEmail());
+        holder.mDniView.setText(user.getDni());
+        holder.mAddressView.setText(user.getAddress());
+        holder.mContactView.setText(user.getContact());
     }
 
     @Override
@@ -44,19 +51,24 @@ public class MyUserRecyclerViewAdapter extends RecyclerView.Adapter<MyUserRecycl
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public PlaceholderItem mItem;
+        public final TextView mNameView;
+        public final TextView mEmailView;
+        public final TextView mDniView;
+        public final TextView mAddressView;
+        public final TextView mContactView;
 
         public ViewHolder(FragmentItemBinding binding) {
             super(binding.getRoot());
-            mIdView = binding.itemNumber;
-            mContentView = binding.content;
+            mNameView = binding.itemName;
+            mEmailView = binding.itemEmail;
+            mDniView = binding.itemDni;
+            mAddressView = binding.itemAddress;
+            mContactView = binding.itemContact;
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + mNameView.getText() + "'";
         }
     }
 }
