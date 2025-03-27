@@ -91,12 +91,6 @@ public class RegisterUserFragment extends Fragment {
     }
 
     private void registerUser() {
-        nameEditText.setText("Diego");
-        emailEditText.setText("dieg252@example.com");
-        dniEditText.setText("767872567");
-        roleEditText.setText("3");
-        addressEditText.setText("Cra 34 jasjaj");
-        contactEditText.setText("1121212");
 
         String name = Objects.requireNonNull(nameEditText.getText()).toString();
         String email = Objects.requireNonNull(emailEditText.getText()).toString();
@@ -129,8 +123,10 @@ public class RegisterUserFragment extends Fragment {
         UserFragment userFragment = new UserFragment();
         assert getFragmentManager() != null;
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragmentContainer, userFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+        transaction
+                .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
+                .replace(R.id.fragmentContainer, userFragment)
+                .addToBackStack(null)
+                .commit();
     }
 }

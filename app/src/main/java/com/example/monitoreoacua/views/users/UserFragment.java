@@ -83,6 +83,7 @@ public class UserFragment extends Fragment {
                         .commit();
             }
         });
+
         fetchUsers();
 
         return view;
