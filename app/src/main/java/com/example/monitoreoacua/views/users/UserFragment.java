@@ -77,6 +77,7 @@ public class UserFragment extends Fragment {
             public void onClick(View v) {
                 Fragment registerUserFragment = new RegisterUserFragment();
                 requireActivity().getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
                         .replace(R.id.fragmentContainer, registerUserFragment)
                         .addToBackStack(null)
                         .commit();
