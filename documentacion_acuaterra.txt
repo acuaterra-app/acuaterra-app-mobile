@@ -1,0 +1,149 @@
+# Documentación de la Aplicación Móvil Acuaterra
+
+## 1. Descripción General del Proyecto
+La Aplicación Móvil Acuaterra es una aplicación Android diseñada para el monitoreo y gestión de granjas agrícolas. Está construida en Java y sigue el patrón de arquitectura MVP (Modelo-Vista-Presentador).
+
+## 2. Stack Tecnológico
+- Lenguaje: Java
+- Plataforma: Android
+- Integración Backend: API REST (https://backend.acuaterra.tech)
+- Bibliotecas de Red: Retrofit, OkHttp
+- Procesamiento de Datos: GSON
+- Componentes UI: AndroidX, Material Design
+
+## 3. Arquitectura de la Aplicación
+
+### 3.1 Estructura del Proyecto
+com.example.monitoreoacua/
+├── business/
+│   └── models/          # Entidades de negocio
+├── service/
+│   ├── request/         # Modelos de solicitud API
+│   └── response/        # Modelos de respuesta API
+├── utils/               # Clases utilitarias
+└── views/              # Componentes de UI
+    ├── farms/          # Gestión de granjas
+    ├── login/          # Autenticación
+    ├── menu/           # Navegación
+    └── modules/        # Gestión de módulos
+
+### 3.2 Componentes Principales
+
+#### Modelos
+- `Farm`: Representa una entidad granja con propiedades como id, nombre, dirección, coordenadas, etc.
+- `User`: Maneja información del usuario
+- `AuthToken`: Gestiona tokens de autenticación
+
+#### Servicios
+- `ApiClient`: Maneja la comunicación con la API REST
+- `ApiFarmsService`: Endpoints relacionados con granjas
+- `ApiUsersService`: Endpoints relacionados con usuarios
+
+#### Vistas
+1. Flujo de Autenticación:
+   - `MainActivity`: Pantalla de inicio
+   - `LoginActivity`: Autenticación de usuario
+   - `RegisterActivity`: Registro de nuevos usuarios
+
+2. Características Principales:
+   - `HomeActivity`: Panel principal
+   - `ListFarmsActivity`: Visualización y gestión de granjas
+   - `FarmDetailsActivity`: Información detallada de granjas
+   - `ModulesListHome`: Gestión de módulos
+   - `SupportActivity`: Soporte técnico
+
+## 4. Desglose de Funcionalidades
+
+### 4.1 Autenticación
+- Inicio de sesión de usuario
+- Registro de usuario
+- Gestión de sesiones
+- Almacenamiento seguro de tokens
+
+### 4.2 Gestión de Granjas
+- Listado de granjas
+- Visualización de detalles de granja
+- Creación de granjas
+- Seguimiento de ubicación
+- Sincronización de datos de granja
+
+### 4.3 Sistema de Módulos
+- Listado de módulos
+- Configuración de módulos
+- Monitoreo de módulos
+- Recolección de datos
+
+### 4.4 Sistema de Soporte
+- Acceso a soporte técnico
+- Reporte de problemas
+- Asistencia al usuario
+
+## 5. Cronología de Desarrollo (Basado en Historial Git)
+- Implementación inicial de interfaz de login
+- Funcionalidad de listado de granjas
+- Vista de detalles de granja
+- Implementación de barra de navegación
+- Integración de soporte técnico
+- Interfaz de creación de módulos
+- Soporte para modo paisaje
+
+## 6. Características de Seguridad
+- Comunicación HTTPS
+- Autenticación basada en tokens
+- Configuración de seguridad de red
+- Almacenamiento seguro de datos
+
+## 7. Componentes UI/UX
+- Fuentes personalizadas (Koulen, Roboto)
+- Implementación de Material Design
+- Layouts responsivos (retrato/paisaje)
+- Íconos y gráficos personalizados
+
+## 8. Actualizaciones Recientes (Últimas Características)
+- Implementación de soporte técnico
+- Mejoras en la barra de navegación
+- Optimización del modo paisaje
+- Mejoras en la gestión de granjas
+
+## 9. Guías de Desarrollo
+1. Seguir la estructura de paquetes existente
+2. Mantener el patrón de arquitectura MVP
+3. Usar convenciones de nombres apropiadas
+4. Implementar manejo de errores
+5. Documentar nuevas características
+6. Seguir las mejores prácticas de Android
+
+## 10. Pruebas
+- Ubicación de pruebas unitarias: src/test/
+- Pruebas instrumentadas: src/androidTest/
+- Requisitos de cobertura de pruebas
+
+## 11. Configuración del Entorno de Desarrollo
+1. Requisitos del Sistema:
+   - Android Studio actualizado
+   - JDK instalado
+   - SDK de Android con API necesaria
+   - Git para control de versiones
+
+2. Pasos de Configuración:
+   - Clonar el repositorio
+   - Abrir el proyecto en Android Studio
+   - Sincronizar Gradle
+   - Configurar emulador o dispositivo físico
+   - Ejecutar la aplicación
+
+## 12. Flujo de Trabajo Recomendado
+1. Desarrollo de Nuevas Características:
+   - Crear rama desde develop
+   - Desarrollar la característica
+   - Realizar pruebas
+   - Solicitar revisión de código
+   - Fusionar con develop
+
+2. Corrección de Errores:
+   - Identificar el problema
+   - Crear rama de corrección
+   - Implementar solución
+   - Probar exhaustivamente
+   - Fusionar con develop
+

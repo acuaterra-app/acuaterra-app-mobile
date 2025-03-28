@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background
+        android:drawable="@drawable/iconlauncher"
+        android:width="48dp"
+        android:height="48dp" />
+    <foreground
+        android:drawable="@drawable/iconlauncher"
+        android:width="48dp"
+        android:height="48dp" />
+    <monochrome
+        android:drawable="@drawable/iconlauncher"
+        android:width="48dp"
+        android:height="48dp" />
+</adaptive-icon>

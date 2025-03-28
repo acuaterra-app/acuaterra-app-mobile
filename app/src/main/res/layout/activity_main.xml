@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="16dp"
+    android:background="@drawable/amainbackgroud"
+    tools:context=".views.MainActivity">
+
+    <!-- Imagen del logo centrada -->
+    <ImageView
+        android:id="@+id/welcome_image"
+        android:layout_width="320dp"
+        android:layout_height="320dp"
+        android:src="@drawable/logoacua"
+        android:contentDescription="@string/bienvenido_a_acuaterra1"
+        android:scaleType="fitCenter" />
+
+    <!-- Espaciado entre la imagen y el texto -->
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="24dp" />
+
+    <!-- Texto de bienvenida estilizado -->
+    <TextView
+        android:id="@+id/welcome_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bienvenido_a_acuaterra"
+        android:textColor="@color/colorDivider"
+        android:fontFamily="@font/koulen"
+        android:textSize="38sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:shadowColor="@color/black"
+        android:shadowRadius="2"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:layout_marginTop="16dp" />
+
+</LinearLayout>

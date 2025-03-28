@@ -1,0 +1,637 @@
+Index: app/src/main/res/layout/activity_home.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n\r\n<LinearLayout\r\n    xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    android:orientation=\"vertical\"\r\n    android:background=\"@drawable/fondo2home\"\r\n    android:padding=\"16dp\">\r\n\r\n    <RelativeLayout\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginBottom=\"16dp\">\r\n\r\n        <!-- Imagen de perfil (usuario) -->\r\n        <ImageView\r\n            android:id=\"@+id/userImage\"\r\n            android:layout_width=\"60dp\"\r\n            android:layout_height=\"60dp\"\r\n            android:src=\"@drawable/usuario\"\r\n            android:contentDescription=\"Foto de usuario\"\r\n            android:layout_alignParentStart=\"true\" />\r\n\r\n        <!-- Texto de bienvenida -->\r\n        <TextView\r\n            android:id=\"@+id/welcomeText\"\r\n            android:layout_width=\"160sp\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_toEndOf=\"@id/userImage\"\r\n            android:layout_marginStart=\"8dp\"\r\n            android:layout_centerVertical=\"true\"\r\n            android:text=\"Bienvenido\"\r\n            android:textSize=\"24sp\"\r\n            android:textColor=\"@color/black\" />\r\n\r\n        <!-- Logo superior -->\r\n        <ImageView\r\n            android:id=\"@+id/logoSuperior\"\r\n            android:layout_width=\"50dp\"\r\n            android:layout_height=\"50dp\"\r\n            android:src=\"@drawable/logoacua\"\r\n            android:contentDescription=\"Logo de la aplicación\"\r\n            android:layout_alignParentEnd=\"true\" />\r\n    </RelativeLayout>\r\n\r\n    <Space\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"0dp\"\r\n        android:layout_weight=\"0.5\" />\r\n    <!-- Título principal -->\r\n    <TextView\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:text=\"ACUATERRA\"\r\n        android:textSize=\"44sp\"\r\n        android:textStyle=\"bold\"\r\n        android:fontFamily=\"@font/koulen\"\r\n        android:textColor=\"@color/black\"\r\n        android:gravity=\"center\"\r\n        android:layout_marginBottom=\"44dp\" />\r\n\r\n    <!-- Espaciador flexible para centrar botones -->\r\n    <Space\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"0dp\"\r\n        android:layout_weight=\"0.5\" />\r\n\r\n    <!-- Botones distribuidos uniformemente -->\r\n    <LinearLayout\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:orientation=\"vertical\"\r\n        android:gravity=\"center\"\r\n        android:layout_marginBottom=\"16dp\">\r\n\r\n        <!-- Botone de bitacora temporal -->\r\n\r\n        <Button\r\n            android:id=\"@+id/btnModulo\"\r\n            android:layout_width=\"300dp\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_marginBottom=\"44dp\"\r\n            android:backgroundTint=\"#5d7a7e\"\r\n            android:fontFamily=\"@font/roboto\"\r\n            android:text=\"Granjas\"\r\n            android:textColor=\"@color/black\"\r\n            android:textSize=\"20sp\" />\r\n\r\n        <Button\r\n            android:id=\"@+id/btnLogout\"\r\n            android:layout_width=\"250dp\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:backgroundTint=\"#5d7a7e\"\r\n            android:fontFamily=\"@font/roboto\"\r\n            android:text=\"Cerrar Sesión\"\r\n            android:textSize=\"20sp\"\r\n            android:textColor=\"@color/black\" />\r\n    </LinearLayout>\r\n\r\n    <!-- Espaciador flexible para empujar el texto al pie -->\r\n    <Space\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"0dp\"\r\n        android:layout_weight=\"1\" />\r\n\r\n    <!-- Pie de página -->\r\n    <LinearLayout\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:orientation=\"vertical\"\r\n        android:gravity=\"center\">\r\n\r\n        <TextView\r\n            android:layout_width=\"wrap_content\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:text=\"versión: 1.0\\nAdvanced Aquaponics Monitoring System\"\r\n            android:textSize=\"12sp\"\r\n            android:textColor=\"@color/black\"\r\n            android:gravity=\"center\"\r\n            android:layout_marginBottom=\"8dp\" />\r\n\r\n        <TextView\r\n            android:layout_width=\"wrap_content\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:text=\"ACUA TERRA © 2025\"\r\n            android:textSize=\"12sp\"\r\n            android:textColor=\"@color/black\"\r\n            android:gravity=\"center\" />\r\n    </LinearLayout>\r\n\r\n</LinearLayout>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/activity_home.xml b/app/src/main/res/layout/activity_home.xml
+--- a/app/src/main/res/layout/activity_home.xml	(revision 4d611817c992c975091f967d471061975b216daa)
++++ b/app/src/main/res/layout/activity_home.xml	(date 1742518793127)
+@@ -5,7 +5,7 @@
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+     android:orientation="vertical"
+-    android:background="@drawable/fondo2home"
++    android:background="@drawable/background2"
+     android:padding="16dp">
+ 
+     <RelativeLayout
+Index: app/src/main/java/com/example/monitoreoacua/utils/SecurePreferences.java
+===================================================================
+diff --git a/app/src/main/java/com/example/monitoreoacua/utils/SecurePreferences.java b/app/src/main/java/com/example/monitoreoacua/utils/SecurePreferences.java
+deleted file mode 100644
+--- a/app/src/main/java/com/example/monitoreoacua/utils/SecurePreferences.java	(revision 4d611817c992c975091f967d471061975b216daa)
++++ /dev/null	(revision 4d611817c992c975091f967d471061975b216daa)
+@@ -1,28 +0,0 @@
+-/*
+-package com.example.monitoreoacua.utils;
+-
+-import android.content.Context;
+-import android.content.SharedPreferences;
+-
+-import androidx.security.crypto.EncryptedSharedPreferences;
+-import androidx.security.crypto.MasterKeys;
+-
+-import java.io.IOException;
+-import java.security.GeneralSecurityException;
+-
+-// En tu clase de preferencias
+-public class SecurePreferences {
+-    private static SharedPreferences getEncryptedPreferences(Context context) throws GeneralSecurityException, IOException {
+-        String masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
+-        return EncryptedSharedPreferences.create(
+-                "secure_prefs",
+-                masterKeyAlias,
+-                context,
+-                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+-                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+-        );
+-    }
+-}
+-
+-
+- */
+\ No newline at end of file
+Index: .idea/deploymentTargetSelector.xml
+===================================================================
+diff --git a/.idea/deploymentTargetSelector.xml b/.idea/deploymentTargetSelector.xml
+deleted file mode 100644
+--- a/.idea/deploymentTargetSelector.xml	(revision 4d611817c992c975091f967d471061975b216daa)
++++ /dev/null	(revision 4d611817c992c975091f967d471061975b216daa)
+@@ -1,10 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="deploymentTargetSelector">
+-    <selectionStates>
+-      <SelectionState runConfigName="app">
+-        <option name="selectionMode" value="DROPDOWN" />
+-      </SelectionState>
+-    </selectionStates>
+-  </component>
+-</project>
+\ No newline at end of file
+Index: app/src/main/java/com/example/monitoreoacua/credenciales.java
+===================================================================
+diff --git a/app/src/main/java/com/example/monitoreoacua/credenciales.java b/app/src/main/java/com/example/monitoreoacua/credenciales.java
+deleted file mode 100644
+--- a/app/src/main/java/com/example/monitoreoacua/credenciales.java	(revision 4d611817c992c975091f967d471061975b216daa)
++++ /dev/null	(revision 4d611817c992c975091f967d471061975b216daa)
+@@ -1,16 +0,0 @@
+-
+-
+-/*
+-
+-{
+-     "email": "alvaro@gmail.com",
+-    "password": "alvaro"
+-}
+-
+-{
+-     "email": "prueba@gmail.com",
+-    "password": "prueba"
+-}
+-
+-
+- */
+\ No newline at end of file
+Index: app/src/main/java/com/example/monitoreoacua/views/login/LoginActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.monitoreoacua.views.login;\r\n\r\nimport android.content.Intent;\r\nimport android.content.SharedPreferences;\r\nimport android.os.Bundle;\r\nimport android.widget.Button;\r\nimport android.widget.EditText;\r\nimport android.widget.Toast;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\n\r\nimport com.example.monitoreoacua.R;\r\nimport com.example.monitoreoacua.business.models.auth.AuthToken;\r\nimport com.example.monitoreoacua.service.request.LoginRequest;\r\nimport com.example.monitoreoacua.service.response.LoginResponse;\r\nimport com.example.monitoreoacua.service.ApiClient;\r\nimport com.example.monitoreoacua.service.ApiUsersService;\r\nimport com.example.monitoreoacua.views.menu.HomeActivity;\r\n\r\nimport retrofit2.Call;\r\nimport retrofit2.Callback;\r\nimport retrofit2.Response;\r\n\r\npublic class LoginActivity extends AppCompatActivity {\r\n\r\n    private static final int MAX_LOGIN_ATTEMPTS = 3;\r\n    \r\n    private EditText etEmail, etPassword;\r\n    private Button btnLogin;\r\n    private int loginAttempts = 0;\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_login);\r\n\r\n        etEmail = findViewById(R.id.etEmail);\r\n        etPassword = findViewById(R.id.etPassword);\r\n        btnLogin = findViewById(R.id.btnLogin);\r\n\r\n\r\n        btnLogin.setOnClickListener(v -> login());\r\n        btnLogin.setOnClickListener(v -> login());\r\n    }\r\n\r\n    private void login() {\r\n        String email = etEmail.getText().toString().trim();\r\n        String password = etPassword.getText().toString().trim();\r\n        \r\n        \r\n        if (email.isEmpty() || password.isEmpty()) {\r\n            Toast.makeText(this, \"Please complete all fields\", Toast.LENGTH_SHORT).show();\r\n            return;\r\n        }\r\n\r\n        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {\r\n            Toast.makeText(this, \"Please enter a valid email\", Toast.LENGTH_SHORT).show();\r\n            return;\r\n        }\r\n\r\n        if (loginAttempts >= MAX_LOGIN_ATTEMPTS) {\r\n            btnLogin.setEnabled(false);\r\n            Toast.makeText(this, \"Access blocked due to multiple failed attempts\", Toast.LENGTH_LONG).show();\r\n            return;\r\n        }\r\n\r\n        ApiUsersService apiUserService = ApiClient.getClient().create(ApiUsersService.class);\r\n        LoginRequest loginRequest = new LoginRequest(email, password);\r\n\r\n        btnLogin.setEnabled(false);\r\n        apiUserService.login(loginRequest).enqueue(new Callback<LoginResponse>() {\r\n            @Override\r\n            public void onResponse(@NonNull Call<LoginResponse> call, @NonNull Response<LoginResponse> response) {\r\n                btnLogin.setEnabled(true);\r\n                \r\n                if (response.isSuccessful() && response.body() != null) {\r\n                    LoginResponse loginResponse = response.body();\r\n                    \r\n                    try {\r\n                        AuthToken authToken = loginResponse.getToken();\r\n                        String token = authToken != null ? authToken.getToken() : null;\r\n                        if (token == null) {\r\n                            Toast.makeText(LoginActivity.this, \"Authentication error: Invalid response\", Toast.LENGTH_SHORT).show();\r\n                            return;\r\n                        }\r\n                        \r\n                        token = token.trim();\r\n                        String userName = loginResponse.getUser().getName();\r\n                        \r\n                        Toast.makeText(LoginActivity.this, \"Welcome, \" + userName, Toast.LENGTH_SHORT).show();\r\n                        loginAttempts = 0;\r\n\r\n                        SharedPreferences sharedPreferences = getSharedPreferences(\"user_prefs\", MODE_PRIVATE);\r\n                        SharedPreferences.Editor editor = sharedPreferences.edit();\r\n                        editor.putString(\"token\", token);\r\n                        editor.apply();\r\n                        \r\n                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);\r\n                        startActivity(intent);\r\n                        finish();\r\n                    } catch (Exception e) {\r\n                        Toast.makeText(LoginActivity.this, \"Error processing login data\", Toast.LENGTH_SHORT).show();\r\n                    }\r\n                } else {\r\n                    loginAttempts++;\r\n                    \r\n                    String errorMessage = \"Invalid credentials. Attempt \" + loginAttempts + \" of \" + MAX_LOGIN_ATTEMPTS;\r\n                    if (response.errorBody() != null) {\r\n                        try {\r\n                            errorMessage += \" - \" + response.errorBody().string();\r\n                        } catch (Exception e) {\r\n                        }\r\n                    }\r\n                    \r\n                    Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_SHORT).show();\r\n                }\r\n            }\r\n\r\n            @Override\r\n            public void onFailure(@NonNull Call<LoginResponse> call, @NonNull Throwable t) {\r\n                btnLogin.setEnabled(true);\r\n                Toast.makeText(LoginActivity.this, \"Error connecting to server: \" + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();\r\n            }\r\n        });\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/monitoreoacua/views/login/LoginActivity.java b/app/src/main/java/com/example/monitoreoacua/views/login/LoginActivity.java
+--- a/app/src/main/java/com/example/monitoreoacua/views/login/LoginActivity.java	(revision 4d611817c992c975091f967d471061975b216daa)
++++ b/app/src/main/java/com/example/monitoreoacua/views/login/LoginActivity.java	(date 1742518578468)
+@@ -16,6 +16,7 @@
+ import com.example.monitoreoacua.service.response.LoginResponse;
+ import com.example.monitoreoacua.service.ApiClient;
+ import com.example.monitoreoacua.service.ApiUsersService;
++import com.example.monitoreoacua.views.farms.ListFarmsActivity;
+ import com.example.monitoreoacua.views.menu.HomeActivity;
+ 
+ import retrofit2.Call;
+@@ -25,7 +26,7 @@
+ public class LoginActivity extends AppCompatActivity {
+ 
+     private static final int MAX_LOGIN_ATTEMPTS = 3;
+-    
++
+     private EditText etEmail, etPassword;
+     private Button btnLogin;
+     private int loginAttempts = 0;
+@@ -40,15 +41,14 @@
+         btnLogin = findViewById(R.id.btnLogin);
+ 
+ 
+-        btnLogin.setOnClickListener(v -> login());
+         btnLogin.setOnClickListener(v -> login());
+     }
+ 
+     private void login() {
+         String email = etEmail.getText().toString().trim();
+         String password = etPassword.getText().toString().trim();
+-        
+-        
++
++
+         if (email.isEmpty() || password.isEmpty()) {
+             Toast.makeText(this, "Please complete all fields", Toast.LENGTH_SHORT).show();
+             return;
+@@ -73,10 +73,10 @@
+             @Override
+             public void onResponse(@NonNull Call<LoginResponse> call, @NonNull Response<LoginResponse> response) {
+                 btnLogin.setEnabled(true);
+-                
++
+                 if (response.isSuccessful() && response.body() != null) {
+                     LoginResponse loginResponse = response.body();
+-                    
++
+                     try {
+                         AuthToken authToken = loginResponse.getToken();
+                         String token = authToken != null ? authToken.getToken() : null;
+@@ -84,10 +84,10 @@
+                             Toast.makeText(LoginActivity.this, "Authentication error: Invalid response", Toast.LENGTH_SHORT).show();
+                             return;
+                         }
+-                        
++
+                         token = token.trim();
+                         String userName = loginResponse.getUser().getName();
+-                        
++
+                         Toast.makeText(LoginActivity.this, "Welcome, " + userName, Toast.LENGTH_SHORT).show();
+                         loginAttempts = 0;
+ 
+@@ -95,8 +95,8 @@
+                         SharedPreferences.Editor editor = sharedPreferences.edit();
+                         editor.putString("token", token);
+                         editor.apply();
+-                        
+-                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
++
++                        Intent intent = new Intent(LoginActivity.this, ListFarmsActivity.class);
+                         startActivity(intent);
+                         finish();
+                     } catch (Exception e) {
+@@ -104,7 +104,7 @@
+                     }
+                 } else {
+                     loginAttempts++;
+-                    
++
+                     String errorMessage = "Invalid credentials. Attempt " + loginAttempts + " of " + MAX_LOGIN_ATTEMPTS;
+                     if (response.errorBody() != null) {
+                         try {
+@@ -112,7 +112,7 @@
+                         } catch (Exception e) {
+                         }
+                     }
+-                    
++
+                     Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                 }
+             }
+@@ -124,4 +124,4 @@
+             }
+         });
+     }
+-}
++}
+\ No newline at end of file
+Index: app/src/main/java/com/example/monitoreoacua/service/response/ApiResponse.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.monitoreoacua.service.response;\r\n\r\nimport com.google.gson.annotations.SerializedName;\r\nimport java.util.List;\r\n\r\n/**\r\n * Base class for all API responses with standardized structure.\r\n * @param <T> The type of data contained in the response\r\n */\r\npublic class ApiResponse<T> {\r\n    @SerializedName(\"message\")\r\n    private String message;\r\n    \r\n    @SerializedName(\"data\")\r\n    private List<T> data;\r\n    \r\n    @SerializedName(\"errors\")\r\n    private List<String> errors;\r\n\r\n    public String getMessage() {\r\n        return message;\r\n    }\r\n\r\n    public void setMessage(String message) {\r\n        this.message = message;\r\n    }\r\n\r\n    public List<T> getData() {\r\n        return data;\r\n    }\r\n\r\n    public void setData(List<T> data) {\r\n        this.data = data;\r\n    }\r\n\r\n    public List<String> getErrors() {\r\n        return errors;\r\n    }\r\n\r\n    public void setErrors(List<String> errors) {\r\n        this.errors = errors;\r\n    }\r\n    \r\n\r\n    public boolean hasErrors() {\r\n        return errors != null && !errors.isEmpty();\r\n    }\r\n    \r\n\r\n    public T getFirstDataItem() {\r\n        if (data != null && !data.isEmpty()) {\r\n            return data.get(0);\r\n        }\r\n        return null;\r\n    }\r\n}\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/monitoreoacua/service/response/ApiResponse.java b/app/src/main/java/com/example/monitoreoacua/service/response/ApiResponse.java
+--- a/app/src/main/java/com/example/monitoreoacua/service/response/ApiResponse.java	(revision 4d611817c992c975091f967d471061975b216daa)
++++ b/app/src/main/java/com/example/monitoreoacua/service/response/ApiResponse.java	(date 1742518578451)
+@@ -16,6 +16,9 @@
+     
+     @SerializedName("errors")
+     private List<String> errors;
++    
++    @SerializedName("meta")
++    private Meta meta;
+ 
+     public String getMessage() {
+         return message;
+@@ -41,17 +44,104 @@
+         this.errors = errors;
+     }
+     
++    public Meta getMeta() {
++        return meta;
++    }
++    
++    public void setMeta(Meta meta) {
++        this.meta = meta;
++    }
+ 
+     public boolean hasErrors() {
+         return errors != null && !errors.isEmpty();
+     }
+     
+-
+     public T getFirstDataItem() {
+         if (data != null && !data.isEmpty()) {
+             return data.get(0);
+         }
+         return null;
+     }
++    
++    public static class Meta {
++        @SerializedName("pagination")
++        private Pagination pagination;
++        
++        public Pagination getPagination() {
++            return pagination;
++        }
++        
++        public void setPagination(Pagination pagination) {
++            this.pagination = pagination;
++        }
++        
++        public static class Pagination {
++            @SerializedName("total")
++            private int total;
++            
++            @SerializedName("totalPages")
++            private int totalPages;
++            
++            @SerializedName("currentPage")
++            private int currentPage;
++            
++            @SerializedName("perPage") 
++            private int perPage;
++            
++            @SerializedName("hasNext")
++            private boolean hasNext;
++            
++            @SerializedName("hasPrev")
++            private boolean hasPrev;
++            
++            public int getTotal() {
++                return total;
++            }
++            
++            public void setTotal(int total) {
++                this.total = total;
++            }
++            
++            public int getTotalPages() {
++                return totalPages;
++            }
++            
++            public void setTotalPages(int totalPages) {
++                this.totalPages = totalPages;
++            }
++            
++            public int getCurrentPage() {
++                return currentPage;
++            }
++            
++            public void setCurrentPage(int currentPage) {
++                this.currentPage = currentPage;
++            }
++            
++            public int getPerPage() {
++                return perPage;
++            }
++            
++            public void setPerPage(int perPage) {
++                this.perPage = perPage;
++            }
++            
++            public boolean isHasNext() {
++                return hasNext;
++            }
++            
++            public void setHasNext(boolean hasNext) {
++                this.hasNext = hasNext;
++            }
++            
++            public boolean isHasPrev() {
++                return hasPrev;
++            }
++            
++            public void setHasPrev(boolean hasPrev) {
++                this.hasPrev = hasPrev;
++            }
++        }
++    }
+ }
+ 
+Index: app/src/main/java/com/example/monitoreoacua/service/ApiUsersService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.monitoreoacua.service;\r\n\r\nimport com.example.monitoreoacua.service.request.LoginRequest;\r\nimport com.example.monitoreoacua.service.request.LogoutRequest;\r\nimport com.example.monitoreoacua.service.response.LoginResponse;\r\nimport com.example.monitoreoacua.service.response.LogoutResponse;\r\n\r\nimport retrofit2.Call;\r\nimport retrofit2.http.Body;\r\nimport retrofit2.http.POST;\r\n\r\n/**\r\n * Interface for user-related API operations.\r\n * Contains methods for authentication and user management.\r\n */\r\npublic interface ApiUsersService {\r\n\r\n    /**\r\n     * Authenticates a user with the provided credentials.\r\n     * @param loginRequest The login request containing email and password\r\n     * @return A Call object with LoginResponse that contains authentication token and user information\r\n     */\r\n    @POST(\"/api/v2/auth/login\")\r\n    Call<LoginResponse> login(@Body LoginRequest loginRequest);\r\n\r\n    /**\r\n     * Logs out the current user, invalidating their session.\r\n     * @param logoutRequest The logout request\r\n     * @return A Call object with LogoutResponse containing a success message\r\n     */\r\n    @POST(\"/api/v2/auth/logout\")\r\n    Call<LogoutResponse> logout(@Body LogoutRequest logoutRequest);\r\n}\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/monitoreoacua/service/ApiUsersService.java b/app/src/main/java/com/example/monitoreoacua/service/ApiUsersService.java
+--- a/app/src/main/java/com/example/monitoreoacua/service/ApiUsersService.java	(revision 4d611817c992c975091f967d471061975b216daa)
++++ b/app/src/main/java/com/example/monitoreoacua/service/ApiUsersService.java	(date 1742518578444)
+@@ -7,6 +7,7 @@
+ 
+ import retrofit2.Call;
+ import retrofit2.http.Body;
++import retrofit2.http.Header;
+ import retrofit2.http.POST;
+ 
+ /**
+@@ -29,6 +30,6 @@
+      * @return A Call object with LogoutResponse containing a success message
+      */
+     @POST("/api/v2/auth/logout")
+-    Call<LogoutResponse> logout(@Body LogoutRequest logoutRequest);
++    Call<LogoutResponse> logout(@Header("Authorization") String token, @Body LogoutRequest logoutRequest);
+ }
+ 
+Index: app/src/main/java/com/example/monitoreoacua/service/request/BaseRequest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.monitoreoacua.service.request;\r\n\r\n/**\r\n * Base class for all request objects in the application.\r\n * Contains a flag to determine if the request requires authentication.\r\n */\r\npublic class BaseRequest {\r\n    \r\n    private boolean requiresAuthentication;\r\n\r\n    public BaseRequest() {\r\n        this.requiresAuthentication = false;\r\n    }\r\n\r\n    public boolean isRequiresAuthentication() {\r\n        return requiresAuthentication;\r\n    }\r\n\r\n    public void setRequiresAuthentication(boolean requiresAuthentication) {\r\n        this.requiresAuthentication = requiresAuthentication;\r\n    }\r\n}\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/monitoreoacua/service/request/BaseRequest.java b/app/src/main/java/com/example/monitoreoacua/service/request/BaseRequest.java
+--- a/app/src/main/java/com/example/monitoreoacua/service/request/BaseRequest.java	(revision 4d611817c992c975091f967d471061975b216daa)
++++ b/app/src/main/java/com/example/monitoreoacua/service/request/BaseRequest.java	(date 1742518578444)
+@@ -1,5 +1,10 @@
+ package com.example.monitoreoacua.service.request;
+ 
++import android.content.Context;
++import android.content.SharedPreferences;
++
++import com.example.monitoreoacua.utils.ApplicationContextProvider;
++
+ /**
+  * Base class for all request objects in the application.
+  * Contains a flag to determine if the request requires authentication.
+@@ -7,6 +12,7 @@
+ public class BaseRequest {
+     
+     private boolean requiresAuthentication;
++    private static final String PREF_NAME = "user_prefs";
+ 
+     public BaseRequest() {
+         this.requiresAuthentication = false;
+@@ -19,5 +25,15 @@
+     public void setRequiresAuthentication(boolean requiresAuthentication) {
+         this.requiresAuthentication = requiresAuthentication;
+     }
++
++    public  String getAuthToken() {
++        Context context = ApplicationContextProvider.getContext();
++        if (context == null) {
++            return null;
++        }
++
++        SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
++        return sharedPreferences.getString("token", null);
++    }
+ }
+ 
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\">\r\n\r\n    <uses-permission android:name=\"android.permission.INTERNET\" />\r\n\r\n    <application\r\n        android:name=\".utils.ApplicationContextProvider\"\r\n        android:allowBackup=\"true\"\r\n        android:dataExtractionRules=\"@xml/data_extraction_rules\"\r\n        android:fullBackupContent=\"@xml/backup_rules\"\r\n        android:icon=\"@mipmap/ic_launcher\"\r\n        android:label=\"@string/app_name\"\r\n        android:networkSecurityConfig=\"@xml/network_security_config\"\r\n        android:roundIcon=\"@mipmap/ic_launcher_round\"\r\n        android:supportsRtl=\"true\"\r\n        android:theme=\"@style/Theme.MonitoreoAcua\"\r\n        android:usesCleartextTraffic=\"true\"\r\n        tools:targetApi=\"31\">\r\n        <activity\r\n            android:name=\".views.soportetec.soporteActivity\"\r\n            android:exported=\"false\" />\r\n        <activity\r\n            android:name=\".views.pruebas.PruebaBitacora\"\r\n            android:exported=\"false\" />\r\n        <activity\r\n            android:name=\".views.pruebas.PruebaJson\"\r\n            android:exported=\"false\" />\r\n        <activity\r\n            android:name=\".views.pruebas.PruebaActivity\"\r\n            android:exported=\"false\" />\r\n        <activity\r\n            android:name=\".views.modulos.ModuloFuncionesActivity\"\r\n            android:exported=\"false\" />\r\n        <activity\r\n            android:name=\".views.modulos.RegisterModuloActivity\"\r\n            android:exported=\"false\" />\r\n        <activity\r\n            android:name=\".views.modulos.ModuloInfoActivity\"\r\n            android:exported=\"false\" />\r\n        <activity\r\n            android:name=\".views.modulos.HomeModulosActivity\"\r\n            android:exported=\"false\" />\r\n        <activity\r\n            android:name=\".views.menu.HomeActivity\"\r\n            android:exported=\"false\" />\r\n        <activity\r\n            android:name=\".views.login.LoginActivity\"\r\n            android:exported=\"false\" />\r\n        <activity\r\n            android:name=\".views.login.RegisterActivity\"\r\n            android:exported=\"false\" />\r\n        <activity\r\n            android:name=\".views.MainActivity\"\r\n            android:exported=\"true\">\r\n            <intent-filter>\r\n                <action android:name=\"android.intent.action.MAIN\" />\r\n\r\n                <category android:name=\"android.intent.category.LAUNCHER\" />\r\n            </intent-filter>\r\n        </activity>\r\n    </application>\r\n\r\n</manifest>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
+--- a/app/src/main/AndroidManifest.xml	(revision 4d611817c992c975091f967d471061975b216daa)
++++ b/app/src/main/AndroidManifest.xml	(date 1742518578442)
+@@ -18,7 +18,16 @@
+         android:usesCleartextTraffic="true"
+         tools:targetApi="31">
+         <activity
+-            android:name=".views.soportetec.soporteActivity"
++            android:name=".views.farms.farm.FarmDetailsActivity"
++            android:exported="false" />
++        <activity
++            android:name=".views.farms.ListFarmsActivity"
++            android:exported="false" />
++        <activity
++            android:name=".views.farms.MenuFarmsActivity"
++            android:exported="false" />
++        <activity
++            android:name=".views.SupportActivity"
+             android:exported="false" />
+         <activity
+             android:name=".views.pruebas.PruebaBitacora"
+Index: app/src/main/java/com/example/monitoreoacua/service/ApiClient.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.monitoreoacua.service;\r\n\r\nimport android.content.Context;\r\nimport android.content.SharedPreferences;\r\n\r\nimport androidx.annotation.NonNull;\r\n\r\nimport com.example.monitoreoacua.service.request.BaseRequest;\r\nimport com.example.monitoreoacua.utils.ApplicationContextProvider;\r\n\r\nimport com.google.gson.Gson;\r\n\r\nimport java.io.IOException;\r\n\r\nimport okhttp3.Interceptor;\r\nimport okhttp3.OkHttpClient;\r\nimport okhttp3.Request;\r\nimport okhttp3.Response;\r\nimport retrofit2.Retrofit;\r\nimport retrofit2.converter.gson.GsonConverterFactory;\r\n\r\npublic class ApiClient {\r\n    private static final String BASE_URL = \"http://10.0.2.2:9000\"; // Special IP for accessing host from emulator\r\n    private static final String PREF_NAME = \"user_prefs\";\r\n    private static Retrofit retrofit;\r\n    \r\n    public static Retrofit getClient() {\r\n        if (retrofit == null) {\r\n            OkHttpClient client = new OkHttpClient.Builder()\r\n                    .addInterceptor(new AuthInterceptor())\r\n                    .build();\r\n\r\n            retrofit = new Retrofit.Builder()\r\n                    .baseUrl(BASE_URL)\r\n                    .client(client)\r\n                    .addConverterFactory(GsonConverterFactory.create())\r\n                    .build();\r\n        }\r\n        return retrofit;\r\n    }\r\n    \r\n    /**\r\n     * Interceptor for adding authentication token to requests\r\n     */\r\n    private static class AuthInterceptor implements Interceptor {\r\n        private final Gson gson = new Gson();\r\n\r\n        private boolean isAuthRequiredFromBody(Request request) {\r\n            try {\r\n                // Only check POST, PUT, PATCH requests that might have a body\r\n                if (request.body() == null || \r\n                    (!request.method().equals(\"POST\") && \r\n                     !request.method().equals(\"PUT\") && \r\n                     !request.method().equals(\"PATCH\"))) {\r\n                    return false;\r\n                }\r\n                \r\n                okhttp3.MediaType mediaType = request.body().contentType();\r\n                if (mediaType != null && mediaType.subtype().contains(\"json\")) {\r\n                    okio.Buffer buffer = new okio.Buffer();\r\n                    request.body().writeTo(buffer);\r\n                    String requestBody = buffer.readUtf8();\r\n                    \r\n                    try {\r\n                        BaseRequest baseRequest = gson.fromJson(requestBody, BaseRequest.class);\r\n                        if (baseRequest != null && baseRequest.isRequiresAuthentication()) {\r\n                            return true;\r\n                        }\r\n                    } catch (Exception e) {\r\n                    }\r\n                }\r\n            } catch (Exception e) {\r\n            }\r\n            return false;\r\n        }\r\n\r\n        @NonNull\r\n        @Override\r\n        public Response intercept(Chain chain) throws IOException {\r\n            Request originalRequest = chain.request();\r\n            \r\n            boolean requiresAuthBody = isAuthRequiredFromBody(originalRequest);\r\n            \r\n            Request.Builder requestBuilder = originalRequest.newBuilder();\r\n            \r\n            if (requiresAuthBody) {\r\n                String token = getAuthToken();\r\n                if (token != null && !token.isEmpty()) {\r\n                    requestBuilder.addHeader(\"Authorization\", token);\r\n                }\r\n            }\r\n            \r\n            Request newRequest = requestBuilder.build();\r\n            return chain.proceed(newRequest);\r\n        }\r\n    }\r\n    \r\n    /**\r\n     * Get the auth token from SharedPreferences\r\n     * @return the token or null if not found\r\n     */\r\n    private static String getAuthToken() {\r\n        Context context = ApplicationContextProvider.getContext();\r\n        if (context == null) {\r\n            return null;\r\n        }\r\n        \r\n        SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);\r\n        return sharedPreferences.getString(\"token\", null);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/monitoreoacua/service/ApiClient.java b/app/src/main/java/com/example/monitoreoacua/service/ApiClient.java
+--- a/app/src/main/java/com/example/monitoreoacua/service/ApiClient.java	(revision 4d611817c992c975091f967d471061975b216daa)
++++ b/app/src/main/java/com/example/monitoreoacua/service/ApiClient.java	(date 1742518578444)
+@@ -20,14 +20,13 @@
+ import retrofit2.converter.gson.GsonConverterFactory;
+ 
+ public class ApiClient {
+-    private static final String BASE_URL = "http://10.0.2.2:9000"; // Special IP for accessing host from emulator
+-    private static final String PREF_NAME = "user_prefs";
++    //private static final String BASE_URL = "http://10.0.2.2:9000"; // Special IP for accessing host from emulator
++    private static final String BASE_URL = "https://backend.acuaterra.tech"; // Special IP for accessing host from emulator
+     private static Retrofit retrofit;
+     
+     public static Retrofit getClient() {
+         if (retrofit == null) {
+             OkHttpClient client = new OkHttpClient.Builder()
+-                    .addInterceptor(new AuthInterceptor())
+                     .build();
+ 
+             retrofit = new Retrofit.Builder()
+@@ -38,74 +37,4 @@
+         }
+         return retrofit;
+     }
+-    
+-    /**
+-     * Interceptor for adding authentication token to requests
+-     */
+-    private static class AuthInterceptor implements Interceptor {
+-        private final Gson gson = new Gson();
+-
+-        private boolean isAuthRequiredFromBody(Request request) {
+-            try {
+-                // Only check POST, PUT, PATCH requests that might have a body
+-                if (request.body() == null || 
+-                    (!request.method().equals("POST") && 
+-                     !request.method().equals("PUT") && 
+-                     !request.method().equals("PATCH"))) {
+-                    return false;
+-                }
+-                
+-                okhttp3.MediaType mediaType = request.body().contentType();
+-                if (mediaType != null && mediaType.subtype().contains("json")) {
+-                    okio.Buffer buffer = new okio.Buffer();
+-                    request.body().writeTo(buffer);
+-                    String requestBody = buffer.readUtf8();
+-                    
+-                    try {
+-                        BaseRequest baseRequest = gson.fromJson(requestBody, BaseRequest.class);
+-                        if (baseRequest != null && baseRequest.isRequiresAuthentication()) {
+-                            return true;
+-                        }
+-                    } catch (Exception e) {
+-                    }
+-                }
+-            } catch (Exception e) {
+-            }
+-            return false;
+-        }
+-
+-        @NonNull
+-        @Override
+-        public Response intercept(Chain chain) throws IOException {
+-            Request originalRequest = chain.request();
+-            
+-            boolean requiresAuthBody = isAuthRequiredFromBody(originalRequest);
+-            
+-            Request.Builder requestBuilder = originalRequest.newBuilder();
+-            
+-            if (requiresAuthBody) {
+-                String token = getAuthToken();
+-                if (token != null && !token.isEmpty()) {
+-                    requestBuilder.addHeader("Authorization", token);
+-                }
+-            }
+-            
+-            Request newRequest = requestBuilder.build();
+-            return chain.proceed(newRequest);
+-        }
+-    }
+-    
+-    /**
+-     * Get the auth token from SharedPreferences
+-     * @return the token or null if not found
+-     */
+-    private static String getAuthToken() {
+-        Context context = ApplicationContextProvider.getContext();
+-        if (context == null) {
+-            return null;
+-        }
+-        
+-        SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+-        return sharedPreferences.getString("token", null);
+-    }
+ }
+Index: app/src/main/java/com/example/monitoreoacua/views/menu/HomeActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.monitoreoacua.views.menu;\r\n\r\nimport android.content.Intent;\r\nimport android.content.SharedPreferences;\r\nimport android.os.Bundle;\r\nimport android.widget.Button;\r\nimport android.widget.Toast;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\n\r\nimport com.example.monitoreoacua.R;\r\nimport com.example.monitoreoacua.service.request.LogoutRequest;\r\nimport com.example.monitoreoacua.service.response.LogoutResponse;\r\nimport com.example.monitoreoacua.service.ApiClient;\r\nimport com.example.monitoreoacua.service.ApiUsersService;\r\nimport com.example.monitoreoacua.views.login.LoginActivity;\r\n\r\nimport retrofit2.Call;\r\nimport retrofit2.Callback;\r\nimport retrofit2.Response;\r\n\r\npublic class HomeActivity extends AppCompatActivity {\r\n\r\n    private Button btnLogout;\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_home);\r\n\r\n        btnLogout = findViewById(R.id.btnLogout);\r\n        \r\n        btnLogout.setOnClickListener(v -> logout());\r\n    }\r\n\r\n    private void logout() {\r\n        \r\n        btnLogout.setEnabled(false);\r\n        \r\n        ApiUsersService apiService = ApiClient.getClient().create(ApiUsersService.class);\r\n        \r\n        LogoutRequest logoutRequest = new LogoutRequest();\r\n        \r\n        apiService.logout(logoutRequest).enqueue(new Callback<LogoutResponse>() {\r\n            @Override\r\n            public void onResponse(@NonNull Call<LogoutResponse> call, @NonNull Response<LogoutResponse> response) {\r\n                btnLogout.setEnabled(true);\r\n\r\n                if (response.isSuccessful() && response.body() != null) {\r\n                    if (response.body().hasErrors()) {\r\n                        String errorMsg = \"Logout encountered errors\";\r\n                        if (response.body().getErrors() != null && !response.body().getErrors().isEmpty()) {\r\n                            errorMsg = response.body().getErrors().get(0);\r\n                        }\r\n                        Toast.makeText(HomeActivity.this, errorMsg, Toast.LENGTH_SHORT).show();\r\n                        return;\r\n                    }\r\n                }\r\n\r\n                if (response.isSuccessful() && response.body() != null) {\r\n\r\n                    String message = response.body().getMessage();\r\n                    \r\n                    SharedPreferences sharedPreferences = getSharedPreferences(\"user_prefs\", MODE_PRIVATE);\r\n                    SharedPreferences.Editor editor = sharedPreferences.edit();\r\n                    editor.remove(\"token\");\r\n                    editor.apply();\r\n                    \r\n                    Toast.makeText(HomeActivity.this, message, Toast.LENGTH_SHORT).show();\r\n                    \r\n                    Intent intent = new Intent(HomeActivity.this, LoginActivity.class);\r\n                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);\r\n                    startActivity(intent);\r\n                    finish();\r\n                } else {\r\n                    // Handle error response\r\n                    String errorMessage = \"Logout failed\";\r\n                    if (response.errorBody() != null) {\r\n                        try {\r\n                            errorMessage += \": \" + response.errorBody().string();\r\n                        } catch (Exception e) {\r\n                        }\r\n                    }\r\n                    Toast.makeText(HomeActivity.this, errorMessage, Toast.LENGTH_SHORT).show();\r\n                }\r\n            }\r\n\r\n            @Override\r\n            public void onFailure(@NonNull Call<LogoutResponse> call, @NonNull Throwable t) {\r\n                // Re-enable the button\r\n                btnLogout.setEnabled(true);\r\n                \r\n                String errorMessage = \"Error connecting to server: \" + t.getLocalizedMessage();\r\n                Toast.makeText(HomeActivity.this, errorMessage, Toast.LENGTH_LONG).show();\r\n            }\r\n        });\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/monitoreoacua/views/menu/HomeActivity.java b/app/src/main/java/com/example/monitoreoacua/views/menu/HomeActivity.java
+--- a/app/src/main/java/com/example/monitoreoacua/views/menu/HomeActivity.java	(revision 4d611817c992c975091f967d471061975b216daa)
++++ b/app/src/main/java/com/example/monitoreoacua/views/menu/HomeActivity.java	(date 1742518578468)
+@@ -14,6 +14,7 @@
+ import com.example.monitoreoacua.service.response.LogoutResponse;
+ import com.example.monitoreoacua.service.ApiClient;
+ import com.example.monitoreoacua.service.ApiUsersService;
++import com.example.monitoreoacua.views.farms.MenuFarmsActivity;
+ import com.example.monitoreoacua.views.login.LoginActivity;
+ 
+ import retrofit2.Call;
+@@ -23,6 +24,7 @@
+ public class HomeActivity extends AppCompatActivity {
+ 
+     private Button btnLogout;
++    private Button btnFarms;
+ 
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+@@ -30,8 +32,15 @@
+         setContentView(R.layout.activity_home);
+ 
+         btnLogout = findViewById(R.id.btnLogout);
++        btnFarms = findViewById(R.id.btnFarms);
+         
+         btnLogout.setOnClickListener(v -> logout());
++        btnFarms.setOnClickListener(v -> toGoMenuFarmsActivity());
++    }
++
++    public void toGoMenuFarmsActivity() {
++        Intent intent = new Intent(HomeActivity.this, MenuFarmsActivity.class);
++        startActivity(intent);
+     }
+ 
+     private void logout() {
+@@ -41,8 +50,7 @@
+         ApiUsersService apiService = ApiClient.getClient().create(ApiUsersService.class);
+         
+         LogoutRequest logoutRequest = new LogoutRequest();
+-        
+-        apiService.logout(logoutRequest).enqueue(new Callback<LogoutResponse>() {
++        apiService.logout(logoutRequest.getAuthToken(), logoutRequest).enqueue(new Callback<LogoutResponse>() {
+             @Override
+             public void onResponse(@NonNull Call<LogoutResponse> call, @NonNull Response<LogoutResponse> response) {
+                 btnLogout.setEnabled(true);
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_21\" default=\"true\" project-jdk-name=\"jbr-21\" project-jdk-type=\"JavaSDK\" />\r\n  <component name=\"VisualizationToolProject\">\r\n    <option name=\"state\">\r\n      <ProjectState>\r\n        <option name=\"scale\" value=\"0.1067463706233988\" />\r\n      </ProjectState>\r\n    </option>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision 4d611817c992c975091f967d471061975b216daa)
++++ b/.idea/misc.xml	(date 1742518578442)
+@@ -1,5 +1,9 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
++  <component name="EntryPointsManager">
++    <writeAnnotations>
++      <writeAnnotation name="com.google.gson.annotations.SerializedName" />
++    </writeAnnotations>
++  </component>
+   <component name="ProjectRootManager" version="2" languageLevel="JDK_21" default="true" project-jdk-name="jbr-21" project-jdk-type="JavaSDK" />
+   <component name="VisualizationToolProject">
+     <option name="state">
+Index: app/src/main/java/com/example/monitoreoacua/views/MainActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.monitoreoacua.views;\r\n\r\nimport android.content.Intent;\r\nimport android.os.Bundle;\r\nimport android.os.Handler;\r\nimport android.os.Looper;\r\n\r\nimport androidx.appcompat.app.AppCompatActivity;\r\n\r\nimport com.example.monitoreoacua.R;\r\nimport com.example.monitoreoacua.views.login.LoginActivity;\r\n\r\npublic class MainActivity extends AppCompatActivity {\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_main);\r\n\r\n    // Usar un Handler para retrasar la transición a RegisterActivity\r\n        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {\r\n            @Override\r\n            public void run() {\r\n                // Crear el intent para navegar a RegisterActivity\r\n                Intent intent = new Intent(MainActivity.this, LoginActivity.class);\r\n                startActivity(intent); // Iniciar RegisterActivity\r\n                finish(); // Opcional: cerrar MainActivity para que no se pueda volver a ella\r\n            }\r\n        }, 3000); // Retraso de 2000 milisegundos (2 segundos)\r\n    }\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/monitoreoacua/views/MainActivity.java b/app/src/main/java/com/example/monitoreoacua/views/MainActivity.java
+--- a/app/src/main/java/com/example/monitoreoacua/views/MainActivity.java	(revision 4d611817c992c975091f967d471061975b216daa)
++++ b/app/src/main/java/com/example/monitoreoacua/views/MainActivity.java	(date 1742518578453)
+@@ -17,16 +17,16 @@
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.activity_main);
+ 
+-    // Usar un Handler para retrasar la transición a RegisterActivity
++        // Use a Handler to delay the transition to RegisterActivity
+         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+             @Override
+             public void run() {
+-                // Crear el intent para navegar a RegisterActivity
++                // Create the intent to navigate to RegisterActivity
+                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+-                startActivity(intent); // Iniciar RegisterActivity
+-                finish(); // Opcional: cerrar MainActivity para que no se pueda volver a ella
++                startActivity(intent); // start RegisterActivity
++                finish();
+             }
+-        }, 3000); // Retraso de 2000 milisegundos (2 segundos)
++        }, 3000); // delay of 2000 miliseconds
+     }
+ 
+ }
+\ No newline at end of file

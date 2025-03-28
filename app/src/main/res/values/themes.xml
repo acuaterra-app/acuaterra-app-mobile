@@ -1,0 +1,11 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme sin Action Bar -->
+    <style name="Base.Theme.MonitoreoAcua" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>  <!-- Fuerza pantalla completa -->
+        <item name="android:imageButtonStyle">@null</item>
+    </style>
+
+    <style name="Theme.MonitoreoAcua" parent="Base.Theme.MonitoreoAcua" />
+</resources>
