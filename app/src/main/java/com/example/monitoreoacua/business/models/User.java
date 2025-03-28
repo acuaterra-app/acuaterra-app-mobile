@@ -19,6 +19,9 @@ public class User implements Parcelable {
     @SerializedName("email")
     private String email;
 
+    @SerializedName("address")
+    private String address;
+
     @SerializedName("dni")
     private String dni;
 
@@ -28,13 +31,18 @@ public class User implements Parcelable {
     @SerializedName("rol")
     private Role role;
 
-    public User(int id, String name, String email, String dni, int idRol, Role role) {
+    @SerializedName("contact")
+    private String contact;
+
+    public User(int id, String name, String email, String dni, int idRol, Role role, String contact, String address) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.dni = dni;
         this.idRol = idRol;
         this.role = role;
+        this.contact = contact;
+        this.address = address;
     }
 
     protected User(Parcel in) {
@@ -44,6 +52,8 @@ public class User implements Parcelable {
         dni = in.readString();
         idRol = in.readInt();
         role = in.readParcelable(Role.class.getClassLoader());
+        contact = in.readString();
+        address = in.readString();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -74,6 +84,14 @@ public class User implements Parcelable {
         return dni;
     }
 
+    public String getContact() {
+        return contact;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
     public int getIdRol() {
         return idRol;
     }
@@ -95,6 +113,8 @@ public class User implements Parcelable {
         dest.writeString(email);
         dest.writeString(dni);
         dest.writeInt(idRol);
+        dest.writeString(contact);
+        dest.writeString(address);
         dest.writeParcelable(role, flags);
     }
 }

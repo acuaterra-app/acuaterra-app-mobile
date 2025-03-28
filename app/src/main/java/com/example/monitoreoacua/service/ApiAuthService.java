@@ -14,7 +14,7 @@ import retrofit2.http.POST;
  * Interface for user-related API operations.
  * Contains methods for authentication and user management.
  */
-public interface ApiUsersService {
+public interface ApiAuthService {
 
     /**
      * Authenticates a user with the provided credentials.
