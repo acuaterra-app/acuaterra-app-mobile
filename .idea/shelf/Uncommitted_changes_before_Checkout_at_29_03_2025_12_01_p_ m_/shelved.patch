@@ -1,0 +1,77 @@
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><project version=\"4\">\r\n  <component name=\"EntryPointsManager\">\r\n    <writeAnnotations>\r\n      <writeAnnotation name=\"com.google.gson.annotations.SerializedName\" />\r\n    </writeAnnotations>\r\n  </component>\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_21\" default=\"true\" project-jdk-name=\"jbr-21\" project-jdk-type=\"JavaSDK\" />\r\n  <component name=\"VisualizationToolProject\">\r\n    <option name=\"state\">\r\n      <ProjectState>\r\n        <option name=\"scale\" value=\"0.1067463706233988\" />\r\n      </ProjectState>\r\n    </option>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision 43cb8bb300644b1ae7cba75f71ac9ca9c59224ac)
++++ b/.idea/misc.xml	(date 1743267662271)
+@@ -1,10 +1,11 @@
++<?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="EntryPointsManager">
+     <writeAnnotations>
+       <writeAnnotation name="com.google.gson.annotations.SerializedName" />
+     </writeAnnotations>
+   </component>
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_21" default="true" project-jdk-name="jbr-21" project-jdk-type="JavaSDK" />
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_X" default="true" project-jdk-name="24" project-jdk-type="JavaSDK" />
+   <component name="VisualizationToolProject">
+     <option name="state">
+       <ProjectState>
+Index: .idea/gradle.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"GradleMigrationSettings\" migrationVersion=\"1\" />\r\n  <component name=\"GradleSettings\">\r\n    <option name=\"linkedExternalProjectsSettings\">\r\n      <GradleProjectSettings>\r\n        <option name=\"testRunner\" value=\"CHOOSE_PER_TEST\" />\r\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$\" />\r\n        <option name=\"gradleJvm\" value=\"#GRADLE_LOCAL_JAVA_HOME\" />\r\n        <option name=\"modules\">\r\n          <set>\r\n            <option value=\"$PROJECT_DIR$\" />\r\n            <option value=\"$PROJECT_DIR$/app\" />\r\n          </set>\r\n        </option>\r\n        <option name=\"resolveExternalAnnotations\" value=\"false\" />\r\n      </GradleProjectSettings>\r\n    </option>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/gradle.xml b/.idea/gradle.xml
+--- a/.idea/gradle.xml	(revision 43cb8bb300644b1ae7cba75f71ac9ca9c59224ac)
++++ b/.idea/gradle.xml	(date 1743267662312)
+@@ -13,7 +13,6 @@
+             <option value="$PROJECT_DIR$/app" />
+           </set>
+         </option>
+-        <option name="resolveExternalAnnotations" value="false" />
+       </GradleProjectSettings>
+     </option>
+   </component>
+Index: gradle/libs.versions.toml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>[versions]\r\nagp = \"8.9.0\"\r\njunit = \"4.13.2\"\r\njunitVersion = \"1.2.1\"\r\nespressoCore = \"3.6.1\"\r\nappcompat = \"1.7.0\"\r\nloggingInterceptor = \"4.9.0\"\r\nmaterial = \"1.12.0\"\r\nactivity = \"1.9.3\"\r\nconstraintlayout = \"2.2.0\"\r\ngoogleGmsGoogleServices = \"4.4.2\"\r\nfirebaseDatabase = \"21.0.0\"\r\nmaterialVersion = \"1.4.0\"\r\nokhttp = \"4.9.3\"\r\nretrofit = \"2.9.0\"\r\nrecyclerview = \"1.4.0\"\r\nswiperefreshlayout = \"1.1.0\"\r\n\r\n[libraries]\r\nconverter-gson = { module = \"com.squareup.retrofit2:converter-gson\", version.ref = \"retrofit\" }\r\njunit = { group = \"junit\", name = \"junit\", version.ref = \"junit\" }\r\next-junit = { group = \"androidx.test.ext\", name = \"junit\", version.ref = \"junitVersion\" }\r\nespresso-core = { group = \"androidx.test.espresso\", name = \"espresso-core\", version.ref = \"espressoCore\" }\r\nappcompat = { group = \"androidx.appcompat\", name = \"appcompat\", version.ref = \"appcompat\" }\r\nlogging-interceptor = { module = \"com.squareup.okhttp3:logging-interceptor\", version.ref = \"loggingInterceptor\" }\r\nmaterial = { group = \"com.google.android.material\", name = \"material\", version.ref = \"material\" }\r\nactivity = { group = \"androidx.activity\", name = \"activity\", version.ref = \"activity\" }\r\nconstraintlayout = { group = \"androidx.constraintlayout\", name = \"constraintlayout\", version.ref = \"constraintlayout\" }\r\nfirebase-database = { group = \"com.google.firebase\", name = \"firebase-database\", version.ref = \"firebaseDatabase\" }\r\nmaterial-v140 = { module = \"com.google.android.material:material\", version.ref = \"materialVersion\" }\r\nokhttp = { module = \"com.squareup.okhttp3:okhttp\", version.ref = \"okhttp\" }\r\nretrofit = { module = \"com.squareup.retrofit2:retrofit\", version.ref = \"retrofit\" }\r\nrecyclerview = { group = \"androidx.recyclerview\", name = \"recyclerview\", version.ref = \"recyclerview\" }\r\nswiperefreshlayout = { group = \"androidx.swiperefreshlayout\", name = \"swiperefreshlayout\", version.ref = \"swiperefreshlayout\" }\r\n\r\n[plugins]\r\nandroid-application = { id = \"com.android.application\", version.ref = \"agp\" }\r\ngoogle-gms-google-services = { id = \"com.google.gms.google-services\", version.ref = \"googleGmsGoogleServices\" }\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/gradle/libs.versions.toml b/gradle/libs.versions.toml
+--- a/gradle/libs.versions.toml	(revision 43cb8bb300644b1ae7cba75f71ac9ca9c59224ac)
++++ b/gradle/libs.versions.toml	(date 1743267618123)
+@@ -1,5 +1,5 @@
+ [versions]
+-agp = "8.9.0"
++agp = "8.9.1"
+ junit = "4.13.2"
+ junitVersion = "1.2.1"
+ espressoCore = "3.6.1"
+Index: .idea/compiler.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"CompilerConfiguration\">\r\n    <bytecodeTargetLevel target=\"21\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/compiler.xml b/.idea/compiler.xml
+--- a/.idea/compiler.xml	(revision 43cb8bb300644b1ae7cba75f71ac9ca9c59224ac)
++++ b/.idea/compiler.xml	(date 1743267662307)
+@@ -1,6 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="CompilerConfiguration">
+-    <bytecodeTargetLevel target="21" />
++    <bytecodeTargetLevel target="24" />
+   </component>
+ </project>
+\ No newline at end of file
