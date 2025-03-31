@@ -53,7 +53,11 @@ public class FarmDetailsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            farm = getArguments().getParcelable(ARG_FARM, Farm.class);
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                farm = getArguments().getParcelable(ARG_FARM, Farm.class);
+            } else {
+                farm = getArguments().getParcelable(ARG_FARM);
+            }
         }
     }
 
