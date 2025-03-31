@@ -24,7 +24,11 @@ public class ListModulesActivity extends BaseActivity implements ListModulesFrag
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Get farm object from intent
-        farm = getIntent().getParcelableExtra("farm", Farm.class);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            farm = getIntent().getParcelableExtra("farm", Farm.class);
+        } else {
+            farm = getIntent().getParcelableExtra("farm");
+        }
         if (farm == null) {
             finish(); // Close activity if farm is missing
             return;
