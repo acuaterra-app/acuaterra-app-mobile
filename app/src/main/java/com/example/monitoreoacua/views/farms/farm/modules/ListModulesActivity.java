@@ -66,6 +66,14 @@ public class ListModulesActivity extends BaseActivity implements ListModulesFrag
     }
     
     @Override
+    public void navigateToRegisterModules(Farm farm) {
+        Intent intent = new Intent(this, RegisterModulesActivity.class);
+        intent.putExtra("farm", farm);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
+    
+    @Override
     protected void onResume() {
         super.onResume();
         // Refresh modules list when returning to this activity
