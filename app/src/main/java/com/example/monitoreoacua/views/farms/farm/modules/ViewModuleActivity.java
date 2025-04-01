@@ -25,7 +25,16 @@ public class ViewModuleActivity extends BaseActivity implements ViewModuleFragme
     protected void onCreate(Bundle savedInstanceState) {
         // Get the module ID from the intent
         moduleId = getIntent().getIntExtra(ARG_MODULE_ID, -1);
-        Log.d(TAG, "ViewModuleActivity received module ID: " + moduleId);
+        
+        // Validate the module ID
+        if (moduleId == -1) {
+            Log.e(TAG, "Invalid module ID received");
+            Toast.makeText(this, "Error: ID de módulo inválido", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+        
+        Log.d(TAG, "ViewModuleActivity received valid module ID: " + moduleId);
         
         super.onCreate(savedInstanceState);
     }

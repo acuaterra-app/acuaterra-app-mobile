@@ -131,7 +131,10 @@ public class SensorAlertNotificationHandler implements NotificationHandler {
         }
 
         try {
-            int moduleIdInt = Integer.parseInt(moduleId);
+            Log.d(TAG, "Attempting to parse module ID: " + moduleId);
+            String cleanModuleId = moduleId.contains(".") ? moduleId.split("\\.")[0] : moduleId;
+            Log.d(TAG, "Cleaned module ID: " + cleanModuleId);
+            int moduleIdInt = Integer.parseInt(cleanModuleId);
             if (moduleIdInt <= 0) {
                 Log.e(TAG, "Invalid module ID: " + moduleId);
                 Toast.makeText(context, 
@@ -139,6 +142,8 @@ public class SensorAlertNotificationHandler implements NotificationHandler {
                     Toast.LENGTH_SHORT).show();
                 return;
             }
+            
+            Log.d(TAG, "Requesting module details from API for module ID: " + moduleIdInt);
 
             new GetModuleRequest().getModuleById(new OnApiRequestCallback<Module, Throwable>() {
                 @Override
@@ -155,12 +160,13 @@ public class SensorAlertNotificationHandler implements NotificationHandler {
 
                 @Override
                 public void onFail(Throwable t) {
-                    Log.e(TAG, "Failed to fetch module details", t);
+                    Log.e(TAG, "Failed to fetch module details for module ID: " + moduleIdInt, t);
                     Toast.makeText(context, 
-                        "Error al cargar los detalles del módulo", 
+                        "Error al cargar los detalles del módulo: " + t.getMessage(), 
                         Toast.LENGTH_SHORT).show();
                 }
             }, moduleIdInt);
+            Log.d(TAG, "API request sent for module ID: " + moduleIdInt);
         } catch (NumberFormatException e) {
             Log.e(TAG, "Invalid module ID format: " + moduleId, e);
             Toast.makeText(context, 
@@ -175,10 +181,31 @@ public class SensorAlertNotificationHandler implements NotificationHandler {
             return;
         }
         
-        Intent intent = new Intent(context, ViewModuleActivity.class);
-        intent.putExtra(ViewModuleActivity.ARG_MODULE_ID, module.getId());
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        context.startActivity(intent);
-        Log.d(TAG, "Opening ViewModuleActivity for module ID: " + module.getId());
+        try {
+            int moduleId = module.getId();
+            Log.d(TAG, "Preparing to open module activity for module ID: " + moduleId);
+            
+            if (moduleId <= 0) {
+                Log.e(TAG, "Invalid module ID for navigation: " + moduleId);
+                Toast.makeText(context, 
+                    "No se puede navegar: ID de módulo inválido", 
+                    Toast.LENGTH_SHORT).show();
+                return;
+            }
+            
+            Intent intent = new Intent(context, ViewModuleActivity.class);
+            intent.putExtra(ViewModuleActivity.ARG_MODULE_ID, moduleId);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            
+            Log.d(TAG, "Starting ViewModuleActivity with module ID: " + moduleId + 
+                       ", module name: " + module.getName());
+            context.startActivity(intent);
+            Log.d(TAG, "ViewModuleActivity started successfully");
+        } catch (Exception e) {
+            Log.e(TAG, "Error opening module activity", e);
+            Toast.makeText(context, 
+                "Error al abrir detalles del módulo: " + e.getMessage(), 
+                Toast.LENGTH_SHORT).show();
+        }
     }
 }
