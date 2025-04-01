@@ -1,10 +1,15 @@
 package com.example.monitoreoacua.firebase.handlers;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.monitoreoacua.business.models.Module;
 import com.example.monitoreoacua.business.models.Notification;
+import com.example.monitoreoacua.interfaces.OnApiRequestCallback;
+import com.example.monitoreoacua.service.request.GetModuleRequest;
+import com.example.monitoreoacua.views.farms.farm.modules.ViewModuleActivity;
 
 import java.util.Map;
 
@@ -32,7 +37,9 @@ public class SensorAlertNotificationHandler implements NotificationHandler {
             String moduleName = getStringValue(metaData, "moduleName");
             String sensorType = getStringValue(metaData, "sensorType");
             String value = getStringValue(metaData, "value");
-            String messageType = getStringValue(metaData, "messageType");
+            
+            // Always use error type for sensor alerts to get red colors
+            String messageType = "error";
             
             // Build alert message
             StringBuilder alertMessage = new StringBuilder();
@@ -67,13 +74,15 @@ public class SensorAlertNotificationHandler implements NotificationHandler {
             // Show toast notification
             Toast.makeText(context, alertMessage.toString(), Toast.LENGTH_LONG).show();
             
-            // TODO: Navigate to sensor details or specific alert screen if needed
-            // For example:
-            // Intent intent = new Intent(context, SensorAlertDetailActivity.class);
-            // intent.putExtra("moduleId", moduleId);
-            // intent.putExtra("sensorType", sensorType);
-            // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            // context.startActivity(intent);
+            // Navigate to module details screen
+            if (moduleId != null && !moduleId.isEmpty()) {
+                try {
+                    Log.d(TAG, "Fetching details for module ID: " + moduleId);
+                    fetchModuleDetails(context, moduleId);
+                } catch (NumberFormatException e) {
+                    Log.e(TAG, "Invalid module ID format: " + moduleId, e);
+                }
+            }
             
         } catch (Exception e) {
             Log.e(TAG, "Error handling sensor alert notification", e);
@@ -134,5 +143,68 @@ public class SensorAlertNotificationHandler implements NotificationHandler {
                 return "";
         }
     }
-}
+    
+    /**
+     * Fetch module details from API using the module ID
+     */
+    private void fetchModuleDetails(Context context, String moduleId) {
+        if (context == null) {
+            Log.e(TAG, "Context is null");
+            return;
+        }
 
+        try {
+            int moduleIdInt = Integer.parseInt(moduleId);
+            if (moduleIdInt <= 0) {
+                Log.e(TAG, "Invalid module ID: " + moduleId);
+                Toast.makeText(context, 
+                    "ID de módulo inválido", 
+                    Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            new GetModuleRequest().getModuleById(new OnApiRequestCallback<Module, Throwable>() {
+                @Override
+                public void onSuccess(Module module) {
+                    if (module != null) {
+                        openModuleActivity(context, module);
+                    } else {
+                        Log.e(TAG, "Module data is null");
+                        Toast.makeText(context, 
+                            "No se pudo cargar los detalles del módulo", 
+                            Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFail(Throwable t) {
+                    Log.e(TAG, "Failed to fetch module details", t);
+                    Toast.makeText(context, 
+                        "Error al cargar los detalles del módulo", 
+                        Toast.LENGTH_SHORT).show();
+                }
+            }, moduleIdInt);
+        } catch (NumberFormatException e) {
+            Log.e(TAG, "Invalid module ID format: " + moduleId, e);
+            Toast.makeText(context, 
+                "Formato de ID de módulo inválido", 
+                Toast.LENGTH_SHORT).show();
+        }
+    }
+    
+    /**
+     * Open the module details activity
+     */
+    private void openModuleActivity(Context context, Module module) {
+        if (context == null || module == null) {
+            Log.e(TAG, "Context or module is null");
+            return;
+        }
+        
+        Intent intent = new Intent(context, ViewModuleActivity.class);
+        intent.putExtra(ViewModuleActivity.ARG_MODULE_ID, module.getId());
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        context.startActivity(intent);
+        Log.d(TAG, "Opening ViewModuleActivity for module ID: " + module.getId());
+    }
+}

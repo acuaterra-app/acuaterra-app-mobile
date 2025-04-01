@@ -18,7 +18,7 @@ import com.example.monitoreoacua.views.BaseActivity;
  */
 public class ViewModuleActivity extends BaseActivity implements ViewModuleFragment.OnModuleSensorListener {
     private static final String TAG = "ViewModuleActivityTag";
-    private static final String ARG_MODULE_ID = "module_id";
+    public static final String ARG_MODULE_ID = "module_id";
     private int moduleId;
 
     @Override
