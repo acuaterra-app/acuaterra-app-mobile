@@ -13,10 +13,7 @@ import com.example.monitoreoacua.views.farms.farm.modules.ViewModuleActivity;
 
 import java.util.Map;
 
-/**
- * Handler for sensor alert notifications
- * Processes notifications of type "sensor_alert" and displays appropriate UI
- */
+
 public class SensorAlertNotificationHandler implements NotificationHandler {
     private static final String TAG = "SensorAlertNotificationHandler";
     private static final String NOTIFICATION_TYPE = "sensor_alert";
@@ -31,32 +28,26 @@ public class SensorAlertNotificationHandler implements NotificationHandler {
         try {
             Log.d(TAG, "Processing sensor alert notification");
             
-            // Extract data from notification
             Map<String, Object> metaData = notification.getData().getMetaData();
             String moduleId = getStringValue(metaData, "moduleId");
             String moduleName = getStringValue(metaData, "moduleName");
             String sensorType = getStringValue(metaData, "sensorType");
             String value = getStringValue(metaData, "value");
             
-            // Always use error type for sensor alerts to get red colors
             String messageType = "error";
             
-            // Build alert message
             StringBuilder alertMessage = new StringBuilder();
             alertMessage.append("⚠️ ").append(notification.getTitle()).append(" ⚠️\n\n");
             alertMessage.append("Módulo: ").append(moduleName);
             alertMessage.append("\nTipo de Sensor: ").append(getSensorTypeDisplay(sensorType));
             
-            // Add value with units
             String units = getSensorUnits(sensorType);
             alertMessage.append("\nValor: ").append(value).append(units);
             
-            // Add message type if available
             if (messageType != null && !messageType.isEmpty()) {
                 alertMessage.append("\nTipo de Alerta: ").append(messageType.toUpperCase());
             }
             
-            // Check if threshold info is available
             if (metaData.containsKey("threshold")) {
                 Map<String, Object> thresholdData = (Map<String, Object>) metaData.get("threshold");
                 if (thresholdData != null) {
@@ -71,10 +62,8 @@ public class SensorAlertNotificationHandler implements NotificationHandler {
                 }
             }
             
-            // Show toast notification
             Toast.makeText(context, alertMessage.toString(), Toast.LENGTH_LONG).show();
             
-            // Navigate to module details screen
             if (moduleId != null && !moduleId.isEmpty()) {
                 try {
                     Log.d(TAG, "Fetching details for module ID: " + moduleId);
@@ -88,10 +77,7 @@ public class SensorAlertNotificationHandler implements NotificationHandler {
             Log.e(TAG, "Error handling sensor alert notification", e);
         }
     }
-    
-    /**
-     * Safely extract String value from a Map
-     */
+
     private String getStringValue(Map<String, Object> map, String key) {
         if (map != null && map.containsKey(key)) {
             Object value = map.get(key);
@@ -99,10 +85,7 @@ public class SensorAlertNotificationHandler implements NotificationHandler {
         }
         return "";
     }
-    
-    /**
-     * Get user-friendly sensor type display name
-     */
+
     private String getSensorTypeDisplay(String sensorType) {
         if (sensorType == null) return "";
         
@@ -119,10 +102,7 @@ public class SensorAlertNotificationHandler implements NotificationHandler {
                 return sensorType;
         }
     }
-    
-    /**
-     * Get sensor units based on sensor type
-     */
+
     private String getSensorUnits(String sensorType) {
         if (sensorType == null) return "";
         
@@ -143,10 +123,7 @@ public class SensorAlertNotificationHandler implements NotificationHandler {
                 return "";
         }
     }
-    
-    /**
-     * Fetch module details from API using the module ID
-     */
+
     private void fetchModuleDetails(Context context, String moduleId) {
         if (context == null) {
             Log.e(TAG, "Context is null");
@@ -191,10 +168,7 @@ public class SensorAlertNotificationHandler implements NotificationHandler {
                 Toast.LENGTH_SHORT).show();
         }
     }
-    
-    /**
-     * Open the module details activity
-     */
+
     private void openModuleActivity(Context context, Module module) {
         if (context == null || module == null) {
             Log.e(TAG, "Context or module is null");
