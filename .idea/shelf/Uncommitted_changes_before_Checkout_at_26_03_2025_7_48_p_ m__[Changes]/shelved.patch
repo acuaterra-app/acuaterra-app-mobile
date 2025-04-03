@@ -1,0 +1,45 @@
+Index: app/src/main/java/com/example/monitoreoacua/service/ApiClient.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.monitoreoacua.service;\r\n\r\nimport okhttp3.OkHttpClient;\r\nimport retrofit2.Retrofit;\r\nimport retrofit2.converter.gson.GsonConverterFactory;\r\n\r\npublic class ApiClient {\r\n    private static final String BASE_URL = \"https://concepts-portion-mark-returns.trycloudflare.com\"; // Special IP for accessing host from emulator\r\n    //private static final String BASE_URL = \"http://10.0.2.2:9000\"; // Special IP for accessing host from emulator\r\n    //private static final String BASE_URL = \"https://backend.acuaterra.tech\"; // Special IP for accessing host from emulator\r\n    private static Retrofit retrofit;\r\n    \r\n    public static Retrofit getClient() {\r\n        if (retrofit == null) {\r\n            OkHttpClient client = new OkHttpClient.Builder()\r\n                    .build();\r\n\r\n            retrofit = new Retrofit.Builder()\r\n                    .baseUrl(BASE_URL)\r\n                    .client(client)\r\n                    .addConverterFactory(GsonConverterFactory.create())\r\n                    .build();\r\n        }\r\n        return retrofit;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/monitoreoacua/service/ApiClient.java b/app/src/main/java/com/example/monitoreoacua/service/ApiClient.java
+--- a/app/src/main/java/com/example/monitoreoacua/service/ApiClient.java	(revision 2cf5ca6842a536a3caff39de6c8465c446a3a054)
++++ b/app/src/main/java/com/example/monitoreoacua/service/ApiClient.java	(date 1743035164995)
+@@ -5,9 +5,9 @@
+ import retrofit2.converter.gson.GsonConverterFactory;
+ 
+ public class ApiClient {
+-    private static final String BASE_URL = "https://concepts-portion-mark-returns.trycloudflare.com"; // Special IP for accessing host from emulator
++    //private static final String BA|SE_URL = "https://concepts-portion-mark-returns.trycloudflare.com"; // Special IP for accessing host from emulator
+     //private static final String BASE_URL = "http://10.0.2.2:9000"; // Special IP for accessing host from emulator
+-    //private static final String BASE_URL = "https://backend.acuaterra.tech"; // Special IP for accessing host from emulator
++    private static final String BASE_URL = "https://backend.acuaterra.tech"; // Special IP for accessing host from emulator
+     private static Retrofit retrofit;
+     
+     public static Retrofit getClient() {
+Index: .idea/appInsightsSettings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AppInsightsSettings\">\r\n    <option name=\"tabSettings\">\r\n      <map>\r\n        <entry key=\"Firebase Crashlytics\">\r\n          <value>\r\n            <InsightsFilterSettings>\r\n              <option name=\"connection\">\r\n                <ConnectionSetting>\r\n                  <option name=\"appId\" value=\"com.example.monitoreoacua\" />\r\n                  <option name=\"mobileSdkAppId\" value=\"1:557843091693:android:205d126097631654e9bce4\" />\r\n                  <option name=\"projectId\" value=\"monitoreoacua-1a5c0\" />\r\n                  <option name=\"projectNumber\" value=\"557843091693\" />\r\n                </ConnectionSetting>\r\n              </option>\r\n              <option name=\"signal\" value=\"SIGNAL_UNSPECIFIED\" />\r\n              <option name=\"timeIntervalDays\" value=\"THIRTY_DAYS\" />\r\n              <option name=\"visibilityType\" value=\"ALL\" />\r\n            </InsightsFilterSettings>\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/appInsightsSettings.xml b/.idea/appInsightsSettings.xml
+--- a/.idea/appInsightsSettings.xml	(revision 2cf5ca6842a536a3caff39de6c8465c446a3a054)
++++ b/.idea/appInsightsSettings.xml	(date 1743007236129)
+@@ -9,9 +9,9 @@
+               <option name="connection">
+                 <ConnectionSetting>
+                   <option name="appId" value="com.example.monitoreoacua" />
+-                  <option name="mobileSdkAppId" value="1:557843091693:android:205d126097631654e9bce4" />
+-                  <option name="projectId" value="monitoreoacua-1a5c0" />
+-                  <option name="projectNumber" value="557843091693" />
++                  <option name="mobileSdkAppId" value="1:125156334973:android:a81f047027461bce910014" />
++                  <option name="projectId" value="acuaterra-tech-3999b" />
++                  <option name="projectNumber" value="125156334973" />
+                 </ConnectionSetting>
+               </option>
+               <option name="signal" value="SIGNAL_UNSPECIFIED" />

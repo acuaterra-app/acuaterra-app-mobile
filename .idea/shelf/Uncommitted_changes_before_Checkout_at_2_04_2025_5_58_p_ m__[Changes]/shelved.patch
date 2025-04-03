@@ -1,0 +1,37 @@
+Index: app/src/main/java/com/example/monitoreoacua/service/ApiClient.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.monitoreoacua.service;\r\n\r\nimport android.content.Context;\r\nimport android.content.SharedPreferences;\r\n\r\nimport androidx.annotation.NonNull;\r\n\r\nimport com.example.monitoreoacua.service.request.BaseRequest;\r\nimport com.example.monitoreoacua.utils.ApplicationContextProvider;\r\n\r\nimport com.google.gson.Gson;\r\n\r\nimport java.io.IOException;\r\n\r\nimport okhttp3.Interceptor;\r\nimport okhttp3.OkHttpClient;\r\nimport okhttp3.Request;\r\nimport okhttp3.Response;\r\nimport retrofit2.Retrofit;\r\nimport retrofit2.converter.gson.GsonConverterFactory;\r\n\r\npublic class ApiClient {\r\n    //private static final String BASE_URL = \"http://10.0.2.2:9000\"; // Special IP for accessing host from emulator\r\n    private static final String BASE_URL = \"https://backend.acuaterra.tech\"; // Special IP for accessing host from emulator\r\n    private static Retrofit retrofit;\r\n    \r\n    public static Retrofit getClient() {\r\n        if (retrofit == null) {\r\n            OkHttpClient client = new OkHttpClient.Builder()\r\n                    .build();\r\n\r\n            retrofit = new Retrofit.Builder()\r\n                    .baseUrl(BASE_URL)\r\n                    .client(client)\r\n                    .addConverterFactory(GsonConverterFactory.create())\r\n                    .build();\r\n        }\r\n        return retrofit;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/monitoreoacua/service/ApiClient.java b/app/src/main/java/com/example/monitoreoacua/service/ApiClient.java
+--- a/app/src/main/java/com/example/monitoreoacua/service/ApiClient.java	(revision 155c0419f95b100dac14e31f1436f91fa4dbad11)
++++ b/app/src/main/java/com/example/monitoreoacua/service/ApiClient.java	(date 1743474365594)
+@@ -1,25 +1,11 @@
+ package com.example.monitoreoacua.service;
+ 
+-import android.content.Context;
+-import android.content.SharedPreferences;
+-
+-import androidx.annotation.NonNull;
+-
+-import com.example.monitoreoacua.service.request.BaseRequest;
+-import com.example.monitoreoacua.utils.ApplicationContextProvider;
+-
+-import com.google.gson.Gson;
+-
+-import java.io.IOException;
+-
+-import okhttp3.Interceptor;
+ import okhttp3.OkHttpClient;
+-import okhttp3.Request;
+-import okhttp3.Response;
+ import retrofit2.Retrofit;
+ import retrofit2.converter.gson.GsonConverterFactory;
+ 
+ public class ApiClient {
++    //private static final String BASE_URL = "https://concepts-portion-mark-returns.trycloudflare.com"; // Special IP for accessing host from emulator
+     //private static final String BASE_URL = "http://10.0.2.2:9000"; // Special IP for accessing host from emulator
+     private static final String BASE_URL = "https://backend.acuaterra.tech"; // Special IP for accessing host from emulator
+     private static Retrofit retrofit;
