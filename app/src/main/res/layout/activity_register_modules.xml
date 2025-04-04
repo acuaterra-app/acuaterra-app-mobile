@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        android:layout_above="@+id/bottomNav">
+       >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -228,116 +228,5 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- Barra de navegación inferior -->
-    <LinearLayout
-        android:id="@+id/bottomNav"
-        android:layout_width="match_parent"
-        android:layout_height="85dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/white"
-        android:elevation="6dp"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:padding="10dp">
 
-        <!-- Botón Granjas -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageButton
-                android:id="@+id/navHome"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:scaleType="centerInside"
-                android:background="@color/white"
-                android:src="@drawable/icgranja"
-                android:contentDescription="Ir a Inicio"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Granjas"
-                android:textSize="10sp"
-                android:textColor="@color/colorDivider"/>
-        </LinearLayout>
-
-        <!-- Botón Usuarios -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageButton
-                android:id="@+id/navSettings"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:scaleType="centerInside"
-                android:background="@color/white"
-                android:src="@drawable/icusersmonit"
-                android:contentDescription="Configuración"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Usuarios"
-                android:textSize="10sp"
-                android:textColor="@color/colorDivider"/>
-        </LinearLayout>
-
-        <!-- Botón Soporte -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageButton
-                android:id="@+id/navProfile"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@color/white"
-                android:scaleType="centerInside"
-                android:src="@drawable/icsoporte"
-                android:contentDescription="Perfil"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Soporte"
-                android:textSize="10sp"
-                android:textColor="@color/colorDivider"/>
-        </LinearLayout>
-
-        <!-- Botón Cerrar sesión -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageButton
-                android:id="@+id/navCloseSesion"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@color/white"
-                android:scaleType="centerInside"
-                android:src="@drawable/iccerrarsesion"
-                android:contentDescription="Cerrar sesión"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Cerrar sesión"
-                android:textSize="10sp"
-                android:textColor="@color/colorDivider"/>
-        </LinearLayout>
-    </LinearLayout>
 </RelativeLayout>
