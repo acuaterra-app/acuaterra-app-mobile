@@ -48,6 +48,7 @@ public class MyUserRecyclerViewAdapter extends RecyclerView.Adapter<MyUserRecycl
         holder.mContactView.setText(user.getContact());
 
         holder.updateButton.setOnClickListener(v -> onUserClickListener.onUserClick(user));
+        holder.deleteButton.setOnClickListener(v -> onUserClickListener.onUserDelete(user));
     }
 
     @Override
@@ -62,6 +63,7 @@ public class MyUserRecyclerViewAdapter extends RecyclerView.Adapter<MyUserRecycl
         public final TextView mAddressView;
         public final TextView mContactView;
         public final Button updateButton;
+        public final Button deleteButton;
 
         public ViewHolder(FragmentItemBinding binding) {
             super(binding.getRoot());
@@ -71,6 +73,7 @@ public class MyUserRecyclerViewAdapter extends RecyclerView.Adapter<MyUserRecycl
             mAddressView = binding.itemAddress;
             mContactView = binding.itemContact;
             updateButton = binding.updateButton;
+            deleteButton = binding.deleteButton;
         }
 
         @Override
@@ -81,5 +84,6 @@ public class MyUserRecyclerViewAdapter extends RecyclerView.Adapter<MyUserRecycl
 
     public interface OnUserClickListener {
         void onUserClick(User user);
+        void onUserDelete(User user);
     }
 }

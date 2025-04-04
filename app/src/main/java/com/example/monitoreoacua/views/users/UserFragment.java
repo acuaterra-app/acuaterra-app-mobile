@@ -18,6 +18,7 @@ import com.example.monitoreoacua.R;
 import com.example.monitoreoacua.business.models.User;
 import com.example.monitoreoacua.interfaces.OnApiRequestCallback;
 import com.example.monitoreoacua.service.request.ListUsersRequest;
+import com.example.monitoreoacua.service.request.RegisterUserRequest;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.Serializable;
@@ -116,8 +117,30 @@ public class UserFragment extends Fragment implements MyUserRecyclerViewAdapter.
                 .commit();
     }
 
+    private void deleteUser(User user) {
+        new RegisterUserRequest().deleteUser(user.getId(), new OnApiRequestCallback<Void, Throwable>() {
+            @Override
+            public void onSuccess(Void response) {
+                Toast.makeText(getContext(), "Usuario eliminado", Toast.LENGTH_SHORT).show();
+                fetchUsers(); // Refresh the user list
+            }
+
+            @Override
+            public void onFail(Throwable t) {
+                Toast.makeText(getContext(), "Error al eliminar usuario: " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+
+
     @Override
     public void onUserClick(User user) {
         editUser(user);
+    }
+
+    @Override
+    public void onUserDelete(User user) {
+        deleteUser(user);
     }
 }

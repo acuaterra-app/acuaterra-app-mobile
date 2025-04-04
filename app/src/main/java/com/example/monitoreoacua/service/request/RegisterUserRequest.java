@@ -80,4 +80,31 @@ public class RegisterUserRequest extends BaseRequest {
             }
         });
     }
+
+    public void deleteUser(int userId, OnApiRequestCallback<Void, Throwable> callback) {
+        ApiUserService apiUserService = ApiClient.getClient().create(ApiUserService.class);
+
+        apiUserService.deleteUser(getAuthToken(), userId).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                if (response.isSuccessful()) {
+                    callback.onSuccess(null);
+                } else {
+                    ApiError apiError = ErrorUtils.parseError(response);
+                    Log.d(TAG, "Error message: " + apiError.getMessage());
+                    for (ApiError.ErrorDetail errorDetail : apiError.getErrors()) {
+                        Log.d(TAG, "Error: " + errorDetail.getMsg());
+                    }
+                    Log.d(TAG, "Error with response: " + response.message());
+                    callback.onFail(new Throwable("Error al eliminar"));
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                Log.d(TAG, "Error with response: " + t);
+                callback.onFail(t);
+            }
+        });
+    }
 }
