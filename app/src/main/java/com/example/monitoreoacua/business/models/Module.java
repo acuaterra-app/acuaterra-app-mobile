@@ -1,10 +1,12 @@
 package com.example.monitoreoacua.business.models;
 
 import com.example.monitoreoacua.business.models.auth.AuthUser;
+import com.example.monitoreoacua.service.request.BaseRequest;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.List;
+
 public class Module implements Serializable {
     private static final long serialVersionUID = 1L;
     @SerializedName("id")
@@ -40,6 +42,9 @@ public class Module implements Serializable {
     @SerializedName("created_by_user_id")
     private int createdByUserId;
 
+    // Agregar lista de IDs de usuarios
+    private List<Integer> users;
+
     @SerializedName("createdAt")
     private String createdAt;
 
@@ -57,6 +62,38 @@ public class Module implements Serializable {
 
     @SerializedName("sensors")
     private List<Sensor> sensors;
+
+    public Module() {
+        // Constructor vacío
+    }
+
+    // Constructor con campos del request API
+    public Module(String name, String location, String latitude, String longitude,
+                  String speciesFish, String fishQuantity, String fishAge,
+                  String dimensions, int idFarm, int createdByUserId, List<Integer> users) {
+        this.name = name;
+        this.location = location;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.speciesFish = speciesFish;
+        this.fishQuantity = fishQuantity;
+        this.fishAge = fishAge;
+        this.dimensions = dimensions;
+        this.idFarm = idFarm;
+        this.createdByUserId = createdByUserId;
+        this.users = users;
+    }
+
+
+
+    // Getter y Setter para users
+    public List<Integer> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<Integer> users) {
+        this.users = users;
+    }
     public int getId() { return id; }
     public String getName() { return name; }
     public String getLocation() { return location; }
