@@ -28,7 +28,11 @@ public class RegisterModulesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register_modules);
         
         // Get farm object from intent
-        farm = getIntent().getParcelableExtra("farm", Farm.class);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            farm = getIntent().getParcelableExtra("farm", Farm.class);
+        } else {
+            farm = (Farm) getIntent().getParcelableExtra("farm");
+        }
         if (farm == null) {
             Toast.makeText(this, "No se proporcionó información de la granja", Toast.LENGTH_SHORT).show();
             finish(); // Close activity if farm is missing

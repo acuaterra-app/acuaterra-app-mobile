@@ -85,4 +85,16 @@ public class Farm implements Parcelable {
         dest.writeString(createdAt);
         dest.writeString(updatedAt);
     }
+
+    @Override
+    public String toString() {
+        return "Farm{" +
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", address='" + address + '\'' +
+            ", latitude='" + latitude + '\'' +
+            ", longitude='" + longitude + '\'' +
+            ", createdAt='" + createdAt + '\'' +
+            '}';
+    }
 }
