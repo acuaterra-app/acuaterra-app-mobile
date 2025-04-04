@@ -20,10 +20,11 @@ import com.example.monitoreoacua.interfaces.OnApiRequestCallback;
 import com.example.monitoreoacua.service.request.ListUsersRequest;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
-public class UserFragment extends Fragment {
+public class UserFragment extends Fragment implements MyUserRecyclerViewAdapter.OnUserClickListener {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -68,7 +69,7 @@ public class UserFragment extends Fragment {
             recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
 
-        adapter = new MyUserRecyclerViewAdapter();
+        adapter = new MyUserRecyclerViewAdapter(this);
         recyclerView.setAdapter(adapter);
 
         FloatingActionButton fab = view.findViewById(R.id.register_user_fragment);
@@ -104,5 +105,19 @@ public class UserFragment extends Fragment {
                 Toast.makeText(getContext(), "Error de conexión: " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void editUser(User user) {
+        RegisterUserFragment fragment = RegisterUserFragment.newInstance(user);
+        requireActivity().getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
+                .replace(R.id.fragmentContainer, fragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public void onUserClick(User user) {
+        editUser(user);
     }
 }

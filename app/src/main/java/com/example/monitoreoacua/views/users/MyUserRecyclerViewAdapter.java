@@ -3,8 +3,8 @@ package com.example.monitoreoacua.views.users;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.monitoreoacua.business.models.User;
@@ -21,8 +21,11 @@ import java.util.List;
 public class MyUserRecyclerViewAdapter extends RecyclerView.Adapter<MyUserRecyclerViewAdapter.ViewHolder> {
 
     private List<User> mValues = new ArrayList<>();
+    private final OnUserClickListener onUserClickListener;
 
-
+    public MyUserRecyclerViewAdapter(OnUserClickListener onUserClickListener) {
+        this.onUserClickListener = onUserClickListener;
+    }
     public void setUsers(List<User> users) {
         mValues = users;
         notifyDataSetChanged();
@@ -43,6 +46,8 @@ public class MyUserRecyclerViewAdapter extends RecyclerView.Adapter<MyUserRecycl
         holder.mDniView.setText(user.getDni());
         holder.mAddressView.setText(user.getAddress());
         holder.mContactView.setText(user.getContact());
+
+        holder.updateButton.setOnClickListener(v -> onUserClickListener.onUserClick(user));
     }
 
     @Override
@@ -56,6 +61,7 @@ public class MyUserRecyclerViewAdapter extends RecyclerView.Adapter<MyUserRecycl
         public final TextView mDniView;
         public final TextView mAddressView;
         public final TextView mContactView;
+        public final Button updateButton;
 
         public ViewHolder(FragmentItemBinding binding) {
             super(binding.getRoot());
@@ -64,11 +70,16 @@ public class MyUserRecyclerViewAdapter extends RecyclerView.Adapter<MyUserRecycl
             mDniView = binding.itemDni;
             mAddressView = binding.itemAddress;
             mContactView = binding.itemContact;
+            updateButton = binding.updateButton;
         }
 
         @Override
         public String toString() {
             return super.toString() + " '" + mNameView.getText() + "'";
         }
+    }
+
+    public interface OnUserClickListener {
+        void onUserClick(User user);
     }
 }

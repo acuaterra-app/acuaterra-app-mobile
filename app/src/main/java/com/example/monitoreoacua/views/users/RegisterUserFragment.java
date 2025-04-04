@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.monitoreoacua.R;
@@ -18,10 +17,10 @@ import com.example.monitoreoacua.interfaces.OnApiRequestCallback;
 import com.example.monitoreoacua.service.request.RegisterUserRequest;
 import com.example.monitoreoacua.service.request.UserRequest;
 import com.example.monitoreoacua.service.response.UserRegisterResponse;
+import com.example.monitoreoacua.service.response.UserUpdateResponse;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Objects;
-
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link RegisterUserFragment#newInstance} factory method to
@@ -29,34 +28,24 @@ import java.util.Objects;
  */
 public class RegisterUserFragment extends Fragment {
     private TextInputEditText nameEditText, emailEditText, dniEditText, roleEditText, addressEditText, contactEditText;
-    private Button registerButton, closeButton;
+    private int userId = -1; // -1 indicates a new user
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private User user;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public RegisterUserFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment RegisterUserFragment.
-     */
     // TODO: Rename and change types and number of parameters
-    public static RegisterUserFragment newInstance(String param1, String param2) {
+    public static RegisterUserFragment newInstance(User user) {
         RegisterUserFragment fragment = new RegisterUserFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+
+        args.putParcelable("user", user);
         fragment.setArguments(args);
         return fragment;
     }
@@ -65,8 +54,7 @@ public class RegisterUserFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            user = getArguments().getParcelable("user");
         }
     }
 
@@ -81,34 +69,70 @@ public class RegisterUserFragment extends Fragment {
         roleEditText = view.findViewById(R.id.roleEditText);
         addressEditText = view.findViewById(R.id.addressEditText);
         contactEditText = view.findViewById(R.id.contactEditText);
-        registerButton = view.findViewById(R.id.registerButton);
-        closeButton = view.findViewById(R.id.closeButton);
+        Button registerButton = view.findViewById(R.id.registerButton);
+        Button closeButton = view.findViewById(R.id.closeButton);
 
-        registerButton.setOnClickListener(v -> registerUser());
         closeButton.setOnClickListener(v -> closeFragment());
+
+        if (user != null) {
+            loadUserData(user);
+            registerButton.setText("Actualizar");
+        }
+
+        registerButton.setOnClickListener(v -> {
+            String name = Objects.requireNonNull(nameEditText.getText()).toString();
+            String email = Objects.requireNonNull(emailEditText.getText()).toString();
+            String dni = Objects.requireNonNull(dniEditText.getText()).toString();
+            String role = Objects.requireNonNull(roleEditText.getText()).toString();
+            String address = Objects.requireNonNull(addressEditText.getText()).toString();
+            String contact = Objects.requireNonNull(contactEditText.getText()).toString();
+
+            UserRequest userRequest = new UserRequest(name, email, dni, role, address, contact);
+
+            if (user == null) {
+                registerUser(userRequest);
+            } else {
+                updateUser(user.getId(), userRequest);
+            }
+        });
+
 
         return view;
     }
 
-    private void registerUser() {
+    private void loadUserData(User user) {
+        nameEditText.setText(user.getName());
+        emailEditText.setText(user.getEmail());
+        dniEditText.setText(user.getDni());
+        roleEditText.setText(user.getRole().getName());
+        addressEditText.setText(user.getAddress());
+        contactEditText.setText(user.getContact());
+    }
 
-        String name = Objects.requireNonNull(nameEditText.getText()).toString();
-        String email = Objects.requireNonNull(emailEditText.getText()).toString();
-        String dni = Objects.requireNonNull(dniEditText.getText()).toString();
-        String role = Objects.requireNonNull(roleEditText.getText()).toString();
-        String address = Objects.requireNonNull(addressEditText.getText()).toString();
-        String contact = Objects.requireNonNull(contactEditText.getText()).toString();
-
-
-        UserRequest userRequest = new UserRequest(name, email, dni, "3", address, contact);
-
-
+    private void updateUser(int userId, UserRequest userRequest) {
         RegisterUserRequest request = new RegisterUserRequest();
+        userRequest.setId_rol("3");
+        request.updateUser(userId, userRequest, new OnApiRequestCallback<UserUpdateResponse, Throwable>() {
+            @Override
+            public void onSuccess(UserUpdateResponse response) {
+                Toast.makeText(getContext(), "Usuario actualizado: " + response.getData().get(0).getName(), Toast.LENGTH_SHORT).show();
+                closeFragment();
+            }
+
+            @Override
+            public void onFail(Throwable error) {
+                Toast.makeText(getContext(), "Error al actualizar usuario", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void registerUser(UserRequest userRequest) {
+        RegisterUserRequest request = new RegisterUserRequest();
+        userRequest.setId_rol("3");
         request.registerUser(userRequest, new OnApiRequestCallback<UserRegisterResponse, Throwable>() {
             @Override
             public void onSuccess(UserRegisterResponse response) {
-                User user = response.getData();
-                Toast.makeText(getContext(), "Usuario registrado: " + user.getName(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Usuario registrado: " + response.getData().getName(), Toast.LENGTH_SHORT).show();
                 closeFragment();
             }
 
