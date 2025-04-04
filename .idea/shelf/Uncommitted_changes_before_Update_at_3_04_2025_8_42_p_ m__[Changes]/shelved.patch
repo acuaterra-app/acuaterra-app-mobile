@@ -1,0 +1,235 @@
+Index: .idea/shelf/Uncommitted_changes_before_Checkout_at_26_03_2025_7_48_p_m___Changes_.xml
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Checkout_at_26_03_2025_7_48_p_m___Changes_.xml b/.idea/shelf/Uncommitted_changes_before_Checkout_at_26_03_2025_7_48_p_m___Changes_.xml
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Checkout_at_26_03_2025_7_48_p_m___Changes_.xml	(revision 7781b0ef236b4809f12ca127a29d9c2866a106dd)
++++ /dev/null	(revision 7781b0ef236b4809f12ca127a29d9c2866a106dd)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Checkout_at_26_03_2025_7_48_p_ m__[Changes]" date="1743036519528" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_26_03_2025_7_48_p_ m__[Changes]/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Checkout at 26/03/2025 7:48 p. m. [Changes]" />
+-</changelist>
+\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Checkout_at_26_03_2025_7_48_p_ m__[Changes]/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Checkout_at_26_03_2025_7_48_p_ m__[Changes]/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Checkout_at_26_03_2025_7_48_p_ m__[Changes]/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Checkout_at_26_03_2025_7_48_p_ m__[Changes]/shelved.patch	(revision 7781b0ef236b4809f12ca127a29d9c2866a106dd)
++++ /dev/null	(revision 7781b0ef236b4809f12ca127a29d9c2866a106dd)
+@@ -1,45 +0,0 @@
+-Index: app/src/main/java/com/example/monitoreoacua/service/ApiClient.java
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>package com.example.monitoreoacua.service;\r\n\r\nimport okhttp3.OkHttpClient;\r\nimport retrofit2.Retrofit;\r\nimport retrofit2.converter.gson.GsonConverterFactory;\r\n\r\npublic class ApiClient {\r\n    private static final String BASE_URL = \"https://concepts-portion-mark-returns.trycloudflare.com\"; // Special IP for accessing host from emulator\r\n    //private static final String BASE_URL = \"http://10.0.2.2:9000\"; // Special IP for accessing host from emulator\r\n    //private static final String BASE_URL = \"https://backend.acuaterra.tech\"; // Special IP for accessing host from emulator\r\n    private static Retrofit retrofit;\r\n    \r\n    public static Retrofit getClient() {\r\n        if (retrofit == null) {\r\n            OkHttpClient client = new OkHttpClient.Builder()\r\n                    .build();\r\n\r\n            retrofit = new Retrofit.Builder()\r\n                    .baseUrl(BASE_URL)\r\n                    .client(client)\r\n                    .addConverterFactory(GsonConverterFactory.create())\r\n                    .build();\r\n        }\r\n        return retrofit;\r\n    }\r\n}\r\n
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/java/com/example/monitoreoacua/service/ApiClient.java b/app/src/main/java/com/example/monitoreoacua/service/ApiClient.java
+---- a/app/src/main/java/com/example/monitoreoacua/service/ApiClient.java	(revision 2cf5ca6842a536a3caff39de6c8465c446a3a054)
+-+++ b/app/src/main/java/com/example/monitoreoacua/service/ApiClient.java	(date 1743035164995)
+-@@ -5,9 +5,9 @@
+- import retrofit2.converter.gson.GsonConverterFactory;
+- 
+- public class ApiClient {
+--    private static final String BASE_URL = "https://concepts-portion-mark-returns.trycloudflare.com"; // Special IP for accessing host from emulator
+-+    //private static final String BA|SE_URL = "https://concepts-portion-mark-returns.trycloudflare.com"; // Special IP for accessing host from emulator
+-     //private static final String BASE_URL = "http://10.0.2.2:9000"; // Special IP for accessing host from emulator
+--    //private static final String BASE_URL = "https://backend.acuaterra.tech"; // Special IP for accessing host from emulator
+-+    private static final String BASE_URL = "https://backend.acuaterra.tech"; // Special IP for accessing host from emulator
+-     private static Retrofit retrofit;
+-     
+-     public static Retrofit getClient() {
+-Index: .idea/appInsightsSettings.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AppInsightsSettings\">\r\n    <option name=\"tabSettings\">\r\n      <map>\r\n        <entry key=\"Firebase Crashlytics\">\r\n          <value>\r\n            <InsightsFilterSettings>\r\n              <option name=\"connection\">\r\n                <ConnectionSetting>\r\n                  <option name=\"appId\" value=\"com.example.monitoreoacua\" />\r\n                  <option name=\"mobileSdkAppId\" value=\"1:557843091693:android:205d126097631654e9bce4\" />\r\n                  <option name=\"projectId\" value=\"monitoreoacua-1a5c0\" />\r\n                  <option name=\"projectNumber\" value=\"557843091693\" />\r\n                </ConnectionSetting>\r\n              </option>\r\n              <option name=\"signal\" value=\"SIGNAL_UNSPECIFIED\" />\r\n              <option name=\"timeIntervalDays\" value=\"THIRTY_DAYS\" />\r\n              <option name=\"visibilityType\" value=\"ALL\" />\r\n            </InsightsFilterSettings>\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n</project>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/.idea/appInsightsSettings.xml b/.idea/appInsightsSettings.xml
+---- a/.idea/appInsightsSettings.xml	(revision 2cf5ca6842a536a3caff39de6c8465c446a3a054)
+-+++ b/.idea/appInsightsSettings.xml	(date 1743007236129)
+-@@ -9,9 +9,9 @@
+-               <option name="connection">
+-                 <ConnectionSetting>
+-                   <option name="appId" value="com.example.monitoreoacua" />
+--                  <option name="mobileSdkAppId" value="1:557843091693:android:205d126097631654e9bce4" />
+--                  <option name="projectId" value="monitoreoacua-1a5c0" />
+--                  <option name="projectNumber" value="557843091693" />
+-+                  <option name="mobileSdkAppId" value="1:125156334973:android:a81f047027461bce910014" />
+-+                  <option name="projectId" value="acuaterra-tech-3999b" />
+-+                  <option name="projectNumber" value="125156334973" />
+-                 </ConnectionSetting>
+-               </option>
+-               <option name="signal" value="SIGNAL_UNSPECIFIED" />
+Index: app/src/main/java/com/example/monitoreoacua/fragments/ListModulesFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.monitoreoacua.fragments;\r\n\r\nimport android.content.Context;\r\nimport android.content.Intent;\r\nimport android.content.SharedPreferences;\r\nimport android.os.Bundle;\r\nimport android.util.Log;\r\nimport android.view.LayoutInflater;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\nimport android.widget.Button;\r\nimport android.widget.ProgressBar;\r\nimport android.widget.TextView;\r\nimport android.widget.Toast;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.annotation.Nullable;\r\nimport androidx.fragment.app.Fragment;\r\nimport androidx.recyclerview.widget.LinearLayoutManager;\r\nimport androidx.recyclerview.widget.RecyclerView;\r\nimport androidx.swiperefreshlayout.widget.SwipeRefreshLayout;\r\n\r\nimport com.example.monitoreoacua.R;\r\nimport com.example.monitoreoacua.business.models.Farm;\r\nimport com.example.monitoreoacua.business.models.Module;\r\nimport com.example.monitoreoacua.service.ApiClient;\r\nimport com.example.monitoreoacua.service.ApiModulesService;\r\nimport com.example.monitoreoacua.service.request.ListModulesRequest;\r\nimport com.example.monitoreoacua.service.response.ListModuleResponse;\r\nimport com.example.monitoreoacua.views.farms.farm.modules.ListModulesActivity;\r\nimport com.example.monitoreoacua.views.farms.farm.modules.ModuleAdapter;\r\nimport com.example.monitoreoacua.views.farms.farm.modules.RegisterModulesActivity;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.HashMap;\r\nimport java.util.List;\r\nimport java.util.Map;\r\n\r\nimport retrofit2.Call;\r\nimport retrofit2.Callback;\r\nimport retrofit2.Response;\r\n\r\npublic class ListModulesFragment extends Fragment implements ModuleAdapter.OnModuleClickListener {\r\n\r\n    private RecyclerView recyclerViewModules;\r\n    private ModuleAdapter moduleAdapter;\r\n    private ProgressBar progressBar;\r\n    private SwipeRefreshLayout swipeRefreshLayout;\r\n    private TextView tvEmptyView;\r\n    private Button btnRegisterModules;\r\n    \r\n    private String farmId;\r\n\r\n    private OnModuleInteractionListener listener;\r\n\r\n    private static final String PREF_NAME = \"user_prefs\";\r\n\r\n    public interface OnModuleInteractionListener {\r\n        void onModuleSelected(Module module);\r\n        void onRegisterNewModule();\r\n        void navigateToRegisterModules(Farm farm);\r\n    }\r\n\r\n\r\n    public static ListModulesFragment newInstance(String farmId) {\r\n        ListModulesFragment fragment = new ListModulesFragment();\r\n        Bundle args = new Bundle();\r\n        args.putString(\"farmId\", farmId);\r\n        fragment.setArguments(args);\r\n        return fragment;\r\n    }\r\n    \r\n    @Override\r\n    public void onCreate(@Nullable Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        if (getArguments() != null) {\r\n            farmId = getArguments().getString(\"farmId\");\r\n            Log.d(\"ListModulesFragment\", \"farmId: \" + farmId);\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {\r\n        return inflater.inflate(R.layout.fragment_list_modules, container, false);\r\n    }\r\n\r\n    @Override\r\n    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {\r\n        super.onViewCreated(view, savedInstanceState);\r\n        \r\n        recyclerViewModules = view.findViewById(R.id.recyclerViewModules);\r\n        progressBar = view.findViewById(R.id.progressBar);\r\n        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);\r\n        tvEmptyView = view.findViewById(R.id.tvEmptyView);\r\n        btnRegisterModules = view.findViewById(R.id.btnRegisterModules);\r\n        \r\n        recyclerViewModules.setLayoutManager(new LinearLayoutManager(getContext()));\r\n        moduleAdapter = new ModuleAdapter();\r\n        moduleAdapter.setOnModuleClickListener(this);\r\n        recyclerViewModules.setAdapter(moduleAdapter);\r\n        \r\n        swipeRefreshLayout.setOnRefreshListener(this::fetchModules);\r\n\r\n        btnRegisterModules.setOnClickListener(v -> {\r\n            if (listener != null) {\r\n                listener.onRegisterNewModule();\r\n            }\r\n        });\r\n\r\n        fetchModules();\r\n    }\r\n    \r\n    @Override\r\n    public void onAttach(@NonNull Context context) {\r\n        super.onAttach(context);\r\n        try {\r\n            listener = (OnModuleInteractionListener) context;\r\n        } catch (ClassCastException e) {\r\n            throw new ClassCastException(context + \" must implement OnModuleInteractionListener\");\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public void onModuleClick(Module module) {\r\n        if (listener != null) {\r\n            listener.onModuleSelected(module);\r\n        }\r\n    }\r\n    \r\n    private void fetchModules() {\r\n        progressBar.setVisibility(View.VISIBLE);\r\n        recyclerViewModules.setVisibility(View.GONE);\r\n        tvEmptyView.setVisibility(View.GONE);\r\n        \r\n        Map<String, Object> params = new HashMap<>();\r\n        params.put(\"farmId\", farmId);\r\n        ApiModulesService apiService = ApiClient.getClient().create(ApiModulesService.class);\r\n        ListModulesRequest listModulesRequest = new ListModulesRequest();\r\n\r\n        Call<ListModuleResponse> call = apiService.getModules(Integer.parseInt(farmId), listModulesRequest.getAuthToken());\r\n        call.enqueue(new Callback<ListModuleResponse>() {\r\n            @Override\r\n            public void onResponse(@NonNull Call<ListModuleResponse> call, @NonNull Response<ListModuleResponse> response) {\r\n                progressBar.setVisibility(View.GONE);\r\n                swipeRefreshLayout.setRefreshing(false);\r\n\r\n                if (response.isSuccessful() && response.body() != null) {\r\n                    ListModuleResponse moduleResponse = response.body();\r\n                    List<Module> modules = moduleResponse.getData();\r\n                    \r\n                    if (modules != null && !modules.isEmpty()) {\r\n                        moduleAdapter.setModuleList(modules);\r\n                        recyclerViewModules.setVisibility(View.VISIBLE);\r\n                        tvEmptyView.setVisibility(View.GONE);\r\n                    } else {\r\n                        moduleAdapter.setModuleList(new ArrayList<>());\r\n                        recyclerViewModules.setVisibility(View.GONE);\r\n                        tvEmptyView.setVisibility(View.VISIBLE);\r\n                    }\r\n                } else {\r\n                    Log.e(\"ListModulesFragment\", \"Error al obtener los módulos: \" + response);\r\n                    showError(\"Error al obtener los módulos: \" + response.message());\r\n                }\r\n            }\r\n\r\n            @Override\r\n            public void onFailure(Call<ListModuleResponse> call, Throwable t) {\r\n                progressBar.setVisibility(View.GONE);\r\n                swipeRefreshLayout.setRefreshing(false);\r\n                showError(\"Error de conexión: \" + t.getMessage());\r\n            }\r\n        });\r\n    }\r\n    \r\n    private void showError(String message) {\r\n        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();\r\n        recyclerViewModules.setVisibility(View.GONE);\r\n        tvEmptyView.setVisibility(View.VISIBLE);\r\n        tvEmptyView.setText(R.string.error_loading_modules);\r\n    }\r\n    \r\n    public void refreshModules() {\r\n        fetchModules();\r\n    }\r\n}\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/monitoreoacua/fragments/ListModulesFragment.java b/app/src/main/java/com/example/monitoreoacua/fragments/ListModulesFragment.java
+--- a/app/src/main/java/com/example/monitoreoacua/fragments/ListModulesFragment.java	(revision 7781b0ef236b4809f12ca127a29d9c2866a106dd)
++++ b/app/src/main/java/com/example/monitoreoacua/fragments/ListModulesFragment.java	(date 1743728515209)
+@@ -126,6 +126,8 @@
+             listener.onModuleSelected(module);
+         }
+     }
++
++
+     
+     private void fetchModules() {
+         progressBar.setVisibility(View.VISIBLE);
+Index: app/src/main/java/com/example/monitoreoacua/views/farms/farm/modules/RegisterModulesActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.monitoreoacua.views.farms.farm.modules;\r\n\r\nimport android.content.Intent;\r\nimport android.os.Bundle;\r\nimport android.widget.Toast;\r\n\r\nimport androidx.activity.EdgeToEdge;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\nimport androidx.appcompat.widget.AppCompatImageButton;\r\nimport androidx.core.graphics.Insets;\r\nimport androidx.core.view.ViewCompat;\r\nimport androidx.core.view.WindowInsetsCompat;\r\n\r\nimport com.example.monitoreoacua.R;\r\nimport com.example.monitoreoacua.business.models.Farm;\r\nimport com.example.monitoreoacua.views.farms.ListFarmsActivity;\r\nimport com.example.monitoreoacua.views.menu.LogoutActivity;\r\nimport com.example.monitoreoacua.views.menu.SupportActivity;\r\n\r\npublic class RegisterModulesActivity extends AppCompatActivity {\r\n    private Farm farm;\r\n    private AppCompatImageButton navHome, navSettings, navProfile, navCloseSesion;\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        EdgeToEdge.enable(this);\r\n        setContentView(R.layout.activity_register_modules);\r\n        \r\n        // Get farm object from intent\r\n        farm = getIntent().getParcelableExtra(\"farm\", Farm.class);\r\n        if (farm == null) {\r\n            Toast.makeText(this, \"No se proporcionó información de la granja\", Toast.LENGTH_SHORT).show();\r\n            finish(); // Close activity if farm is missing\r\n            return;\r\n        }\r\n        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {\r\n            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());\r\n            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);\r\n            return insets;\r\n        });\r\n\r\n        // Initialize navigation bar elements\r\n        navHome = findViewById(R.id.navHome);\r\n        // navSettings = findViewById(R.id.navSettings);\r\n        navProfile = findViewById(R.id.navProfile);\r\n        navCloseSesion = findViewById(R.id.navCloseSesion);\r\n\r\n        // Events for the navigation bar\r\n        navHome.setOnClickListener(v -> {\r\n            Intent intent = new Intent(RegisterModulesActivity.this, ListFarmsActivity.class);\r\n            startActivity(intent);\r\n        });\r\n\r\n        navProfile.setOnClickListener(v -> {\r\n            Intent intent = new Intent(RegisterModulesActivity.this, SupportActivity.class);\r\n            startActivity(intent);\r\n        });\r\n\r\n        navCloseSesion.setOnClickListener(v -> {\r\n            Intent intent = new Intent(RegisterModulesActivity.this, LogoutActivity.class);\r\n            startActivity(intent);\r\n        });\r\n\r\n    }\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/monitoreoacua/views/farms/farm/modules/RegisterModulesActivity.java b/app/src/main/java/com/example/monitoreoacua/views/farms/farm/modules/RegisterModulesActivity.java
+--- a/app/src/main/java/com/example/monitoreoacua/views/farms/farm/modules/RegisterModulesActivity.java	(revision 7781b0ef236b4809f12ca127a29d9c2866a106dd)
++++ b/app/src/main/java/com/example/monitoreoacua/views/farms/farm/modules/RegisterModulesActivity.java	(date 1743730605052)
+@@ -1,6 +1,7 @@
+ package com.example.monitoreoacua.views.farms.farm.modules;
+ 
+ import android.content.Intent;
++import android.os.Build;
+ import android.os.Bundle;
+ import android.widget.Toast;
+ 
+@@ -13,11 +14,14 @@
+ 
+ import com.example.monitoreoacua.R;
+ import com.example.monitoreoacua.business.models.Farm;
++import com.example.monitoreoacua.fragments.ListFarmsFragment;
++import com.example.monitoreoacua.interfaces.OnFragmentInteractionListener;
++import com.example.monitoreoacua.views.BaseActivity;
+ import com.example.monitoreoacua.views.farms.ListFarmsActivity;
+ import com.example.monitoreoacua.views.menu.LogoutActivity;
+ import com.example.monitoreoacua.views.menu.SupportActivity;
+ 
+-public class RegisterModulesActivity extends AppCompatActivity {
++public class RegisterModulesActivity extends BaseActivity implements ListFarmsFragment.OnFarmSelectedListener, OnFragmentInteractionListener {
+     private Farm farm;
+     private AppCompatImageButton navHome, navSettings, navProfile, navCloseSesion;
+ 
+@@ -28,23 +32,29 @@
+         setContentView(R.layout.activity_register_modules);
+         
+         // Get farm object from intent
+-        farm = getIntent().getParcelableExtra("farm", Farm.class);
++        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
++            farm = getIntent().getParcelableExtra("farm", Farm.class);
++        }else {
++            farm = getIntent().getParcelableExtra("farm");
++        }
++
+         if (farm == null) {
+             Toast.makeText(this, "No se proporcionó información de la granja", Toast.LENGTH_SHORT).show();
+             finish(); // Close activity if farm is missing
+             return;
+         }
+-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+-            return insets;
+-        });
++
++        //ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
++        //    Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
++        //    v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
++        //    return insets;
++        //});
+ 
+         // Initialize navigation bar elements
+-        navHome = findViewById(R.id.navHome);
++        //navHome = findViewById(R.id.navHome);
+         // navSettings = findViewById(R.id.navSettings);
+-        navProfile = findViewById(R.id.navProfile);
+-        navCloseSesion = findViewById(R.id.navCloseSesion);
++        //navProfile = findViewById(R.id.navProfile);
++        //navCloseSesion = findViewById(R.id.navCloseSesion);
+ 
+         // Events for the navigation bar
+         navHome.setOnClickListener(v -> {
+Index: app/src/main/java/com/example/monitoreoacua/interfaces/OnFragmentInteractionListener.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.monitoreoacua.interfaces;\r\n\r\nimport com.example.monitoreoacua.business.models.Farm;\r\n\r\n/**\r\n * This interface must be implemented by activities that contain fragments\r\n * to allow interaction between the fragments and the activity.\r\n * \r\n * It provides methods for handling farm-related actions such as editing and\r\n * deleting a farm.\r\n */\r\npublic interface OnFragmentInteractionListener {\r\n    /**\r\n     * Called when the user requests to edit a farm\r\n     * @param farm The farm to be edited\r\n     */\r\n    void onEditFarm(Farm farm);\r\n    \r\n    /**\r\n     * Called when the user requests to delete a farm\r\n     * @param farm The farm to be deleted\r\n     */\r\n    void onDeleteFarm(Farm farm);\r\n    \r\n    /**\r\n     * Called when the user selects a farm\r\n     * @param farm The selected farm\r\n     */\r\n    void onFarmSelected(Farm farm);\r\n    \r\n    /**\r\n     * Called when the user navigates back from fragment\r\n     */\r\n    void onNavigateBack();\r\n    \r\n    /**\r\n     * Called when the user wants to view the modules of a farm\r\n     * @param farm The farm whose modules are to be viewed\r\n     */\r\n    void onViewFarmModules(Farm farm);\r\n}\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/monitoreoacua/interfaces/OnFragmentInteractionListener.java b/app/src/main/java/com/example/monitoreoacua/interfaces/OnFragmentInteractionListener.java
+--- a/app/src/main/java/com/example/monitoreoacua/interfaces/OnFragmentInteractionListener.java	(revision 7781b0ef236b4809f12ca127a29d9c2866a106dd)
++++ b/app/src/main/java/com/example/monitoreoacua/interfaces/OnFragmentInteractionListener.java	(date 1743730604710)
+@@ -38,5 +38,7 @@
+      * @param farm The farm whose modules are to be viewed
+      */
+     void onViewFarmModules(Farm farm);
++
++
+ }
+ 
+Index: app/src/main/java/com/example/monitoreoacua/views/farms/ListFarmsActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.monitoreoacua.views.farms;\r\n\r\nimport android.content.Intent;\r\nimport android.os.Bundle;\r\nimport android.widget.Toast;\r\n\r\nimport com.example.monitoreoacua.views.farms.farm.modules.ListModulesActivity;\r\n\r\nimport androidx.annotation.Nullable;\r\n\r\nimport com.example.monitoreoacua.business.models.Farm;\r\nimport com.example.monitoreoacua.fragments.FarmDetailsFragment;\r\nimport com.example.monitoreoacua.fragments.ListFarmsFragment;\r\nimport com.example.monitoreoacua.interfaces.OnFragmentInteractionListener;\r\nimport com.example.monitoreoacua.views.BaseActivity;\r\nimport com.example.monitoreoacua.views.menu.LogoutActivity;\r\nimport com.example.monitoreoacua.views.menu.SupportActivity;\r\n\r\n/**\r\n * Activity for displaying the list of farms.\r\n * Extends BaseActivity to use common functionality.\r\n */\r\npublic class ListFarmsActivity extends BaseActivity \r\n        implements ListFarmsFragment.OnFarmSelectedListener, OnFragmentInteractionListener {\r\n\r\n    @Override\r\n    protected void onCreate(@Nullable Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        // BaseActivity handles all the common setup\r\n    }\r\n\r\n    @Override\r\n    protected String getActivityTitle() {\r\n        return \"Granjas\";\r\n    }\r\n\r\n    @Override\r\n    protected void loadInitialFragment() {\r\n        // Load the farms list fragment into the container\r\n        ListFarmsFragment listFarmsFragment = ListFarmsFragment.newInstance();\r\n        loadFragment(listFarmsFragment, false);\r\n    }\r\n\r\n    @Override\r\n    public void navigateToProfile() {\r\n        Intent intent = new Intent(this, SupportActivity.class);\r\n        startActivity(intent);\r\n    }\r\n\r\n    @Override\r\n    public void logout() {\r\n        Intent intent = new Intent(this, LogoutActivity.class);\r\n        startActivity(intent);\r\n    }\r\n\r\n    @Override\r\n    public void onFarmSelected(Farm farm) {\r\n        // Create a new instance of FarmDetailsFragment with the selected farm\r\n        FarmDetailsFragment farmDetailsFragment = FarmDetailsFragment.newInstance(farm);\r\n        \r\n        // Load the fragment using the method from BaseActivity\r\n        loadFragment(farmDetailsFragment, true);\r\n        \r\n        // Set the activity title to the farm name\r\n        setTitle(farm.getName());\r\n    }\r\n\r\n    @Override\r\n    public void onEditFarm(Farm farm) {\r\n        // Implementation for editing a farm\r\n        Toast.makeText(this, \"Editar granja: \" + farm.getName(), Toast.LENGTH_SHORT).show();\r\n        // TODO: Navigate to farm edit screen\r\n    }\r\n\r\n    @Override\r\n    public void onDeleteFarm(Farm farm) {\r\n        // Implementation for deleting a farm\r\n        Toast.makeText(this, \"Eliminar granja: \" + farm.getName(), Toast.LENGTH_SHORT).show();\r\n        // TODO: Show confirmation dialog and delete farm if confirmed\r\n    }\r\n\r\n    @Override\r\n    public void onNavigateBack() {\r\n        // Return to the list of farms and reset the title\r\n        setTitle(getActivityTitle());\r\n        onBackPressed();\r\n    }\r\n\r\n    @Override\r\n    public void onViewFarmModules(Farm farm) {\r\n        // Implementation for viewing farm modules\r\n        Toast.makeText(this, \"Ver módulos de: \" + farm.getName(), Toast.LENGTH_SHORT).show();\r\n        \r\n        // Navigate to farm modules screen\r\n        Intent intent = new Intent(this, ListModulesActivity.class);\r\n        intent.putExtra(\"farm\", farm);\r\n        startActivity(intent);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/monitoreoacua/views/farms/ListFarmsActivity.java b/app/src/main/java/com/example/monitoreoacua/views/farms/ListFarmsActivity.java
+--- a/app/src/main/java/com/example/monitoreoacua/views/farms/ListFarmsActivity.java	(revision 7781b0ef236b4809f12ca127a29d9c2866a106dd)
++++ b/app/src/main/java/com/example/monitoreoacua/views/farms/ListFarmsActivity.java	(date 1743730604676)
+@@ -20,8 +20,7 @@
+  * Activity for displaying the list of farms.
+  * Extends BaseActivity to use common functionality.
+  */
+-public class ListFarmsActivity extends BaseActivity 
+-        implements ListFarmsFragment.OnFarmSelectedListener, OnFragmentInteractionListener {
++public class ListFarmsActivity extends BaseActivity implements ListFarmsFragment.OnFarmSelectedListener, OnFragmentInteractionListener {
+ 
+     @Override
+     protected void onCreate(@Nullable Bundle savedInstanceState) {
+@@ -57,10 +56,10 @@
+     public void onFarmSelected(Farm farm) {
+         // Create a new instance of FarmDetailsFragment with the selected farm
+         FarmDetailsFragment farmDetailsFragment = FarmDetailsFragment.newInstance(farm);
+-        
++
+         // Load the fragment using the method from BaseActivity
+         loadFragment(farmDetailsFragment, true);
+-        
++
+         // Set the activity title to the farm name
+         setTitle(farm.getName());
+     }
+@@ -90,7 +89,7 @@
+     public void onViewFarmModules(Farm farm) {
+         // Implementation for viewing farm modules
+         Toast.makeText(this, "Ver módulos de: " + farm.getName(), Toast.LENGTH_SHORT).show();
+-        
++
+         // Navigate to farm modules screen
+         Intent intent = new Intent(this, ListModulesActivity.class);
+         intent.putExtra("farm", farm);
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"EntryPointsManager\">\r\n    <writeAnnotations>\r\n      <writeAnnotation name=\"com.google.gson.annotations.SerializedName\" />\r\n    </writeAnnotations>\r\n  </component>\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_X\" default=\"true\" project-jdk-name=\"24\" project-jdk-type=\"JavaSDK\" />\r\n  <component name=\"VisualizationToolProject\">\r\n    <option name=\"state\">\r\n      <ProjectState>\r\n        <option name=\"scale\" value=\"0.1067463706233988\" />\r\n      </ProjectState>\r\n    </option>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision 7781b0ef236b4809f12ca127a29d9c2866a106dd)
++++ b/.idea/misc.xml	(date 1743730917141)
+@@ -5,7 +5,7 @@
+       <writeAnnotation name="com.google.gson.annotations.SerializedName" />
+     </writeAnnotations>
+   </component>
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_X" default="true" project-jdk-name="24" project-jdk-type="JavaSDK" />
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_23" project-jdk-name="24" project-jdk-type="JavaSDK" />
+   <component name="VisualizationToolProject">
+     <option name="state">
+       <ProjectState>
