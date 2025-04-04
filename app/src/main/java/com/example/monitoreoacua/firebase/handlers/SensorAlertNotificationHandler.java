@@ -1,17 +1,19 @@
 package com.example.monitoreoacua.firebase.handlers;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.monitoreoacua.business.models.Module;
 import com.example.monitoreoacua.business.models.Notification;
+import com.example.monitoreoacua.interfaces.OnApiRequestCallback;
+import com.example.monitoreoacua.service.request.GetModuleRequest;
+import com.example.monitoreoacua.views.farms.farm.modules.ViewModuleActivity;
 
 import java.util.Map;
 
-/**
- * Handler for sensor alert notifications
- * Processes notifications of type "sensor_alert" and displays appropriate UI
- */
+
 public class SensorAlertNotificationHandler implements NotificationHandler {
     private static final String TAG = "SensorAlertNotificationHandler";
     private static final String NOTIFICATION_TYPE = "sensor_alert";
@@ -26,30 +28,26 @@ public class SensorAlertNotificationHandler implements NotificationHandler {
         try {
             Log.d(TAG, "Processing sensor alert notification");
             
-            // Extract data from notification
             Map<String, Object> metaData = notification.getData().getMetaData();
             String moduleId = getStringValue(metaData, "moduleId");
             String moduleName = getStringValue(metaData, "moduleName");
             String sensorType = getStringValue(metaData, "sensorType");
             String value = getStringValue(metaData, "value");
-            String messageType = getStringValue(metaData, "messageType");
             
-            // Build alert message
+            String messageType = "error";
+            
             StringBuilder alertMessage = new StringBuilder();
             alertMessage.append("⚠️ ").append(notification.getTitle()).append(" ⚠️\n\n");
             alertMessage.append("Módulo: ").append(moduleName);
             alertMessage.append("\nTipo de Sensor: ").append(getSensorTypeDisplay(sensorType));
             
-            // Add value with units
             String units = getSensorUnits(sensorType);
             alertMessage.append("\nValor: ").append(value).append(units);
             
-            // Add message type if available
             if (messageType != null && !messageType.isEmpty()) {
                 alertMessage.append("\nTipo de Alerta: ").append(messageType.toUpperCase());
             }
             
-            // Check if threshold info is available
             if (metaData.containsKey("threshold")) {
                 Map<String, Object> thresholdData = (Map<String, Object>) metaData.get("threshold");
                 if (thresholdData != null) {
@@ -64,25 +62,22 @@ public class SensorAlertNotificationHandler implements NotificationHandler {
                 }
             }
             
-            // Show toast notification
             Toast.makeText(context, alertMessage.toString(), Toast.LENGTH_LONG).show();
             
-            // TODO: Navigate to sensor details or specific alert screen if needed
-            // For example:
-            // Intent intent = new Intent(context, SensorAlertDetailActivity.class);
-            // intent.putExtra("moduleId", moduleId);
-            // intent.putExtra("sensorType", sensorType);
-            // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            // context.startActivity(intent);
+            if (moduleId != null && !moduleId.isEmpty()) {
+                try {
+                    Log.d(TAG, "Fetching details for module ID: " + moduleId);
+                    fetchModuleDetails(context, moduleId);
+                } catch (NumberFormatException e) {
+                    Log.e(TAG, "Invalid module ID format: " + moduleId, e);
+                }
+            }
             
         } catch (Exception e) {
             Log.e(TAG, "Error handling sensor alert notification", e);
         }
     }
-    
-    /**
-     * Safely extract String value from a Map
-     */
+
     private String getStringValue(Map<String, Object> map, String key) {
         if (map != null && map.containsKey(key)) {
             Object value = map.get(key);
@@ -90,10 +85,7 @@ public class SensorAlertNotificationHandler implements NotificationHandler {
         }
         return "";
     }
-    
-    /**
-     * Get user-friendly sensor type display name
-     */
+
     private String getSensorTypeDisplay(String sensorType) {
         if (sensorType == null) return "";
         
@@ -110,10 +102,7 @@ public class SensorAlertNotificationHandler implements NotificationHandler {
                 return sensorType;
         }
     }
-    
-    /**
-     * Get sensor units based on sensor type
-     */
+
     private String getSensorUnits(String sensorType) {
         if (sensorType == null) return "";
         
@@ -134,5 +123,89 @@ public class SensorAlertNotificationHandler implements NotificationHandler {
                 return "";
         }
     }
-}
 
+    private void fetchModuleDetails(Context context, String moduleId) {
+        if (context == null) {
+            Log.e(TAG, "Context is null");
+            return;
+        }
+
+        try {
+            Log.d(TAG, "Attempting to parse module ID: " + moduleId);
+            String cleanModuleId = moduleId.contains(".") ? moduleId.split("\\.")[0] : moduleId;
+            Log.d(TAG, "Cleaned module ID: " + cleanModuleId);
+            int moduleIdInt = Integer.parseInt(cleanModuleId);
+            if (moduleIdInt <= 0) {
+                Log.e(TAG, "Invalid module ID: " + moduleId);
+                Toast.makeText(context, 
+                    "ID de módulo inválido", 
+                    Toast.LENGTH_SHORT).show();
+                return;
+            }
+            
+            Log.d(TAG, "Requesting module details from API for module ID: " + moduleIdInt);
+
+            new GetModuleRequest().getModuleById(new OnApiRequestCallback<Module, Throwable>() {
+                @Override
+                public void onSuccess(Module module) {
+                    if (module != null) {
+                        openModuleActivity(context, module);
+                    } else {
+                        Log.e(TAG, "Module data is null");
+                        Toast.makeText(context, 
+                            "No se pudo cargar los detalles del módulo", 
+                            Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFail(Throwable t) {
+                    Log.e(TAG, "Failed to fetch module details for module ID: " + moduleIdInt, t);
+                    Toast.makeText(context, 
+                        "Error al cargar los detalles del módulo: " + t.getMessage(), 
+                        Toast.LENGTH_SHORT).show();
+                }
+            }, moduleIdInt);
+            Log.d(TAG, "API request sent for module ID: " + moduleIdInt);
+        } catch (NumberFormatException e) {
+            Log.e(TAG, "Invalid module ID format: " + moduleId, e);
+            Toast.makeText(context, 
+                "Formato de ID de módulo inválido", 
+                Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void openModuleActivity(Context context, Module module) {
+        if (context == null || module == null) {
+            Log.e(TAG, "Context or module is null");
+            return;
+        }
+        
+        try {
+            int moduleId = module.getId();
+            Log.d(TAG, "Preparing to open module activity for module ID: " + moduleId);
+            
+            if (moduleId <= 0) {
+                Log.e(TAG, "Invalid module ID for navigation: " + moduleId);
+                Toast.makeText(context, 
+                    "No se puede navegar: ID de módulo inválido", 
+                    Toast.LENGTH_SHORT).show();
+                return;
+            }
+            
+            Intent intent = new Intent(context, ViewModuleActivity.class);
+            intent.putExtra(ViewModuleActivity.ARG_MODULE_ID, moduleId);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            
+            Log.d(TAG, "Starting ViewModuleActivity with module ID: " + moduleId + 
+                       ", module name: " + module.getName());
+            context.startActivity(intent);
+            Log.d(TAG, "ViewModuleActivity started successfully");
+        } catch (Exception e) {
+            Log.e(TAG, "Error opening module activity", e);
+            Toast.makeText(context, 
+                "Error al abrir detalles del módulo: " + e.getMessage(), 
+                Toast.LENGTH_SHORT).show();
+        }
+    }
+}
