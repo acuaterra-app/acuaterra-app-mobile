@@ -14,7 +14,9 @@
         <!-- ScrollView para el contenido principal -->
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            >
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -29,7 +31,7 @@
                     android:layout_height="80dp"
                     android:src="@drawable/logoacua"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="16dp" />
+                    android:layout_marginTop="16dp"/>
 
                 <!-- Título -->
                 <TextView
@@ -41,15 +43,17 @@
                     android:textStyle="bold"
                     android:textColor="@android:color/black"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="16dp" />
+                    android:layout_marginTop="16dp"/>
 
-                <!-- Campos de formulario -->
+                <!-- Campo 1: Nombre del módulo -->
                 <TextView
                     android:id="@+id/tvModuleName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Nombre del módulo"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:layout_marginTop="24dp"/>
 
                 <EditText
                     android:id="@+id/etModuleName"
@@ -59,14 +63,17 @@
                     android:hint="Ej: Módulo 1"
                     android:textSize="16sp"
                     android:padding="10dp"
-                    android:layout_marginTop="8dp" />
+                    android:layout_marginTop="8dp"/>
 
+                <!-- Campo 2: Ubicación -->
                 <TextView
                     android:id="@+id/tvLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Ubicación"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:layout_marginTop="16dp"/>
 
                 <EditText
                     android:id="@+id/etLocation"
@@ -76,14 +83,17 @@
                     android:hint="Ej: Zona 2"
                     android:textSize="16sp"
                     android:padding="10dp"
-                    android:layout_marginTop="8dp" />
+                    android:layout_marginTop="8dp"/>
 
+                <!-- Campo 3: Latitud -->
                 <TextView
                     android:id="@+id/tvFishType"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Latitud"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:layout_marginTop="16dp"/>
 
                 <EditText
                     android:id="@+id/etFishType"
@@ -93,14 +103,17 @@
                     android:hint="Ej: 20m"
                     android:textSize="16sp"
                     android:padding="10dp"
-                    android:layout_marginTop="8dp" />
+                    android:layout_marginTop="8dp"/>
 
+                <!-- Campo 4: Longitud -->
                 <TextView
                     android:id="@+id/tvFishCount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Longitud"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:layout_marginTop="16dp"/>
 
                 <EditText
                     android:id="@+id/etFishCount"
@@ -110,14 +123,17 @@
                     android:hint="Ej: 100m"
                     android:textSize="16sp"
                     android:padding="10dp"
-                    android:layout_marginTop="8dp" />
+                    android:layout_marginTop="8dp"/>
 
+                <!-- Campo 5: Especie de pez -->
                 <TextView
                     android:id="@+id/tvGrowthTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Especie de pez"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:layout_marginTop="16dp"/>
 
                 <EditText
                     android:id="@+id/etGrowthTime"
@@ -127,14 +143,17 @@
                     android:hint="Ej: Tilapia"
                     android:textSize="16sp"
                     android:padding="10dp"
-                    android:layout_marginTop="8dp" />
+                    android:layout_marginTop="8dp"/>
 
+                <!-- Campo 6: Cantidad de pez -->
                 <TextView
                     android:id="@+id/tvFishQuantity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Cantidad de peces"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:layout_marginTop="16dp"/>
 
                 <EditText
                     android:id="@+id/etFishQuantity"
@@ -144,14 +163,37 @@
                     android:hint="Ej: 50"
                     android:textSize="16sp"
                     android:padding="10dp"
-                    android:layout_marginTop="8dp" />
+                    android:layout_marginTop="8dp"/>
 
+                <!-- Campo 7: Edad de pez -->
+                <TextView
+                    android:id="@+id/tvFishAge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Edad de pez"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:layout_marginTop="16dp"/>
+
+                <EditText
+                    android:id="@+id/etFishAge"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@color/colorBackground"
+                    android:hint="Ej: 6 meses"
+                    android:textSize="16sp"
+                    android:padding="10dp"
+                    android:layout_marginTop="8dp"/>
+
+                <!-- Campo 8: Dimensiones del módulo -->
                 <TextView
                     android:id="@+id/tvVolumeUnit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Dimensiones del módulo"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:layout_marginTop="16dp"/>
 
                 <EditText
                     android:id="@+id/etVolumeUnit"
@@ -161,28 +203,34 @@
                     android:hint="Ej: 2m x 1m x 1m"
                     android:textSize="16sp"
                     android:padding="10dp"
-                    android:layout_marginTop="8dp" />
+                    android:layout_marginTop="8dp"/>
 
+                <!-- Botón Guardar -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnRegisterModulo"
+                    style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
                     android:backgroundTint="@color/colorPrimaryDark"
+                    android:elevation="4dp"
                     android:text="Guardar Módulo"
                     android:textColor="@color/white"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"/>
 
+                <!-- Botón Cancelar -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnCancelar"
+                    style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:backgroundTint="@color/colorAccent"
+                    android:elevation="4dp"
                     android:text="Cancelar"
                     android:textColor="@color/white"
                     android:textStyle="bold"
-                    android:layout_marginBottom="24dp" />
+                    android:layout_marginBottom="24dp"/>
             </LinearLayout>
         </ScrollView>
     </RelativeLayout>

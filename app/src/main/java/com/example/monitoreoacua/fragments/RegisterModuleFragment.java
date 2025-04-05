@@ -100,7 +100,11 @@ public class RegisterModuleFragment extends Fragment {
         String moduleDimensions = Objects.requireNonNull(etVolumeUnit.getText()).toString();
 
         // TODO: Get these values from your business logic
+        // Valores correctos según la API
+        int idFarm = 1;  // Debe ser entero
+        int createdByUserId = 42; // Debe ser entero
         List<Integer> users = new ArrayList<>();
+        users.add(42); // Lista de enteros
 
         // Create the module using the full constructor
         Module module = new Module(
