@@ -100,9 +100,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@color/colorBackground"
-                    android:hint="Ej: 20m"
+                    android:hint="Ej: 4.6097 (rango -90 a 90)"
+                    android:inputType="numberDecimal|numberSigned"
                     android:textSize="16sp"
                     android:padding="10dp"
+                    android:maxLength="10"
                     android:layout_marginTop="8dp"/>
 
                 <!-- Campo 4: Longitud -->
@@ -120,9 +122,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@color/colorBackground"
-                    android:hint="Ej: 100m"
+                    android:hint="Ej: -74.0817 (rango -180 a 180)"
+                    android:inputType="numberDecimal|numberSigned"
                     android:textSize="16sp"
                     android:padding="10dp"
+                    android:maxLength="11"
                     android:layout_marginTop="8dp"/>
 
                 <!-- Campo 5: Especie de pez -->
@@ -143,6 +147,7 @@
                     android:hint="Ej: Tilapia"
                     android:textSize="16sp"
                     android:padding="10dp"
+                    android:maxLength="50"
                     android:layout_marginTop="8dp"/>
 
                 <!-- Campo 6: Cantidad de pez -->
@@ -160,9 +165,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@color/colorBackground"
-                    android:hint="Ej: 50"
+                    android:hint="Ej: 50 peces"
+                    android:inputType="number"
                     android:textSize="16sp"
                     android:padding="10dp"
+                    android:maxLength="5"
                     android:layout_marginTop="8dp"/>
 
                 <!-- Campo 7: Edad de pez -->
@@ -183,6 +190,7 @@
                     android:hint="Ej: 6 meses"
                     android:textSize="16sp"
                     android:padding="10dp"
+                    android:maxLength="20"
                     android:layout_marginTop="8dp"/>
 
                 <!-- Campo 8: Dimensiones del módulo -->
@@ -203,6 +211,7 @@
                     android:hint="Ej: 2m x 1m x 1m"
                     android:textSize="16sp"
                     android:padding="10dp"
+                    android:maxLength="30"
                     android:layout_marginTop="8dp"/>
 
                 <!-- Botón Guardar -->
@@ -217,6 +226,15 @@
                     android:text="Guardar Módulo"
                     android:textColor="@color/white"
                     android:textStyle="bold"/>
+                    
+                <!-- Progress Bar for loading state -->
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="16dp"
+                    android:visibility="gone"/>
 
                 <!-- Botón Cancelar -->
                 <com.google.android.material.button.MaterialButton
