@@ -31,7 +31,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Module Details"
+                    android:text="Perfíl de Modulo"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:layout_marginBottom="8dp"/>
@@ -45,7 +45,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Name: "
+                        android:text="Nombre: "
                         android:textStyle="bold"/>
 
                     <TextView
@@ -64,7 +64,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Location: "
+                        android:text="Ubicación: "
                         android:textStyle="bold"/>
 
                     <TextView
@@ -83,7 +83,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Coordinates: "
+                        android:text="Coordenadas: "
                         android:textStyle="bold"/>
 
                     <TextView
@@ -102,7 +102,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Species: "
+                        android:text="Especie de pez: "
                         android:textStyle="bold"/>
 
                     <TextView
@@ -121,7 +121,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Fish Quantity: "
+                        android:text="Cantidad de peces: "
                         android:textStyle="bold"/>
 
                     <TextView
@@ -140,7 +140,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Fish Age: "
+                        android:text="Edad de peces: "
                         android:textStyle="bold"/>
 
                     <TextView
@@ -159,7 +159,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Dimensions: "
+                        android:text="Dimensiones: "
                         android:textStyle="bold"/>
 
                     <TextView
@@ -187,7 +187,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Sensors"
+                    android:text="Sensores"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:layout_marginBottom="8dp"/>
