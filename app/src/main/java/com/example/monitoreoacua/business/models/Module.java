@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
 
-public class Module implements Serializable {
+public class Module extends BaseRequest implements Serializable {
     private static final long serialVersionUID = 1L;
     @SerializedName("id")
     private int id;
