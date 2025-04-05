@@ -6,7 +6,6 @@ import android.widget.Toast;
 
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -42,11 +41,13 @@ public class RegisterModulesActivity extends BaseActivity {
         }
         
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        // 🔹 Llamar loadInitialFragment para que cargue el fragmento
+        loadInitialFragment();
     }
     
     @Override
@@ -57,16 +58,22 @@ public class RegisterModulesActivity extends BaseActivity {
     @Override
     protected void loadInitialFragment() {
         Log.d("RegisterModulesActivity", "Loading RegisterModuleFragment with farm: " + farm.getName());
-        RegisterModuleFragment registerModuleFragment = RegisterModuleFragment.newInstance(farm);
+        RegisterModuleFragment registerModuleFragment = RegisterModuleFragment.newInstance("", "");
         loadFragment(registerModuleFragment, false);
     }
 
+    @Override
     public void loadFragment(Fragment fragment, boolean addToBackStack) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragmentContainer, fragment);
-        if (addToBackStack) {
-            transaction.addToBackStack(null);
+        try {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragmentContainer, fragment);
+            if (addToBackStack) {
+                transaction.addToBackStack(null);
+            }
+            transaction.commit();
+            Log.d("RegisterModulesActivity", "Fragmento cargado correctamente");
+        } catch (Exception e) {
+            Log.e("RegisterModulesActivity", "Error al cargar el fragmento", e);
         }
-        transaction.commit();
     }
 }

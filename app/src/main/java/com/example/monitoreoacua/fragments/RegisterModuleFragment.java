@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.monitoreoacua.R;
+import com.example.monitoreoacua.business.models.Farm;
 import com.example.monitoreoacua.business.models.Module;
 import com.example.monitoreoacua.business.models.User;
 import com.example.monitoreoacua.interfaces.OnApiRequestCallback;
@@ -63,6 +64,9 @@ public class RegisterModuleFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
