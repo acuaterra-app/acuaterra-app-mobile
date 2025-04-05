@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.example.monitoreoacua.interfaces.OnApiRequestCallback;
 import com.example.monitoreoacua.service.request.RegisterModuleRequest;
 import com.example.monitoreoacua.service.response.RegisterModuleResponse;
 import com.google.android.material.button.MaterialButton;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +31,8 @@ import java.util.Objects;
  * create an instance of this fragment.
  */
 public class RegisterModuleFragment extends Fragment {
+
+    private static final String TAG = "RegisterModuleFragment"; // Definir el TAG
 
     private EditText etModuleName, etLocation, etFishType, etFishCount, etGrowthTime, etFishQuantity, etFishAge, etVolumeUnit;
     private MaterialButton btnRegisterModulo, btnCancelar;
@@ -86,6 +90,10 @@ public class RegisterModuleFragment extends Fragment {
         btnRegisterModulo = view.findViewById(R.id.btnRegisterModulo);
         btnCancelar = view.findViewById(R.id.btnCancelar);
 
+        // Acción al hacer clic en "Registrar Módulo"
+        btnRegisterModulo.setOnClickListener(v -> registerModule());
+        btnCancelar.setOnClickListener(v -> closeFragment());
+
         return view;
     }
 
@@ -100,10 +108,10 @@ public class RegisterModuleFragment extends Fragment {
         String moduleDimensions = Objects.requireNonNull(etVolumeUnit.getText()).toString();
 
         // TODO: Get these values from your business logic
-        int idFarm = 1;  // Temporary hardcoded value
-        int createdByUserId = 42; // Logged-in user ID
+        int idFarm = 0;  // Temporary hardcoded value
+        int createdByUserId = 0; // Logged-in user ID
         List<Integer> users = new ArrayList<>();
-        users.add(42); // The same user is added for testing
+        users.add(0); // The same user is added for testing
 
         // Create the module using the full constructor
         Module module = new Module(
@@ -119,6 +127,9 @@ public class RegisterModuleFragment extends Fragment {
                 createdByUserId,
                 users
         );
+
+        // Imprimir JSON antes de enviarlo para depuración
+        Log.d("JSON Enviado", new Gson().toJson(module));
 
         RegisterModuleRequest registerModuleRequest = new RegisterModuleRequest();
 
