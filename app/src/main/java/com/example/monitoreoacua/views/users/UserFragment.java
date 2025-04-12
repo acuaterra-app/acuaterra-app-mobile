@@ -18,12 +18,14 @@ import com.example.monitoreoacua.R;
 import com.example.monitoreoacua.business.models.User;
 import com.example.monitoreoacua.interfaces.OnApiRequestCallback;
 import com.example.monitoreoacua.service.request.ListUsersRequest;
+import com.example.monitoreoacua.service.request.RegisterUserRequest;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
-public class UserFragment extends Fragment {
+public class UserFragment extends Fragment implements MyUserRecyclerViewAdapter.OnUserClickListener {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -68,21 +70,8 @@ public class UserFragment extends Fragment {
             recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
 
-        adapter = new MyUserRecyclerViewAdapter();
+        adapter = new MyUserRecyclerViewAdapter(this);
         recyclerView.setAdapter(adapter);
-
-        FloatingActionButton fab = view.findViewById(R.id.register_user_fragment);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Fragment registerUserFragment = new RegisterUserFragment();
-                requireActivity().getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
-                        .replace(R.id.fragmentContainer, registerUserFragment)
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
 
         fetchUsers();
 
@@ -104,5 +93,41 @@ public class UserFragment extends Fragment {
                 Toast.makeText(getContext(), "Error de conexión: " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void editUser(User user) {
+        RegisterUserFragment fragment = RegisterUserFragment.newInstance(user, user.getModuleId());
+        requireActivity().getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
+                .replace(R.id.fragmentContainer, fragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    private void deleteUser(User user) {
+        new RegisterUserRequest().deleteUser(user.getId(), new OnApiRequestCallback<Void, Throwable>() {
+            @Override
+            public void onSuccess(Void response) {
+                Toast.makeText(getContext(), "Usuario eliminado", Toast.LENGTH_SHORT).show();
+                fetchUsers(); // Refresh the user list
+            }
+
+            @Override
+            public void onFail(Throwable t) {
+                Toast.makeText(getContext(), "Error al eliminar usuario: " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+
+
+    @Override
+    public void onUserClick(User user) {
+        editUser(user);
+    }
+
+    @Override
+    public void onUserDelete(User user) {
+        deleteUser(user);
     }
 }

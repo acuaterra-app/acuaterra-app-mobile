@@ -42,6 +42,7 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation(libs.recyclerview)
+
     implementation(libs.legacy.support.v4)
     implementation(libs.swiperefreshlayout)
     
@@ -49,6 +50,11 @@ dependencies {
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
     
     // Network
+
+    implementation(libs.firebase.messaging)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.ext.junit)
+    androidTestImplementation(libs.espresso.core)
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.okhttp)

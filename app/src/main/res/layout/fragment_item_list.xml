@@ -15,15 +15,6 @@
         app:layoutManager="LinearLayoutManager"
         tools:listitem="@layout/fragment_item" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/register_user_fragment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:contentDescription="@string/registro_usuario"
-        android:src="@drawable/ic_user"
-        android:layout_gravity="bottom|end" />
-
     <ProgressBar
         android:id="@+id/progress_bar"
         android:layout_width="wrap_content"

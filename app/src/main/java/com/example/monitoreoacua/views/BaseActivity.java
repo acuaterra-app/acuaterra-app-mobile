@@ -202,5 +202,30 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         // Child activities should override this
     }
 
+    /**
+     * Handles specific navigation based on intent extras.
+     * This method is used to navigate to specific screens based on notification data.
+     * @param intent The intent containing navigation data
+     */
+    protected void handleSpecificNavigation(Intent intent) {
+        if (intent == null) {
+            Log.e(TAG, "Cannot handle specific navigation: intent is null");
+            return;
+        }
+
+        if (intent.hasExtra("module_id")) {
+            int moduleId = intent.getIntExtra("module_id", -1);
+            if (moduleId != -1) {
+                Log.d(TAG, "Navigating to module with ID: " + moduleId);
+                Intent moduleIntent = new Intent(this, com.example.monitoreoacua.views.farms.farm.modules.ViewModuleActivity.class);
+                moduleIntent.putExtra(com.example.monitoreoacua.views.farms.farm.modules.ViewModuleActivity.ARG_MODULE_ID, moduleId);
+                startActivity(moduleIntent);
+            } else {
+                Log.e(TAG, "Invalid module ID in intent extras");
+                Toast.makeText(this, "ID de módulo inválido", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
     protected abstract String getActivityTitle();
 }

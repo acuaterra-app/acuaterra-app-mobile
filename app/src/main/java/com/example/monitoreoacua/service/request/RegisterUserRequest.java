@@ -10,6 +10,7 @@ import com.example.monitoreoacua.service.ApiClient;
 import com.example.monitoreoacua.service.ApiUserService;
 import com.example.monitoreoacua.service.response.ApiError;
 import com.example.monitoreoacua.service.response.UserRegisterResponse;
+import com.example.monitoreoacua.service.response.UserUpdateResponse;
 import com.example.monitoreoacua.utils.ErrorUtils;
 
 import retrofit2.Call;
@@ -46,6 +47,61 @@ public class RegisterUserRequest extends BaseRequest {
 
             @Override
             public void onFailure(@NonNull Call<UserRegisterResponse> call, @NonNull Throwable t) {
+                Log.d(TAG, "Error with response: " + t);
+                callback.onFail(t);
+            }
+        });
+    }
+
+    public void updateUser(int userId, UserRequest user, OnApiRequestCallback<UserUpdateResponse, Throwable> callback) {
+        ApiUserService apiUserService = ApiClient.getClient().create(ApiUserService.class);
+
+        apiUserService.updateUser(getAuthToken(), userId, user).enqueue(new Callback<UserUpdateResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<UserUpdateResponse> call, @NonNull Response<UserUpdateResponse> response) {
+                if (response.isSuccessful()) {
+                    UserUpdateResponse updateUserResponse = response.body();
+                    callback.onSuccess(updateUserResponse);
+                } else {
+                    ApiError apiError = ErrorUtils.parseError(response);
+                    Log.d(TAG, "Error message: " + apiError.getMessage());
+                    for (ApiError.ErrorDetail errorDetail : apiError.getErrors()) {
+                        Log.d(TAG, "Error: " + errorDetail.getMsg());
+                    }
+                    Log.d(TAG, "Error with response: " + response.message());
+                    callback.onFail(new Throwable("Error en la actualización"));
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<UserUpdateResponse> call, @NonNull Throwable t) {
+                Log.d(TAG, "Error with response: " + t);
+                callback.onFail(t);
+            }
+        });
+    }
+
+    public void deleteUser(int userId, OnApiRequestCallback<Void, Throwable> callback) {
+        ApiUserService apiUserService = ApiClient.getClient().create(ApiUserService.class);
+
+        apiUserService.deleteUser(getAuthToken(), userId).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                if (response.isSuccessful()) {
+                    callback.onSuccess(null);
+                } else {
+                    ApiError apiError = ErrorUtils.parseError(response);
+                    Log.d(TAG, "Error message: " + apiError.getMessage());
+                    for (ApiError.ErrorDetail errorDetail : apiError.getErrors()) {
+                        Log.d(TAG, "Error: " + errorDetail.getMsg());
+                    }
+                    Log.d(TAG, "Error with response: " + response.message());
+                    callback.onFail(new Throwable("Error al eliminar"));
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
                 Log.d(TAG, "Error with response: " + t);
                 callback.onFail(t);
             }

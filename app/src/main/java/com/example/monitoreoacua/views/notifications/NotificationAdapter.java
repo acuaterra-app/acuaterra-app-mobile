@@ -69,44 +69,45 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             viewHolder.titleTextView.setText(notification.getTitle());
             viewHolder.messageTextView.setText(notification.getMessage());
             
-            // Format and display date
             if (notification.getData() != null && notification.getData().getDateHour() != null) {
                 String formattedDate = DateUtils.formatDateForDisplay(notification.getData().getDateHour());
                 viewHolder.dateTextView.setText(formattedDate);
             } else {
                 viewHolder.dateTextView.setText("");
             }
-            
-            // Show indicator for unread notifications
-            // Show indicator for unread notifications
+
             if (notification.isUnread()) {
                 viewHolder.unreadIndicator.setVisibility(View.VISIBLE);
                 
-                // Get message type or use default
                 String messageType = "info";
                 if (notification.getData() != null && 
-                    notification.getData().getMetaData() != null && 
-                    notification.getData().getMetaData().containsKey("messageType")) {
-                    messageType = String.valueOf(notification.getData().getMetaData().get("messageType"));
+                    notification.getData().getMetaData() != null) {
+                    if (notification.getData().getMetaData().containsKey("sensorType")) {
+                        messageType = "error";
+                    } else if (notification.getData().getMetaData().containsKey("messageType")) {
+                        messageType = String.valueOf(notification.getData().getMetaData().get("messageType"));
+                    }
                 }
                 
-                // Apply appropriate color to the unread indicator based on message type
                 NotificationStyleUtils.applyUnreadIndicatorColor(viewHolder.unreadIndicator, messageType);
             } else {
                 viewHolder.unreadIndicator.setVisibility(View.GONE);
             }
-            // Set click listener
             viewHolder.cardView.setOnClickListener(v -> {
                onClick(notification, viewHolder);
             });
             
-            // Set notification type icon based on metadata
-            if (notification.getData() != null && 
-                notification.getData().getMetaData() != null && 
-                notification.getData().getMetaData().containsKey("messageType")) {
+            if (notification.getData() != null &&
+                notification.getData().getMetaData() != null) {
                 
-                String messageType = String.valueOf(notification.getData().getMetaData().get("messageType"));
-                switch (Objects.requireNonNull(messageType)) {
+                String messageType = "info";
+                if (notification.getData().getMetaData().containsKey("sensorType")) {
+                    messageType = "error";
+                } else if (notification.getData().getMetaData().containsKey("messageType")) {
+                    messageType = String.valueOf(notification.getData().getMetaData().get("messageType"));
+                }
+                
+                switch (messageType.toLowerCase()) {
                     case "info":
                         viewHolder.typeIcon.setImageResource(R.drawable.ic_info);
                         break;
@@ -121,10 +122,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         break;
                 }
                 
-                // Set icon tint color based on notification type
                 viewHolder.typeIcon.setColorFilter(NotificationStyleUtils.getTextColor(messageType));
                 
-                // Apply styling to card and text views based on notification type
                 NotificationStyleUtils.applyStyleToCardView(viewHolder.cardView, messageType);
                 NotificationStyleUtils.applyTextColor(messageType, 
                     viewHolder.titleTextView, viewHolder.messageTextView, viewHolder.dateTextView);
@@ -216,7 +215,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 if (oldItem == null || newItem == null) {
                     return false;
                 }
-                
+
                 // Compare by ID or unique identifier
                 // Since ID is an integer in NotificationData class, compare directly
                 return oldItem.getData() != null && newItem.getData() != null && 
