@@ -61,7 +61,8 @@
             android:exported="false" />
         <activity
             android:name=".views.MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -74,13 +75,14 @@
         </activity>
         <activity
             android:name=".views.farms.farm.modules.ListModulesActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan|adjustResize"/>
         <activity
             android:name=".views.farms.farm.modules.ViewModuleActivity"
             android:exported="false"
             android:parentActivityName=".views.farms.farm.modules.ListModulesActivity" />
         <activity
-            android:name=".views.farms.farm.FarmDetailsFragmentActivity"
+            android:name=".views.farms.farm.FarmDetailsActivity"
             android:exported="true"
             android:launchMode="singleTop">
             <intent-filter>

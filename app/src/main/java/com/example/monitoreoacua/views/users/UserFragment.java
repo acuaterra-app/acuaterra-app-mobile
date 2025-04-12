@@ -73,19 +73,6 @@ public class UserFragment extends Fragment implements MyUserRecyclerViewAdapter.
         adapter = new MyUserRecyclerViewAdapter(this);
         recyclerView.setAdapter(adapter);
 
-        FloatingActionButton fab = view.findViewById(R.id.register_user_fragment);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Fragment registerUserFragment = RegisterUserFragment.newInstance(null, 0);
-                requireActivity().getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
-                        .replace(R.id.fragmentContainer, registerUserFragment)
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
-
         fetchUsers();
 
         return view;
