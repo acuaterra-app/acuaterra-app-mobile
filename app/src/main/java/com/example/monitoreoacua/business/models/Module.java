@@ -82,7 +82,6 @@ public class Module extends BaseRequest implements Serializable {
     @Override
     public String toString() {
         return "Module{" +
-                "id=" + id +
                 ", name='" + name + '\'' +
                 ", location='" + location + '\'' +
                 ", latitude='" + latitude + '\'' +

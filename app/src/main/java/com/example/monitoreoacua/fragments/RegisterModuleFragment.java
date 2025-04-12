@@ -250,8 +250,8 @@ public class RegisterModuleFragment extends Fragment {
         Log.d(TAG, "Farm ID: " + idFarm);
 
         List<Integer> users = new ArrayList<>();
-        users.add(41);
-        users.add(42);
+        users.add(58); //58, 59, 60
+        users.add(59);
 
         // Create the module using the full constructor
         Module module = new Module(
