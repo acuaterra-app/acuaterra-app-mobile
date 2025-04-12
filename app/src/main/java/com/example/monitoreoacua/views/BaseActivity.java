@@ -39,16 +39,23 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
-        setupEdgeToEdgeDisplay();
-        loadTopBarFragment();
-        loadNavigationBarFragment();
-        setActivityTitle(getActivityTitle());
         
-        if (savedInstanceState == null) {
-            loadInitialFragment();
-        }
-
-        fetchNotifications();
+        // Wait for the layout to be fully inflated before loading fragments
+        final View rootView = findViewById(android.R.id.content);
+        rootView.post(() -> {
+            loadTopBarFragment();
+            loadNavigationBarFragment();
+            setActivityTitle(getActivityTitle());
+            
+            if (savedInstanceState == null) {
+                loadInitialFragment();
+            }
+            
+            // Setup edge-to-edge display after fragments are loaded
+            setupEdgeToEdgeDisplay();
+            
+            fetchNotifications();
+        });
     }
     
     @Override
@@ -98,17 +105,35 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
 
     private void setupEdgeToEdgeDisplay() {
         View decorView = getWindow().getDecorView();
-        decorView.setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        // Ensure the edge-to-edge display doesn't interfere with our fragment containers
+        View topBarContainer = findViewById(R.id.topBarContainer);
+        View navBarContainer = findViewById(R.id.navBarContainer);
+        
+        if (topBarContainer != null && navBarContainer != null) {
+            Log.d(TAG, "Fragment containers found, setting up edge-to-edge display");
+            decorView.setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        } else {
+            Log.e(TAG, "Fragment containers not found, skipping edge-to-edge setup");
+        }
     }
     
     protected void loadNavigationBarFragment() {
-        navigationBarFragment = NavigationBarFragment.newInstance();
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.navBarContainer, navigationBarFragment)
-                .commit();
+        try {
+            if (findViewById(R.id.navBarContainer) != null) {
+                navigationBarFragment = NavigationBarFragment.newInstance();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.navBarContainer, navigationBarFragment)
+                        .commitAllowingStateLoss();
+                Log.d(TAG, "NavigationBarFragment loaded successfully");
+            } else {
+                Log.e(TAG, "navBarContainer view not found!");
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error loading NavigationBarFragment: " + e.getMessage(), e);
+        }
     }
     
     protected void loadTopBarFragment() {

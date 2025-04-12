@@ -31,7 +31,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Perfil de modulo"
+                    android:text="Perfíl de Modulo"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:layout_marginBottom="8dp"/>
@@ -102,7 +102,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Especies de pez: "
+                        android:text="Especie de pez: "
                         android:textStyle="bold"/>
 
                     <TextView
@@ -140,7 +140,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Edad de los peces: "
+                        android:text="Edad de peces: "
                         android:textStyle="bold"/>
 
                     <TextView

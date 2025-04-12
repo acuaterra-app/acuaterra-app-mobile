@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/logout_fragment_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/logingbackground"
+    tools:context=".fragments.LogoutFragment">
+
+    <!-- Contenedor principal en horizontal -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="24dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.9">
+
+        <!-- Columna izquierda: Icono + Mensaje -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/imageViewWarning"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/logoacua"
+                android:contentDescription="Icono de advertencia"
+                android:layout_marginBottom="24dp" />
+
+            <TextView
+                android:id="@+id/textViewConfirmLogout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="¿Estás seguro de que deseas cerrar sesión?"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:lineSpacingExtra="4sp"
+                android:layout_marginBottom="16dp"/>
+        </LinearLayout>
+
+        <!-- Columna derecha: Botones -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginStart="32dp">
+
+            <Button
+                android:id="@+id/buttonConfirmLogout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cerrar sesión"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/colorAccent"
+                android:layout_marginBottom="24dp"/>
+
+            <Button
+                android:id="@+id/buttonCancelLogout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cancelar"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/colorPrimary"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
