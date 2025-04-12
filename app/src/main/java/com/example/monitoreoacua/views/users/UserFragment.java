@@ -77,7 +77,7 @@ public class UserFragment extends Fragment implements MyUserRecyclerViewAdapter.
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment registerUserFragment = new RegisterUserFragment();
+                Fragment registerUserFragment = RegisterUserFragment.newInstance(null, 0);
                 requireActivity().getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
                         .replace(R.id.fragmentContainer, registerUserFragment)
@@ -109,7 +109,7 @@ public class UserFragment extends Fragment implements MyUserRecyclerViewAdapter.
     }
 
     private void editUser(User user) {
-        RegisterUserFragment fragment = RegisterUserFragment.newInstance(user);
+        RegisterUserFragment fragment = RegisterUserFragment.newInstance(user, user.getModuleId());
         requireActivity().getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
                 .replace(R.id.fragmentContainer, fragment)

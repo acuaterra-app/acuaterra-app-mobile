@@ -210,6 +210,13 @@
                     tools:listitem="@layout/recycle_view_item_sensor"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/id_create_user_fab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            app:srcCompat="@drawable/editarloging" />
     </LinearLayout>
     </ScrollView>
     

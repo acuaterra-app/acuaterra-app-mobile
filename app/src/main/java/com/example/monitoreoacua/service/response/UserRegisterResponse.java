@@ -10,7 +10,7 @@ public class UserRegisterResponse {
     private String message;
 
     @SerializedName("data")
-    private User data;
+    private List<User> data;
 
     @SerializedName("errors")
     private List<ApiError.ErrorDetail> errors;
@@ -27,11 +27,11 @@ public class UserRegisterResponse {
     }
 
     public User getData() {
-        return data;
+        return data.get(0);
     }
 
     public void setData(User data) {
-        this.data = data;
+        this.data.add(data);
     }
 
     public List<ApiError.ErrorDetail> getErrors() {

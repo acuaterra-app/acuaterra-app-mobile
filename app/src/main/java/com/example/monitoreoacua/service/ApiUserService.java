@@ -21,13 +21,13 @@ public interface ApiUserService {
             @Header("authorization") String token
     );
 
-    @POST("api/v2/shared/users")
+    @POST("api/v2/owner/users")
     Call<UserRegisterResponse> register( @Header("authorization") String token, @Body UserRequest user);
 
-    @PUT("api/v2/shared/users/{id}")
+    @PUT("api/v2/owner/users/{id}")
     Call<UserUpdateResponse> updateUser(@Header("authorization") String token, @Path("id") int userId, @Body UserRequest user);
 
-    @DELETE("api/v2/admin/users/{id}")
+    @DELETE("api/v2/owner/users/{id}")
     Call<Void> deleteUser(@Header("Authorization") String token, @Path("id") int userId);
 
 

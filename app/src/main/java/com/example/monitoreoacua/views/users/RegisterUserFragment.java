@@ -34,6 +34,7 @@ public class RegisterUserFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private User user;
+    private int moduleId;
 
 
     public RegisterUserFragment() {
@@ -41,10 +42,12 @@ public class RegisterUserFragment extends Fragment {
     }
 
     // TODO: Rename and change types and number of parameters
-    public static RegisterUserFragment newInstance(User user) {
+    public static RegisterUserFragment newInstance(User user, int moduleId) {
         RegisterUserFragment fragment = new RegisterUserFragment();
         Bundle args = new Bundle();
 
+        args.putInt("module_id", moduleId);
+        fragment.setArguments(args);
         args.putParcelable("user", user);
         fragment.setArguments(args);
         return fragment;
@@ -55,6 +58,7 @@ public class RegisterUserFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             user = getArguments().getParcelable("user");
+            moduleId = getArguments().getInt("module_id");
         }
     }
 
@@ -66,7 +70,6 @@ public class RegisterUserFragment extends Fragment {
         nameEditText = view.findViewById(R.id.nameEditText);
         emailEditText = view.findViewById(R.id.emailEditText);
         dniEditText = view.findViewById(R.id.dniEditText);
-        roleEditText = view.findViewById(R.id.roleEditText);
         addressEditText = view.findViewById(R.id.addressEditText);
         contactEditText = view.findViewById(R.id.contactEditText);
         Button registerButton = view.findViewById(R.id.registerButton);
@@ -83,11 +86,10 @@ public class RegisterUserFragment extends Fragment {
             String name = Objects.requireNonNull(nameEditText.getText()).toString();
             String email = Objects.requireNonNull(emailEditText.getText()).toString();
             String dni = Objects.requireNonNull(dniEditText.getText()).toString();
-            String role = Objects.requireNonNull(roleEditText.getText()).toString();
             String address = Objects.requireNonNull(addressEditText.getText()).toString();
             String contact = Objects.requireNonNull(contactEditText.getText()).toString();
 
-            UserRequest userRequest = new UserRequest(name, email, dni, role, address, contact);
+            UserRequest userRequest = new UserRequest(name, email, dni, moduleId, address, contact);
 
             if (user == null) {
                 registerUser(userRequest);
@@ -104,14 +106,12 @@ public class RegisterUserFragment extends Fragment {
         nameEditText.setText(user.getName());
         emailEditText.setText(user.getEmail());
         dniEditText.setText(user.getDni());
-        roleEditText.setText(user.getRole().getName());
         addressEditText.setText(user.getAddress());
         contactEditText.setText(user.getContact());
     }
 
     private void updateUser(int userId, UserRequest userRequest) {
         RegisterUserRequest request = new RegisterUserRequest();
-        userRequest.setId_rol("3");
         request.updateUser(userId, userRequest, new OnApiRequestCallback<UserUpdateResponse, Throwable>() {
             @Override
             public void onSuccess(UserUpdateResponse response) {
@@ -128,7 +128,6 @@ public class RegisterUserFragment extends Fragment {
 
     private void registerUser(UserRequest userRequest) {
         RegisterUserRequest request = new RegisterUserRequest();
-        userRequest.setId_rol("3");
         request.registerUser(userRequest, new OnApiRequestCallback<UserRegisterResponse, Throwable>() {
             @Override
             public void onSuccess(UserRegisterResponse response) {

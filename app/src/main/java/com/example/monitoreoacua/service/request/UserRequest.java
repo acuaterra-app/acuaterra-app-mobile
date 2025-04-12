@@ -5,15 +5,15 @@ public class UserRequest extends BaseRequest {
    private String name;
    private String email;
    private String dni;
-   private String id_rol;
+   private int id_module;
    private String address;
    private String contact;
 
-   public UserRequest(String name, String email, String dni, String id_rol, String address, String contact) {
+   public UserRequest(String name, String email, String dni, int idModule, String address, String contact) {
        this.name = name;
        this.email = email;
        this.dni = dni;
-       this.id_rol = id_rol;
+       this.id_module = idModule;
        this.address = address;
        this.contact = contact;
    }
@@ -43,12 +43,12 @@ public class UserRequest extends BaseRequest {
        this.dni = dni;
    }
 
-   public String getId_rol() {
-       return id_rol;
+   public int getId_module() {
+       return id_module;
    }
 
-   public void setId_rol(String id_rol) {
-       this.id_rol = id_rol;
+   public void setId_module(int id_module) {
+       this.id_module = id_module;
    }
 
    public String getAddress() {
