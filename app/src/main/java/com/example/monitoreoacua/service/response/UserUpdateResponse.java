@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class UserRegisterResponse {
+public class UserUpdateResponse {
     @SerializedName("message")
     private String message;
 
@@ -26,12 +26,12 @@ public class UserRegisterResponse {
         this.message = message;
     }
 
-    public User getData() {
-        return data.get(0);
+    public List<User> getData() {
+        return data;
     }
 
-    public void setData(User data) {
-        this.data.add(data);
+    public void setData(List<User> data) {
+        this.data = data;
     }
 
     public List<ApiError.ErrorDetail> getErrors() {
