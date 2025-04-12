@@ -1,6 +1,9 @@
 package com.example.monitoreoacua.business.models;
 
+
 import com.example.monitoreoacua.service.request.BaseRequest;
+import android.os.Parcelable;
+import com.example.monitoreoacua.business.models.auth.AuthUser;
 import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
@@ -120,4 +123,37 @@ public class Module extends BaseRequest implements Serializable {
     public Farm getFarm() { return farm; }
     public List<Sensor> getSensors() { return sensors; }
     public void setSensors(List<Sensor> sensors) { this.sensors = sensors; }
+
 }
+
+
+    public static final Parcelable.Creator<Module> CREATOR = new Parcelable.Creator<Module>() {
+        @Override
+        public Module createFromParcel(android.os.Parcel in) {
+            return new Module(in);
+        }
+
+        @Override
+        public Module[] newArray(int size) {
+            return new Module[size];
+        }
+    };
+
+    protected Module(android.os.Parcel in) {
+        id = in.readInt();
+        name = in.readString();
+        location = in.readString();
+        latitude = in.readString();
+        longitude = in.readString();
+        speciesFish = in.readString();
+        fishQuantity = in.readString();
+        fishAge = in.readString();
+        dimensions = in.readString();
+        idFarm = in.readInt();
+        createdByUserId = in.readInt();
+        createdAt = in.readString();
+        updatedAt = in.readString();
+        deletedAt = in.readString();
+    }
+}
+
