@@ -1,6 +1,7 @@
 package com.example.monitoreoacua.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,7 +27,9 @@ import com.example.monitoreoacua.service.ApiClient;
 import com.example.monitoreoacua.service.ApiModulesService;
 import com.example.monitoreoacua.service.request.ListModulesRequest;
 import com.example.monitoreoacua.service.response.ListModuleResponse;
+import com.example.monitoreoacua.views.farms.farm.modules.ListModulesActivity;
 import com.example.monitoreoacua.views.farms.farm.modules.ModuleAdapter;
+import com.example.monitoreoacua.views.farms.farm.modules.RegisterModulesActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,8 +58,10 @@ public class ListModulesFragment extends Fragment implements ModuleAdapter.OnMod
     public interface OnModuleInteractionListener {
         void onModuleSelected(Module module);
         void onRegisterNewModule();
+        void navigateToRegisterModules(Farm farm);
     }
-    
+
+
     public static ListModulesFragment newInstance(String farmId) {
         ListModulesFragment fragment = new ListModulesFragment();
         Bundle args = new Bundle();

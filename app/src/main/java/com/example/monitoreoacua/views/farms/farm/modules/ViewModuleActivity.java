@@ -18,14 +18,23 @@ import com.example.monitoreoacua.views.BaseActivity;
  */
 public class ViewModuleActivity extends BaseActivity implements ViewModuleFragment.OnModuleSensorListener {
     private static final String TAG = "ViewModuleActivityTag";
-    private static final String ARG_MODULE_ID = "module_id";
+    public static final String ARG_MODULE_ID = "module_id";
     private int moduleId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Get the module ID from the intent
         moduleId = getIntent().getIntExtra(ARG_MODULE_ID, -1);
-        Log.d(TAG, "ViewModuleActivity received module ID: " + moduleId);
+        
+        // Validate the module ID
+        if (moduleId == -1) {
+            Log.e(TAG, "Invalid module ID received");
+            Toast.makeText(this, "Error: ID de módulo inválido", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+        
+        Log.d(TAG, "ViewModuleActivity received valid module ID: " + moduleId);
         
         super.onCreate(savedInstanceState);
     }
@@ -33,6 +42,8 @@ public class ViewModuleActivity extends BaseActivity implements ViewModuleFragme
     @Override
     protected String getActivityTitle() {
         return "Detalles del Módulo";
+        return "Modulo";
+
     }
 
     @Override
