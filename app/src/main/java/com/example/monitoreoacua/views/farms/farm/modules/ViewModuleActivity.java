@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import com.example.monitoreoacua.business.models.Sensor;
 import com.example.monitoreoacua.fragments.ViewModuleFragment;
 import com.example.monitoreoacua.views.BaseActivity;
+import com.example.monitoreoacua.views.measurements.SensorMeasurementsActivity;
 
 /**
  * Activity for displaying module details.
@@ -20,6 +21,8 @@ public class ViewModuleActivity extends BaseActivity implements ViewModuleFragme
     private static final String TAG = "ViewModuleActivityTag";
     public static final String ARG_MODULE_ID = "module_id";
     private int moduleId;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +61,12 @@ public class ViewModuleActivity extends BaseActivity implements ViewModuleFragme
     @Override
     public void onSensorClick(Sensor sensor) {
         // Handle sensor click event
-        Toast.makeText(this, "Sensor: " + sensor.getName(), Toast.LENGTH_SHORT).show();
-        // TODO: Navigate to sensor details screen
+        Toast.makeText(this, "Abriendo mediciones de: " + sensor.getName(), Toast.LENGTH_SHORT).show();
+        
+        // Navigate to SensorMeasurementsActivity
+        Intent intent = new Intent(this, SensorMeasurementsActivity.class);
+        intent.putExtra("SENSOR_ID", sensor.getId());
+        intent.putExtra("SENSOR_NAME", sensor.getName());
+        startActivity(intent);
     }
 }

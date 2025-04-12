@@ -82,7 +82,12 @@
             android:exported="false"
             android:parentActivityName=".views.farms.farm.modules.ListModulesActivity" />
         <activity
-            android:name=".views.farms.farm.FarmDetailsActivity"
+
+            android:name=".views.measurements.SensorMeasurementsActivity"
+            android:exported="false"
+            android:parentActivityName=".views.farms.farm.modules.ViewModuleActivity" />
+        <activity
+            android:name=".views.farms.farm.FarmDetailsFragmentActivity"
             android:exported="true"
             android:launchMode="singleTop">
             <intent-filter>
