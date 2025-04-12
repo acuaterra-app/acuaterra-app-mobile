@@ -237,7 +237,7 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
                     module = result;
                     showLoading(false);
                     updateUI();
-                    Log.d(TAG, "Module loaded successfully: " + result.getName());
+                    Log.d(TAG, "Modulo cargado exitosamente: " + result.getName());
                 }
             }
 
@@ -245,7 +245,7 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
             public void onFail(Throwable error) {
                 if (isAdded() && getContext() != null) {
                     showLoading(false);
-                    Log.e(TAG, "Error loading module", error);
+                    Log.e(TAG, "Error cargando modulo", error);
                 }
             }
         }, moduleId);
