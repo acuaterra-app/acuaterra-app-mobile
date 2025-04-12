@@ -87,7 +87,7 @@
 
                 <!-- Campo 3: Latitud -->
                 <TextView
-                    android:id="@+id/tvFishType"
+                    android:id="@+id/tvLatitude"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Latitud"
@@ -96,7 +96,7 @@
                     android:layout_marginTop="16dp"/>
 
                 <EditText
-                    android:id="@+id/etFishType"
+                    android:id="@+id/etLatitude"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@color/colorBackground"
@@ -109,7 +109,7 @@
 
                 <!-- Campo 4: Longitud -->
                 <TextView
-                    android:id="@+id/tvFishCount"
+                    android:id="@+id/tvLongitude"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Longitud"
@@ -118,7 +118,7 @@
                     android:layout_marginTop="16dp"/>
 
                 <EditText
-                    android:id="@+id/etFishCount"
+                    android:id="@+id/etLongitude"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@color/colorBackground"
@@ -131,7 +131,7 @@
 
                 <!-- Campo 5: Especie de pez -->
                 <TextView
-                    android:id="@+id/tvGrowthTime"
+                    android:id="@+id/tvFishType"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Especie de pez"
@@ -140,7 +140,7 @@
                     android:layout_marginTop="16dp"/>
 
                 <EditText
-                    android:id="@+id/etGrowthTime"
+                    android:id="@+id/etFishType"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@color/colorBackground"

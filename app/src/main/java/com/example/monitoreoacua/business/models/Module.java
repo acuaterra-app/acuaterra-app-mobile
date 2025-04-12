@@ -39,8 +39,6 @@ public class Module extends BaseRequest implements Serializable {
     @SerializedName("id_farm")
     private int idFarm;
 
-    @SerializedName("created_by_user_id")
-    private int createdByUserId;
 
     // Agregar lista de IDs de usuarios
     private List<Integer> users;
@@ -70,7 +68,7 @@ public class Module extends BaseRequest implements Serializable {
     // Constructor con campos del request API
     public Module(String name, String location, String latitude, String longitude,
                   String speciesFish, String fishQuantity, String fishAge,
-                  String dimensions, int idFarm, int createdByUserId, List<Integer> users) {
+                  String dimensions, int idFarm, List<Integer> users) {
         this.name = name;
         this.location = location;
         this.latitude = latitude;
@@ -80,11 +78,25 @@ public class Module extends BaseRequest implements Serializable {
         this.fishAge = fishAge;
         this.dimensions = dimensions;
         this.idFarm = idFarm;
-        this.createdByUserId = createdByUserId;
         this.users = users;
     }
 
-
+    @Override
+    public String toString() {
+        return "Module{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", location='" + location + '\'' +
+                ", latitude='" + latitude + '\'' +
+                ", longitude='" + longitude + '\'' +
+                ", speciesFish='" + speciesFish + '\'' +
+                ", fishQuantity='" + fishQuantity + '\'' +
+                ", fishAge='" + fishAge + '\'' +
+                ", dimensions='" + dimensions + '\'' +
+                ", users=" + users +
+                ", idFarm=" + idFarm +
+                '}';
+    }
 
     // Getter y Setter para users
     public List<Integer> getUsers() {
@@ -104,7 +116,6 @@ public class Module extends BaseRequest implements Serializable {
     public String getFishAge() { return fishAge; }
     public String getDimensions() { return dimensions; }
     public int getIdFarm() { return idFarm; }
-    public int getCreatedByUserId() { return createdByUserId; }
     public String getCreatedAt() { return createdAt; }
     public String getUpdatedAt() { return updatedAt; }
     public String getDeletedAt() { return deletedAt; }
