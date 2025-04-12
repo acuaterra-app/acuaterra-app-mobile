@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 /**
  * Represents a user in the system.
  */
@@ -34,7 +36,10 @@ public class User implements Parcelable {
     @SerializedName("contact")
     private String contact;
 
-    public User(int id, String name, String email, String dni, int idRol, Role role, String contact, String address) {
+    @SerializedName("assigned_modules")
+    private List<Module> modules;
+
+    public User(int id, String name, String email, String dni, int idRol, Role role, String contact, String address, List<Module> modules) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -43,6 +48,7 @@ public class User implements Parcelable {
         this.role = role;
         this.contact = contact;
         this.address = address;
+        this.modules = modules;
     }
 
     protected User(Parcel in) {
@@ -54,6 +60,7 @@ public class User implements Parcelable {
         role = in.readParcelable(Role.class.getClassLoader());
         contact = in.readString();
         address = in.readString();
+        modules =  in.createTypedArrayList(Module.CREATOR);
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -67,6 +74,8 @@ public class User implements Parcelable {
             return new User[size];
         }
     };
+
+
 
     public int getId() {
         return id;
@@ -98,6 +107,10 @@ public class User implements Parcelable {
 
     public Role getRole() {
         return role;
+    }
+
+    public int getModuleId() {
+        return this.modules.get(0).getId();
     }
 
     // Parcelable methods

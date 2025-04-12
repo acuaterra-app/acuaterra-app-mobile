@@ -10,7 +10,7 @@ import com.example.monitoreoacua.utils.ApplicationContextProvider;
  * Contains a flag to determine if the request requires authentication.
  */
 public class BaseRequest {
-    
+
     private boolean requiresAuthentication;
     private static final String PREF_NAME = "user_prefs";
 
@@ -36,4 +36,3 @@ public class BaseRequest {
         return sharedPreferences.getString("token", null);
     }
 }
-

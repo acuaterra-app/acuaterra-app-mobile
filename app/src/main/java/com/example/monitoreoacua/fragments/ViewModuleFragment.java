@@ -25,6 +25,8 @@ import com.example.monitoreoacua.business.models.Sensor;
 import com.example.monitoreoacua.interfaces.OnApiRequestCallback;
 import com.example.monitoreoacua.service.request.GetModuleRequest;
 import com.example.monitoreoacua.views.farms.farm.modules.SensorAdapter;
+import com.example.monitoreoacua.views.users.RegisterUserFragment;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -109,6 +111,19 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
         if (btnRetry != null) {
             btnRetry.setOnClickListener(v -> loadModuleData());
         }
+
+        FloatingActionButton fab = view.findViewById(R.id.id_create_user_fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment registerUserFragment = RegisterUserFragment.newInstance(null, moduleId);
+                requireActivity().getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
+                        .replace(R.id.fragmentContainer, registerUserFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
 
         return view;
     }
