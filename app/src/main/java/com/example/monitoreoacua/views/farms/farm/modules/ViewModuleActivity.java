@@ -46,7 +46,6 @@ public class ViewModuleActivity extends BaseActivity implements ViewModuleFragme
     protected String getActivityTitle() {
         return "Detalles del Módulo";
 
-
     }
 
     @Override
