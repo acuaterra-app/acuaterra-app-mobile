@@ -1,6 +1,7 @@
 package com.example.monitoreoacua.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,10 +18,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.monitoreoacua.R;
+import com.example.monitoreoacua.business.models.Farm;
 import com.example.monitoreoacua.business.models.Module;
 import com.example.monitoreoacua.business.models.Sensor;
 import com.example.monitoreoacua.interfaces.OnApiRequestCallback;
 import com.example.monitoreoacua.service.request.GetModuleRequest;
+import com.example.monitoreoacua.views.farms.farm.modules.RegisterModulesActivity;
 import com.example.monitoreoacua.views.farms.farm.modules.SensorAdapter;
 import com.example.monitoreoacua.views.users.RegisterUserFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -132,7 +135,7 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
 
         // Set up button click listeners
         btnEditModule.setOnClickListener(v -> {
-            //updateModule();
+            //navigateToUpdateModuleFragment();
         });
 
         btnDeleteModule.setOnClickListener(v -> {
@@ -280,12 +283,18 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
         }, moduleId);
     }
 
-    private void updateModule() {
-        //me va a llegar a actualizar el modulo en ResgisterModuleFragment
-        
-
+    private void navigateToUpdateModuleFragment(Module module){
+//
+//        @Override
+//        public void navigateToRegisterModules(Farm farm) {
+//            Intent intent = new Intent(this, RegisterModulesActivity.class);
+//            intent.putExtra("farm", farm);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//            startActivity(intent);
+//        }
 
     }
+
 
     private void deleteModule() {
         //me va a llegar a un cuadro donde me pregunta si esta seguro o no
