@@ -59,6 +59,7 @@ public class SupportFragment extends Fragment {
                 sendCorreo("soporte@acuaterratech.com", "Consulta de soporte", "Hola, necesito ayuda con...");
             }
         });
+        return view;
     }
 
     private void openWhatsApp(String numberPhone) {

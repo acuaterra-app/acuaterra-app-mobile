@@ -121,6 +121,7 @@ public class ListFarmsFragment extends Fragment {
         });
 
         buttonSortByDate.setOnClickListener(v -> sortFarmsByDate());
+        return view;
     }
 
     private void fetchFarms() {

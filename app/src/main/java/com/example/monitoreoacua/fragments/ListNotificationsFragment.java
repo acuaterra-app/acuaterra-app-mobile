@@ -174,6 +174,7 @@ public class ListNotificationsFragment extends Fragment {
 
         // Initial data load
         fetchNotifications();
+        return view;
     }
 
     private void fetchNotifications() {

@@ -2,7 +2,6 @@ package com.example.monitoreoacua.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,11 +9,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -59,6 +56,10 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
     private Button btnRetry;
     private TextView tvNoSensors;
 
+    private Button btnEditModule;
+    private Button btnDeleteModule;
+
+
     /**
      * Interface for handling sensor interactions.
      */
@@ -99,6 +100,10 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
         progressBar = view.findViewById(R.id.progress_bar);
         tvNoSensors = view.findViewById(R.id.tv_no_sensors);
 
+        btnEditModule = view.findViewById(R.id.btnEditModule);
+        btnDeleteModule = view.findViewById(R.id.btnDeleteModule);
+
+
         // Make sure progress bar is visible by default
         if (progressBar != null) {
             progressBar.setVisibility(View.VISIBLE);
@@ -123,6 +128,15 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
                         .addToBackStack(null)
                         .commit();
             }
+        });
+
+        // Set up button click listeners
+        btnEditModule.setOnClickListener(v -> {
+            //updateModule();
+        });
+
+        btnDeleteModule.setOnClickListener(v -> {
+            //deleteModule();
         });
 
         return view;
@@ -265,4 +279,17 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
             }
         }, moduleId);
     }
+
+    private void updateModule() {
+        //me va a llegar a actualizar el modulo en ResgisterModuleFragment
+        
+
+
+    }
+
+    private void deleteModule() {
+        //me va a llegar a un cuadro donde me pregunta si esta seguro o no
+    }
+
+
 }

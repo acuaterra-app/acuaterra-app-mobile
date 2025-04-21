@@ -83,6 +83,7 @@ public class FarmDetailsFragment extends Fragment {
         displayFarmDetails();
         
         setupClickListeners();
+        return view;
     }
 
     private void displayFarmDetails() {

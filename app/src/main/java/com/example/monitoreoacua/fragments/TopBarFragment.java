@@ -76,6 +76,7 @@ public class TopBarFragment extends Fragment {
         if (title != null && !title.isEmpty()) {
             setTitle(title);
         }
+        return view;
     }
 
     public void setTitle(String title) {

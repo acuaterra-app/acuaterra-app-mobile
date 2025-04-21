@@ -56,4 +56,51 @@ public class RegisterModuleRequest extends BaseRequest {
             }
         });
     }
+
+
+    /**
+     * Envía una solicitud para actualizar un módulo por su ID.
+     *
+     * @param moduleId El ID del módulo a actualizar.
+     * @param module   El objeto módulo con los datos actualizados.
+     * @param callback El callback para manejar éxito o fallo.
+     */
+    public void updateModule(int moduleId, Module module, OnApiRequestCallback<RegisterModuleResponse, Throwable> callback) {
+        ApiModulesService apiModulesService = ApiClient.getClient().create(ApiModulesService.class);
+
+        String token = getAuthToken();
+        Log.d(TAG, "Token recibido: " + token);
+        Log.d(TAG, "Actualizando módulo con ID: " + moduleId);
+        Log.d(TAG, "Datos del módulo: " + module.toString());
+
+        apiModulesService.updateModule(token, moduleId, module).enqueue(new Callback<RegisterModuleResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<RegisterModuleResponse> call, @NonNull Response<RegisterModuleResponse> response) {
+                if (response.isSuccessful()) {
+                    RegisterModuleResponse updateModuleResponse = response.body();
+                    Log.d(TAG, "Módulo actualizado exitosamente");
+                    callback.onSuccess(updateModuleResponse);
+                } else {
+                    ApiError apiError = ErrorUtils.parseError(response);
+                    Log.d(TAG, "Mensaje de error: " + apiError.getMessage());
+                    for (ApiError.ErrorDetail errorDetail : apiError.getErrors()) {
+                        Log.d(TAG, "Error: " + errorDetail.getMsg());
+                    }
+                    Log.d(TAG, "Error con la respuesta: " + response.message());
+                    callback.onFail(new Throwable("Falló la actualización del módulo"));
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<RegisterModuleResponse> call, @NonNull Throwable t) {
+                Log.d(TAG, "Fallo de la solicitud: " + t.getMessage(), t);
+                callback.onFail(t);
+            }
+        });
+    }
+
+
+
+
+
 }

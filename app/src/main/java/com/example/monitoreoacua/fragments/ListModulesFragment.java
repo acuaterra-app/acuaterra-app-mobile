@@ -108,6 +108,7 @@ public class ListModulesFragment extends Fragment implements ModuleAdapter.OnMod
         });
 
         fetchModules();
+        return view;
     }
     
     @Override

@@ -1,10 +1,12 @@
 package com.example.monitoreoacua.service;
 
 import retrofit2.Call;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import com.example.monitoreoacua.business.models.Module;
 import com.example.monitoreoacua.service.request.ListModulesRequest;
@@ -36,4 +38,18 @@ public interface ApiModulesService {
             @Header("Authorization") String token,
             @Path("id") int id
     );
+
+    @PUT("/api/v2/owner/modules/{id}")
+    Call<RegisterModuleResponse> updateModule(
+            @Header("Authorization") String token,
+            @Path("id") int id,
+            @Body Module module
+    );
+
+    @DELETE("/api/v2/owner/modules/{id}")
+    Call<Void> deleteModule(
+            @Header("Authorization") String token,
+            @Path("id") int id
+    );
+
 }

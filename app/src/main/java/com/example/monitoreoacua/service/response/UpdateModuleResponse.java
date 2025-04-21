@@ -1,16 +1,18 @@
 package com.example.monitoreoacua.service.response;
 
-
 import com.example.monitoreoacua.business.models.Module;
 import com.example.monitoreoacua.business.models.User;
 import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
-public class RegisterModuleResponse extends ApiResponse<RegisterModuleResponse.Data> {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class UpdateModuleResponse extends ApiResponse<UpdateModuleResponse.Data> {
 
     @SerializedName("statusCode")
     private int statusCode;
-
 
     public static class Data {
         @SerializedName("module")
@@ -20,8 +22,9 @@ public class RegisterModuleResponse extends ApiResponse<RegisterModuleResponse.D
         public User sensorUser;
     }
 
-    public List<Data> getResponseModuleData() {
+    public List<UpdateModuleResponse.Data> getResponseModuleData() {
         return getData();
     }
 
 }
+

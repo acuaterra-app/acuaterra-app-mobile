@@ -56,6 +56,7 @@ public class NavigationBarFragment extends Fragment {
         
         // Set up click listeners for navigation buttons
         setupNavigationClickListeners();
+        return view;
     }
 
     @Override

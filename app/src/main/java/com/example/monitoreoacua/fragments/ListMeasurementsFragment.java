@@ -107,6 +107,7 @@ public class ListMeasurementsFragment extends Fragment implements MeasurementsAd
 
         // Fetch measurements data
         fetchMeasurements();
+        return view;
     }
 
     @Override

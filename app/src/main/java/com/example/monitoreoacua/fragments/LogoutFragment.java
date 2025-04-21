@@ -67,6 +67,7 @@ public class LogoutFragment extends Fragment {
 
         buttonConfirmLogout.setOnClickListener(v -> logout());
         buttonCancelLogout.setOnClickListener(v -> cancelLogout());
+        return view;
     }
 
     private void logout() {
