@@ -12,10 +12,44 @@
 #   public *;
 #}
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# Preserve the line number information for debugging stack traces.
+-keepattributes SourceFile,LineNumberTable
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# Hide the original source file name.
+-renamesourcefileattribute SourceFile
+
+# Keep Parcelable implementations for all model classes
+-keepclassmembers class * implements android.os.Parcelable {
+    static ** CREATOR;
+}
+
+# Keep the Farm class and all its fields
+-keep class com.example.monitoreoacua.business.models.Farm { *; }
+
+# Keep all model classes
+-keep class com.example.monitoreoacua.business.models.** { *; }
+
+# Keep Serializable classes
+-keepclassmembers class * implements java.io.Serializable {
+    static final long serialVersionUID;
+    private static final java.io.ObjectStreamField[] serialPersistentFields;
+    !static !transient <fields>;
+    !private <fields>;
+    private void writeObject(java.io.ObjectOutputStream);
+    private void readObject(java.io.ObjectInputStream);
+    java.lang.Object writeReplace();
+    java.lang.Object readResolve();
+}
+
+# Keep all GSON annotations
+-keepattributes *Annotation*
+-keepattributes Signature
+-keep class com.google.gson.** { *; }
+
+# Keep Retrofit service interfaces
+-keep class com.example.monitoreoacua.service.** { *; }
+
+# Keep any classes used in bundles
+-keepclassmembers class * implements android.os.Parcelable {
+    public static final android.os.Parcelable$Creator CREATOR;
+}
