@@ -1,15 +1,16 @@
 package com.example.monitoreoacua.business.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.example.monitoreoacua.service.request.BaseRequest;
-import android.os.Parcelable;
-import com.example.monitoreoacua.business.models.auth.AuthUser;
 import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
 
-public class Module extends BaseRequest implements Serializable {
+public class Module extends BaseRequest implements Serializable, Parcelable {
     private static final long serialVersionUID = 1L;
+
     @SerializedName("id")
     private int id;
 
@@ -82,64 +83,8 @@ public class Module extends BaseRequest implements Serializable {
         this.users = users;
     }
 
-    @Override
-    public String toString() {
-        return "Module{" +
-                ", name='" + name + '\'' +
-                ", location='" + location + '\'' +
-                ", latitude='" + latitude + '\'' +
-                ", longitude='" + longitude + '\'' +
-                ", speciesFish='" + speciesFish + '\'' +
-                ", fishQuantity='" + fishQuantity + '\'' +
-                ", fishAge='" + fishAge + '\'' +
-                ", dimensions='" + dimensions + '\'' +
-                ", users=" + users +
-                ", idFarm=" + idFarm +
-                '}';
-    }
-
-    // Getter y Setter para users
-    public List<Integer> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<Integer> users) {
-        this.users = users;
-    }
-    public int getId() { return id; }
-    public String getName() { return name; }
-    public String getLocation() { return location; }
-    public String getLatitude() { return latitude; }
-    public String getLongitude() { return longitude; }
-    public String getSpeciesFish() { return speciesFish; }
-    public String getFishQuantity() { return fishQuantity; }
-    public String getFishAge() { return fishAge; }
-    public String getDimensions() { return dimensions; }
-    public int getIdFarm() { return idFarm; }
-    public String getCreatedAt() { return createdAt; }
-    public String getUpdatedAt() { return updatedAt; }
-    public String getDeletedAt() { return deletedAt; }
-    public User getCreator() { return creator; }
-    public Farm getFarm() { return farm; }
-    public List<Sensor> getSensors() { return sensors; }
-    public void setSensors(List<Sensor> sensors) { this.sensors = sensors; }
-
-
-
-
-    public static final Parcelable.Creator<Module> CREATOR = new Parcelable.Creator<Module>() {
-        @Override
-        public Module createFromParcel(android.os.Parcel in) {
-            return new Module(in);
-        }
-
-        @Override
-        public Module[] newArray(int size) {
-            return new Module[size];
-        }
-    };
-
-    protected Module(android.os.Parcel in) {
+    // Constructor Parcelable
+    protected Module(Parcel in) {
         id = in.readInt();
         name = in.readString();
         location = in.readString();
@@ -153,6 +98,65 @@ public class Module extends BaseRequest implements Serializable {
         createdAt = in.readString();
         updatedAt = in.readString();
         deletedAt = in.readString();
+        // Nota: los objetos complejos como creator, farm, sensors, users pueden requerir Parcelable adicional o manejo especial si necesitas pasarlos también.
     }
-}
 
+    public static final Creator<Module> CREATOR = new Creator<Module>() {
+        @Override
+        public Module createFromParcel(Parcel in) {
+            return new Module(in);
+        }
+
+        @Override
+        public Module[] newArray(int size) {
+            return new Module[size];
+        }
+    };
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(name);
+        dest.writeString(location);
+        dest.writeString(latitude);
+        dest.writeString(longitude);
+        dest.writeString(speciesFish);
+        dest.writeString(fishQuantity);
+        dest.writeString(fishAge);
+        dest.writeString(dimensions);
+        dest.writeInt(idFarm);
+        dest.writeString(createdAt);
+        dest.writeString(updatedAt);
+        dest.writeString(deletedAt);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    // Getters y Setters
+    public int getId() { return id; }
+    public String getName() { return name; }
+    public String getLocation() { return location; }
+    public String getLatitude() { return latitude; }
+    public String getLongitude() { return longitude; }
+    public String getSpeciesFish() { return speciesFish; }
+    public String getFishQuantity() { return fishQuantity; }
+    public String getFishAge() { return fishAge; }
+    public String getDimensions() { return dimensions; }
+    public int getIdFarm() { return idFarm; }
+    public List<Integer> getUsers() { return users; }
+    public void setUsers(List<Integer> users) { this.users = users; }
+    public String getCreatedAt() { return createdAt; }
+    public String getUpdatedAt() { return updatedAt; }
+    public String getDeletedAt() { return deletedAt; }
+    public User getCreator() { return creator; }
+    public Farm getFarm() { return farm; }
+    public List<Sensor> getSensors() { return sensors; }
+    public void setSensors(List<Sensor> sensors) { this.sensors = sensors; }
+
+
+
+
+}

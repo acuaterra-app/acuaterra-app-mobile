@@ -26,6 +26,9 @@ public class MyUserRecyclerViewAdapter extends RecyclerView.Adapter<MyUserRecycl
         this.onUserClickListener = onUserClickListener;
     }
     public void setUsers(List<User> users) {
+        if (users == null) {
+            users = new ArrayList<>();
+        }
         mValues = users;
         notifyDataSetChanged();
     }
