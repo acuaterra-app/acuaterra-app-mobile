@@ -8,7 +8,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.monitoreoacua.business.models.User;
-import com.example.monitoreoacua.views.users.placeholder.PlaceholderContent.PlaceholderItem;
 import com.example.monitoreoacua.databinding.FragmentItemBinding;
 
 import java.util.ArrayList;
@@ -27,6 +26,9 @@ public class MyUserRecyclerViewAdapter extends RecyclerView.Adapter<MyUserRecycl
         this.onUserClickListener = onUserClickListener;
     }
     public void setUsers(List<User> users) {
+        if (users == null) {
+            users = new ArrayList<>();
+        }
         mValues = users;
         notifyDataSetChanged();
     }

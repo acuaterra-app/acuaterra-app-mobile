@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -200,7 +200,7 @@
                     android:textAlignment="center"
                     android:padding="16dp"
                     android:visibility="gone" />
-                
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view_sensors"
                     android:layout_width="match_parent"
@@ -210,6 +210,20 @@
                     tools:listitem="@layout/recycle_view_item_sensor"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_users"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="3"
+            tools:listitem="@layout/recycler_view_item_user" />
+
+        <Button
+            android:id="@+id/btn_assign_users"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Asignar Usuarios"
+            android:layout_marginTop="16dp" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/id_create_user_fab"
@@ -219,14 +233,14 @@
             app:srcCompat="@drawable/editarloging" />
     </LinearLayout>
     </ScrollView>
-    
+
     <ProgressBar
         android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:visibility="gone" />
-        
+
     <TextView
         android:id="@+id/tv_error_message"
         android:layout_width="wrap_content"
@@ -237,7 +251,7 @@
         android:gravity="center"
         android:padding="16dp"
         android:visibility="gone" />
-        
+
     <Button
         android:id="@+id/btn_retry"
         android:layout_width="wrap_content"
@@ -246,5 +260,5 @@
         android:layout_marginTop="64dp"
         android:text="Reintentar"
         android:visibility="gone" />
-        
+
 </FrameLayout>

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 
 import com.example.monitoreoacua.business.models.Sensor;
 import com.example.monitoreoacua.fragments.ViewModuleFragment;
@@ -44,6 +45,7 @@ public class ViewModuleActivity extends BaseActivity implements ViewModuleFragme
     @Override
     protected String getActivityTitle() {
         return "Detalles del Módulo";
+
     }
 
     @Override

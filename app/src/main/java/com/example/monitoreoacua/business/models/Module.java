@@ -5,7 +5,6 @@ import android.os.Parcelable;
 
 import com.example.monitoreoacua.service.request.BaseRequest;
 import com.google.gson.annotations.SerializedName;
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -42,6 +41,8 @@ public class Module extends BaseRequest implements Serializable, Parcelable {
     @SerializedName("id_farm")
     private int idFarm;
 
+
+    // Agregar lista de IDs de usuarios
     private List<Integer> users;
 
     @SerializedName("createdAt")
@@ -66,7 +67,7 @@ public class Module extends BaseRequest implements Serializable, Parcelable {
         // Constructor vacío
     }
 
-    // Constructor para peticiones API
+    // Constructor con campos del request API
     public Module(String name, String location, String latitude, String longitude,
                   String speciesFish, String fishQuantity, String fishAge,
                   String dimensions, int idFarm, List<Integer> users) {
@@ -155,19 +156,7 @@ public class Module extends BaseRequest implements Serializable, Parcelable {
     public List<Sensor> getSensors() { return sensors; }
     public void setSensors(List<Sensor> sensors) { this.sensors = sensors; }
 
-    @Override
-    public String toString() {
-        return "Module{" +
-                "name='" + name + '\'' +
-                ", location='" + location + '\'' +
-                ", latitude='" + latitude + '\'' +
-                ", longitude='" + longitude + '\'' +
-                ", speciesFish='" + speciesFish + '\'' +
-                ", fishQuantity='" + fishQuantity + '\'' +
-                ", fishAge='" + fishAge + '\'' +
-                ", dimensions='" + dimensions + '\'' +
-                ", users=" + users +
-                ", idFarm=" + idFarm +
-                '}';
-    }
+
+
+
 }
