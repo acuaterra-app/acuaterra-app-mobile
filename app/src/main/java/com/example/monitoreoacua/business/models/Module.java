@@ -124,7 +124,7 @@ public class Module extends BaseRequest implements Serializable {
     public List<Sensor> getSensors() { return sensors; }
     public void setSensors(List<Sensor> sensors) { this.sensors = sensors; }
 
-}
+
 
 
     public static final Parcelable.Creator<Module> CREATOR = new Parcelable.Creator<Module>() {
@@ -150,7 +150,6 @@ public class Module extends BaseRequest implements Serializable {
         fishAge = in.readString();
         dimensions = in.readString();
         idFarm = in.readInt();
-        createdByUserId = in.readInt();
         createdAt = in.readString();
         updatedAt = in.readString();
         deletedAt = in.readString();

@@ -22,14 +22,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.monitoreoacua.R;
 import com.example.monitoreoacua.business.models.Module;
 import com.example.monitoreoacua.business.models.Sensor;
+import com.example.monitoreoacua.business.models.User;
 import com.example.monitoreoacua.interfaces.OnApiRequestCallback;
+import com.example.monitoreoacua.service.ApiClient;
+import com.example.monitoreoacua.service.ApiUserService;
 import com.example.monitoreoacua.service.request.GetModuleRequest;
+import com.example.monitoreoacua.service.request.ListUsersRequest;
+import com.example.monitoreoacua.service.response.ListUserResponse;
 import com.example.monitoreoacua.views.farms.farm.modules.SensorAdapter;
 import com.example.monitoreoacua.views.users.RegisterUserFragment;
+import com.example.monitoreoacua.views.users.UserCheckboxAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Fragment for displaying module details and its sensors.
@@ -44,6 +54,7 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
     private Module module;
     private OnModuleSensorListener listener;
     private boolean isLoading = false;
+    private UserCheckboxAdapter userCheckboxAdapter;
 
     // UI elements
     private TextView textModuleName;
@@ -111,6 +122,13 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
         if (btnRetry != null) {
             btnRetry.setOnClickListener(v -> loadModuleData());
         }
+
+        RecyclerView recyclerViewUsers = view.findViewById(R.id.recycler_view_users);
+        userCheckboxAdapter = new UserCheckboxAdapter();
+        recyclerViewUsers.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerViewUsers.setAdapter(userCheckboxAdapter);
+
+        fetchUsers();
 
         FloatingActionButton fab = view.findViewById(R.id.id_create_user_fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -264,5 +282,26 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
                 }
             }
         }, moduleId);
+    }
+    private void fetchUsers() {
+        progressBar.setVisibility(View.VISIBLE);
+        new ListUsersRequest().fetchUsers(new OnApiRequestCallback<List<User>, Throwable>() {
+            @Override
+            public void onSuccess(List<User> users) {
+                progressBar.setVisibility(View.GONE);
+                userCheckboxAdapter.setUsers(users);
+            }
+
+            @Override
+            public void onFail(Throwable t) {
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(getContext(), "Error de conexión: " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void loadAssignedUsers() {
+        // Implementación para cargar usuarios asignados
+        Toast.makeText(getContext(), "Cargar usuarios asignados aún no implementado", Toast.LENGTH_SHORT).show();
     }
 }

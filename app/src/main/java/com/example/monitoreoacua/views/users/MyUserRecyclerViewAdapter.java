@@ -8,7 +8,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.monitoreoacua.business.models.User;
-import com.example.monitoreoacua.views.users.placeholder.PlaceholderContent.PlaceholderItem;
 import com.example.monitoreoacua.databinding.FragmentItemBinding;
 
 import java.util.ArrayList;

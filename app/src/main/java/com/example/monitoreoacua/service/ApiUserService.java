@@ -1,5 +1,6 @@
 package com.example.monitoreoacua.service;
 
+import com.example.monitoreoacua.service.request.AssignUsersRequest;
 import com.example.monitoreoacua.service.request.UserRequest;
 import com.example.monitoreoacua.service.response.ListUserResponse;
 import com.example.monitoreoacua.service.response.UserRegisterResponse;
@@ -30,5 +31,11 @@ public interface ApiUserService {
     @DELETE("api/v2/owner/users/{id}")
     Call<Void> deleteUser(@Header("Authorization") String token, @Path("id") int userId);
 
+    @POST("api/v2/owner/modules/{moduleId}/monitors")
+    Call<Void> assignUsers(
+            @Header("Authorization") String token,
+            @Path("moduleId") int moduleId,
+            @Body AssignUsersRequest request
+    );
 
 }
