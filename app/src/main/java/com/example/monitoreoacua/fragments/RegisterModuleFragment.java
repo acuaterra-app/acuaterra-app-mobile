@@ -330,6 +330,7 @@ public class RegisterModuleFragment extends Fragment {
     /**
      * Closes the current fragment and returns to the previous screen.
      */
+
     private void closeFragment() {
         RegisterModuleFragment moduleFragment = new RegisterModuleFragment();
         assert getFragmentManager() != null;
