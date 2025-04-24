@@ -1,149 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/backgroundapp"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:orientation="horizontal"
+    android:paddingEnd="0dp">
 
-    <!-- TopBar fragment container -->
-    <FrameLayout
-        android:id="@+id/topBarContainer"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/sideNav"/>
-
-    <!-- Fragment container with safe insets -->
-    <FrameLayout
-        android:id="@+id/fragmentContainer"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_margin="16dp"
-        app:layout_constraintTop_toBottomOf="@id/topBarContainer"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/sideNav"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
-    <!-- Side navigation bar -->
+    <!-- Main content container -->
     <LinearLayout
-        android:id="@+id/sideNav"
-        android:layout_width="85dp"
-        android:layout_height="0dp"
-        android:background="@color/white"
-        android:elevation="6dp"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
         android:orientation="vertical"
-        android:gravity="center"
-        android:padding="10dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
 
-        <!-- Granjas button -->
-        <LinearLayout
+        <!-- TopBar fralgment container -->
+        <FrameLayout
+            android:id="@+id/topBarContainer"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp" />
 
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/navHome"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/icgranja"
-                android:background="@color/white"
-                android:contentDescription="Ir a Inicio"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Granjas"
-                android:textSize="10sp"
-                android:textColor="@color/colorDivider"/>
-        </LinearLayout>
-
-        <!-- Usuarios button -->
-        <LinearLayout
+        <!-- Fragment container with safe insets -->
+        <FrameLayout
+            android:id="@+id/fragmentContainer"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/navSettings"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:scaleType="centerInside"
-                android:background="@color/white"
-                android:src="@drawable/icusersmonit"
-                android:contentDescription="Usuarios"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Usuarios"
-                android:textSize="10sp"
-                android:textColor="@color/colorDivider"/>
-        </LinearLayout>
-
-        <!-- Soporte button -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/navProfile"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:scaleType="centerInside"
-                android:background="@color/white"
-                android:src="@drawable/icsoporte"
-                android:contentDescription="Soporte"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Soporte"
-                android:textSize="10sp"
-                android:textColor="@color/colorDivider"/>
-        </LinearLayout>
-
-        <!-- Cerrar sesión button -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/navCloseSesion"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:scaleType="centerInside"
-                android:background="@color/white"
-                android:src="@drawable/iccerrarsesion"
-                android:contentDescription="Cerrar sesión"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Cerrar sesión"
-                android:textSize="10sp"
-                android:textColor="@color/colorDivider"/>
-        </LinearLayout>
+            android:layout_height="match_parent" />
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
-
+    <!-- Navigation bar fragment container for landscape mode -->
+    <FrameLayout
+        android:id="@+id/navBarContainer"
+        android:layout_width="8dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.4"
+        android:background="@color/white"
+        android:elevation="6dp" />
+</LinearLayout>

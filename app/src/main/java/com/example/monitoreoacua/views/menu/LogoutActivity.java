@@ -8,6 +8,7 @@ import android.util.Log;
 import com.example.monitoreoacua.fragments.LogoutFragment;
 import com.example.monitoreoacua.fragments.LogoutFragment.OnLogoutInteractionListener;
 import com.example.monitoreoacua.views.BaseActivity;
+import com.example.monitoreoacua.views.farms.ListFarmsActivity;
 import com.example.monitoreoacua.views.login.LoginActivity;
 
 /**
@@ -48,14 +49,30 @@ public class LogoutActivity extends BaseActivity implements OnLogoutInteractionL
 
     @Override
     public void logout() {
-        if (!this.getClass().getSimpleName().equals("LogoutActivity")) {
-            Intent intent = new Intent(this, LogoutActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-        } else {
-            // We're already in LogoutActivity, no need to do anything
-            // The fragment is already showing the logout confirmation UI
-        }
+        // Already in LogoutActivity, just reload the initial fragment
+        loadInitialFragment();
+    }
+
+    @Override
+    public void navigateToHome() {
+        Intent intent = new Intent(this, ListFarmsActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish(); // Close the LogoutActivity after navigation
+    }
+
+    @Override
+    public void navigateToProfile() {
+        Intent intent = new Intent(this, SupportActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish(); // Close the LogoutActivity after navigation
+    }
+
+    @Override
+    public void navigateToSettings() {
+        super.navigateToSettings(); // This will call the implementation in BaseActivity to load UserFragment
+        finish(); // Close the LogoutActivity after navigation
     }
 }
 

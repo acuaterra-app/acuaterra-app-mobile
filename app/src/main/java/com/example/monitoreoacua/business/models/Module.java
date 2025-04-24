@@ -1,12 +1,16 @@
 package com.example.monitoreoacua.business.models;
 
-import com.example.monitoreoacua.business.models.auth.AuthUser;
-import com.google.gson.annotations.SerializedName;
+import android.os.Parcel;
+import android.os.Parcelable;
 
+import com.example.monitoreoacua.service.request.BaseRequest;
+import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
-public class Module implements Serializable {
+
+public class Module extends BaseRequest implements Serializable, Parcelable {
     private static final long serialVersionUID = 1L;
+
     @SerializedName("id")
     private int id;
 
@@ -37,8 +41,10 @@ public class Module implements Serializable {
     @SerializedName("id_farm")
     private int idFarm;
 
-    @SerializedName("created_by_user_id")
-    private int createdByUserId;
+
+
+    @SerializedName("users")
+    private List<User> users;
 
     @SerializedName("createdAt")
     private String createdAt;
@@ -57,6 +63,83 @@ public class Module implements Serializable {
 
     @SerializedName("sensors")
     private List<Sensor> sensors;
+
+    @SerializedName("user_ids")
+    private List<Integer> userIds;
+
+    public Module() {
+        // Constructor vacío
+    }
+
+    // Constructor con campos del request API
+    public Module(String name, String location, String latitude, String longitude,
+                  String speciesFish, String fishQuantity, String fishAge,
+                  String dimensions, int idFarm, List<Integer> users) {
+        this.name = name;
+        this.location = location;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.speciesFish = speciesFish;
+        this.fishQuantity = fishQuantity;
+        this.fishAge = fishAge;
+        this.dimensions = dimensions;
+        this.idFarm = idFarm;
+        this.userIds = users;
+    }
+
+    // Constructor Parcelable
+    protected Module(Parcel in) {
+        id = in.readInt();
+        name = in.readString();
+        location = in.readString();
+        latitude = in.readString();
+        longitude = in.readString();
+        speciesFish = in.readString();
+        fishQuantity = in.readString();
+        fishAge = in.readString();
+        dimensions = in.readString();
+        idFarm = in.readInt();
+        createdAt = in.readString();
+        updatedAt = in.readString();
+        deletedAt = in.readString();
+        // Nota: los objetos complejos como creator, farm, sensors, users pueden requerir Parcelable adicional o manejo especial si necesitas pasarlos también.
+    }
+
+    public static final Creator<Module> CREATOR = new Creator<Module>() {
+        @Override
+        public Module createFromParcel(Parcel in) {
+            return new Module(in);
+        }
+
+        @Override
+        public Module[] newArray(int size) {
+            return new Module[size];
+        }
+    };
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(name);
+        dest.writeString(location);
+        dest.writeString(latitude);
+        dest.writeString(longitude);
+        dest.writeString(speciesFish);
+        dest.writeString(fishQuantity);
+        dest.writeString(fishAge);
+        dest.writeString(dimensions);
+        dest.writeInt(idFarm);
+        dest.writeString(createdAt);
+        dest.writeString(updatedAt);
+        dest.writeString(deletedAt);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    // Getters y Setters
     public int getId() { return id; }
     public String getName() { return name; }
     public String getLocation() { return location; }
@@ -67,7 +150,10 @@ public class Module implements Serializable {
     public String getFishAge() { return fishAge; }
     public String getDimensions() { return dimensions; }
     public int getIdFarm() { return idFarm; }
-    public int getCreatedByUserId() { return createdByUserId; }
+    public List<User> getUsers() { return users; }
+    public void setUsers(List<User> users) { this.users = users; }
+    public List<Integer> getUserIds() { return userIds; }
+    public void setUserIds(List<Integer> userIds) { this.userIds = userIds; }
     public String getCreatedAt() { return createdAt; }
     public String getUpdatedAt() { return updatedAt; }
     public String getDeletedAt() { return deletedAt; }
@@ -75,4 +161,8 @@ public class Module implements Serializable {
     public Farm getFarm() { return farm; }
     public List<Sensor> getSensors() { return sensors; }
     public void setSensors(List<Sensor> sensors) { this.sensors = sensors; }
+
+
+
+
 }

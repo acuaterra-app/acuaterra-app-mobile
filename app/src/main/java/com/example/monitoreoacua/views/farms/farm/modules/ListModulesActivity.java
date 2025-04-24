@@ -24,7 +24,12 @@ public class ListModulesActivity extends BaseActivity implements ListModulesFrag
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Get farm object from intent
-        farm = getIntent().getParcelableExtra("farm", Farm.class);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            farm = getIntent().getParcelableExtra("farm", Farm.class);
+        } else {
+
+        farm = (Farm) getIntent().getParcelableExtra("farm");
+        }
         if (farm == null) {
             finish(); // Close activity if farm is missing
             return;
@@ -58,6 +63,14 @@ public class ListModulesActivity extends BaseActivity implements ListModulesFrag
         // Navigate to RegisterModulesActivity
         Intent intent = new Intent(this, RegisterModulesActivity.class);
         intent.putExtra("farm", farm);
+        startActivity(intent);
+    }
+    
+    @Override
+    public void navigateToRegisterModules(Farm farm) {
+        Intent intent = new Intent(this, RegisterModulesActivity.class);
+        intent.putExtra("farm", farm);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
     

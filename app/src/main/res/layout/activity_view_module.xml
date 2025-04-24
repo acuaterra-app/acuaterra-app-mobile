@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -31,7 +31,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Module Details"
+                    android:text="Perfíl de Modulo"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:layout_marginBottom="8dp"/>
@@ -45,7 +45,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Name: "
+                        android:text="Nombre: "
                         android:textStyle="bold"/>
 
                     <TextView
@@ -64,7 +64,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Location: "
+                        android:text="Ubicación: "
                         android:textStyle="bold"/>
 
                     <TextView
@@ -83,7 +83,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Coordinates: "
+                        android:text="Coordenadas: "
                         android:textStyle="bold"/>
 
                     <TextView
@@ -102,7 +102,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Species: "
+                        android:text="Especie de pez: "
                         android:textStyle="bold"/>
 
                     <TextView
@@ -121,7 +121,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Fish Quantity: "
+                        android:text="Cantidad de peces: "
                         android:textStyle="bold"/>
 
                     <TextView
@@ -140,7 +140,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Fish Age: "
+                        android:text="Edad de peces: "
                         android:textStyle="bold"/>
 
                     <TextView
@@ -159,7 +159,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Dimensions: "
+                        android:text="Dimensiones: "
                         android:textStyle="bold"/>
 
                     <TextView
@@ -168,6 +168,45 @@
                         android:layout_height="wrap_content"
                         tools:text="2x3x1"/>
                 </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Usuarios Monitores"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:id="@+id/tv_no_users"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Este módulo no tiene usuarios monitores asignados"
+                    android:textAlignment="center"
+                    android:padding="16dp"
+                    android:visibility="gone" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_monitors"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/recycler_view_item_user_monitor" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -187,7 +226,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Sensors"
+                    android:text="Sensores"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:layout_marginBottom="8dp"/>
@@ -200,7 +239,7 @@
                     android:textAlignment="center"
                     android:padding="16dp"
                     android:visibility="gone" />
-                
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view_sensors"
                     android:layout_width="match_parent"
@@ -210,16 +249,31 @@
                     tools:listitem="@layout/recycle_view_item_sensor"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_users"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="3"
+            tools:listitem="@layout/recycler_view_item_user" />
+
+        <Button
+            android:id="@+id/btn_assign_users"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Asignar Usuarios"
+            android:layout_marginTop="16dp" />
+
     </LinearLayout>
     </ScrollView>
-    
+
     <ProgressBar
         android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:visibility="gone" />
-        
+
     <TextView
         android:id="@+id/tv_error_message"
         android:layout_width="wrap_content"
@@ -230,7 +284,7 @@
         android:gravity="center"
         android:padding="16dp"
         android:visibility="gone" />
-        
+
     <Button
         android:id="@+id/btn_retry"
         android:layout_width="wrap_content"
@@ -239,5 +293,5 @@
         android:layout_marginTop="64dp"
         android:text="Reintentar"
         android:visibility="gone" />
-        
+
 </FrameLayout>

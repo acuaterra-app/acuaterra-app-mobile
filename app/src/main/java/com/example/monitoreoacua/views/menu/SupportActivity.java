@@ -34,6 +34,8 @@ public class SupportActivity extends BaseActivity {
 
     @Override
     public void navigateToProfile() {
+        // Already in SupportActivity, just reload the initial fragment
+        loadInitialFragment();
     }
 
     @Override

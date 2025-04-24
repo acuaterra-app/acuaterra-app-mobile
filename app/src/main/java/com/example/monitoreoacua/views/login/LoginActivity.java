@@ -32,7 +32,7 @@ import com.example.monitoreoacua.business.models.auth.AuthToken;
 import com.example.monitoreoacua.service.request.LoginRequest;
 import com.example.monitoreoacua.service.response.LoginResponse;
 import com.example.monitoreoacua.service.ApiClient;
-import com.example.monitoreoacua.service.ApiUsersService;
+import com.example.monitoreoacua.service.ApiAuthService;
 import com.example.monitoreoacua.views.farms.ListFarmsActivity;
 
 import retrofit2.Call;
@@ -107,7 +107,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void proceedWithLogin(String email, String password, String deviceToken) {
-        ApiUsersService apiUserService = ApiClient.getClient().create(ApiUsersService.class);
+        ApiAuthService apiUserService = ApiClient.getClient().create(ApiAuthService.class);
         LoginRequest loginRequest = new LoginRequest(email, password, deviceToken);
 
         apiUserService.login(loginRequest).enqueue(new Callback<LoginResponse>() {

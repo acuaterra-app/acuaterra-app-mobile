@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import com.example.monitoreoacua.business.models.Sensor;
 import com.example.monitoreoacua.fragments.ViewModuleFragment;
 import com.example.monitoreoacua.views.BaseActivity;
+import com.example.monitoreoacua.views.measurements.SensorMeasurementsActivity;
 
 /**
  * Activity for displaying module details.
@@ -18,21 +19,33 @@ import com.example.monitoreoacua.views.BaseActivity;
  */
 public class ViewModuleActivity extends BaseActivity implements ViewModuleFragment.OnModuleSensorListener {
     private static final String TAG = "ViewModuleActivityTag";
-    private static final String ARG_MODULE_ID = "module_id";
+    public static final String ARG_MODULE_ID = "module_id";
     private int moduleId;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Get the module ID from the intent
         moduleId = getIntent().getIntExtra(ARG_MODULE_ID, -1);
-        Log.d(TAG, "ViewModuleActivity received module ID: " + moduleId);
+        
+        // Validate the module ID
+        if (moduleId == -1) {
+            Log.e(TAG, "Invalid module ID received");
+            Toast.makeText(this, "Error: ID de módulo inválido", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+        
+        Log.d(TAG, "ViewModuleActivity received valid module ID: " + moduleId);
         
         super.onCreate(savedInstanceState);
     }
 
     @Override
     protected String getActivityTitle() {
-        return "Module Details";
+        return "Detalles del Módulo";
+
     }
 
     @Override
@@ -47,7 +60,12 @@ public class ViewModuleActivity extends BaseActivity implements ViewModuleFragme
     @Override
     public void onSensorClick(Sensor sensor) {
         // Handle sensor click event
-        Toast.makeText(this, "Sensor: " + sensor.getName(), Toast.LENGTH_SHORT).show();
-        // TODO: Navigate to sensor details screen
+        Toast.makeText(this, "Abriendo mediciones de: " + sensor.getName(), Toast.LENGTH_SHORT).show();
+        
+        // Navigate to SensorMeasurementsActivity
+        Intent intent = new Intent(this, SensorMeasurementsActivity.class);
+        intent.putExtra("SENSOR_ID", sensor.getId());
+        intent.putExtra("SENSOR_NAME", sensor.getName());
+        startActivity(intent);
     }
 }

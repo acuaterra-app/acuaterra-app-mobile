@@ -26,7 +26,15 @@
     <string name="no_modules_found">No se encontraron módulos</string>
     <string name="register_new_module">Registrar nuevo módulo</string>
     <string name="error_loading_modules">Error al cargar los módulos</string>
+    <!-- Medidas -->
+    <string name="measurements_title">Medidas</string>
+    <string name="no_measurements_found">No se encontraron mediciones</string>
+    <string name="register_new_measurement">Registrar nueva medida</string>
+    <string name="error_loading_measurements">Error al cargar las medidas</string>
+    <string name="empty_measurements_list">Lista de medidas vacia</string>
     <!-- Notificaciones -->
     <string name="no_notifications_found">No se encontraron notificaciones</string>
     <string name="error_loading_notifications">Error al cargar las notificaciones</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

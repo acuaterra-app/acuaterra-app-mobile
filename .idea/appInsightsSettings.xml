@@ -9,9 +9,9 @@
               <option name="connection">
                 <ConnectionSetting>
                   <option name="appId" value="com.example.monitoreoacua" />
-                  <option name="mobileSdkAppId" value="1:557843091693:android:205d126097631654e9bce4" />
-                  <option name="projectId" value="monitoreoacua-1a5c0" />
-                  <option name="projectNumber" value="557843091693" />
+                  <option name="mobileSdkAppId" value="1:125156334973:android:a81f047027461bce910014" />
+                  <option name="projectId" value="acuaterra-tech-3999b" />
+                  <option name="projectNumber" value="125156334973" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
