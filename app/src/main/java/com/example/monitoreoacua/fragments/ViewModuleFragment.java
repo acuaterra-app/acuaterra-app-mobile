@@ -322,7 +322,27 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
             @Override
             public void onSuccess(List<User> users) {
                 progressBar.setVisibility(View.GONE);
-                userCheckboxAdapter.setUsers(users);
+                if (module != null && module.getUsers() != null) {
+                    // Obtener IDs de usuarios relacionados con el módulo
+                    List<Integer> relatedUserIds = new ArrayList<>();
+                    for (User relatedUser : module.getUsers()) {
+                        relatedUserIds.add(relatedUser.getId());
+                    }
+
+                    // Filtrar usuarios que no están relacionados
+                    List<User> filteredUsers = new ArrayList<>();
+                    for (User user : users) {
+                        if (!relatedUserIds.contains(user.getId())) {
+                            filteredUsers.add(user);
+                        }
+                    }
+
+                    // Asignar usuarios filtrados al adaptador
+                    userCheckboxAdapter.setUsers(filteredUsers);
+                } else {
+                    // Si no hay usuarios relacionados, mostrar todos los usuarios
+                    userCheckboxAdapter.setUsers(users);
+                }
             }
 
             @Override
