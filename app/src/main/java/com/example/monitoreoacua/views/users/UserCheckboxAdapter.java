@@ -25,7 +25,11 @@ public class UserCheckboxAdapter extends RecyclerView.Adapter<UserCheckboxAdapte
     public void setUsers(List<User> users) {
         this.users.clear();
         if (users != null) {
-            this.users.addAll(users);
+            for (User user : users) {
+                if (user.isActive()) {
+                    this.users.add(user);
+                }
+            }
         }
         notifyDataSetChanged();
     }
@@ -70,6 +74,22 @@ public class UserCheckboxAdapter extends RecyclerView.Adapter<UserCheckboxAdapte
             super(itemView);
             name = itemView.findViewById(R.id.text_user_name);
             checkBox = itemView.findViewById(R.id.checkbox_user);
+        }
+    }
+
+    public void removeUsersByIds(List<Integer> userIds) {
+        if (userIds == null || users.isEmpty()) {
+            return; // No hay IDs para eliminar
+        }
+        for (Integer userId : userIds) {
+            for (int i = 0; i < users.size(); i++) {
+                if (users.get(i).getId() == userId) {
+                    users.remove(i);
+                    selectedUserIds.remove(userId); // Quitar el ID de la lista seleccionada
+                    notifyItemRemoved(i); // Notificar que un elemento fue eliminado
+                    break;
+                }
+            }
         }
     }
 }
