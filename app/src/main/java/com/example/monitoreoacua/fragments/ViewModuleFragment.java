@@ -33,6 +33,7 @@ import com.example.monitoreoacua.service.response.ApiResponse;
 import com.example.monitoreoacua.service.response.ListUserResponse;
 import com.example.monitoreoacua.service.response.UserMonitorResponse;
 import com.example.monitoreoacua.views.farms.farm.modules.SensorAdapter;
+import com.example.monitoreoacua.views.users.MonitorUserAdapter;
 import com.example.monitoreoacua.views.users.RegisterUserFragment;
 import com.example.monitoreoacua.views.users.UserCheckboxAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -58,6 +59,9 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
     private OnModuleSensorListener listener;
     private boolean isLoading = false;
     private UserCheckboxAdapter userCheckboxAdapter;
+
+    private RecyclerView recyclerViewMonitors;
+    private TextView tvNoUsers;
 
     // UI elements
     private TextView textModuleName;
@@ -126,6 +130,13 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
             btnRetry.setOnClickListener(v -> loadModuleData());
         }
 
+
+        recyclerViewMonitors = view.findViewById(R.id.recycler_view_monitors);
+        tvNoUsers = view.findViewById(R.id.tv_no_users);
+
+        recyclerViewMonitors.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerViewMonitors.setAdapter(new MonitorUserAdapter(new ArrayList<>()));
+
         RecyclerView recyclerViewUsers = view.findViewById(R.id.recycler_view_users);
         userCheckboxAdapter = new UserCheckboxAdapter();
         recyclerViewUsers.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -185,6 +196,16 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
 
             // Setup RecyclerView with sensors
             setupRecyclerView();
+
+            List<User> users = module.getUsers();
+            if (users != null && !users.isEmpty()) {
+                recyclerViewMonitors.setAdapter(new MonitorUserAdapter(users));
+                recyclerViewMonitors.setVisibility(View.VISIBLE);
+                tvNoUsers.setVisibility(View.GONE);
+            } else {
+                recyclerViewMonitors.setVisibility(View.GONE);
+                tvNoUsers.setVisibility(View.VISIBLE);
+            }
         }
     }
 
