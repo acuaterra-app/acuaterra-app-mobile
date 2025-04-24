@@ -2,10 +2,14 @@ package com.example.monitoreoacua.service;
 
 import com.example.monitoreoacua.service.request.AssignUsersRequest;
 import com.example.monitoreoacua.service.request.UserRequest;
+import com.example.monitoreoacua.service.response.ApiResponse;
+import com.example.monitoreoacua.service.response.ListMonitorUserResponse;
 import com.example.monitoreoacua.service.response.ListUserResponse;
 import com.example.monitoreoacua.service.response.UserRegisterResponse;
 import com.example.monitoreoacua.service.response.UserUpdateResponse;
 
+
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -32,10 +36,15 @@ public interface ApiUserService {
     Call<Void> deleteUser(@Header("Authorization") String token, @Path("id") int userId);
 
     @POST("api/v2/owner/modules/{moduleId}/monitors")
-    Call<Void> assignUsers(
-            @Header("Authorization") String token,
+    Call<ApiResponse> assignMonitors(
+            @Header("Authorization") String authToken,
             @Path("moduleId") int moduleId,
-            @Body AssignUsersRequest request
+            @Body Map<String, Object> requestBody
+    );
+
+    @GET("api/v2/owner/users/monitors")
+    Call<ListMonitorUserResponse> getUsersMonitors(
+            @Header("authorization") String token
     );
 
 }

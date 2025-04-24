@@ -75,6 +75,19 @@ public class UserFragment extends Fragment implements MyUserRecyclerViewAdapter.
 
         fetchUsers();
 
+        FloatingActionButton fab = view.findViewById(R.id.id_create_user_fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment registerUserFragment = RegisterUserFragment.newInstance(null);
+                requireActivity().getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
+                        .replace(R.id.fragmentContainer, registerUserFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
         return view;
     }
 
@@ -96,7 +109,7 @@ public class UserFragment extends Fragment implements MyUserRecyclerViewAdapter.
     }
 
     private void editUser(User user) {
-        RegisterUserFragment fragment = RegisterUserFragment.newInstance(user, user.getModuleId());
+        RegisterUserFragment fragment = RegisterUserFragment.newInstance(user);
         requireActivity().getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
                 .replace(R.id.fragmentContainer, fragment)
