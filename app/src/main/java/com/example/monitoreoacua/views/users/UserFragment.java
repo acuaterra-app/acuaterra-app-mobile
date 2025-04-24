@@ -143,4 +143,20 @@ public class UserFragment extends Fragment implements MyUserRecyclerViewAdapter.
     public void onUserDelete(User user) {
         deleteUser(user);
     }
+
+    @Override
+    public void onUserReactivate(User user) {
+        new RegisterUserRequest().reactivateUser(user.getId(), new OnApiRequestCallback<Void, Throwable>() {
+            @Override
+            public void onSuccess(Void response) {
+                Toast.makeText(getContext(), "Usuario reactivado", Toast.LENGTH_SHORT).show();
+                fetchUsers(); // Refrescar la lista de usuarios
+            }
+
+            @Override
+            public void onFail(Throwable t) {
+                Toast.makeText(getContext(), "Error al reactivar usuario: " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 }

@@ -9,6 +9,7 @@ import com.example.monitoreoacua.interfaces.OnApiRequestCallback;
 import com.example.monitoreoacua.service.ApiClient;
 import com.example.monitoreoacua.service.ApiUserService;
 import com.example.monitoreoacua.service.response.ApiError;
+import com.example.monitoreoacua.service.response.ApiResponse;
 import com.example.monitoreoacua.service.response.UserRegisterResponse;
 import com.example.monitoreoacua.service.response.UserUpdateResponse;
 import com.example.monitoreoacua.utils.ErrorUtils;
@@ -103,6 +104,26 @@ public class RegisterUserRequest extends BaseRequest {
             @Override
             public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
                 Log.d(TAG, "Error with response: " + t);
+                callback.onFail(t);
+            }
+        });
+    }
+
+    public void reactivateUser(int userId, OnApiRequestCallback<Void, Throwable> callback) {
+        ApiUserService apiUserService = ApiClient.getClient().create(ApiUserService.class);
+
+        apiUserService.reactivateUser(getAuthToken(), userId).enqueue(new Callback<ApiResponse<Void>>() {
+            @Override
+            public void onResponse(@NonNull Call<ApiResponse<Void>> call, @NonNull Response<ApiResponse<Void>> response) {
+                if (response.isSuccessful()) {
+                    callback.onSuccess(null);
+                } else {
+                    callback.onFail(new Throwable("Error al reactivar usuario: " + response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ApiResponse<Void>> call, @NonNull Throwable t) {
                 callback.onFail(t);
             }
         });
