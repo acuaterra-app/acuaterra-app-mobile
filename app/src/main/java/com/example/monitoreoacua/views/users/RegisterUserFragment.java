@@ -42,11 +42,10 @@ public class RegisterUserFragment extends Fragment {
     }
 
     // TODO: Rename and change types and number of parameters
-    public static RegisterUserFragment newInstance(User user, int moduleId) {
+    public static RegisterUserFragment newInstance(User user) {
         RegisterUserFragment fragment = new RegisterUserFragment();
         Bundle args = new Bundle();
 
-        args.putInt("module_id", moduleId);
         fragment.setArguments(args);
         args.putParcelable("user", user);
         fragment.setArguments(args);
@@ -89,7 +88,7 @@ public class RegisterUserFragment extends Fragment {
             String address = Objects.requireNonNull(addressEditText.getText()).toString();
             String contact = Objects.requireNonNull(contactEditText.getText()).toString();
 
-            UserRequest userRequest = new UserRequest(name, email, dni, moduleId, address, contact);
+            UserRequest userRequest = new UserRequest(name, email, dni, address, contact);
 
             if (user == null) {
                 registerUser(userRequest);

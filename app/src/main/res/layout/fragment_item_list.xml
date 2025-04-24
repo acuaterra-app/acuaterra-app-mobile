@@ -22,4 +22,12 @@
         android:visibility="gone"
         android:layout_gravity="center" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/id_create_user_fab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|bottom"
+        android:clickable="true"
+        app:srcCompat="@drawable/editarloging" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

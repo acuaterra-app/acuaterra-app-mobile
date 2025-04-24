@@ -26,10 +26,14 @@ import com.example.monitoreoacua.business.models.User;
 import com.example.monitoreoacua.interfaces.OnApiRequestCallback;
 import com.example.monitoreoacua.service.ApiClient;
 import com.example.monitoreoacua.service.ApiUserService;
+import com.example.monitoreoacua.service.request.AssignMonitorsRequest;
 import com.example.monitoreoacua.service.request.GetModuleRequest;
 import com.example.monitoreoacua.service.request.ListUsersRequest;
+import com.example.monitoreoacua.service.response.ApiResponse;
 import com.example.monitoreoacua.service.response.ListUserResponse;
+import com.example.monitoreoacua.service.response.UserMonitorResponse;
 import com.example.monitoreoacua.views.farms.farm.modules.SensorAdapter;
+import com.example.monitoreoacua.views.users.MonitorUserAdapter;
 import com.example.monitoreoacua.views.users.RegisterUserFragment;
 import com.example.monitoreoacua.views.users.UserCheckboxAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -55,6 +59,9 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
     private OnModuleSensorListener listener;
     private boolean isLoading = false;
     private UserCheckboxAdapter userCheckboxAdapter;
+
+    private RecyclerView recyclerViewMonitors;
+    private TextView tvNoUsers;
 
     // UI elements
     private TextView textModuleName;
@@ -123,6 +130,13 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
             btnRetry.setOnClickListener(v -> loadModuleData());
         }
 
+
+        recyclerViewMonitors = view.findViewById(R.id.recycler_view_monitors);
+        tvNoUsers = view.findViewById(R.id.tv_no_users);
+
+        recyclerViewMonitors.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerViewMonitors.setAdapter(new MonitorUserAdapter(new ArrayList<>()));
+
         RecyclerView recyclerViewUsers = view.findViewById(R.id.recycler_view_users);
         userCheckboxAdapter = new UserCheckboxAdapter();
         recyclerViewUsers.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -130,18 +144,10 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
 
         fetchUsers();
 
-        FloatingActionButton fab = view.findViewById(R.id.id_create_user_fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Fragment registerUserFragment = RegisterUserFragment.newInstance(null, moduleId);
-                requireActivity().getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
-                        .replace(R.id.fragmentContainer, registerUserFragment)
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
+        Button btnAssignMonitors = view.findViewById(R.id.btn_assign_users);
+        btnAssignMonitors.setOnClickListener(v -> assignMonitors());
+
+
 
         return view;
     }
@@ -190,6 +196,16 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
 
             // Setup RecyclerView with sensors
             setupRecyclerView();
+
+            List<User> users = module.getUsers();
+            if (users != null && !users.isEmpty()) {
+                recyclerViewMonitors.setAdapter(new MonitorUserAdapter(users));
+                recyclerViewMonitors.setVisibility(View.VISIBLE);
+                tvNoUsers.setVisibility(View.GONE);
+            } else {
+                recyclerViewMonitors.setVisibility(View.GONE);
+                tvNoUsers.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -283,19 +299,81 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
             }
         }, moduleId);
     }
-    private void fetchUsers() {
+    private void fetchUsersMonitors() {
         progressBar.setVisibility(View.VISIBLE);
-        new ListUsersRequest().fetchUsers(new OnApiRequestCallback<List<User>, Throwable>() {
+        new ListUsersRequest().fetchUsersMonitors(new OnApiRequestCallback<List<UserMonitorResponse>, Throwable>() {
             @Override
-            public void onSuccess(List<User> users) {
+            public void onSuccess(List<UserMonitorResponse> users) {
                 progressBar.setVisibility(View.GONE);
-                userCheckboxAdapter.setUsers(users);
+                //userCheckboxAdapter.setUsers(users);
             }
 
             @Override
             public void onFail(Throwable t) {
                 progressBar.setVisibility(View.GONE);
                 Toast.makeText(getContext(), "Error de conexión: " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void fetchUsers() {
+        progressBar.setVisibility(View.VISIBLE);
+        new ListUsersRequest().fetchUsers(new OnApiRequestCallback<List<User>, Throwable>() {
+            @Override
+            public void onSuccess(List<User> users) {
+                progressBar.setVisibility(View.GONE);
+                if (module != null && module.getUsers() != null) {
+                    // Obtener IDs de usuarios relacionados con el módulo
+                    List<Integer> relatedUserIds = new ArrayList<>();
+                    for (User relatedUser : module.getUsers()) {
+                        relatedUserIds.add(relatedUser.getId());
+                    }
+
+                    // Filtrar usuarios que no están relacionados
+                    List<User> filteredUsers = new ArrayList<>();
+                    for (User user : users) {
+                        if (!relatedUserIds.contains(user.getId())) {
+                            filteredUsers.add(user);
+                        }
+                    }
+
+                    // Asignar usuarios filtrados al adaptador
+                    userCheckboxAdapter.setUsers(filteredUsers);
+                } else {
+                    // Si no hay usuarios relacionados, mostrar todos los usuarios
+                    userCheckboxAdapter.setUsers(users);
+                }
+            }
+
+            @Override
+            public void onFail(Throwable t) {
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(getContext(), "Error de conexión: " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void assignMonitors() {
+        List<Integer> selectedUserIds = userCheckboxAdapter.getSelectedUserIds();
+        if (selectedUserIds.isEmpty()) {
+            Toast.makeText(getContext(), "Seleccione al menos un monitor", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        progressBar.setVisibility(View.VISIBLE);
+
+        new AssignMonitorsRequest().assignMonitors(moduleId, selectedUserIds, new OnApiRequestCallback<ApiResponse, Throwable>() {
+            @Override
+            public void onSuccess(ApiResponse response) {
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(getContext(), "Monitores asignados exitosamente", Toast.LENGTH_SHORT).show();
+                loadModuleData(); // Recargar datos del módulo
+            }
+
+            @Override
+            public void onFail(Throwable error) {
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(getContext(), "Error al asignar monitores: " + error.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }

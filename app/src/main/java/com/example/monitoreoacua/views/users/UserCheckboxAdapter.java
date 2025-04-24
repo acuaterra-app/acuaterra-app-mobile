@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.monitoreoacua.R;
 import com.example.monitoreoacua.business.models.User;
+import com.example.monitoreoacua.service.response.UserMonitorResponse;
 
 import java.util.ArrayList;
 import java.util.List;

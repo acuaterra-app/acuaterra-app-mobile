@@ -5,15 +5,13 @@ public class UserRequest extends BaseRequest {
    private String name;
    private String email;
    private String dni;
-   private int id_module;
    private String address;
    private String contact;
 
-   public UserRequest(String name, String email, String dni, int idModule, String address, String contact) {
+   public UserRequest(String name, String email, String dni, String address, String contact) {
        this.name = name;
        this.email = email;
        this.dni = dni;
-       this.id_module = idModule;
        this.address = address;
        this.contact = contact;
    }
@@ -41,14 +39,6 @@ public class UserRequest extends BaseRequest {
 
    public void setDni(String dni) {
        this.dni = dni;
-   }
-
-   public int getId_module() {
-       return id_module;
-   }
-
-   public void setId_module(int id_module) {
-       this.id_module = id_module;
    }
 
    public String getAddress() {
