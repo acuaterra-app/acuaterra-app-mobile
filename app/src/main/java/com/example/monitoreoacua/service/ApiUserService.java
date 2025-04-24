@@ -2,6 +2,7 @@ package com.example.monitoreoacua.service;
 
 import com.example.monitoreoacua.service.request.AssignUsersRequest;
 import com.example.monitoreoacua.service.request.UserRequest;
+import com.example.monitoreoacua.service.response.ListMonitorUserResponse;
 import com.example.monitoreoacua.service.response.ListUserResponse;
 import com.example.monitoreoacua.service.response.UserRegisterResponse;
 import com.example.monitoreoacua.service.response.UserUpdateResponse;
@@ -36,6 +37,11 @@ public interface ApiUserService {
             @Header("Authorization") String token,
             @Path("moduleId") int moduleId,
             @Body AssignUsersRequest request
+    );
+
+    @GET("api/v2/owner/users/monitors")
+    Call<ListMonitorUserResponse> getUsersMonitors(
+            @Header("authorization") String token
     );
 
 }

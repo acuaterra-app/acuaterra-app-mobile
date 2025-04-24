@@ -9,7 +9,9 @@ import com.example.monitoreoacua.interfaces.OnApiRequestCallback;
 import com.example.monitoreoacua.service.ApiClient;
 import com.example.monitoreoacua.service.ApiUserService;
 import com.example.monitoreoacua.service.response.ApiResponse;
+import com.example.monitoreoacua.service.response.ListMonitorUserResponse;
 import com.example.monitoreoacua.service.response.ListUserResponse;
+import com.example.monitoreoacua.service.response.UserMonitorResponse;
 
 import java.util.List;
 
@@ -43,6 +45,30 @@ public class ListUsersRequest extends BaseRequest{
 
             @Override
             public void onFailure(@NonNull Call<ListUserResponse> call, @NonNull Throwable t) {
+                Log.d(TAG, "Error with response: " + t);
+                callback.onFail(t);
+            }
+        });
+    }
+
+    public void fetchUsersMonitors(OnApiRequestCallback<List<UserMonitorResponse>, Throwable> callback) {
+        ApiUserService apiUserService = ApiClient.getClient().create(ApiUserService.class);
+
+        apiUserService.getUsersMonitors(getAuthToken()).enqueue(new Callback<ListMonitorUserResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<ListMonitorUserResponse> call, @NonNull Response<ListMonitorUserResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    ListMonitorUserResponse listUserResponse = response.body();
+                    List<UserMonitorResponse> users = listUserResponse.getData().get(0);
+                    callback.onSuccess(users);
+                } else {
+                    Log.d(TAG, "Error with response: " + response);
+                    callback.onFail(new Throwable("Error with response"));
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ListMonitorUserResponse> call, @NonNull Throwable t) {
                 Log.d(TAG, "Error with response: " + t);
                 callback.onFail(t);
             }

@@ -29,6 +29,7 @@ import com.example.monitoreoacua.service.ApiUserService;
 import com.example.monitoreoacua.service.request.GetModuleRequest;
 import com.example.monitoreoacua.service.request.ListUsersRequest;
 import com.example.monitoreoacua.service.response.ListUserResponse;
+import com.example.monitoreoacua.service.response.UserMonitorResponse;
 import com.example.monitoreoacua.views.farms.farm.modules.SensorAdapter;
 import com.example.monitoreoacua.views.users.RegisterUserFragment;
 import com.example.monitoreoacua.views.users.UserCheckboxAdapter;
@@ -285,9 +286,9 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
     }
     private void fetchUsers() {
         progressBar.setVisibility(View.VISIBLE);
-        new ListUsersRequest().fetchUsers(new OnApiRequestCallback<List<User>, Throwable>() {
+        new ListUsersRequest().fetchUsersMonitors(new OnApiRequestCallback<List<UserMonitorResponse>, Throwable>() {
             @Override
-            public void onSuccess(List<User> users) {
+            public void onSuccess(List<UserMonitorResponse> users) {
                 progressBar.setVisibility(View.GONE);
                 userCheckboxAdapter.setUsers(users);
             }

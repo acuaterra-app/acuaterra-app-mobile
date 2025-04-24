@@ -42,8 +42,9 @@ public class Module extends BaseRequest implements Serializable, Parcelable {
     private int idFarm;
 
 
-    // Agregar lista de IDs de usuarios
-    private List<Integer> users;
+
+    @SerializedName("users")
+    private List<User> users;
 
     @SerializedName("createdAt")
     private String createdAt;
@@ -63,6 +64,9 @@ public class Module extends BaseRequest implements Serializable, Parcelable {
     @SerializedName("sensors")
     private List<Sensor> sensors;
 
+    @SerializedName("user_ids")
+    private List<Integer> userIds;
+
     public Module() {
         // Constructor vacío
     }
@@ -80,7 +84,7 @@ public class Module extends BaseRequest implements Serializable, Parcelable {
         this.fishAge = fishAge;
         this.dimensions = dimensions;
         this.idFarm = idFarm;
-        this.users = users;
+        this.userIds = users;
     }
 
     // Constructor Parcelable
@@ -146,8 +150,10 @@ public class Module extends BaseRequest implements Serializable, Parcelable {
     public String getFishAge() { return fishAge; }
     public String getDimensions() { return dimensions; }
     public int getIdFarm() { return idFarm; }
-    public List<Integer> getUsers() { return users; }
-    public void setUsers(List<Integer> users) { this.users = users; }
+    public List<User> getUsers() { return users; }
+    public void setUsers(List<User> users) { this.users = users; }
+    public List<Integer> getUserIds() { return userIds; }
+    public void setUserIds(List<Integer> userIds) { this.userIds = userIds; }
     public String getCreatedAt() { return createdAt; }
     public String getUpdatedAt() { return updatedAt; }
     public String getDeletedAt() { return deletedAt; }

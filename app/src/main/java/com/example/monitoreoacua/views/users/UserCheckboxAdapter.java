@@ -12,16 +12,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.monitoreoacua.R;
 import com.example.monitoreoacua.business.models.User;
+import com.example.monitoreoacua.service.response.UserMonitorResponse;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserCheckboxAdapter extends RecyclerView.Adapter<UserCheckboxAdapter.ViewHolder> {
 
-    private final List<User> users = new ArrayList<>();
+    private final List<UserMonitorResponse> users = new ArrayList<>();
     private final List<Integer> selectedUserIds = new ArrayList<>();
 
-    public void setUsers(List<User> users) {
+    public void setUsers(List<UserMonitorResponse> users) {
         this.users.clear();
         if (users != null) {
             this.users.addAll(users);
@@ -43,8 +44,8 @@ public class UserCheckboxAdapter extends RecyclerView.Adapter<UserCheckboxAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        User user = users.get(position);
-        holder.name.setText(user.getName());
+        UserMonitorResponse user = users.get(position);
+        holder.name.setText(user.getFullName());
         holder.checkBox.setOnCheckedChangeListener(null);
         holder.checkBox.setChecked(selectedUserIds.contains(user.getId()));
         holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
