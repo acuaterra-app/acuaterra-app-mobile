@@ -3,6 +3,7 @@ package com.example.monitoreoacua.views.users;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
@@ -48,9 +49,23 @@ public class MyUserRecyclerViewAdapter extends RecyclerView.Adapter<MyUserRecycl
         holder.mDniView.setText(user.getDni());
         holder.mAddressView.setText(user.getAddress());
         holder.mContactView.setText(user.getContact());
-
+        // Cambiar el estilo según el estado de isActive
+        // Cambiar el color del separador según el estado de isActive
+        // Cambiar el color del separador según el estado de isActive
+        if (user.isActive()) {
+            holder.separator.setBackgroundColor(holder.itemView.getContext().getResources().getColor(android.R.color.holo_green_light));
+            holder.deleteButton.setText("desactivar");
+            holder.deleteButton.setOnClickListener(v -> {
+                // Llamar al método de reactivación
+                onUserClickListener.onUserDelete(user);
+            });
+        } else {
+            holder.separator.setBackgroundColor(holder.itemView.getContext().getResources().getColor(android.R.color.holo_red_light));
+            holder.deleteButton.setText("Reactivar");
+            holder.deleteButton.setOnClickListener(v -> onUserClickListener.onUserReactivate(user));
+        }
         holder.updateButton.setOnClickListener(v -> onUserClickListener.onUserClick(user));
-        holder.deleteButton.setOnClickListener(v -> onUserClickListener.onUserDelete(user));
+
     }
 
     @Override
@@ -66,6 +81,7 @@ public class MyUserRecyclerViewAdapter extends RecyclerView.Adapter<MyUserRecycl
         public final TextView mContactView;
         public final Button updateButton;
         public final Button deleteButton;
+        public final View separator;
 
         public ViewHolder(FragmentItemBinding binding) {
             super(binding.getRoot());
@@ -76,6 +92,7 @@ public class MyUserRecyclerViewAdapter extends RecyclerView.Adapter<MyUserRecycl
             mContactView = binding.itemContact;
             updateButton = binding.updateButton;
             deleteButton = binding.deleteButton;
+            separator = binding.separator;
         }
 
         @Override
@@ -87,5 +104,6 @@ public class MyUserRecyclerViewAdapter extends RecyclerView.Adapter<MyUserRecycl
     public interface OnUserClickListener {
         void onUserClick(User user);
         void onUserDelete(User user);
+        void onUserReactivate(User user);
     }
 }

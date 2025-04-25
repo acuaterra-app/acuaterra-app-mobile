@@ -36,6 +36,9 @@ public class User implements Parcelable {
     @SerializedName("contact")
     private String contact;
 
+    @SerializedName("isActive")
+    private boolean isActive;
+
     @SerializedName("assigned_modules")
     private List<Module> modules;
 
@@ -60,6 +63,7 @@ public class User implements Parcelable {
         role = in.readParcelable(Role.class.getClassLoader());
         contact = in.readString();
         address = in.readString();
+        isActive = in.readByte() != 0;
         modules =  in.createTypedArrayList(Module.CREATOR);
     }
 
@@ -111,6 +115,10 @@ public class User implements Parcelable {
 
     public int getModuleId() {
         return this.modules.get(0).getId();
+    }
+
+    public boolean isActive() {
+        return isActive;
     }
 
     // Parcelable methods

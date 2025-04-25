@@ -366,6 +366,7 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
             @Override
             public void onSuccess(ApiResponse response) {
                 progressBar.setVisibility(View.GONE);
+                userCheckboxAdapter.removeUsersByIds(selectedUserIds);
                 Toast.makeText(getContext(), "Monitores asignados exitosamente", Toast.LENGTH_SHORT).show();
                 loadModuleData(); // Recargar datos del módulo
             }
