@@ -64,6 +64,7 @@ public class ViewModuleActivity extends BaseActivity implements ViewModuleFragme
         
         // Navigate to SensorMeasurementsActivity
         Intent intent = new Intent(this, SensorMeasurementsActivity.class);
+        intent.putExtra("moduleId", moduleId);  // Añadir el moduleId para la nueva lógica
         intent.putExtra("SENSOR_ID", sensor.getId());
         intent.putExtra("SENSOR_NAME", sensor.getName());
         startActivity(intent);

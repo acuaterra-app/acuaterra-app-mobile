@@ -13,12 +13,15 @@ import com.example.monitoreoacua.views.BaseActivity;
 public class ListMeasurementsActivity extends BaseActivity implements ListMeasurementsFragment.OnMeasurementInteractionListener {
     private static final String TAG = "ListMeasurementsActivity";
     private int moduleId;
+    private int sensorId;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         moduleId = getIntent().getIntExtra("moduleId", -1);
-        if (moduleId == -1) {
-            Toast.makeText(this, "Error: ID de módulo no válido", Toast.LENGTH_SHORT).show();
+        sensorId = getIntent().getIntExtra("sensorId", -1);
+        
+        if (moduleId == -1 || sensorId == -1) {
+            Toast.makeText(this, "Error: ID de módulo o sensor no válido", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
@@ -33,7 +36,10 @@ public class ListMeasurementsActivity extends BaseActivity implements ListMeasur
 
     @Override
     protected void loadInitialFragment() {
-        ListMeasurementsFragment fragment = ListMeasurementsFragment.newInstance(String.valueOf(moduleId));
+        ListMeasurementsFragment fragment = ListMeasurementsFragment.newInstance(
+            String.valueOf(moduleId),
+            String.valueOf(sensorId)
+        );
         loadFragment(fragment, false);
     }
 

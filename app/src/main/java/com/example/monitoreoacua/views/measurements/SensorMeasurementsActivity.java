@@ -14,6 +14,7 @@ import com.example.monitoreoacua.views.BaseActivity;
 public class SensorMeasurementsActivity extends BaseActivity implements ListMeasurementsFragment.OnMeasurementInteractionListener {
     private static final String TAG = "SensorMeasurementsActivity";
     
+    private int moduleId;
     private int sensorId;
     private String sensorName;
 
@@ -21,12 +22,13 @@ public class SensorMeasurementsActivity extends BaseActivity implements ListMeas
     protected void onCreate(Bundle savedInstanceState) {
         // Get data from intent
         if (getIntent() != null) {
+            moduleId = getIntent().getIntExtra("moduleId", -1);
             sensorId = getIntent().getIntExtra("SENSOR_ID", -1);
             sensorName = getIntent().getStringExtra("SENSOR_NAME");
             
-            if (sensorId == -1) {
-                // Invalid sensor ID
-                Toast.makeText(this, "Error: ID de sensor inválido", Toast.LENGTH_SHORT).show();
+            if (moduleId == -1 || sensorId == -1) {
+                // Invalid module or sensor ID
+                Toast.makeText(this, "Error: ID de módulo o sensor inválido", Toast.LENGTH_SHORT).show();
                 finish();
                 return;
             }
@@ -35,7 +37,7 @@ public class SensorMeasurementsActivity extends BaseActivity implements ListMeas
                 sensorName = "Sensor";
             }
             
-            Log.d(TAG, "Showing measurements for sensor ID: " + sensorId + ", name: " + sensorName);
+            Log.d(TAG, "Showing measurements for moduleId: " + moduleId + ", sensorId: " + sensorId + ", name: " + sensorName);
         } else {
             // No intent data
             Toast.makeText(this, "Error: Datos de sensor no proporcionados", Toast.LENGTH_SHORT).show();
@@ -54,7 +56,10 @@ public class SensorMeasurementsActivity extends BaseActivity implements ListMeas
     @Override
     protected void loadInitialFragment() {
         // Create fragment with sensor ID
-        ListMeasurementsFragment measurementsFragment = ListMeasurementsFragment.newInstance(String.valueOf(sensorId));
+        ListMeasurementsFragment measurementsFragment = ListMeasurementsFragment.newInstance(
+            String.valueOf(moduleId),
+            String.valueOf(sensorId)
+        );
         loadFragment(measurementsFragment, false);
     }
 
