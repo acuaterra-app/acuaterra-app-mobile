@@ -27,6 +27,7 @@ public interface ApiMeasurementsService {
     @GET("/api/v2/module/measurement")
     Call<ListMeasurementResponse> getMeasurements(
             @Query("moduleId") int moduleId,
+            @Query("sensorId") int sensorId,
             @Header("Authorization") String token
     );
 

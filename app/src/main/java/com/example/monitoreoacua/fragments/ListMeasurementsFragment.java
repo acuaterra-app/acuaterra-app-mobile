@@ -38,8 +38,9 @@ import retrofit2.Response;
  * Based on the pattern of ListModulesFragment
  */
 public class ListMeasurementsFragment extends Fragment implements MeasurementsAdapter.OnMeasurementClickListener {
-
     private static final String TAG = "ListMeasurementsFragment";
+    private static final String ARG_MODULE_ID = "moduleId";
+    private static final String ARG_SENSOR_ID = "sensorId";
 
     private RecyclerView recyclerViewMeasurements;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -48,6 +49,7 @@ public class ListMeasurementsFragment extends Fragment implements MeasurementsAd
     private MeasurementsAdapter measurementAdapter;
 
     private String moduleId;
+    private String sensorId;
 
     private OnMeasurementInteractionListener listener;
 
@@ -64,10 +66,11 @@ public class ListMeasurementsFragment extends Fragment implements MeasurementsAd
      * @param moduleId The ID of the module to fetch measurements for
      * @return A new instance of ListMeasurementsFragment
      */
-    public static ListMeasurementsFragment newInstance(String moduleId) {
+    public static ListMeasurementsFragment newInstance(String moduleId, String sensorId) {
         ListMeasurementsFragment fragment = new ListMeasurementsFragment();
         Bundle args = new Bundle();
-        args.putString("moduleId", moduleId);
+        args.putString(ARG_MODULE_ID, moduleId);
+        args.putString(ARG_SENSOR_ID, sensorId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -76,8 +79,9 @@ public class ListMeasurementsFragment extends Fragment implements MeasurementsAd
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            moduleId = getArguments().getString("moduleId");
-            Log.d(TAG, "moduleId: " + moduleId);
+            moduleId = getArguments().getString(ARG_MODULE_ID);
+            sensorId = getArguments().getString(ARG_SENSOR_ID);
+            Log.d(TAG, "moduleId: " + moduleId + ", sensorId: " + sensorId);
         }
     }
 
@@ -134,15 +138,15 @@ public class ListMeasurementsFragment extends Fragment implements MeasurementsAd
         recyclerViewMeasurements.setVisibility(View.GONE);
         tvEmptyView.setVisibility(View.GONE);
 
-        // Validar moduleId antes de hacer la llamada
-        if (moduleId == null || moduleId.isEmpty()) {
-            showError("Error: ID del módulo no válido");
-            Log.e(TAG, "Error: moduleId es nulo o vacío");
+        if (moduleId == null || moduleId.isEmpty() || sensorId == null || sensorId.isEmpty()) {
+            showError("Error: ID del módulo o sensor no válido");
+            Log.e(TAG, "Error: moduleId o sensorId es nulo o vacío");
             return;
         }
-
+        
         try {
             int moduleIdInt = Integer.parseInt(moduleId);
+            int sensorIdInt = Integer.parseInt(sensorId);
             
             // Crear API service
             ApiMeasurementsService apiService = ApiClient.getClient().create(ApiMeasurementsService.class);
@@ -157,14 +161,15 @@ public class ListMeasurementsFragment extends Fragment implements MeasurementsAd
             }
             
             // Log para depuración
-            Log.d(TAG, "Realizando petición con moduleId: " + moduleIdInt);
-            Log.d(TAG, "Petición a endpoint: /api/v2/module/measurement?moduleId=" + moduleIdInt);
+            Log.d(TAG, "Realizando petición con moduleId: " + moduleIdInt + ", sensorId: " + sensorIdInt);
+            Log.d(TAG, "Petición a endpoint: /api/v2/owner/modules/measurements?moduleId=" + moduleIdInt + "&sensorId=" + sensorIdInt);
             Log.d(TAG, "Token (primeros 10 caracteres): " + 
                     (authToken.length() > 10 ? authToken.substring(0, 10) + "..." : authToken));
             
             // Hacer llamada a la API
             Call<ListMeasurementResponse> call = apiService.getMeasurements(
                     moduleIdInt,
+                    sensorIdInt,
                     authToken
             );
             
@@ -251,8 +256,8 @@ public class ListMeasurementsFragment extends Fragment implements MeasurementsAd
                 }
             });
         } catch (NumberFormatException e) {
-            showError("Error: El ID del módulo debe ser un número válido");
-            Log.e(TAG, "Error al convertir moduleId a entero: " + moduleId, e);
+            showError("Error: Los IDs del módulo y sensor deben ser números válidos");
+            Log.e(TAG, "Error al convertir IDs a enteros: moduleId=" + moduleId + ", sensorId=" + sensorId, e);
         }
     }
 
