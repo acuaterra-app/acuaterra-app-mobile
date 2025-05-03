@@ -139,5 +139,33 @@
                 android:textSize="14sp"/>
         </LinearLayout>
 
+        <!-- Botones de edición y eliminación -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnEditModule"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="125dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:text="Editar"
+                android:textColor="@color/colorAccent" />
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:id="@+id/btnDesactiveModule"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Desactivar"
+                android:textColor="@android:color/holo_red_dark"
+                android:layout_marginStart="8dp"/>
+        </LinearLayout>
+
     </LinearLayout>
 </androidx.cardview.widget.CardView>
