@@ -12,6 +12,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.monitoreoacua.R;
 import com.example.monitoreoacua.business.models.Farm;
+import com.example.monitoreoacua.business.models.Module;
 import com.example.monitoreoacua.fragments.RegisterModuleFragment;
 import com.example.monitoreoacua.views.BaseActivity;
 
@@ -54,6 +55,7 @@ public class RegisterModulesActivity extends BaseActivity {
         if (savedInstanceState == null) {
             loadInitialFragment();
         }
+
     }
 
     /**
@@ -87,7 +89,7 @@ public class RegisterModulesActivity extends BaseActivity {
 
     @Override
     protected String getActivityTitle() {
-        return getString(R.string.register_new_module);
+        return getString(R.string.editar_m_dulo);
     }
 
     @Override

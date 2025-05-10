@@ -11,6 +11,9 @@ import java.util.List;
 public class Module extends BaseRequest implements Serializable, Parcelable {
     private static final long serialVersionUID = 1L;
 
+
+    private boolean deactivated;
+
     @SerializedName("id")
     private int id;
 
@@ -103,6 +106,14 @@ public class Module extends BaseRequest implements Serializable, Parcelable {
         updatedAt = in.readString();
         deletedAt = in.readString();
         // Nota: los objetos complejos como creator, farm, sensors, users pueden requerir Parcelable adicional o manejo especial si necesitas pasarlos también.
+    }
+
+    public boolean isDeactivated() {
+        return deactivated;
+    }
+
+    public void setDeactivated(boolean deactivated) {
+        this.deactivated = deactivated;
     }
 
     public static final Creator<Module> CREATOR = new Creator<Module>() {

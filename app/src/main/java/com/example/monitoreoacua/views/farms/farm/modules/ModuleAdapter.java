@@ -1,8 +1,12 @@
 package com.example.monitoreoacua.views.farms.farm.modules;
 
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +22,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
 
     private List<Module> moduleList;
     private OnModuleClickListener listener;
+
 
     /**
      * Constructor for ModuleAdapter
@@ -80,6 +85,34 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
         holder.tvModuleDimensions.setText("Dimensiones: " + (module.getDimensions() != null && !module.getDimensions().isEmpty() ? 
                 module.getDimensions() : "No especificadas"));
 
+        holder.btnEditModule.setOnClickListener(v -> {
+            if (listener != null) {
+                // Requiere implementar onEditModuleClick en el listener
+                listener.onEditModuleClick(module);
+            }
+        });
+
+        holder.btnDesactiveModule.setOnClickListener(v -> {
+            boolean isDeactivated = module.isDeactivated(); // Debes tener este campo en tu modelo
+
+            // Cambiar el estado
+            module.setDeactivated(!isDeactivated);
+
+            // Cambiar texto y color del botón
+            if (module.isDeactivated()) {
+                holder.btnDesactiveModule.setText("Activar");
+                holder.btnDesactiveModule.setBackgroundColor(Color.GRAY);
+            } else {
+                holder.btnDesactiveModule.setText("Desactivar");
+                holder.btnDesactiveModule.setBackgroundColor(Color.RED);
+            }
+
+            // Notificar si necesitas manejar el evento externamente
+            if (listener != null) {
+                listener.onToggleModuleState(module);
+            }
+        });
+
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onModuleClick(module);
@@ -100,6 +133,8 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
         private TextView tvModuleLatitude, tvModuleLongitude;
         private TextView tvModuleSpeciesFish, tvModuleFishQuantity;
         private TextView tvModuleFishAge, tvModuleDimensions;
+        Button btnEditModule, btnDesactiveModule;
+
 
         ModuleViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -111,6 +146,8 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
             tvModuleFishQuantity = itemView.findViewById(R.id.tvModuleFishQuantity);
             tvModuleFishAge = itemView.findViewById(R.id.tvModuleFishAge);
             tvModuleDimensions = itemView.findViewById(R.id.tvModuleDimensions);
+            btnEditModule = itemView.findViewById(R.id.btnEditModule);
+            btnDesactiveModule = itemView.findViewById(R.id.btnDesactiveModule);
         }
     }
 
@@ -119,5 +156,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
      */
     public interface OnModuleClickListener {
         void onModuleClick(Module module);
+        void onEditModuleClick(Module module);
+        void onToggleModuleState(Module module);
     }
 }

@@ -39,7 +39,7 @@
                     android:id="@+id/tvTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/editar_m_dulo"
+                    android:text="Editar Módulo"
                     android:textSize="24sp"
                     android:textStyle="bold"
                     android:textColor="@android:color/black"
@@ -217,14 +217,14 @@
 
                 <!-- Botón Guardar -->
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnRegisterModulo"
+                    android:id="@+id/btnUpdateModuloForm"
                     style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
                     android:backgroundTint="@color/colorPrimaryDark"
                     android:elevation="4dp"
-                    android:text="Guardar Módulo"
+                    android:text="Actualizar Módulo"
                     android:textColor="@color/white"
                     android:textStyle="bold"/>
 

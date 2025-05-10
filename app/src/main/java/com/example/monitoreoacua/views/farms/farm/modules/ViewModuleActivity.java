@@ -28,7 +28,7 @@ public class ViewModuleActivity extends BaseActivity implements ViewModuleFragme
     protected void onCreate(Bundle savedInstanceState) {
         // Get the module ID from the intent
         moduleId = getIntent().getIntExtra(ARG_MODULE_ID, -1);
-        
+
         // Validate the module ID
         if (moduleId == -1) {
             Log.e(TAG, "Invalid module ID received");
@@ -36,9 +36,9 @@ public class ViewModuleActivity extends BaseActivity implements ViewModuleFragme
             finish();
             return;
         }
-        
+
         Log.d(TAG, "ViewModuleActivity received valid module ID: " + moduleId);
-        
+
         super.onCreate(savedInstanceState);
     }
 
@@ -61,10 +61,9 @@ public class ViewModuleActivity extends BaseActivity implements ViewModuleFragme
     public void onSensorClick(Sensor sensor) {
         // Handle sensor click event
         Toast.makeText(this, "Abriendo mediciones de: " + sensor.getName(), Toast.LENGTH_SHORT).show();
-        
+
         // Navigate to SensorMeasurementsActivity
         Intent intent = new Intent(this, SensorMeasurementsActivity.class);
-        intent.putExtra("moduleId", moduleId);  // Añadir el moduleId para la nueva lógica
         intent.putExtra("SENSOR_ID", sensor.getId());
         intent.putExtra("SENSOR_NAME", sensor.getName());
         startActivity(intent);

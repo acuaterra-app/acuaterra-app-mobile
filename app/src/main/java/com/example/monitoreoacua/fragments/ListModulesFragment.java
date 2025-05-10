@@ -1,8 +1,6 @@
 package com.example.monitoreoacua.fragments;
 
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,9 +25,7 @@ import com.example.monitoreoacua.service.ApiClient;
 import com.example.monitoreoacua.service.ApiModulesService;
 import com.example.monitoreoacua.service.request.ListModulesRequest;
 import com.example.monitoreoacua.service.response.ListModuleResponse;
-import com.example.monitoreoacua.views.farms.farm.modules.ListModulesActivity;
 import com.example.monitoreoacua.views.farms.farm.modules.ModuleAdapter;
-import com.example.monitoreoacua.views.farms.farm.modules.RegisterModulesActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,6 +55,7 @@ public class ListModulesFragment extends Fragment implements ModuleAdapter.OnMod
         void onModuleSelected(Module module);
         void onRegisterNewModule();
         void navigateToRegisterModules(Farm farm);
+        void navigateToUpdateModules(Module module);
     }
 
 
@@ -126,7 +123,19 @@ public class ListModulesFragment extends Fragment implements ModuleAdapter.OnMod
             listener.onModuleSelected(module);
         }
     }
-    
+
+    @Override
+    public void onEditModuleClick(Module module) {
+        if (listener != null) {
+            listener.navigateToUpdateModules(module);
+        }
+    }
+
+    @Override
+    public void onToggleModuleState(Module module) {
+
+    }
+
     private void fetchModules() {
         progressBar.setVisibility(View.VISIBLE);
         recyclerViewModules.setVisibility(View.GONE);

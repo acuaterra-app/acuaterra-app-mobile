@@ -1,9 +1,7 @@
 package com.example.monitoreoacua.fragments;
 
+import android.os.Build;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,7 +10,12 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.example.monitoreoacua.R;
+import com.example.monitoreoacua.business.models.Farm;
 import com.example.monitoreoacua.business.models.Module;
 import com.example.monitoreoacua.business.models.User;
 import com.example.monitoreoacua.interfaces.OnApiRequestCallback;
@@ -20,6 +23,7 @@ import com.example.monitoreoacua.service.request.RegisterModuleRequest;
 import com.example.monitoreoacua.service.response.RegisterModuleResponse;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -29,15 +33,16 @@ import java.util.Objects;
  * This fragment provides an interface to input information about the module,
  * validates the inputs, and interacts with the API to register the module.
  */
-public class RegisterModuleFragment extends Fragment {
+public class UpdateModuleFragment extends Fragment {
 
     private EditText etModuleName, etLocation, etLatitude, etLongitude, etFishType, etFishQuantity, etFishAge, etVolumeUnit;
-    private MaterialButton btnRegisterModulo, btnCancelar;
+    private MaterialButton btnUpdateModuloForm, btnCancelar;
     private ProgressBar progressBar;
-    private static final String TAG = "RegisterModuleFragment";
-    private com.example.monitoreoacua.business.models.Farm farm;
+    private static final String TAG = "UpdateModuleFragment";
+    private Farm farm;
     private Module moduleToEdit;
 
+    private static final String ARG_MODULE = "module";
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static final String ARG_FARM = "farm";
@@ -45,7 +50,7 @@ public class RegisterModuleFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public RegisterModuleFragment() {
+    public UpdateModuleFragment() {
         // Required empty public constructor
     }
 
@@ -53,33 +58,32 @@ public class RegisterModuleFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @param farm Farm object to be passed to the fragment.
+     * @param module Parameter 1.
      * @return A new instance of fragment RegisterModuleFragment.
      */
-    public static RegisterModuleFragment newInstance(String param1, String param2, com.example.monitoreoacua.business.models.Farm farm) {
-        RegisterModuleFragment fragment = new RegisterModuleFragment();
+
+
+    public static UpdateModuleFragment newInstance(Module module) {
+        UpdateModuleFragment fragment = new UpdateModuleFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        args.putParcelable(ARG_FARM, farm);
+        args.putParcelable(ARG_MODULE, module);
         fragment.setArguments(args);
         return fragment;
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
 
             // Retrieve farm object from arguments
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-                farm = getArguments().getParcelable(ARG_FARM, com.example.monitoreoacua.business.models.Farm.class);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                farm = getArguments().getParcelable(ARG_FARM, Farm.class);
+                moduleToEdit = getArguments().getParcelable(ARG_MODULE, Module.class);
             } else {
                 farm = getArguments().getParcelable(ARG_FARM);
+                moduleToEdit = getArguments().getParcelable(ARG_MODULE);
             }
 
             // Log farm information if received
@@ -87,6 +91,8 @@ public class RegisterModuleFragment extends Fragment {
                 Log.d(TAG, "Farm received from arguments: ID = " + farm.getId());
             } else {
                 Log.w(TAG, "No Farm object found in arguments!");
+            } if (moduleToEdit != null) {
+                Log.d(TAG, "Module received: Name = " + moduleToEdit.getName());
             }
         }
     }
@@ -94,7 +100,7 @@ public class RegisterModuleFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_register_module, container, false);
+        View view = inflater.inflate(R.layout.fragment_update_module, container, false);
 
         // Initialize the input fields and buttons
         etModuleName = view.findViewById(R.id.etModuleName);
@@ -108,13 +114,24 @@ public class RegisterModuleFragment extends Fragment {
 
         progressBar = view.findViewById(R.id.progressBar);
 
-        btnRegisterModulo = view.findViewById(R.id.btnRegisterModulo);
+        btnUpdateModuloForm = view.findViewById(R.id.btnUpdateModuloForm);
         btnCancelar = view.findViewById(R.id.btnCancelar);
 
+        if (moduleToEdit != null) {
+            etModuleName.setText(moduleToEdit.getName());
+            etLocation.setText(moduleToEdit.getLocation());
+            etLatitude.setText(moduleToEdit.getLatitude());
+            etLongitude.setText(moduleToEdit.getLongitude());
+            etFishType.setText(moduleToEdit.getSpeciesFish());
+            etFishQuantity.setText(moduleToEdit.getFishQuantity());
+            etFishAge.setText(moduleToEdit.getFishAge());
+            etVolumeUnit.setText(moduleToEdit.getDimensions());
+        }
+
         // Set up button click listeners
-        btnRegisterModulo.setOnClickListener(v -> {
+        btnUpdateModuloForm.setOnClickListener(v -> {
             if (validateInputs()) {
-                registerModule();
+                updateModule();
             }
         });
 
@@ -226,7 +243,7 @@ public class RegisterModuleFragment extends Fragment {
      * Registers a new module with the API.
      * Sends the module data to the server and handles the response.
      */
-    private void registerModule() {
+    private void updateModule() {
         // Validate farm and session data first
         if (farm == null) {
             Toast.makeText(getContext(), "Error: Farm information is unavailable", Toast.LENGTH_SHORT).show();
@@ -235,7 +252,7 @@ public class RegisterModuleFragment extends Fragment {
 
         // Show loading indicator
         progressBar.setVisibility(View.VISIBLE);
-        btnRegisterModulo.setEnabled(false);
+        btnUpdateModuloForm.setEnabled(false);
 
         String moduleName = Objects.requireNonNull(etModuleName.getText()).toString().trim();
         String location = Objects.requireNonNull(etLocation.getText()).toString().trim();
@@ -269,7 +286,7 @@ public class RegisterModuleFragment extends Fragment {
                 users
         );
 
-        Log.d(TAG, "Attempting to register module: " + module.toString());
+        Log.d(TAG, "Attempting to update module: " + module.toString());
 
         RegisterModuleRequest registerModuleRequest = new RegisterModuleRequest();
 
@@ -278,7 +295,7 @@ public class RegisterModuleFragment extends Fragment {
             public void onSuccess(RegisterModuleResponse response) {
                 // Hide loading indicator
                 progressBar.setVisibility(View.GONE);
-                btnRegisterModulo.setEnabled(true);
+                btnUpdateModuloForm.setEnabled(true);
 
                 // Handle success response
                 List<RegisterModuleResponse.Data> dataListModule = response.getResponseModuleData();
@@ -314,7 +331,7 @@ public class RegisterModuleFragment extends Fragment {
             public void onFail(Throwable error) {
                 // Hide loading indicator
                 progressBar.setVisibility(View.GONE);
-                btnRegisterModulo.setEnabled(true);
+                btnUpdateModuloForm.setEnabled(true);
 
                 // Log error
                 Log.e(TAG, "Error registering module: " + error.getMessage(), error);
@@ -333,7 +350,7 @@ public class RegisterModuleFragment extends Fragment {
      * Closes the current fragment and returns to the previous screen.
      */
     private void closeFragment() {
-        RegisterModuleFragment moduleFragment = new RegisterModuleFragment();
+        UpdateModuleFragment moduleFragment = new UpdateModuleFragment();
         assert getFragmentManager() != null;
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction
@@ -341,5 +358,13 @@ public class RegisterModuleFragment extends Fragment {
                 .replace(R.id.fragmentContainer, moduleFragment)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    public interface OnModuleUpdatedListener {
+        void onModuleUpdated(Module updatedModule);
+    }
+
+    public void setModuleToEdit(Module module) {
+        this.moduleToEdit = module;
     }
 }
