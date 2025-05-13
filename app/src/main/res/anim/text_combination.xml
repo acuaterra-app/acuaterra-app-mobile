@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fillAfter="true"
+    android:interpolator="@android:anim/decelerate_interpolator">
+    
+    <!-- Fade in animation -->
+    <alpha
+        android:fromAlpha="0.0"
+        android:toAlpha="1.0"
+        android:duration="1000" />
+    
+    <!-- Slide in from right animation -->
+    <translate
+        android:fromXDelta="100%"
+        android:toXDelta="0%"
+        android:duration="1000" />
+    
+    <!-- Small bounce effect -->
+    <scale
+        android:fromXScale="0.8"
+        android:toXScale="1.0"
+        android:fromYScale="0.8"
+        android:toYScale="1.0"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:startOffset="800"
+        android:duration="300" />
+</set>
+

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fillAfter="true">
+    
+    <!-- Slide up animation -->
+    <translate
+        android:fromYDelta="100%"
+        android:toYDelta="0%"
+        android:duration="1000"
+        android:interpolator="@android:anim/decelerate_interpolator" />
+    
+    <!-- Rotate animation will start after slide up -->
+    <rotate
+        android:fromDegrees="0"
+        android:toDegrees="360"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:startOffset="1000"
+        android:duration="1500"
+        android:interpolator="@android:anim/accelerate_decelerate_interpolator" />
+    
+    <!-- Bounce scale effect will start after rotation -->
+    <scale
+        android:fromXScale="1.0"
+        android:toXScale="1.2"
+        android:fromYScale="1.0"
+        android:toYScale="1.2"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:startOffset="2500"
+        android:duration="300"
+        android:repeatCount="1"
+        android:repeatMode="reverse"
+        android:interpolator="@android:anim/overshoot_interpolator" />
+</set>
+
