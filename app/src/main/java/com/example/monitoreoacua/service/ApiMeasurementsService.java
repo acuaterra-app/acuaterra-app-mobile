@@ -21,12 +21,14 @@ public interface ApiMeasurementsService {
      * Get measurements from the aquaponic system
      *
      * @param moduleId The ID of the module from which to fetch measurements
+     * @param sensorId The ID of the sensor from which to fetch measurements
      * @param token The authorization token
      * @return A Call object containing the list of measurements
      */
-    @GET("/api/v2/module/measurement")
+    @GET("/api/v2/owner/modules/measurements")
     Call<ListMeasurementResponse> getMeasurements(
             @Query("moduleId") int moduleId,
+            @Query("sensorId") int sensorId,
             @Header("Authorization") String token
     );
 

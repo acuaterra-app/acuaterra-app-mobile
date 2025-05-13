@@ -47,11 +47,11 @@ dependencies {
     implementation(libs.swiperefreshlayout)
     
     // Security
-    implementation("androidx.security:security-crypto:1.1.0-alpha06")
+    implementation("androidx.security:security-crypto:1.0.0")
     
     // Network
 
-    implementation(libs.firebase.messaging)
+    // Firebase Messaging handled in Firebase section
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -62,7 +62,7 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
     
     // Firebase
-    implementation(platform("com.google.firebase:firebase-bom:33.11.0"))
+    implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
     implementation("com.google.firebase:firebase-analytics")
     implementation(libs.firebase.messaging)
     implementation(libs.firebase.database)

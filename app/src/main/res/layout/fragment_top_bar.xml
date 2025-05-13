@@ -45,9 +45,10 @@
         android:textSize="10sp"
         android:visibility="gone"
         android:textStyle="bold"
-        app:layout_constraintCircle="@id/notificationIcon"
-        app:layout_constraintCircleRadius="15dp"
-        app:layout_constraintCircleAngle="315"
+        app:layout_constraintTop_toTopOf="@id/notificationIcon"
+        app:layout_constraintEnd_toEndOf="@id/notificationIcon"
+        android:layout_marginTop="-6dp"
+        android:layout_marginEnd="-6dp"
         tools:text="9"
         tools:visibility="visible" />
 

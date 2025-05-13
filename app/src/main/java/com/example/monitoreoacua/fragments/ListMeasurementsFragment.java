@@ -56,6 +56,7 @@ public class ListMeasurementsFragment extends Fragment implements MeasurementsAd
     private MeasurementsAdapter measurementAdapter;
 
     private String moduleId;
+    private long apiRequestStartTime; // Variable para medir el tiempo de respuesta API
 
     private OnMeasurementInteractionListener listener;
 
@@ -159,17 +160,17 @@ public class ListMeasurementsFragment extends Fragment implements MeasurementsAd
                 Log.w(TAG, "Token no tiene el prefijo 'Bearer'. Se añadirá automáticamente.");
                 authToken = "Bearer " + authToken;
             }
-            
+
             // Get token length and show first/last few characters for debugging
             int tokenLength = authToken.length();
-            String tokenPreview = (tokenLength > 15) 
+            String tokenPreview = (tokenLength > 15)
                 ? authToken.substring(0, 7) + "..." + authToken.substring(tokenLength - 7)
                 : authToken;
-            
+
             Log.d(TAG, "Token verificado (long: " + tokenLength + "): " + tokenPreview);
             Log.d(TAG, "Continuando con la carga de mediciones...");
         }
-        
+
         // If we get here, token exists and has been validated
         fetchMeasurements();
     }
@@ -191,11 +192,11 @@ public class ListMeasurementsFragment extends Fragment implements MeasurementsAd
 
         try {
             int moduleIdInt = Integer.parseInt(moduleId);
-            
+
             // Crear API service
             ApiMeasurementsService apiService = ApiClient.getClient().create(ApiMeasurementsService.class);
             ListMeasurementRequest listMeasurementsRequest = new ListMeasurementRequest();
-            
+
             // Obtener y verificar token
             String authToken = listMeasurementsRequest.getAuthToken();
             if (authToken == null || authToken.isEmpty()) {
@@ -203,52 +204,53 @@ public class ListMeasurementsFragment extends Fragment implements MeasurementsAd
                 Log.e(TAG, "Error: token de autorización es nulo o vacío");
                 return;
             }
-            
+
             // Asegurarse que el token tenga el prefijo "Bearer"
             if (!authToken.trim().startsWith("Bearer ") && !authToken.trim().startsWith("bearer ")) {
                 authToken = "Bearer " + authToken;
             }
-            
+
             // Log para depuración exhaustiva
             Log.d(TAG, "==== INICIANDO PETICIÓN API ====");
             Log.d(TAG, "URL: /api/v2/module/measurement?moduleId=" + moduleIdInt);
             Log.d(TAG, "Método: GET");
-            Log.d(TAG, "Token: " + (authToken.length() > 20 
+            Log.d(TAG, "Token: " + (authToken.length() > 20
                 ? authToken.substring(0, 10) + "..." + authToken.substring(authToken.length() - 10)
                 : authToken));
             Log.d(TAG, "Headers: Authorization: " + (authToken.startsWith("Bearer ") ? "Bearer ***" : "Sin prefijo Bearer"));
             Log.d(TAG, "QueryParams: moduleId=" + moduleIdInt);
             Log.d(TAG, "================================");
-            
+
             // Hacer llamada a la API
             Call<ListMeasurementResponse> call = apiService.getMeasurements(
                     moduleIdInt,
+                    0,  // 0 to get measurements from all sensors
                     authToken
             );
-            
+
             // Guardar el tiempo de inicio para medir latencia
-            call.request().tag(System.currentTimeMillis());
-            
+            apiRequestStartTime = System.currentTimeMillis();
+
             call.enqueue(new Callback<ListMeasurementResponse>() {
                 @Override
                 public void onResponse(@NonNull Call<ListMeasurementResponse> call, @NonNull Response<ListMeasurementResponse> response) {
                     progressBar.setVisibility(View.GONE);
                     swipeRefreshLayout.setRefreshing(false);
-                    
+
                     // Log de la respuesta completa
                     Log.d(TAG, "==== RESPUESTA API RECIBIDA ====");
                     Log.d(TAG, "URL: " + call.request().url());
                     Log.d(TAG, "Código HTTP: " + response.code() + " - " + response.message());
                     Log.d(TAG, "Headers: " + response.headers().toString());
-                    Log.d(TAG, "Tiempo transcurrido: " + (System.currentTimeMillis() - call.request().tag()) + " ms");
+                    Log.d(TAG, "Tiempo transcurrido: " + (System.currentTimeMillis() - apiRequestStartTime) + " ms");
                     Log.d(TAG, "================================");
-                    
+
                     if (response.isSuccessful() && response.body() != null) {
                         Log.d(TAG, "Respuesta exitosa con cuerpo válido");
                         try {
                         ListMeasurementResponse measurementResponse = response.body();
                         List<Measurement> measurements = measurementResponse.getData();
-                        
+
                         // Update UI based on response
                         if (measurements != null && !measurements.isEmpty()) {
                             Log.d(TAG, "Se recibieron " + measurements.size() + " mediciones");
@@ -295,7 +297,7 @@ public class ListMeasurementsFragment extends Fragment implements MeasurementsAd
                                 Log.e(TAG, "Error " + response.code() + ": " + response.message());
                                 break;
                         }
-                        
+
                         // Intentar obtener más detalles del cuerpo de error
                         try {
                             ResponseBody errorBody = response.errorBody();
@@ -306,17 +308,17 @@ public class ListMeasurementsFragment extends Fragment implements MeasurementsAd
                         } catch (IOException e) {
                             Log.e(TAG, "No se pudo leer el cuerpo de error", e);
                         }
-                        
+
                         Log.e(TAG, "Error al obtener las mediciones: " + response.toString());
                         showError(errorMsg);
                     }
                 }
-                
+
                 @Override
                 public void onFailure(@NonNull Call<ListMeasurementResponse> call, @NonNull Throwable t) {
                     progressBar.setVisibility(View.GONE);
                     swipeRefreshLayout.setRefreshing(false);
-                    
+
                     // Mensajes específicos según el tipo de error
                     String errorMsg;
                     if (t instanceof java.net.UnknownHostException) {
@@ -347,26 +349,26 @@ public class ListMeasurementsFragment extends Fragment implements MeasurementsAd
         if (getContext() != null) {
             // Mostrar toast con el mensaje de error específico
             Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
-            
+
             // Registrar el mensaje de error
             Log.e(TAG, "Error mostrado al usuario: " + message);
-            
+
             // Actualizar UI
             recyclerViewMeasurements.setVisibility(View.GONE);
             tvEmptyView.setVisibility(View.VISIBLE);
-            
+
             // Mostrar mensaje personalizado en lugar del genérico
             tvEmptyView.setText(message);
-            
+
             // Agregar opción de depuración cuando hay errores
             Button debugButton = new Button(getContext());
             debugButton.setText("Diagnosticar Problema");
             debugButton.setOnClickListener(v -> runDiagnostics());
-            
+
             // Añadir el botón debajo del mensaje de error
             if (tvEmptyView.getParent() instanceof ViewGroup) {
                 ViewGroup parent = (ViewGroup) tvEmptyView.getParent();
-                
+
                 // Verificar si ya existe un botón de diagnóstico
                 boolean buttonExists = false;
                 for (int i = 0; i < parent.getChildCount(); i++) {
@@ -376,7 +378,7 @@ public class ListMeasurementsFragment extends Fragment implements MeasurementsAd
                         break;
                     }
                 }
-                
+
                 if (!buttonExists) {
                     debugButton.setId(R.id.btnDiagnostics);
                     ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(
@@ -397,7 +399,7 @@ public class ListMeasurementsFragment extends Fragment implements MeasurementsAd
     public void refreshMeasurements() {
         verifyTokenAndFetchMeasurements();
     }
-    
+
     /**
      * Run comprehensive diagnostics on the measurement loading process
      * This method checks each possible point of failure
@@ -407,10 +409,10 @@ public class ListMeasurementsFragment extends Fragment implements MeasurementsAd
             Log.e(TAG, "DIAGNÓSTICO: Contexto del fragmento es NULL. No se puede continuar.");
             return;
         }
-        
+
         StringBuilder report = new StringBuilder();
         report.append("=== REPORTE DE DIAGNÓSTICO ===\n\n");
-        
+
         // 1. Verificar ApplicationContext
         report.append("1. VERIFICACIÓN DE CONTEXTO DE APLICACIÓN:\n");
         Context appContext = ApplicationContextProvider.getContext();
@@ -422,7 +424,7 @@ public class ListMeasurementsFragment extends Fragment implements MeasurementsAd
             report.append("   ✓ ApplicationContext inicializado correctamente\n");
         }
         report.append("\n");
-        
+
         // 2. Verificar Módulo ID
         report.append("2. VERIFICACIÓN DE MÓDULO ID:\n");
         if (moduleId == null) {
@@ -441,7 +443,7 @@ public class ListMeasurementsFragment extends Fragment implements MeasurementsAd
             }
         }
         report.append("\n");
-        
+
         // 3. Verificar Token
         report.append("3. VERIFICACIÓN DE TOKEN DE AUTENTICACIÓN:\n");
         if (appContext != null) {
@@ -460,10 +462,10 @@ public class ListMeasurementsFragment extends Fragment implements MeasurementsAd
                         report.append("   ⚠️ ADVERTENCIA: Token no tiene prefijo 'Bearer '\n");
                         report.append("   - Esto se corrige automáticamente en la petición\n");
                     }
-                    
+
                     String actualToken = token.startsWith("Bearer ") ? token.substring(7) : token;
                     String[] parts = actualToken.split("\\.");
-                    
+
                     if (parts.length != 3) {
                         report.append("   ⚠️ ADVERTENCIA: Token no parece tener formato JWT válido (debería tener 3 partes separadas por puntos)\n");
                     } else {
@@ -487,7 +489,7 @@ public class ListMeasurementsFragment extends Fragment implements MeasurementsAd
             report.append("   ❌ ERROR: No se puede verificar token porque ApplicationContext es NULL\n");
         }
         report.append("\n");
-        
+
         // 4. Verificar API y conexión
         report.append("4. VERIFICACIÓN DE API Y CONEXIÓN:\n");
         try {
@@ -496,11 +498,11 @@ public class ListMeasurementsFragment extends Fragment implements MeasurementsAd
                 report.append("   ❌ ERROR: Cliente API no inicializado\n");
             } else {
                 report.append("   ✓ Cliente API inicializado correctamente\n");
-                
+
                 // Intentar recuperar la URL base
                 String baseUrl = ApiClient.getClient().baseUrl().toString();
                 report.append("   - URL Base: ").append(baseUrl).append("\n");
-                
+
                 // Hacer ping a la URL base para verificar conectividad
                 report.append("   ⚠️ Conectividad a servidor necesita prueba manual\n");
                 report.append("   - Recomendación: Verificar conexión a ").append(baseUrl).append("\n");
@@ -508,29 +510,29 @@ public class ListMeasurementsFragment extends Fragment implements MeasurementsAd
         } catch (Exception e) {
             report.append("   ❌ ERROR en validación de API: ").append(e.getMessage()).append("\n");
         }
-        
+
         // Mostrar reporte completo
         Log.d(TAG, "\n" + report.toString());
-        
+
         // Mostrar un diálogo con la información de diagnóstico
         if (getContext() != null) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder.setTitle("Diagnóstico de Problemas");
-            
+
             // Crear layout para mostrar el texto con scroll
             ScrollView scrollView = new ScrollView(getContext());
             TextView textView = new TextView(getContext());
             textView.setPadding(30, 30, 30, 30);
             textView.setText(report.toString());
             scrollView.addView(textView);
-            
+
             builder.setView(scrollView);
             builder.setPositiveButton("Cerrar", null);
             builder.setNeutralButton("Copiar Reporte", (dialog, which) -> {
                 // Copiar reporte al portapapeles
-                android.content.ClipboardManager clipboard = 
+                android.content.ClipboardManager clipboard =
                     (android.content.ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
-                android.content.ClipData clip = 
+                android.content.ClipData clip =
                     android.content.ClipData.newPlainText("Diagnóstico Mediciones", report.toString());
                 clipboard.setPrimaryClip(clip);
                 Toast.makeText(getContext(), "Reporte copiado al portapapeles", Toast.LENGTH_SHORT).show();
@@ -545,10 +547,10 @@ public class ListMeasurementsFragment extends Fragment implements MeasurementsAd
     public void debugTokenIssues() {
         ListMeasurementRequest request = new ListMeasurementRequest();
         String token = request.getAuthToken();
-        
+
         StringBuilder info = new StringBuilder();
         info.append("Información de Depuración de Token:\n\n");
-        
+
         if (token == null) {
             info.append("- Token es NULL\n");
             info.append("- Probable problema con SharedPreferences o sesión\n");
@@ -557,12 +559,12 @@ public class ListMeasurementsFragment extends Fragment implements MeasurementsAd
             info.append("- Sesión posiblemente cerrada o inválida\n");
         } else {
             info.append("- Token existente (longitud: ").append(token.length()).append(")\n");
-            
+
             // Verificar formato de token (Bearer + JWT)
             if (!token.startsWith("Bearer ")) {
                 info.append("- Advertencia: Token no tiene prefijo 'Bearer'\n");
             }
-            
+
             // Verificar si es un JWT válido (formato simple)
             String[] parts = token.replace("Bearer ", "").split("\\.");
             if (parts.length != 3) {
@@ -571,14 +573,14 @@ public class ListMeasurementsFragment extends Fragment implements MeasurementsAd
                 info.append("- Token parece tener formato JWT válido\n");
             }
         }
-        
+
         // Mostrar resultado en el log
         Log.d(TAG, info.toString());
-        
+
         // También mostrar en UI para debugging
         if (getContext() != null) {
-            Toast.makeText(getContext(), 
-                    "Información de depuración registrada en el log", 
+            Toast.makeText(getContext(),
+                    "Información de depuración registrada en el log",
                     Toast.LENGTH_SHORT).show();
         }
     }
