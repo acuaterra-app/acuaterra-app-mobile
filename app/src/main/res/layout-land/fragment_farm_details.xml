@@ -5,7 +5,7 @@
     android:id="@+id/fragment_farm_details"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/backgroundfarms"
+    android:background="@drawable/homebackground"
     tools:context=".fragments.FarmDetailsFragment">
 
     <!-- Contenedor principal -->

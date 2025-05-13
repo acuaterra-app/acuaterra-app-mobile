@@ -5,7 +5,7 @@
     android:id="@+id/logout_fragment_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/logingbackground"
+    android:background="@drawable/homebackgroundland"
     tools:context=".fragments.LogoutFragment">
 
     <!-- Contenedor principal en horizontal -->

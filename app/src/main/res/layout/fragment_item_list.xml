@@ -1,33 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".views.users.UserFragment">
 
+    <!-- Botón extendido centrado en la parte superior -->
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/id_create_user_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="24dp"
+        android:paddingHorizontal="32dp"
+        android:clickable="true"
+        android:elevation="12dp"
+        android:text="Crear Usuario"
+        android:textColor="@android:color/white"
+        app:icon="@drawable/editarloging"
+        app:iconPadding="8dp"
+        app:backgroundTint="@color/colorAccent"
+        app:rippleColor="@color/white" />
+
+    <!-- Lista de usuarios con margen superior para no chocar con el botón -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:paddingTop="88dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
         app:layoutManager="LinearLayoutManager"
         tools:listitem="@layout/fragment_item" />
 
+    <!-- Barra de progreso centrada -->
     <ProgressBar
         android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_gravity="center" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/id_create_user_fab"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|bottom"
-        android:clickable="true"
-        app:srcCompat="@drawable/editarloging" />
+        android:layout_gravity="center"
+        android:visibility="gone" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

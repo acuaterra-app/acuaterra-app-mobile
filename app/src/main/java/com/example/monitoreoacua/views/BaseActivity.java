@@ -157,6 +157,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     @Override
     public void navigateToSettings() {
         loadFragment(new UserFragment(), true);
+        setActivityTitle("Usuarios");
         //Toast.makeText(this, "Navigate to Users/Settings (not implemented)", Toast.LENGTH_SHORT).show();
     }
 

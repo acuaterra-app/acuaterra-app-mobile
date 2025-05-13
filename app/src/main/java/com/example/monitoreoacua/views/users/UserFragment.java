@@ -19,7 +19,7 @@ import com.example.monitoreoacua.business.models.User;
 import com.example.monitoreoacua.interfaces.OnApiRequestCallback;
 import com.example.monitoreoacua.service.request.ListUsersRequest;
 import com.example.monitoreoacua.service.request.RegisterUserRequest;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.io.Serializable;
 import java.util.List;
@@ -75,7 +75,7 @@ public class UserFragment extends Fragment implements MyUserRecyclerViewAdapter.
 
         fetchUsers();
 
-        FloatingActionButton fab = view.findViewById(R.id.id_create_user_fab);
+        ExtendedFloatingActionButton fab = view.findViewById(R.id.id_create_user_fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

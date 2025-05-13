@@ -19,9 +19,28 @@
         android:theme="@style/Theme.MonitoreoAcua"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+
+        <activity
+            android:name=".SplashActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <activity
+            android:name=".LogoutSplashActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />
+
         <activity
             android:name=".views.farms.farm.modules.RegisterModulesActivity"
             android:exported="false" />
@@ -35,6 +54,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="com.example.monitoreoacua.VIEW_FARM_DETAILS" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -45,6 +65,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="com.example.monitoreoacua.FARM_FORM" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -56,33 +77,28 @@
             android:exported="false" />
         <activity
             android:name=".views.login.LoginActivity"
-            android:launchMode="singleTop"
             android:configChanges="orientation|screenSize"
-            android:exported="false" />
+            android:exported="false"
+            android:launchMode="singleTop" />
         <activity
             android:name=".views.MainActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustPan|adjustResize">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
             android:name=".views.farms.farm.modules.ListModulesActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan|adjustResize"/>
+            android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
             android:name=".views.farms.farm.modules.ViewModuleActivity"
             android:exported="false"
             android:parentActivityName=".views.farms.farm.modules.ListModulesActivity" />
         <activity
-
             android:name=".views.measurements.SensorMeasurementsActivity"
             android:exported="false"
             android:parentActivityName=".views.farms.farm.modules.ViewModuleActivity" />
@@ -93,10 +109,11 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="com.example.monitoreoacua.VIEW_FARM_DETAILS_FRAGMENT" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        
+
         <service
             android:name=".firebase.MyFirebaseMessagingService"
             android:exported="false">
@@ -104,6 +121,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
         <activity
             android:name=".views.notifications.NotificationsActivity"
             android:exported="false" />

@@ -3,187 +3,161 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="6dp">
+    android:layout_margin="12dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp">
 
+        <!-- Imagen de perfil centrada verticalmente -->
         <ImageView
             android:id="@+id/item_icon"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_marginEnd="16dp"
             android:src="@drawable/ic_user"
             android:contentDescription="@string/registro_usuario"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginEnd="16dp" />
+            app:layout_constraintStart_toStartOf="parent" />
 
-        <View
-            android:id="@+id/separator"
-            android:layout_width="1dp"
-            android:layout_height="0dp"
-            android:background="@color/colorDivider"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/item_icon"
-            android:layout_marginEnd="16dp" />
-
-        <TextView
-            android:id="@+id/item_name_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Nombre:"
-            android:textAppearance="?attr/textAppearanceBody2"
-            android:textColor="@color/black"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/separator"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp" />
-
-        <TextView
-            android:id="@+id/item_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Name"
-            android:textAppearance="?attr/textAppearanceHeadline6"
-            android:textColor="@color/colorTextPrimary"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/item_name_label"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp" />
-
-        <TextView
-            android:id="@+id/item_email_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Email:"
-            android:textAppearance="?attr/textAppearanceBody2"
-            android:textColor="@color/black"
-            app:layout_constraintTop_toBottomOf="@id/item_name_label"
-            app:layout_constraintStart_toStartOf="@id/item_name_label"
-            android:layout_marginTop="8dp" />
-
-        <TextView
-            android:id="@+id/item_email"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Email"
-            android:textAppearance="?attr/textAppearanceBody2"
-            android:textColor="@color/black"
-            app:layout_constraintTop_toBottomOf="@id/item_name"
-            app:layout_constraintStart_toEndOf="@id/item_email_label"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp" />
-
-        <TextView
-            android:id="@+id/item_dni_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="DNI:"
-            android:textAppearance="?attr/textAppearanceBody2"
-            android:textColor="@color/colorTextSecondary"
-            app:layout_constraintTop_toBottomOf="@id/item_email_label"
-            app:layout_constraintStart_toStartOf="@id/item_email_label"
-            android:layout_marginTop="8dp" />
-
-        <TextView
-            android:id="@+id/item_dni"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="DNI"
-            android:textAppearance="?attr/textAppearanceBody2"
-            android:textColor="@color/colorTextSecondary"
-            app:layout_constraintTop_toBottomOf="@id/item_email"
-            app:layout_constraintStart_toEndOf="@id/item_dni_label"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp" />
-
-        <TextView
-            android:id="@+id/item_address_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Dirección:"
-            android:textAppearance="?attr/textAppearanceBody2"
-            android:textColor="@color/colorTextSecondary"
-            app:layout_constraintTop_toBottomOf="@id/item_dni_label"
-            app:layout_constraintStart_toStartOf="@id/item_dni_label"
-            android:layout_marginTop="8dp" />
-
-        <TextView
-            android:id="@+id/item_address"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Address"
-            android:textAppearance="?attr/textAppearanceBody2"
-            android:textColor="@color/colorTextSecondary"
-            app:layout_constraintTop_toBottomOf="@id/item_dni"
-            app:layout_constraintStart_toEndOf="@id/item_address_label"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp" />
-
-        <TextView
-            android:id="@+id/item_contact_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Contacto:"
-            android:textAppearance="?attr/textAppearanceBody2"
-            android:textColor="@color/colorTextSecondary"
-            app:layout_constraintTop_toBottomOf="@id/item_address_label"
-            app:layout_constraintStart_toStartOf="@id/item_address_label"
-            android:layout_marginTop="8dp" />
-
-        <TextView
-            android:id="@+id/item_contact"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Contact"
-            android:textAppearance="?attr/textAppearanceBody2"
-            android:textColor="@color/colorTextSecondary"
-            app:layout_constraintTop_toBottomOf="@id/item_address"
-            app:layout_constraintStart_toEndOf="@id/item_contact_label"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp" />
-
+        <!-- Contenedor para los textos alineados -->
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal"
+            android:id="@+id/textContainer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="15dp"
+            app:layout_constraintStart_toEndOf="@id/item_icon"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/item_contact_label"
-            app:layout_constraintTop_toBottomOf="@id/item_contact_label">
+            app:layout_constraintEnd_toEndOf="parent">
 
-            <Button
-                android:id="@+id/deleteButton"
-                android:layout_width="wrap_content"
+            <!-- Nombre -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:text="Delete"
-                app:layout_constraintEnd_toStartOf="@id/updateButton" />
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nombre:"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"/>
+                <TextView
+                    android:id="@+id/item_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Name"
+                    android:layout_marginStart="4dp"/>
+            </LinearLayout>
 
-            <Button
-                android:id="@+id/updateButton"
-                android:layout_width="wrap_content"
+            <!-- Email -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Update"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="parent" />
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Email:"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/item_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="email@example.com"
+                    android:layout_marginStart="4dp"/>
+            </LinearLayout>
+
+            <!-- DNI -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="DNI:"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/item_dni"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="12345678"
+                    android:layout_marginStart="4dp"/>
+            </LinearLayout>
+
+            <!-- Dirección -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dirección:"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/item_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cra 12 #45-67"
+                    android:layout_marginStart="4dp"/>
+            </LinearLayout>
+
+            <!-- Contacto -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Contacto:"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/item_contact"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3123456789"
+                    android:layout_marginStart="4dp"/>
+            </LinearLayout>
+
+            <!-- Botones -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="end"
+                android:layout_marginTop="12dp">
+
+                <Button
+                    android:id="@+id/deleteButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Eliminar"
+                    android:layout_marginEnd="8dp"
+                    android:textColor="@android:color/white"
+                    android:backgroundTint="@color/colorAccent" />
+
+                <Button
+                    android:id="@+id/updateButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Actualizar"
+                    android:textColor="@android:color/white"
+                    android:backgroundTint="@color/colorAccent" />
+            </LinearLayout>
+
         </LinearLayout>
-
-
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

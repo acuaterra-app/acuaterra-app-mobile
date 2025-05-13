@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:background="@drawable/backgroundfarms"
+    android:background="@drawable/homebackgroundland"
     android:padding="16dp">
 
     <!-- Columna Izquierda: Imagen + Texto -->
