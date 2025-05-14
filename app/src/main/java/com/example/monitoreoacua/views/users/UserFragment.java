@@ -3,6 +3,8 @@ package com.example.monitoreoacua.views.users;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,10 +18,11 @@ import android.widget.Toast;
 
 import com.example.monitoreoacua.R;
 import com.example.monitoreoacua.business.models.User;
+import com.example.monitoreoacua.fragments.TopBarFragment;
 import com.example.monitoreoacua.interfaces.OnApiRequestCallback;
 import com.example.monitoreoacua.service.request.ListUsersRequest;
 import com.example.monitoreoacua.service.request.RegisterUserRequest;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.io.Serializable;
 import java.util.List;
@@ -75,7 +78,7 @@ public class UserFragment extends Fragment implements MyUserRecyclerViewAdapter.
 
         fetchUsers();
 
-        FloatingActionButton fab = view.findViewById(R.id.id_create_user_fab);
+        ExtendedFloatingActionButton fab = view.findViewById(R.id.id_create_user_fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,6 +92,21 @@ public class UserFragment extends Fragment implements MyUserRecyclerViewAdapter.
         });
 
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        
+        // Get the parent activity
+        if (getActivity() != null) {
+            // Find the TopBarFragment
+            TopBarFragment topBarFragment = (TopBarFragment) getActivity().getSupportFragmentManager()
+                    .findFragmentById(R.id.topBarContainer);
+            if (topBarFragment != null) {
+                topBarFragment.setTitle("Usuarios");
+            }
+        }
     }
 
     private void fetchUsers() {
