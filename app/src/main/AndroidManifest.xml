@@ -60,14 +60,24 @@
             android:configChanges="orientation|screenSize"
             android:exported="false" />
         <activity
+            android:name=".SplashActivity"
+            android:exported="true"
+            android:theme="@style/Theme.MonitoreoAcua.Splash">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".LogoutSplashActivity"
+            android:exported="false"
+            android:noHistory="true"
+            android:theme="@style/Theme.MonitoreoAcua.Splash">
+        </activity>
+        <activity
             android:name=".views.MainActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustPan|adjustResize">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />

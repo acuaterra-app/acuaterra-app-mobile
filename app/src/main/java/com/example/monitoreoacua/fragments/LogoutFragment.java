@@ -84,7 +84,7 @@ public class LogoutFragment extends Fragment {
         
         Log.d(TAG, "Token removed from SharedPreferences");
         
-        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        Intent intent = new Intent(getActivity(), com.example.monitoreoacua.LogoutSplashActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         

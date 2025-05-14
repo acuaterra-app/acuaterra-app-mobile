@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fillAfter="true"
+    android:shareInterpolator="true"
+    android:interpolator="@android:anim/decelerate_interpolator">
+
+    <!-- Fade out animation - text gradually disappears -->
+    <alpha
+        android:fromAlpha="1.0"
+        android:toAlpha="0.0"
+        android:duration="1800"
+        android:startOffset="700" />
+
+    <!-- Subtle upward movement as text fades out -->
+    <translate
+        android:fromYDelta="0"
+        android:toYDelta="-30"
+        android:duration="2000"
+        android:startOffset="600" />
+</set>
+

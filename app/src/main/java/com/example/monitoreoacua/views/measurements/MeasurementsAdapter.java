@@ -5,6 +5,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.monitoreoacua.R;
 import com.example.monitoreoacua.business.models.Measurement;
@@ -61,6 +63,28 @@ public class MeasurementsAdapter extends RecyclerView.Adapter<MeasurementsAdapte
     public void onBindViewHolder(@NonNull MeasurementViewHolder holder, int position) {
         Measurement measurement = measurementList.get(position);
         Sensor sensor = measurement.getSensor();
+
+        // Obtener el color basado en el valor y rango
+        double measurementValue = measurement.getValue();
+
+        // Verificar primero si el valor es mayor o igual a 35.00 (siempre en rojo)
+        if (measurementValue >= 35.00) {
+            // Valor mayor o igual a 35.00 - color rojo
+            holder.cardView.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), android.R.color.holo_red_light));
+        }
+        // Verificar si el valor es cero
+        else if (measurementValue == 0.0) {
+            // Valor en cero - color azul
+            holder.cardView.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), android.R.color.holo_blue_light));
+        } 
+        // Si no es cero ni mayor a 35, verificar si está dentro del rango
+        else if (isValueInRange(measurementValue, sensor)) {
+            // Valor dentro del rango - color verde
+            holder.cardView.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), android.R.color.holo_green_light));
+        } else {
+            // Valor fuera del rango - color rojo
+            holder.cardView.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), android.R.color.holo_red_light));
+        }
 
         // Format the value with 2 decimal places
         String formattedValue = String.format("%.2f", measurement.getValue());
@@ -187,6 +211,56 @@ public class MeasurementsAdapter extends RecyclerView.Adapter<MeasurementsAdapte
         }
     }
 
+    /**
+     * Verifica si un valor está dentro del rango definido por los thresholds del sensor
+     * @param value El valor de la medición a verificar
+     * @param sensor El sensor que tiene los thresholds
+     * @return true si el valor está dentro del rango, false en caso contrario
+     */
+    private boolean isValueInRange(double value, Sensor sensor) {
+        // Si no hay sensor o thresholds, asumimos que está dentro del rango
+        if (sensor == null || sensor.getThresholds() == null || sensor.getThresholds().isEmpty()) {
+            return true; 
+        }
+
+        double minThreshold = Double.MIN_VALUE;
+        double maxThreshold = Double.MAX_VALUE;
+        boolean hasMin = false;
+        boolean hasMax = false;
+
+        // Verificamos cada threshold y extraemos los valores min y max
+        for (Sensor.Threshold threshold : sensor.getThresholds()) {
+            if (threshold != null && threshold.getType() != null && threshold.getValue() != null) {
+                try {
+                    double thresholdValue = Double.parseDouble(threshold.getValue());
+                    
+                    if (threshold.getType().equalsIgnoreCase("min")) {
+                        minThreshold = thresholdValue;
+                        hasMin = true;
+                    } else if (threshold.getType().equalsIgnoreCase("max")) {
+                        maxThreshold = thresholdValue;
+                        hasMax = true;
+                    }
+                } catch (NumberFormatException e) {
+                    // Si no se puede parsear el valor, lo ignoramos
+                    continue;
+                }
+            }
+        }
+        
+        // Verificamos si el valor está dentro del rango
+        if (hasMin && value < minThreshold) {
+            return false; // Por debajo del mínimo
+        }
+        
+        if (hasMax && value > maxThreshold) {
+            return false; // Por encima del máximo
+        }
+        
+        // Si pasó todas las verificaciones, está dentro del rango
+        return true;
+    }
+
     @Override
     public int getItemCount() {
         return measurementList.size();
@@ -202,6 +276,7 @@ public class MeasurementsAdapter extends RecyclerView.Adapter<MeasurementsAdapte
         private TextView tvMeasurementValue;
         private TextView tvMeasurementDate;
         private TextView tvMeasurementTime;
+        private CardView cardView;
 
         MeasurementViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -210,6 +285,7 @@ public class MeasurementsAdapter extends RecyclerView.Adapter<MeasurementsAdapte
             tvMeasurementValue = itemView.findViewById(R.id.tvMeasurementValue);
             tvMeasurementDate = itemView.findViewById(R.id.tvMeasurementDate);
             tvMeasurementTime = itemView.findViewById(R.id.tvMeasurementTime);
+            cardView = itemView.findViewById(R.id.cardViewMeasurement);
         }
     }
 
