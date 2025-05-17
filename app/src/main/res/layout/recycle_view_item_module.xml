@@ -139,5 +139,15 @@
                 android:textSize="14sp"/>
         </LinearLayout>
 
+        <!-- Module Activation Button -->
+        <Button
+            android:id="@+id/btnToggleModule"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Desactivar"
+            android:textSize="16sp"
+            android:padding="8dp"
+            android:layout_marginTop="16dp"/>
+
     </LinearLayout>
 </androidx.cardview.widget.CardView>

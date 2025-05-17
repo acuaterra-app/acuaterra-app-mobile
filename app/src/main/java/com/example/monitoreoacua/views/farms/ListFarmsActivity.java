@@ -22,6 +22,8 @@ import com.example.monitoreoacua.views.menu.SupportActivity;
  */
 public class ListFarmsActivity extends BaseActivity 
         implements ListFarmsFragment.OnFarmSelectedListener, OnFragmentInteractionListener {
+    
+    private static final String EXTRA_FARM = "extra_farm";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -93,7 +95,7 @@ public class ListFarmsActivity extends BaseActivity
         
         // Navigate to farm modules screen
         Intent intent = new Intent(this, ListModulesActivity.class);
-        intent.putExtra("farm", farm);
+        intent.putExtra(EXTRA_FARM, farm);
         startActivity(intent);
     }
 }

@@ -22,7 +22,7 @@ import com.example.monitoreoacua.business.models.Farm;
  * Fragment that displays details of a farm
  */
 public class FarmDetailsFragment extends Fragment {
-    private static final String ARG_FARM = "farm";
+    private static final String EXTRA_FARM = "extra_farm";
 
     private Farm farm;
     private OnFragmentInteractionListener mListener;
@@ -31,8 +31,6 @@ public class FarmDetailsFragment extends Fragment {
     private TextView tvFarmAddress;
     private TextView tvFarmCoordinates;
     private TextView tvCreatedAt;
-    private Button btnEdit;
-    private Button btnDelete;
     private Button btnModules;
     private ImageView ivFarmImage;
 
@@ -44,7 +42,7 @@ public class FarmDetailsFragment extends Fragment {
     public static FarmDetailsFragment newInstance(Farm farm) {
         FarmDetailsFragment fragment = new FarmDetailsFragment();
         Bundle args = new Bundle();
-        args.putParcelable(ARG_FARM, farm);
+        args.putParcelable(EXTRA_FARM, farm);
         fragment.setArguments(args);
         return fragment;
     }
@@ -54,9 +52,9 @@ public class FarmDetailsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-                farm = getArguments().getParcelable(ARG_FARM, Farm.class);
+                farm = getArguments().getParcelable(EXTRA_FARM, Farm.class);
             } else {
-                farm = getArguments().getParcelable(ARG_FARM);
+                farm = getArguments().getParcelable(EXTRA_FARM);
             }
         }
     }
@@ -75,8 +73,6 @@ public class FarmDetailsFragment extends Fragment {
         tvFarmAddress = view.findViewById(R.id.textViewFarmAddress);
         tvFarmCoordinates = view.findViewById(R.id.textViewFarmCoordinates);
         tvCreatedAt = view.findViewById(R.id.textViewCreatedAt);
-        btnEdit = view.findViewById(R.id.buttonEditFarm);
-        btnDelete = view.findViewById(R.id.buttonDeleteFarm);
         btnModules = view.findViewById(R.id.buttonModules);
         ivFarmImage = view.findViewById(R.id.imageViewFarm);
         
@@ -99,18 +95,6 @@ public class FarmDetailsFragment extends Fragment {
     }
 
     private void setupClickListeners() {
-        btnEdit.setOnClickListener(v -> {
-            if (mListener != null) {
-                mListener.onEditFarm(farm);
-            }
-        });
-
-        btnDelete.setOnClickListener(v -> {
-            if (mListener != null) {
-                mListener.onDeleteFarm(farm);
-            }
-        });
-        
         btnModules.setOnClickListener(v -> {
             if (mListener != null) {
                 mListener.onViewFarmModules(farm);

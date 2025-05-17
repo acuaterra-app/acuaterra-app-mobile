@@ -67,6 +67,9 @@ public class Module extends BaseRequest implements Serializable, Parcelable {
     @SerializedName("user_ids")
     private List<Integer> userIds;
 
+    @SerializedName("is_active")
+    private boolean isActive = true;
+
     public Module() {
         // Constructor vacío
     }
@@ -85,6 +88,7 @@ public class Module extends BaseRequest implements Serializable, Parcelable {
         this.dimensions = dimensions;
         this.idFarm = idFarm;
         this.userIds = users;
+        this.isActive = true;
     }
 
     // Constructor Parcelable
@@ -102,6 +106,7 @@ public class Module extends BaseRequest implements Serializable, Parcelable {
         createdAt = in.readString();
         updatedAt = in.readString();
         deletedAt = in.readString();
+        isActive = in.readInt() == 1;
         // Nota: los objetos complejos como creator, farm, sensors, users pueden requerir Parcelable adicional o manejo especial si necesitas pasarlos también.
     }
 
@@ -132,6 +137,7 @@ public class Module extends BaseRequest implements Serializable, Parcelable {
         dest.writeString(createdAt);
         dest.writeString(updatedAt);
         dest.writeString(deletedAt);
+        dest.writeInt(isActive ? 1 : 0);
     }
 
     @Override
@@ -161,8 +167,8 @@ public class Module extends BaseRequest implements Serializable, Parcelable {
     public Farm getFarm() { return farm; }
     public List<Sensor> getSensors() { return sensors; }
     public void setSensors(List<Sensor> sensors) { this.sensors = sensors; }
-
-
+    public boolean isActive() { return isActive; }
+    public void setActive(boolean isActive) { this.isActive = isActive; }
 
 
 }

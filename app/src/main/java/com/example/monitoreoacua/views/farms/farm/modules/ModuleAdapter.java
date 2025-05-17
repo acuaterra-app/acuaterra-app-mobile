@@ -3,8 +3,10 @@ package com.example.monitoreoacua.views.farms.farm.modules;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.monitoreoacua.R;
 import com.example.monitoreoacua.business.models.Module;
@@ -59,6 +61,13 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
         
         // Set name and location (existing fields)
         holder.tvModuleName.setText(module.getName() != null ? module.getName() : "Sin nombre");
+        
+        // Set text color based on active state
+        if (module.isActive()) {
+            holder.tvModuleName.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), android.R.color.black));
+        } else {
+            holder.tvModuleName.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), android.R.color.holo_red_dark));
+        }
         holder.tvModuleLocation.setText("Ubicación: " + (module.getLocation() != null ? module.getLocation() : "No especificada"));
         
         // Set new fields with null checks
@@ -80,6 +89,22 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
         holder.tvModuleDimensions.setText("Dimensiones: " + (module.getDimensions() != null && !module.getDimensions().isEmpty() ? 
                 module.getDimensions() : "No especificadas"));
 
+        // Set button text and click listener
+        if (module.isActive()) {
+            holder.btnToggleModule.setText("Desactivar");
+            holder.btnToggleModule.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), android.R.color.holo_green_dark));
+        } else {
+            holder.btnToggleModule.setText("Activar");
+            holder.btnToggleModule.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), android.R.color.holo_red_dark));
+        }
+
+        holder.btnToggleModule.setOnClickListener(v -> {
+            // Toggle active state
+            module.setActive(!module.isActive());
+            // Update UI
+            notifyItemChanged(position);
+        });
+
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onModuleClick(module);
@@ -100,6 +125,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
         private TextView tvModuleLatitude, tvModuleLongitude;
         private TextView tvModuleSpeciesFish, tvModuleFishQuantity;
         private TextView tvModuleFishAge, tvModuleDimensions;
+        private Button btnToggleModule;
 
         ModuleViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -111,6 +137,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
             tvModuleFishQuantity = itemView.findViewById(R.id.tvModuleFishQuantity);
             tvModuleFishAge = itemView.findViewById(R.id.tvModuleFishAge);
             tvModuleDimensions = itemView.findViewById(R.id.tvModuleDimensions);
+            btnToggleModule = itemView.findViewById(R.id.btnToggleModule);
         }
     }
 
