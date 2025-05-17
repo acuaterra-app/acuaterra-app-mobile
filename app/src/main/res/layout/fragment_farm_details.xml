@@ -124,33 +124,6 @@
                 android:layout_marginBottom="20dp"
                 />
 
-            <!-- Botones de edición y eliminación -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="16dp">
-
-                <com.google.android.material.button.MaterialButton
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:id="@+id/buttonEditFarm"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Editar"
-                    android:textColor="@color/colorAccent"
-                    android:layout_marginEnd="8dp"/>
-
-                <com.google.android.material.button.MaterialButton
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:id="@+id/buttonDeleteFarm"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Eliminar"
-                    android:textColor="@android:color/holo_red_dark"
-                    android:layout_marginStart="8dp"/>
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
