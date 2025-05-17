@@ -52,7 +52,11 @@ public class FarmDetailsActivity extends BaseActivity implements OnFragmentInter
 
         // Get farm from intent
         if (getIntent() != null && getIntent().hasExtra(EXTRA_FARM)) {
-            farm = getIntent().getParcelableExtra(EXTRA_FARM, Farm.class);
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                farm = getIntent().getParcelableExtra(EXTRA_FARM, Farm.class);
+            } else {
+                farm = getIntent().getParcelableExtra(EXTRA_FARM);
+            }
             initializeWithFarm();
         } else {
             // No farm provided
@@ -88,7 +92,7 @@ public class FarmDetailsActivity extends BaseActivity implements OnFragmentInter
     public void onEditFarm(Farm farm) {
         // Handle edit farm action
         Intent intent = new Intent(this, FarmFormActivity.class);
-        intent.putExtra("extra_farm", farm);
+        intent.putExtra(EXTRA_FARM, farm);
         startActivity(intent);
     }
 
@@ -119,7 +123,7 @@ public class FarmDetailsActivity extends BaseActivity implements OnFragmentInter
         // Handle navigation to the farm modules screen
         // Launch ListModulesActivity with the farm object
         Intent intent = new Intent(this, ListModulesActivity.class);
-        intent.putExtra("farm", farm);
+        intent.putExtra(EXTRA_FARM, farm);
         startActivity(intent);
     }
     @Override

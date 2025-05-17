@@ -28,6 +28,10 @@ public class Farm implements Parcelable {
     private String updatedAt;
 
 
+    // Constructor vacío necesario para Parcelable y serialización
+    public Farm() {
+        // Constructor vacío requerido
+    }
 
     public Farm(int id, String name, String address, String latitude, String longitude, String createdAt, String updatedAt) {
         this.id = id;
@@ -39,7 +43,7 @@ public class Farm implements Parcelable {
         this.updatedAt = updatedAt;
     }
 
-    protected Farm(Parcel in) {
+    public Farm(Parcel in) {
         id = in.readInt();
         name = in.readString();
         address = in.readString();
@@ -49,6 +53,7 @@ public class Farm implements Parcelable {
         updatedAt = in.readString();
     }
 
+    @SuppressWarnings("unused")
     public static final Creator<Farm> CREATOR = new Creator<Farm>() {
         @Override
         public Farm createFromParcel(Parcel in) {

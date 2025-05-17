@@ -36,6 +36,7 @@ import retrofit2.http.Path;
 public class FarmFormActivity extends AppCompatActivity {
 
     private static final String TAG = "FarmFormActivity";
+    private static final String EXTRA_FARM = "extra_farm";
     
     private TextView textViewTitle;
     private EditText editTextName, editTextAddress, editTextLatitude, editTextLongitude;
@@ -103,7 +104,11 @@ public class FarmFormActivity extends AppCompatActivity {
 
     private void checkEditMode() {
         // Check for farm object in the intent
-        farmToEdit = getIntent().getParcelableExtra("farm");
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            farmToEdit = getIntent().getParcelableExtra(EXTRA_FARM, Farm.class);
+        } else {
+            farmToEdit = getIntent().getParcelableExtra(EXTRA_FARM);
+        }
         
         if (farmToEdit != null) {
             // We're in edit mode
