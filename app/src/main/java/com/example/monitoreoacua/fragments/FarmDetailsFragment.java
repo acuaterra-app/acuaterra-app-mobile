@@ -31,8 +31,6 @@ public class FarmDetailsFragment extends Fragment {
     private TextView tvFarmAddress;
     private TextView tvFarmCoordinates;
     private TextView tvCreatedAt;
-    private Button btnEdit;
-    private Button btnDelete;
     private Button btnModules;
     private ImageView ivFarmImage;
 
@@ -75,8 +73,6 @@ public class FarmDetailsFragment extends Fragment {
         tvFarmAddress = view.findViewById(R.id.textViewFarmAddress);
         tvFarmCoordinates = view.findViewById(R.id.textViewFarmCoordinates);
         tvCreatedAt = view.findViewById(R.id.textViewCreatedAt);
-        btnEdit = view.findViewById(R.id.buttonEditFarm);
-        btnDelete = view.findViewById(R.id.buttonDeleteFarm);
         btnModules = view.findViewById(R.id.buttonModules);
         ivFarmImage = view.findViewById(R.id.imageViewFarm);
         
@@ -99,18 +95,6 @@ public class FarmDetailsFragment extends Fragment {
     }
 
     private void setupClickListeners() {
-        btnEdit.setOnClickListener(v -> {
-            if (mListener != null) {
-                mListener.onEditFarm(farm);
-            }
-        });
-
-        btnDelete.setOnClickListener(v -> {
-            if (mListener != null) {
-                mListener.onDeleteFarm(farm);
-            }
-        });
-        
         btnModules.setOnClickListener(v -> {
             if (mListener != null) {
                 mListener.onViewFarmModules(farm);
