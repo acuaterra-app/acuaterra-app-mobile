@@ -104,11 +104,7 @@ public class FarmFormActivity extends AppCompatActivity {
 
     private void checkEditMode() {
         // Check for farm object in the intent
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-            farmToEdit = getIntent().getParcelableExtra(EXTRA_FARM, Farm.class);
-        } else {
-            farmToEdit = getIntent().getParcelableExtra(EXTRA_FARM);
-        }
+        farmToEdit = com.example.monitoreoacua.utils.FarmBundleUtil.getFarmFromIntent(getIntent());
         
         if (farmToEdit != null) {
             // We're in edit mode

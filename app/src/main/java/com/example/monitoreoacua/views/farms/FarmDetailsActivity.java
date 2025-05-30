@@ -41,7 +41,7 @@ public class FarmDetailsActivity extends BaseActivity implements OnFragmentInter
      */
     public static Intent createIntent(@NonNull Context context, @NonNull Farm farm) {
         Intent intent = new Intent(context, FarmDetailsActivity.class);
-        intent.putExtra(EXTRA_FARM, farm);
+        com.example.monitoreoacua.utils.FarmBundleUtil.addFarmToIntent(intent, farm);
         return intent;
     }
     
@@ -51,12 +51,8 @@ public class FarmDetailsActivity extends BaseActivity implements OnFragmentInter
         super.onCreate(savedInstanceState);
 
         // Get farm from intent
-        if (getIntent() != null && getIntent().hasExtra(EXTRA_FARM)) {
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-                farm = getIntent().getParcelableExtra(EXTRA_FARM, Farm.class);
-            } else {
-                farm = getIntent().getParcelableExtra(EXTRA_FARM);
-            }
+        farm = com.example.monitoreoacua.utils.FarmBundleUtil.getFarmFromIntent(getIntent());
+        if (farm != null) {
             initializeWithFarm();
         } else {
             // No farm provided
@@ -92,7 +88,7 @@ public class FarmDetailsActivity extends BaseActivity implements OnFragmentInter
     public void onEditFarm(Farm farm) {
         // Handle edit farm action
         Intent intent = new Intent(this, FarmFormActivity.class);
-        intent.putExtra(EXTRA_FARM, farm);
+        com.example.monitoreoacua.utils.FarmBundleUtil.addFarmToIntent(intent, farm);
         startActivity(intent);
     }
 
@@ -123,7 +119,7 @@ public class FarmDetailsActivity extends BaseActivity implements OnFragmentInter
         // Handle navigation to the farm modules screen
         // Launch ListModulesActivity with the farm object
         Intent intent = new Intent(this, ListModulesActivity.class);
-        intent.putExtra(EXTRA_FARM, farm);
+        com.example.monitoreoacua.utils.FarmBundleUtil.addFarmToIntent(intent, farm);
         startActivity(intent);
     }
     @Override

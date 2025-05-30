@@ -95,7 +95,7 @@ public class ListFarmsActivity extends BaseActivity
         
         // Navigate to farm modules screen
         Intent intent = new Intent(this, ListModulesActivity.class);
-        intent.putExtra(EXTRA_FARM, farm);
+        com.example.monitoreoacua.utils.FarmBundleUtil.addFarmToIntent(intent, farm);
         startActivity(intent);
     }
 }

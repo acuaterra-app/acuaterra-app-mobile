@@ -15,6 +15,17 @@ public class ApiResponse<T> {
 
     @SerializedName("meta")
     private Meta meta;
+    
+    @SerializedName("success")
+    private boolean success;
+
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
 
     public String getMessage() {
         return message;

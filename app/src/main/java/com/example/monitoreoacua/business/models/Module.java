@@ -68,7 +68,7 @@ public class Module extends BaseRequest implements Serializable, Parcelable {
     private List<Integer> userIds;
 
     @SerializedName("is_active")
-    private boolean isActive = true;
+    private boolean isActive = false;
 
     public Module() {
         // Constructor vacío
@@ -78,6 +78,13 @@ public class Module extends BaseRequest implements Serializable, Parcelable {
     public Module(String name, String location, String latitude, String longitude,
                   String speciesFish, String fishQuantity, String fishAge,
                   String dimensions, int idFarm, List<Integer> users) {
+        this(name, location, latitude, longitude, speciesFish, fishQuantity, 
+             fishAge, dimensions, idFarm, users, false);
+    }
+
+    public Module(String name, String location, String latitude, String longitude,
+                  String speciesFish, String fishQuantity, String fishAge,
+                  String dimensions, int idFarm, List<Integer> users, boolean isActive) {
         this.name = name;
         this.location = location;
         this.latitude = latitude;
@@ -88,7 +95,7 @@ public class Module extends BaseRequest implements Serializable, Parcelable {
         this.dimensions = dimensions;
         this.idFarm = idFarm;
         this.userIds = users;
-        this.isActive = true;
+        this.isActive = isActive;
     }
 
     // Constructor Parcelable
