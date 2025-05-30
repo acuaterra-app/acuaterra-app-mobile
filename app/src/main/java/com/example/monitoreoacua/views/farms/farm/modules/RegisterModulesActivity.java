@@ -21,7 +21,7 @@ import com.example.monitoreoacua.views.BaseActivity;
  */
 public class RegisterModulesActivity extends BaseActivity {
     private Farm farm;
-    private static final String ARG_FARM = "farm";
+    private static final String EXTRA_FARM = "extra_farm";
     private static final String TAG = "RegisterModulesActivity";
 
     @Override
@@ -68,11 +68,7 @@ public class RegisterModulesActivity extends BaseActivity {
         }
 
         try {
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-                farm = intent.getParcelableExtra(ARG_FARM, Farm.class);
-            } else {
-                farm = intent.getParcelableExtra(ARG_FARM);
-            }
+            farm = com.example.monitoreoacua.utils.FarmBundleUtil.getFarmFromIntent(intent);
 
             if (farm != null) {
                 Log.d(TAG, "Granja recibida: " + farm.getName() + ", ID: " + farm.getId());

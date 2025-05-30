@@ -32,6 +32,9 @@
             android:name=".views.farms.FarmDetailsActivity"
             android:exported="true"
             android:launchMode="singleTop">
+            <meta-data
+                android:name="google_analytics_auto_screen_reporting"
+                android:value="false" />
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="com.example.monitoreoacua.VIEW_FARM_DETAILS" />
@@ -42,6 +45,9 @@
             android:name=".views.farms.farm.FarmFormActivity"
             android:exported="true"
             android:launchMode="singleTop">
+            <meta-data
+                android:name="google_analytics_auto_screen_reporting"
+                android:value="false" />
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="com.example.monitoreoacua.FARM_FORM" />
@@ -50,7 +56,11 @@
         </activity>
         <activity
             android:name=".views.farms.ListFarmsActivity"
-            android:exported="false" />
+            android:exported="false">
+            <meta-data
+                android:name="google_analytics_auto_screen_reporting"
+                android:value="false" />
+        </activity>
         <activity
             android:name=".views.menu.SupportActivity"
             android:exported="false" />
@@ -86,7 +96,11 @@
         <activity
             android:name=".views.farms.farm.modules.ListModulesActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan|adjustResize"/>
+            android:windowSoftInputMode="adjustPan|adjustResize">
+            <meta-data
+                android:name="google_analytics_auto_screen_reporting"
+                android:value="false" />
+        </activity>
         <activity
             android:name=".views.farms.farm.modules.ViewModuleActivity"
             android:exported="false"
@@ -100,6 +114,9 @@
             android:name=".views.farms.farm.FarmDetailsFragmentActivity"
             android:exported="true"
             android:launchMode="singleTop">
+            <meta-data
+                android:name="google_analytics_auto_screen_reporting"
+                android:value="false" />
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="com.example.monitoreoacua.VIEW_FARM_DETAILS_FRAGMENT" />

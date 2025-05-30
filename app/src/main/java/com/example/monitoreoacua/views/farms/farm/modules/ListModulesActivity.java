@@ -20,22 +20,19 @@ public class ListModulesActivity extends BaseActivity implements ListModulesFrag
     private ListModulesFragment modulesFragment;
 
     private static final String ARG_MODULE_ID = "module_id";
+    private static final String EXTRA_FARM = "extra_farm";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // Get farm object from intent
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-            farm = getIntent().getParcelableExtra("farm", Farm.class);
-        } else {
-
-        farm = (Farm) getIntent().getParcelableExtra("farm");
-        }
+        super.onCreate(savedInstanceState);  // PRIMERO: Llamar a super.onCreate()
+        
+        // SEGUNDO: Obtener el farm del intent usando FarmBundleUtil
+        farm = com.example.monitoreoacua.utils.FarmBundleUtil.getFarmFromIntent(getIntent());
+        
         if (farm == null) {
             finish(); // Close activity if farm is missing
             return;
         }
-        
-        super.onCreate(savedInstanceState);
     }
     
     @Override
@@ -62,14 +59,14 @@ public class ListModulesActivity extends BaseActivity implements ListModulesFrag
     public void onRegisterNewModule() {
         // Navigate to RegisterModulesActivity
         Intent intent = new Intent(this, RegisterModulesActivity.class);
-        intent.putExtra("farm", farm);
+        com.example.monitoreoacua.utils.FarmBundleUtil.addFarmToIntent(intent, farm);
         startActivity(intent);
     }
     
     @Override
     public void navigateToRegisterModules(Farm farm) {
         Intent intent = new Intent(this, RegisterModulesActivity.class);
-        intent.putExtra("farm", farm);
+        com.example.monitoreoacua.utils.FarmBundleUtil.addFarmToIntent(intent, farm);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }

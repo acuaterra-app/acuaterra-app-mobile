@@ -22,7 +22,7 @@ import com.example.monitoreoacua.business.models.Farm;
  * Fragment that displays details of a farm
  */
 public class FarmDetailsFragment extends Fragment {
-    private static final String ARG_FARM = "farm";
+    private static final String EXTRA_FARM = "extra_farm";
 
     private Farm farm;
     private OnFragmentInteractionListener mListener;
@@ -42,7 +42,7 @@ public class FarmDetailsFragment extends Fragment {
     public static FarmDetailsFragment newInstance(Farm farm) {
         FarmDetailsFragment fragment = new FarmDetailsFragment();
         Bundle args = new Bundle();
-        args.putParcelable(ARG_FARM, farm);
+        args.putParcelable(EXTRA_FARM, farm);
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,9 +52,9 @@ public class FarmDetailsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-                farm = getArguments().getParcelable(ARG_FARM, Farm.class);
+                farm = getArguments().getParcelable(EXTRA_FARM, Farm.class);
             } else {
-                farm = getArguments().getParcelable(ARG_FARM);
+                farm = getArguments().getParcelable(EXTRA_FARM);
             }
         }
     }

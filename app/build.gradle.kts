@@ -24,6 +24,17 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            manifestPlaceholders["firebaseAnalyticsCollectionEnabled"] = "false"
+            manifestPlaceholders["firebaseAutoScreenReporting"] = "false"
+        }
+        debug {
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+            manifestPlaceholders["firebaseAnalyticsCollectionEnabled"] = "false"
+            manifestPlaceholders["firebaseAutoScreenReporting"] = "false"
         }
     }
     compileOptions {
@@ -51,7 +62,7 @@ dependencies {
     
     // Network
 
-    implementation(libs.firebase.messaging)
+    // Moved to Firebase section below
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -62,8 +73,10 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
     
     // Firebase
-    implementation(platform("com.google.firebase:firebase-bom:33.11.0"))
-    implementation("com.google.firebase:firebase-analytics")
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics) {
+        exclude(group = "com.google.android.gms", module = "play-services-measurement-api")
+    }
     implementation(libs.firebase.messaging)
     implementation(libs.firebase.database)
     
