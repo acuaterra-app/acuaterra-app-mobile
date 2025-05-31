@@ -48,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText etEmail, etPassword;
     private Button btnLogin;
     private TextView txtNotificationsPermissions;
+    private TextView txtForgotPassword;
     private int loginAttempts = 0;
 
     @Override
@@ -59,9 +60,16 @@ public class LoginActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
         txtNotificationsPermissions = findViewById(R.id.txtNotificationsPermissions);
+        txtForgotPassword = findViewById(R.id.txtForgotPassword);
 
         checkNotificationPermission();
         btnLogin.setOnClickListener(v -> login());
+        
+        // Set click listener for password recovery
+        txtForgotPassword.setOnClickListener(v -> {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, android.net.Uri.parse("https://acuaterra.tech/request-password-reset"));
+            startActivity(browserIntent);
+        });
     }
 
     private void login() {
