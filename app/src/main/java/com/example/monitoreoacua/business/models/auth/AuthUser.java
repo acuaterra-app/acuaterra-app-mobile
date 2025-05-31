@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.example.monitoreoacua.business.models.Role;
+import com.example.monitoreoacua.business.utils.RolePermissionHelper;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -80,7 +81,18 @@ public class AuthUser implements Parcelable {
     }
 
     public String getRole() {
-        return role;
+        if (role == null) {
+            return null;
+        }
+        
+        // Check if the role is "monitor" (case-insensitive) and normalize it
+        if ("monitor".equalsIgnoreCase(role)) {
+            // Return the exact constant from RolePermissionHelper to ensure consistency
+            return RolePermissionHelper.ROLE_MONITOR;
+        }
+        
+        // For other roles, just normalize to lowercase
+        return role.toLowerCase();
     }
 
     @Override
@@ -96,5 +108,18 @@ public class AuthUser implements Parcelable {
         dest.writeString(dni);
         dest.writeInt(idRol);
         dest.writeString(role);
+    }
+    
+    @Override
+    public String toString() {
+        return "AuthUser{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", dni='" + dni + '\'' +
+                ", idRol=" + idRol +
+                ", role='" + role + '\'' +
+                ", normalizedRole='" + getRole() + '\'' +
+                '}';
     }
 }

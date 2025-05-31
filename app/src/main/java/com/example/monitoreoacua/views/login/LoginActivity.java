@@ -28,13 +28,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
 import com.example.monitoreoacua.R;
 import com.example.monitoreoacua.business.models.auth.AuthToken;
+import com.example.monitoreoacua.business.utils.RolePermissionHelper;
 import com.example.monitoreoacua.service.request.LoginRequest;
 import com.example.monitoreoacua.service.response.LoginResponse;
 import com.example.monitoreoacua.service.ApiClient;
 import com.example.monitoreoacua.service.ApiAuthService;
+import com.example.monitoreoacua.utils.SessionManager;
 import com.example.monitoreoacua.utils.SharedPreferencesKeys;
 import com.example.monitoreoacua.views.farms.ListFarmsActivity;
 
@@ -162,8 +163,13 @@ public class LoginActivity extends AppCompatActivity {
                         Log.d(TAG, "  Nombre: " + user.getName());
                         Log.d(TAG, "  Email: " + user.getEmail());
                         Log.d(TAG, "  DNI: " + user.getDni());
-                        Log.d(TAG, "  Rol: " + user.getRole());
+                        // Log the raw role value directly from the field before any normalization
+                        Log.d(TAG, "  Rol (raw): '" + user.getRole() + "'");
+                        // Log the role after potential normalization in getRole()
+                        Log.d(TAG, "  Rol (normalizado): '" + user.getRole() + "'");
                         Log.d(TAG, "  ID Rol: " + user.getIdRol());
+                        // Check if this user would be identified as a monitor
+                        Log.d(TAG, "  ¿Es monitor? " + (RolePermissionHelper.isMonitor(user) ? "SÍ" : "NO"));
                     }
 
                     try {
@@ -193,14 +199,41 @@ public class LoginActivity extends AppCompatActivity {
                         // Guardar datos del usuario si están disponibles
                         AuthUser user = loginResponse.getUser();
                         if (user != null) {
-                            Log.d(TAG, "Guardando datos del usuario en SharedPreferences");
+                            Log.d(TAG, "Guardando datos del usuario en SharedPreferences y SessionManager");
+                            
+                            // Guardar en SharedPreferences individuales (sistema actual)
                             editor.putString(SharedPreferencesKeys.KEY_TOKEN, token);
                             editor.putString(SharedPreferencesKeys.KEY_USER_NAME, user.getName());
                             editor.putString(SharedPreferencesKeys.KEY_USER_EMAIL, user.getEmail());
                             editor.putString(SharedPreferencesKeys.KEY_USER_DNI, user.getDni());
-                            editor.putString(SharedPreferencesKeys.KEY_USER_ROLE, user.getRole());
+                            // Log raw role value
+                            Log.d(TAG, "Rol antes de guardar (raw): '" + user.getRole() + "'");
+                            // Log normalized role value
+                            String normalizedRole = user.getRole();
+                            Log.d(TAG, "Rol antes de guardar (normalizado): '" + normalizedRole + "'");
+                            
+                            editor.putString(SharedPreferencesKeys.KEY_USER_ROLE, normalizedRole);
                             editor.putInt(SharedPreferencesKeys.KEY_USER_ID_ROL, user.getIdRol());
                             editor.commit();
+                            
+                            // También guardar en SessionManager para consistencia
+                            SessionManager sessionManager = SessionManager.getInstance(LoginActivity.this);
+                            sessionManager.createLoginSession(user, loginResponse.getToken());
+                            
+                            // Verificar que el rol se guardó correctamente
+                            // Verificar que el rol se guardó correctamente en SessionManager
+                            AuthUser sessionUser = sessionManager.getUser();
+                            if (sessionUser != null) {
+                                Log.d(TAG, "Rol guardado en SessionManager: '" + sessionUser.getRole() + "'");
+                                Log.d(TAG, "¿Es monitor según SessionManager? " + 
+                                      (RolePermissionHelper.isMonitor(sessionUser) ? "SÍ" : "NO"));
+                                
+                                // Verificar según SharedPreferences también
+                                String savedRole = sharedPreferences.getString(SharedPreferencesKeys.KEY_USER_ROLE, "");
+                                Log.d(TAG, "Rol guardado en SharedPreferences: '" + savedRole + "'");
+                            } else {
+                                Log.d(TAG, "Error: Usuario no guardado en SessionManager");
+                            }
                         } else {
                             editor.putString(SharedPreferencesKeys.KEY_TOKEN, token);
                             editor.commit();

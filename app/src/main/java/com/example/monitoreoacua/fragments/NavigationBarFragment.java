@@ -12,6 +12,9 @@ import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.fragment.app.Fragment;
 
 import com.example.monitoreoacua.R;
+import com.example.monitoreoacua.business.models.auth.AuthUser;
+import com.example.monitoreoacua.business.utils.RolePermissionHelper;
+import com.example.monitoreoacua.utils.SessionManager;
 
 /**
  * NavigationBarFragment handles the bottom navigation bar functionality.
@@ -33,6 +36,10 @@ public class NavigationBarFragment extends Fragment {
 
 
         void navigateToProfile();
+
+        void navigateToMonitorProfile();
+        
+        void navigateToSupport();
 
         void logout();
     }
@@ -93,7 +100,7 @@ public class NavigationBarFragment extends Fragment {
 
         navProfile.setOnClickListener(v -> {
             if (navigationListener != null) {
-                navigationListener.navigateToProfile();
+                navigationListener.navigateToSupport();
             }
         });
 
