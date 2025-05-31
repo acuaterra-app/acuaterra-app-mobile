@@ -108,6 +108,20 @@
             android:textStyle="bold"
             android:elevation="6dp"
             android:layout_marginBottom="12dp" />
+            
+        <!-- Enlace para recuperar contraseña -->
+        <TextView
+            android:id="@+id/txtForgotPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¿Olvidaste tu contraseña?"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="14sp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:clickable="true"
+            android:focusable="true" />
+            
         <TextView
             android:id="@+id/txtNotificationsPermissions"
             android:layout_width="match_parent"
