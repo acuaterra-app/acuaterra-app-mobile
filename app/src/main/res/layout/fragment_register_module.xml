@@ -209,7 +209,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@color/colorBackground"
-                    android:hint="Ej: 2m x 1m x 1m"
+                    android:hint="Ej: 2 x 1 x 1"
                     android:textSize="16sp"
                     android:padding="10dp"
                     android:maxLength="30"
