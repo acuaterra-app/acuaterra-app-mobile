@@ -6,6 +6,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.monitoreoacua.business.models.auth.AuthUser;
+import com.example.monitoreoacua.business.utils.RolePermissionHelper;
+import com.example.monitoreoacua.utils.SessionManager;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -20,6 +24,7 @@ import com.example.monitoreoacua.service.request.ListNotificationRequest;
 import com.example.monitoreoacua.views.farms.ListFarmsActivity;
 import com.example.monitoreoacua.views.menu.LogoutActivity;
 import com.example.monitoreoacua.views.menu.SupportActivity;
+import com.example.monitoreoacua.views.users.MonitorUserFragment;
 import com.example.monitoreoacua.views.users.UserFragment;
 
 /**
@@ -156,12 +161,33 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
 
     @Override
     public void navigateToSettings() {
-        loadFragment(new UserFragment(), true);
-        //Toast.makeText(this, "Navigate to Users/Settings (not implemented)", Toast.LENGTH_SHORT).show();
+        // Get current user from SessionManager
+        AuthUser currentUser = SessionManager.getInstance(this).getUser();
+        
+        // Check if user is a monitor
+        if (currentUser != null && RolePermissionHelper.isMonitor(currentUser)) {
+            // Navigate to monitor-specific settings
+            loadFragment(MonitorUserFragment.newInstance(), true);
+        } else {
+            // Navigate to regular settings for other roles (owner)
+            loadFragment(new UserFragment(), true);
+        }
     }
 
     @Override
     public void navigateToProfile() {
+        // Load the regular profile fragment
+        loadFragment(new UserFragment(), true);
+    }
+
+    @Override
+    public void navigateToMonitorProfile() {
+        // Load the monitor-specific profile fragment
+        loadFragment(MonitorUserFragment.newInstance(), true);
+    }
+
+    @Override
+    public void navigateToSupport() {
         if (this.getClass().getSimpleName().equals("SupportActivity")) {
             loadInitialFragment();
         } else {

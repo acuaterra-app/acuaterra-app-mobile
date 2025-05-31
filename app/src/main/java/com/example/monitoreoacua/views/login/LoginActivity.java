@@ -18,6 +18,8 @@ import android.graphics.Typeface;
 import android.view.View;
 import android.widget.TextView;
 import android.os.Handler;
+
+import com.example.monitoreoacua.business.models.auth.AuthUser;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -26,13 +28,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
 import com.example.monitoreoacua.R;
 import com.example.monitoreoacua.business.models.auth.AuthToken;
+import com.example.monitoreoacua.business.utils.RolePermissionHelper;
 import com.example.monitoreoacua.service.request.LoginRequest;
 import com.example.monitoreoacua.service.response.LoginResponse;
 import com.example.monitoreoacua.service.ApiClient;
 import com.example.monitoreoacua.service.ApiAuthService;
+import com.example.monitoreoacua.utils.SessionManager;
+import com.example.monitoreoacua.utils.SharedPreferencesKeys;
 import com.example.monitoreoacua.views.farms.ListFarmsActivity;
 
 import retrofit2.Call;
@@ -125,6 +129,48 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (response.isSuccessful() && response.body() != null) {
                     LoginResponse loginResponse = response.body();
+                    
+                    // Verificar el contenido completo de la respuesta
+                    Log.d(TAG, "=== Respuesta del servidor ===");
+                    if (loginResponse != null) {
+                        if (loginResponse.getToken() != null) {
+                            Log.d(TAG, "Token recibido: " + (loginResponse.getToken().getToken() != null ? "Sí" : "No"));
+                        } else {
+                            Log.d(TAG, "Token es null");
+                        }
+                        
+                        if (loginResponse.getUser() != null) {
+                            AuthUser user = loginResponse.getUser();
+                            Log.d(TAG, "Datos del usuario:");
+                            Log.d(TAG, "Nombre: '" + user.getName() + "'");
+                            Log.d(TAG, "Email: '" + user.getEmail() + "'");
+                            Log.d(TAG, "DNI: '" + user.getDni() + "'");
+                            Log.d(TAG, "Rol: '" + user.getRole() + "'");
+                        } else {
+                            Log.d(TAG, "Usuario es null");
+                        }
+                    } else {
+                        Log.d(TAG, "LoginResponse es null");
+                    }
+                    
+                    // Agregar logs para verificar la respuesta completa
+                    Log.d(TAG, "Login exitoso - Respuesta completa:");
+                    Log.d(TAG, "Token presente: " + (loginResponse.getToken() != null));
+                    Log.d(TAG, "Usuario presente: " + (loginResponse.getUser() != null));
+                    if (loginResponse.getUser() != null) {
+                        AuthUser user = loginResponse.getUser();
+                        Log.d(TAG, "Datos del usuario recibidos:");
+                        Log.d(TAG, "  Nombre: " + user.getName());
+                        Log.d(TAG, "  Email: " + user.getEmail());
+                        Log.d(TAG, "  DNI: " + user.getDni());
+                        // Log the raw role value directly from the field before any normalization
+                        Log.d(TAG, "  Rol (raw): '" + user.getRole() + "'");
+                        // Log the role after potential normalization in getRole()
+                        Log.d(TAG, "  Rol (normalizado): '" + user.getRole() + "'");
+                        Log.d(TAG, "  ID Rol: " + user.getIdRol());
+                        // Check if this user would be identified as a monitor
+                        Log.d(TAG, "  ¿Es monitor? " + (RolePermissionHelper.isMonitor(user) ? "SÍ" : "NO"));
+                    }
 
                     try {
                         AuthToken authToken = loginResponse.getToken();
@@ -146,10 +192,54 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(LoginActivity.this, "Welcome, " + userName, Toast.LENGTH_SHORT).show();
                         loginAttempts = 0;
 
-                        SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
+                        // Guardar información del usuario en SharedPreferences - Versión simplificada
+                        SharedPreferences sharedPreferences = getSharedPreferences(SharedPreferencesKeys.PREFS_NAME, MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("token", token);
-                        editor.apply();
+                        
+                        // Guardar datos del usuario si están disponibles
+                        AuthUser user = loginResponse.getUser();
+                        if (user != null) {
+                            Log.d(TAG, "Guardando datos del usuario en SharedPreferences y SessionManager");
+                            
+                            // Guardar en SharedPreferences individuales (sistema actual)
+                            editor.putString(SharedPreferencesKeys.KEY_TOKEN, token);
+                            editor.putString(SharedPreferencesKeys.KEY_USER_NAME, user.getName());
+                            editor.putString(SharedPreferencesKeys.KEY_USER_EMAIL, user.getEmail());
+                            editor.putString(SharedPreferencesKeys.KEY_USER_DNI, user.getDni());
+                            // Log raw role value
+                            Log.d(TAG, "Rol antes de guardar (raw): '" + user.getRole() + "'");
+                            // Log normalized role value
+                            String normalizedRole = user.getRole();
+                            Log.d(TAG, "Rol antes de guardar (normalizado): '" + normalizedRole + "'");
+                            
+                            editor.putString(SharedPreferencesKeys.KEY_USER_ROLE, normalizedRole);
+                            editor.putInt(SharedPreferencesKeys.KEY_USER_ID_ROL, user.getIdRol());
+                            editor.commit();
+                            
+                            // También guardar en SessionManager para consistencia
+                            SessionManager sessionManager = SessionManager.getInstance(LoginActivity.this);
+                            sessionManager.createLoginSession(user, loginResponse.getToken());
+                            
+                            // Verificar que el rol se guardó correctamente
+                            // Verificar que el rol se guardó correctamente en SessionManager
+                            AuthUser sessionUser = sessionManager.getUser();
+                            if (sessionUser != null) {
+                                Log.d(TAG, "Rol guardado en SessionManager: '" + sessionUser.getRole() + "'");
+                                Log.d(TAG, "¿Es monitor según SessionManager? " + 
+                                      (RolePermissionHelper.isMonitor(sessionUser) ? "SÍ" : "NO"));
+                                
+                                // Verificar según SharedPreferences también
+                                String savedRole = sharedPreferences.getString(SharedPreferencesKeys.KEY_USER_ROLE, "");
+                                Log.d(TAG, "Rol guardado en SharedPreferences: '" + savedRole + "'");
+                            } else {
+                                Log.d(TAG, "Error: Usuario no guardado en SessionManager");
+                            }
+                        } else {
+                            editor.putString(SharedPreferencesKeys.KEY_TOKEN, token);
+                            editor.commit();
+                        }
+
+                        // La verificación ya se realizó justo después de aplicar los cambios
 
                         Intent intent = new Intent(LoginActivity.this, ListFarmsActivity.class);
                         startActivity(intent);

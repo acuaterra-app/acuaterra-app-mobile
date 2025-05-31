@@ -1,7 +1,9 @@
 package com.example.monitoreoacua.fragments;
 
-import android.os.Bundle;
 import android.content.Intent;
+import android.os.Bundle;
+import android.text.Spanned;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,7 @@ public class TopBarFragment extends Fragment {
     private TextView textViewTitle;
     private TextView notificationBadge;
     private ImageView notificationIcon;
+    private ImageView profileIcon;
     private String title;
 
 
@@ -60,16 +63,23 @@ public class TopBarFragment extends Fragment {
         textViewTitle = view.findViewById(R.id.textViewActivityTitle);
         notificationBadge = view.findViewById(R.id.notificationBadge);
         notificationIcon = view.findViewById(R.id.notificationIcon);
+        profileIcon = view.findViewById(R.id.profileIcon);
         
         // Set click listener for notification icon
         if (notificationIcon != null) {
             notificationIcon.setOnClickListener(v -> {
                 // Navigate to the NotificationsActivity
-                Intent intent = new Intent(getContext(), NotificationsActivity.class);
+                Intent intent = new Intent(getContext(), com.example.monitoreoacua.views.notifications.NotificationsActivity.class);
                 getContext().startActivity(intent);
-                
-                // Clear the notification badge count
-                updateNotificationBadge(0);
+            });
+        }
+        
+        // Set click listener for profile icon
+        if (profileIcon != null) {
+            profileIcon.setOnClickListener(v -> {
+                // Navigate to the ProfileActivity
+                Intent intent = new Intent(getContext(), com.example.monitoreoacua.views.profile.ProfileActivity.class);
+                getContext().startActivity(intent);
             });
         }
         

@@ -61,8 +61,11 @@
                 android:name="google_analytics_auto_screen_reporting"
                 android:value="false" />
         </activity>
-        <activity
+<activity
             android:name=".views.menu.SupportActivity"
+            android:exported="false" />
+<activity
+            android:name=".views.profile.ProfileActivity"
             android:exported="false" />
         <activity
             android:name=".views.login.LoginActivity"

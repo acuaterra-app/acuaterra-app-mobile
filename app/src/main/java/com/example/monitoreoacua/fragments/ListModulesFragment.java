@@ -20,6 +20,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.monitoreoacua.business.utils.RolePermissionHelper;
+import com.example.monitoreoacua.utils.SessionManager;
+
 import com.example.monitoreoacua.R;
 import com.example.monitoreoacua.business.models.Farm;
 import com.example.monitoreoacua.business.models.Module;
@@ -81,7 +84,13 @@ public class ListModulesFragment extends Fragment implements ModuleAdapter.OnMod
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_list_modules, container, false);
+        // Check if user is a monitor
+        SessionManager sessionManager = SessionManager.getInstance(requireContext());
+        boolean isMonitor = RolePermissionHelper.isMonitor(sessionManager.getUser());
+        
+        // Inflate the appropriate layout
+        int layoutRes = isMonitor ? R.layout.fragment_list_modules_monitor : R.layout.fragment_list_modules;
+        return inflater.inflate(layoutRes, container, false);
     }
 
     @Override
@@ -92,20 +101,24 @@ public class ListModulesFragment extends Fragment implements ModuleAdapter.OnMod
         progressBar = view.findViewById(R.id.progressBar);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         tvEmptyView = view.findViewById(R.id.tvEmptyView);
-        btnRegisterModules = view.findViewById(R.id.btnRegisterModules);
+        
+        // Only try to find the button if we're not in monitor layout
+        SessionManager sessionManager = SessionManager.getInstance(requireContext());
+        if (!RolePermissionHelper.isMonitor(sessionManager.getUser())) {
+            btnRegisterModules = view.findViewById(R.id.btnRegisterModules);
+            btnRegisterModules.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onRegisterNewModule();
+                }
+            });
+        }
         
         recyclerViewModules.setLayoutManager(new LinearLayoutManager(getContext()));
-        moduleAdapter = new ModuleAdapter();
+        moduleAdapter = new ModuleAdapter(requireContext());
         moduleAdapter.setOnModuleClickListener(this);
         recyclerViewModules.setAdapter(moduleAdapter);
         
         swipeRefreshLayout.setOnRefreshListener(this::fetchModules);
-
-        btnRegisterModules.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onRegisterNewModule();
-            }
-        });
 
         fetchModules();
     }
@@ -156,6 +169,14 @@ public class ListModulesFragment extends Fragment implements ModuleAdapter.OnMod
                         moduleAdapter.setModuleList(new ArrayList<>());
                         recyclerViewModules.setVisibility(View.GONE);
                         tvEmptyView.setVisibility(View.VISIBLE);
+                        
+                        // Check if user is monitor and set appropriate message
+                        SessionManager sessionManager = SessionManager.getInstance(requireContext());
+                        if (RolePermissionHelper.isMonitor(sessionManager.getUser())) {
+                            tvEmptyView.setText("No está asignado a ningún módulo");
+                        } else {
+                            tvEmptyView.setText(R.string.no_modules_found);
+                        }
                     }
                 } else {
                     Log.e("ListModulesFragment", "Error al obtener los módulos: " + response);
@@ -176,7 +197,14 @@ public class ListModulesFragment extends Fragment implements ModuleAdapter.OnMod
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
         recyclerViewModules.setVisibility(View.GONE);
         tvEmptyView.setVisibility(View.VISIBLE);
-        tvEmptyView.setText(R.string.error_loading_modules);
+        
+        // Check if user is monitor and set appropriate message
+        SessionManager sessionManager = SessionManager.getInstance(requireContext());
+        if (RolePermissionHelper.isMonitor(sessionManager.getUser())) {
+            tvEmptyView.setText("No está asignado a ningún módulo");
+        } else {
+            tvEmptyView.setText(R.string.error_loading_modules);
+        }
     }
     
     public void refreshModules() {

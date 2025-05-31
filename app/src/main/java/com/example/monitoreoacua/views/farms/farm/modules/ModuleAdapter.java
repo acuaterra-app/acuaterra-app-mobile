@@ -1,5 +1,6 @@
 package com.example.monitoreoacua.views.farms.farm.modules;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,8 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.monitoreoacua.R;
 import com.example.monitoreoacua.business.models.Module;
+import com.example.monitoreoacua.business.utils.RolePermissionHelper;
+import com.example.monitoreoacua.utils.SessionManager;
 import java.util.ArrayList;
 import java.util.List;
 import android.content.Context;
@@ -34,6 +37,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
     private OnModuleClickListener listener;
     private Context context;
     private RecyclerView recyclerViewModules;
+    private boolean isMonitor;
     
     // Constantes para SharedPreferences
     private static final String PREF_NAME = "module_states";
@@ -44,11 +48,17 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
      */
     public ModuleAdapter() {
         this.moduleList = new ArrayList<>();
+        this.isMonitor = false;  // Default to false for safety
     }
 
     public ModuleAdapter(Context context) {
         this.moduleList = new ArrayList<>();
         this.context = context;
+        if (context != null) {
+            SessionManager sessionManager = SessionManager.getInstance(context);
+            this.isMonitor = RolePermissionHelper.isMonitor(sessionManager.getUser());
+            Log.d("ModuleAdapter", "Is monitor user: " + this.isMonitor);
+        }
     }
 
     /**
@@ -108,8 +118,20 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
     @NonNull
     @Override
     public ModuleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        // Check role again to be absolutely sure
+        if (context != null) {
+            SessionManager sessionManager = SessionManager.getInstance(context);
+            isMonitor = RolePermissionHelper.isMonitor(sessionManager.getUser());
+        }
+        
+        int layoutResId = isMonitor ? 
+            R.layout.recycle_view_item_module_monitor : 
+            R.layout.recycle_view_item_module;
+        
+        Log.d("ModuleAdapter", "Using layout: " + (isMonitor ? "monitor layout" : "owner layout"));
+            
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recycle_view_item_module, parent, false);
+                .inflate(layoutResId, parent, false);
         if (context == null) {
             context = parent.getContext();
         }
@@ -175,19 +197,22 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
         holder.tvModuleDimensions.setText("Dimensiones: " + (module.getDimensions() != null && !module.getDimensions().isEmpty() ? 
                 module.getDimensions() : "No especificadas"));
 
-        // Set button text and click listener
-        if (module.isActive()) {
-            holder.btnToggleModule.setText("Desactivar");
-            holder.btnToggleModule.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), android.R.color.holo_green_dark));
-        } else {
-            holder.btnToggleModule.setText("Activar");
-            holder.btnToggleModule.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), android.R.color.holo_red_dark));
-        }
+        // Only setup toggle button for non-monitor users
+        if (!isMonitor && holder.btnToggleModule != null) {
+            // Set button text and click listener
+            if (module.isActive()) {
+                holder.btnToggleModule.setText("Desactivar");
+                holder.btnToggleModule.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), android.R.color.holo_green_dark));
+            } else {
+                holder.btnToggleModule.setText("Activar");
+                holder.btnToggleModule.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), android.R.color.holo_red_dark));
+            }
 
-        holder.btnToggleModule.setOnClickListener(v -> {
-            // Update module status through API
-            updateModuleStatus(module, position);
-        });
+            holder.btnToggleModule.setOnClickListener(v -> {
+                // Update module status through API
+                updateModuleStatus(module, position);
+            });
+        }
 
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
