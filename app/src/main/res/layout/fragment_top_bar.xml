@@ -6,6 +6,19 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <!-- Profile icon on the left -->
+    <ImageView
+        android:id="@+id/profileIcon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="20dp"
+        app:srcCompat="@drawable/ic_profile"
+        app:tint="@color/colorPrimary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:contentDescription="Profile" />
+
     <!-- Title bar with safe insets -->
     <TextView
         android:id="@+id/textViewActivityTitle"

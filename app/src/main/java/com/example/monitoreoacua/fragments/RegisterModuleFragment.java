@@ -135,30 +135,35 @@ public class RegisterModuleFragment extends Fragment {
 
         // Validate Module Name
         if (TextUtils.isEmpty(etModuleName.getText())) {
-            etModuleName.setError("Module name is required");
+            etModuleName.setError("El nombre del módulo es requerido");
+            Log.e(TAG, "Validation error: Nombre del módulo vacío");
             isValid = false;
         }
 
         // Validate Location
         if (TextUtils.isEmpty(etLocation.getText())) {
-            etLocation.setError("Location is required");
+            etLocation.setError("La ubicación es requerida");
+            Log.e(TAG, "Validation error: Ubicación vacía");
             isValid = false;
         }
 
         // Validate Latitude
         String latitude = etLatitude.getText().toString().trim();
         if (TextUtils.isEmpty(latitude)) {
-            etLatitude.setError("Latitude is required");
+            etLatitude.setError("La latitud es requerida (ejemplo: -12.345)");
+            Log.e(TAG, "Validation error: Latitud vacía");
             isValid = false;
         } else {
             try {
                 double lat = Double.parseDouble(latitude);
                 if (lat < -90 || lat > 90) {
-                    etLatitude.setError("Latitude must be between -90 and 90");
+                    etLatitude.setError("La latitud debe estar entre -90 y 90 grados");
+                    Log.e(TAG, "Validation error: Latitud fuera de rango: " + lat);
                     isValid = false;
                 }
             } catch (NumberFormatException e) {
-                etLatitude.setError("Latitude must be a valid number");
+                etLatitude.setError("La latitud debe ser un número decimal válido (ejemplo: -12.345)");
+                Log.e(TAG, "Validation error: Formato de latitud inválido: " + latitude);
                 isValid = false;
             }
         }
@@ -166,54 +171,85 @@ public class RegisterModuleFragment extends Fragment {
         // Validate Longitude
         String longitude = etLongitude.getText().toString().trim();
         if (TextUtils.isEmpty(longitude)) {
-            etLongitude.setError("Longitude is required");
+            etLongitude.setError("La longitud es requerida (ejemplo: 78.123)");
+            Log.e(TAG, "Validation error: Longitud vacía");
             isValid = false;
         } else {
             try {
                 double lon = Double.parseDouble(longitude);
                 if (lon < -180 || lon > 180) {
-                    etLongitude.setError("Longitude must be between -180 and 180");
+                    etLongitude.setError("La longitud debe estar entre -180 y 180 grados");
+                    Log.e(TAG, "Validation error: Longitud fuera de rango: " + lon);
                     isValid = false;
                 }
             } catch (NumberFormatException e) {
-                etLongitude.setError("Longitude must be a valid number");
+                etLongitude.setError("La longitud debe ser un número decimal válido (ejemplo: 78.123)");
+                Log.e(TAG, "Validation error: Formato de longitud inválido: " + longitude);
                 isValid = false;
             }
         }
 
         // Validate Fish Species
         if (TextUtils.isEmpty(etFishType.getText())) {
-            etFishType.setError("Fish species is required");
+            etFishType.setError("La especie de pez es requerida");
+            Log.e(TAG, "Validation error: Especie de pez vacía");
             isValid = false;
         }
 
         // Validate Fish Quantity
         String quantity = etFishQuantity.getText().toString().trim();
         if (TextUtils.isEmpty(quantity)) {
-            etFishQuantity.setError("Fish quantity is required");
+            etFishQuantity.setError("La cantidad de peces es requerida");
+            Log.e(TAG, "Validation error: Cantidad de peces vacía");
             isValid = false;
         } else {
             try {
                 int qty = Integer.parseInt(quantity);
                 if (qty <= 0) {
-                    etFishQuantity.setError("Quantity must be greater than zero");
+                    etFishQuantity.setError("La cantidad debe ser mayor a cero");
+                    Log.e(TAG, "Validation error: Cantidad inválida: " + qty);
                     isValid = false;
                 }
             } catch (NumberFormatException e) {
-                etFishQuantity.setError("Quantity must be an integer");
+                etFishQuantity.setError("La cantidad debe ser un número entero");
+                Log.e(TAG, "Validation error: Formato de cantidad inválido: " + quantity);
                 isValid = false;
             }
         }
 
-        // Validate Fish Age
-        if (TextUtils.isEmpty(etFishAge.getText())) {
-            etFishAge.setError("Fish age is required");
+        // Validate Fish Age (debe ser un número entero positivo)
+        String fishAge = etFishAge.getText().toString().trim();
+        if (TextUtils.isEmpty(fishAge)) {
+            String errorMsg = "La edad es requerida (ingrese solo el número de meses)";
+            etFishAge.setError(errorMsg);
+            Log.e(TAG, "Validation error: Edad vacía");
             isValid = false;
+        } else {
+            try {
+                int age = Integer.parseInt(fishAge);
+                if (age <= 0) {
+                    String errorMsg = "La edad debe ser un número positivo que representa los meses (ejemplo: 6)";
+                    etFishAge.setError(errorMsg);
+                    Log.e(TAG, "Validation error: Edad inválida: " + age);
+                    isValid = false;
+                }
+            } catch (NumberFormatException e) {
+                String errorMsg = "Ingrese solo el número de meses sin texto adicional (ejemplo: 6)";
+                etFishAge.setError(errorMsg);
+                Log.e(TAG, "Validation error: Formato de edad inválido: " + fishAge);
+                isValid = false;
+            }
         }
 
         // Validate Dimensions
-        if (TextUtils.isEmpty(etVolumeUnit.getText())) {
-            etVolumeUnit.setError("Dimensions are required");
+        String volumeUnit = etVolumeUnit.getText().toString().trim();
+        if (TextUtils.isEmpty(volumeUnit)) {
+            etVolumeUnit.setError("Las dimensiones son requeridas (formato: anchoxlargoxalto, ejemplo: 2x3x1.5)");
+            Log.e(TAG, "Validation error: Dimensiones vacías");
+            isValid = false;
+        } else if (!volumeUnit.matches("\\d+(\\.\\d+)?x\\d+(\\.\\d+)?x\\d+(\\.\\d+)?")) {
+            etVolumeUnit.setError("Formato inválido. Use: anchoxlargoxalto (ejemplo: 2x3x1.5)");
+            Log.e(TAG, "Validation error: Formato de dimensiones inválido: " + volumeUnit);
             isValid = false;
         }
 
@@ -317,10 +353,30 @@ public class RegisterModuleFragment extends Fragment {
                 // Log error
                 Log.e(TAG, "Error registering module: " + error.getMessage(), error);
 
+                // Determinar el tipo de error y mostrar un mensaje más específico
+                String errorMessage;
+                if (error.getMessage() != null) {
+                    if (error.getMessage().contains("Fish age must be a positive integer")) {
+                        errorMessage = "La edad de los peces debe ser un número entero positivo (ejemplo: 6 para 6 meses)";
+                    } else if (error.getMessage().contains("volume_unit")) {
+                        errorMessage = "El formato de las dimensiones debe ser anchoxlargoxalto (ejemplo: 2x3x1.5)";
+                    } else if (error.getMessage().contains("quantity")) {
+                        errorMessage = "La cantidad de peces debe ser un número entero positivo";
+                    } else if (error.getMessage().contains("location")) {
+                        errorMessage = "La ubicación proporcionada no es válida";
+                    } else if (error.getMessage().contains("longitude") || error.getMessage().contains("latitude")) {
+                        errorMessage = "Las coordenadas deben estar en formato decimal válido (ejemplo: -12.345, 78.123)";
+                    } else {
+                        errorMessage = "Error al registrar módulo: " + error.getMessage();
+                    }
+                } else {
+                    errorMessage = "Error al registrar módulo. Verifique los datos e intente nuevamente.";
+                }
+
                 // Show error message
                 Snackbar.make(
                         requireView(),
-                        "Error registering module: " + error.getMessage(),
+                        errorMessage,
                         Snackbar.LENGTH_LONG
                 ).show();
             }
