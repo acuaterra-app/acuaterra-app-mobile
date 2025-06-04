@@ -103,7 +103,24 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_view_module, container, false);
+        // Determinar si el usuario es un monitor
+        boolean isMonitor = false;
+        try {
+            if (getContext() != null) {
+                com.example.monitoreoacua.business.models.auth.AuthUser currentUser = 
+                    com.example.monitoreoacua.utils.SessionManager.getInstance(requireContext()).getUser();
+                isMonitor = com.example.monitoreoacua.business.utils.RolePermissionHelper.isMonitor(currentUser);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error al determinar el rol del usuario", e);
+        }
+        
+        // Inflar la vista según el rol del usuario
+        View view = inflater.inflate(
+            isMonitor ? R.layout.activity_view_module_monitor : R.layout.activity_view_module, 
+            container, 
+            false
+        );
 
         // Initialize views
         textModuleName = view.findViewById(R.id.module_name);
@@ -131,21 +148,30 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
         }
 
 
+        // Estas vistas solo existen en la vista de propietario, no en la de monitor
         recyclerViewMonitors = view.findViewById(R.id.recycler_view_monitors);
         tvNoUsers = view.findViewById(R.id.tv_no_users);
 
-        recyclerViewMonitors.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerViewMonitors.setAdapter(new MonitorUserAdapter(new ArrayList<>()));
-
-        RecyclerView recyclerViewUsers = view.findViewById(R.id.recycler_view_users);
-        userCheckboxAdapter = new UserCheckboxAdapter();
-        recyclerViewUsers.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerViewUsers.setAdapter(userCheckboxAdapter);
-
-        fetchUsers();
-
-        Button btnAssignMonitors = view.findViewById(R.id.btn_assign_users);
-        btnAssignMonitors.setOnClickListener(v -> assignMonitors());
+        // Solo configurar si las vistas existen (vista de propietario)
+        if (recyclerViewMonitors != null) {
+            recyclerViewMonitors.setLayoutManager(new LinearLayoutManager(getContext()));
+            recyclerViewMonitors.setAdapter(new MonitorUserAdapter(new ArrayList<>()));
+            
+            RecyclerView recyclerViewUsers = view.findViewById(R.id.recycler_view_users);
+            if (recyclerViewUsers != null) {
+                userCheckboxAdapter = new UserCheckboxAdapter();
+                recyclerViewUsers.setLayoutManager(new LinearLayoutManager(getContext()));
+                recyclerViewUsers.setAdapter(userCheckboxAdapter);
+                
+                // Solo cargar usuarios si no es un monitor
+                fetchUsers();
+            }
+            
+            Button btnAssignMonitors = view.findViewById(R.id.btn_assign_users);
+            if (btnAssignMonitors != null) {
+                btnAssignMonitors.setOnClickListener(v -> assignMonitors());
+            }
+        }
 
 
 
@@ -197,14 +223,17 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
             // Setup RecyclerView with sensors
             setupRecyclerView();
 
-            List<User> users = module.getUsers();
-            if (users != null && !users.isEmpty()) {
-                recyclerViewMonitors.setAdapter(new MonitorUserAdapter(users));
-                recyclerViewMonitors.setVisibility(View.VISIBLE);
-                tvNoUsers.setVisibility(View.GONE);
-            } else {
-                recyclerViewMonitors.setVisibility(View.GONE);
-                tvNoUsers.setVisibility(View.VISIBLE);
+            // Actualizar la sección de usuarios monitores solo si existe (vista de propietario)
+            if (recyclerViewMonitors != null && tvNoUsers != null) {
+                List<User> users = module.getUsers();
+                if (users != null && !users.isEmpty()) {
+                    recyclerViewMonitors.setAdapter(new MonitorUserAdapter(users));
+                    recyclerViewMonitors.setVisibility(View.VISIBLE);
+                    tvNoUsers.setVisibility(View.GONE);
+                } else {
+                    recyclerViewMonitors.setVisibility(View.GONE);
+                    tvNoUsers.setVisibility(View.VISIBLE);
+                }
             }
         }
     }
