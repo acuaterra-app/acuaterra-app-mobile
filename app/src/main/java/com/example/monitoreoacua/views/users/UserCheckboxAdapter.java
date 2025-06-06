@@ -15,6 +15,7 @@ import com.example.monitoreoacua.business.models.User;
 import com.example.monitoreoacua.service.response.UserMonitorResponse;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class UserCheckboxAdapter extends RecyclerView.Adapter<UserCheckboxAdapter.ViewHolder> {
@@ -81,14 +82,11 @@ public class UserCheckboxAdapter extends RecyclerView.Adapter<UserCheckboxAdapte
         if (userIds == null || users.isEmpty()) {
             return; // No hay IDs para eliminar
         }
-        for (Integer userId : userIds) {
-            for (int i = 0; i < users.size(); i++) {
-                if (users.get(i).getId() == userId) {
-                    users.remove(i);
-                    selectedUserIds.remove(userId); // Quitar el ID de la lista seleccionada
-                    notifyItemRemoved(i); // Notificar que un elemento fue eliminado
-                    break;
-                }
+        Iterator<User> iterator = users.iterator();
+        while (iterator.hasNext()) {
+            User user = iterator.next();
+            if (userIds.contains(user.getId())) {
+                iterator.remove(); // Usar el método remove del iterador
             }
         }
     }
