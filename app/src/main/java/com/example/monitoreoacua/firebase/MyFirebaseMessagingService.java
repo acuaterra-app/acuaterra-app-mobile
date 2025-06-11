@@ -42,6 +42,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         createNotificationChannel();
         Notification notification = createNotificationFromRemoteMessage(remoteMessage);
+        
+        // Procesar notificación con el manager para que use los handlers específicos
+        FireBaseNotificationManager.getInstance().processNotification(this, notification);
+        
+        // También mostrar la notificación push tradicional
         displayNotification(notification);
     }
 
