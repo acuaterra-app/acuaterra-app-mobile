@@ -164,7 +164,7 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
                 recyclerViewUsers.setAdapter(userCheckboxAdapter);
                 
                 // Solo cargar usuarios si no es un monitor
-                fetchUsers();
+                //fetchUsers();
             }
             
             Button btnAssignMonitors = view.findViewById(R.id.btn_assign_users);
@@ -176,6 +176,29 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
 
 
         return view;
+    }
+
+    private void loadModuleDataAndFetchUsers() {
+        showLoading(true);
+        new GetModuleRequest().getModuleById(new OnApiRequestCallback<Module, Throwable>() {
+            @Override
+            public void onSuccess(Module result) {
+                if (isAdded() && getContext() != null) {
+                    module = result;
+                    showLoading(false);
+                    updateUI();
+                    fetchUsers(); // Ahora sí, refresca la lista de usuarios asignables
+                }
+            }
+
+            @Override
+            public void onFail(Throwable error) {
+                if (isAdded() && getContext() != null) {
+                    showLoading(false);
+                    Log.e(TAG, "Error cargando modulo", error);
+                }
+            }
+        }, moduleId);
     }
 
     @Override
@@ -315,6 +338,7 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
                     module = result;
                     showLoading(false);
                     updateUI();
+                    fetchUsers();
                     Log.d(TAG, "Modulo cargado exitosamente: " + result.getName());
                 }
             }
@@ -351,27 +375,8 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
             @Override
             public void onSuccess(List<User> users) {
                 progressBar.setVisibility(View.GONE);
-                if (module != null && module.getUsers() != null) {
-                    // Obtener IDs de usuarios relacionados con el módulo
-                    List<Integer> relatedUserIds = new ArrayList<>();
-                    for (User relatedUser : module.getUsers()) {
-                        relatedUserIds.add(relatedUser.getId());
-                    }
-
-                    // Filtrar usuarios que no están relacionados
-                    List<User> filteredUsers = new ArrayList<>();
-                    for (User user : users) {
-                        if (!relatedUserIds.contains(user.getId())) {
-                            filteredUsers.add(user);
-                        }
-                    }
-
-                    // Asignar usuarios filtrados al adaptador
-                    userCheckboxAdapter.setUsers(filteredUsers);
-                } else {
-                    // Si no hay usuarios relacionados, mostrar todos los usuarios
-                    userCheckboxAdapter.setUsers(users);
-                }
+                List<User> assignableUsers = getAssignableUsers(users, module != null ? module.getUsers() : null);
+                userCheckboxAdapter.setUsers(assignableUsers);
             }
 
             @Override
@@ -380,6 +385,22 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
                 Toast.makeText(getContext(), "Error de conexión: " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
             }
         });
+    }
+    // Java
+    private List<User> getAssignableUsers(List<User> allUsers, List<User> assignedUsers) {
+        List<Integer> assignedIds = new ArrayList<>();
+        if (assignedUsers != null) {
+            for (User u : assignedUsers) {
+                assignedIds.add(u.getId());
+            }
+        }
+        List<User> result = new ArrayList<>();
+        for (User user : allUsers) {
+            if (!assignedIds.contains(user.getId())) {
+                result.add(user);
+            }
+        }
+        return result;
     }
 
     private void assignMonitors() {
@@ -395,9 +416,9 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
             @Override
             public void onSuccess(ApiResponse response) {
                 progressBar.setVisibility(View.GONE);
-                userCheckboxAdapter.removeUsersByIds(selectedUserIds);
                 Toast.makeText(getContext(), "Monitores asignados exitosamente", Toast.LENGTH_SHORT).show();
-                loadModuleData(); // Recargar datos del módulo
+                loadModuleDataAndFetchUsers(); // Recargar datos del módulo
+                selectedUserIds.clear();
             }
 
             @Override
