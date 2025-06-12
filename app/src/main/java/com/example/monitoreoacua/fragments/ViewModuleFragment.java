@@ -429,6 +429,7 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
         });
     }
 
+
     private void loadAssignedUsers() {
         // Implementación para cargar usuarios asignados
         Toast.makeText(getContext(), "Cargar usuarios asignados aún no implementado", Toast.LENGTH_SHORT).show();
