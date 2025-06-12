@@ -21,6 +21,7 @@ public class NotificationHandlerFactory {
         handlers = new ArrayList<>();
         handlers.add(new FarmNotificationHandler());
         handlers.add(new SensorAlertNotificationHandler());
+        handlers.add(new PowerAlertNotificationHandler());
     }
     
     public static synchronized NotificationHandlerFactory getInstance() {
