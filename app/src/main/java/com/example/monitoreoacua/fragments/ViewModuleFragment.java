@@ -12,10 +12,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.button.MaterialButton;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -62,6 +65,7 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
 
     private RecyclerView recyclerViewMonitors;
     private TextView tvNoUsers;
+    private MaterialButton btnEditModule;
 
     // UI elements
     private TextView textModuleName;
@@ -142,9 +146,17 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
         // Initialize error message and retry button
         tvErrorMessage = view.findViewById(R.id.tv_error_message);
         btnRetry = view.findViewById(R.id.btn_retry);
+        btnEditModule = view.findViewById(R.id.btn_edit_module);
 
         if (btnRetry != null) {
             btnRetry.setOnClickListener(v -> loadModuleData());
+        }
+        
+        // Solo mostrar el botón de editar si no es un monitor
+        if (btnEditModule != null && !isMonitor) {
+            btnEditModule.setOnClickListener(v -> navigateToEditModule());
+        } else if (btnEditModule != null) {
+            btnEditModule.setVisibility(View.GONE);
         }
 
 
@@ -433,5 +445,37 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
     private void loadAssignedUsers() {
         // Implementación para cargar usuarios asignados
         Toast.makeText(getContext(), "Cargar usuarios asignados aún no implementado", Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Navega al fragmento de edición del módulo
+     */
+    private void navigateToEditModule() {
+        if (moduleId <= 0) {
+            Toast.makeText(getContext(), "Error: ID de módulo inválido", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Log.d(TAG, "Navegando a editar módulo con ID: " + moduleId);
+        
+        // Crear el fragmento de edición con el ID del módulo
+        EditModuleFragment editFragment = EditModuleFragment.newInstance(moduleId);
+        
+        // Realizar la transición al fragmento de edición
+        if (getParentFragmentManager() != null) {
+            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(
+                R.anim.slide_in_right,
+                R.anim.slide_out_left,
+                R.anim.slide_in_left,
+                R.anim.slide_out_right
+            );
+            transaction.replace(R.id.fragmentContainer, editFragment);
+            transaction.addToBackStack("EditModule");
+            transaction.commit();
+        } else {
+            Log.e(TAG, "Error: No se pudo obtener el FragmentManager");
+            Toast.makeText(getContext(), "Error interno de navegación", Toast.LENGTH_SHORT).show();
+        }
     }
 }
