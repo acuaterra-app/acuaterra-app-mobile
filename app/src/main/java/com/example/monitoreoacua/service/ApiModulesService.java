@@ -44,4 +44,11 @@ public interface ApiModulesService {
             @Header("Authorization") String token,
             @Path("id") int id
     );
+
+    @PUT("/api/v2/owner/modules/{id}")
+    Call<RegisterModuleResponse> updateModule(
+            @Header("Authorization") String token,
+            @Path("id") int id,
+            @Body Module module
+    );
 }

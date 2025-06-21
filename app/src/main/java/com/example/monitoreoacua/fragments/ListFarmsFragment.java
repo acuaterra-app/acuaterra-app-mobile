@@ -128,6 +128,7 @@ public class ListFarmsFragment extends Fragment {
             @Override
             public void onSuccess(List<Farm> data) {
                 if (isAdded()) {
+                    farmsList = new ArrayList<>(data); // <-- Agrega esta línea
                     textViewFarms.setVisibility(View.GONE);
                     farmAdapter.setFarmList(data);
                 }

@@ -4,11 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +39,8 @@ import com.example.monitoreoacua.views.farms.farm.modules.ModuleAdapter;
 import com.example.monitoreoacua.views.farms.farm.modules.RegisterModulesActivity;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,8 +57,11 @@ public class ListModulesFragment extends Fragment implements ModuleAdapter.OnMod
     private SwipeRefreshLayout swipeRefreshLayout;
     private TextView tvEmptyView;
     private Button btnRegisterModules;
-    
     private String farmId;
+
+    private List<Module> modulesList = new ArrayList<>();
+    private List<Module> filteredModulesList = new ArrayList<>();
+    private boolean sortAsc = false;
 
     private OnModuleInteractionListener listener;
 
@@ -96,7 +105,23 @@ public class ListModulesFragment extends Fragment implements ModuleAdapter.OnMod
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        
+
+        ImageButton sortButton = view.findViewById(R.id.buttonSortModules);
+        sortButton.setOnClickListener(v -> {
+            sortAsc = !sortAsc;
+            sortModulesByDate(); // llamado a método fuera
+        });
+
+        EditText searchEditText = view.findViewById(R.id.searchLayout);
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filterModulesByName(s.toString());
+            }
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void afterTextChanged(Editable s) {}
+        });
+
         recyclerViewModules = view.findViewById(R.id.recyclerViewModules);
         progressBar = view.findViewById(R.id.progressBar);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
@@ -160,7 +185,11 @@ public class ListModulesFragment extends Fragment implements ModuleAdapter.OnMod
                 if (response.isSuccessful() && response.body() != null) {
                     ListModuleResponse moduleResponse = response.body();
                     List<Module> modules = moduleResponse.getData();
-                    
+
+                    modulesList = new ArrayList<>(modules);
+                    filteredModulesList = new ArrayList<>(modules);
+                    moduleAdapter.setModuleList(filteredModulesList);
+
                     if (modules != null && !modules.isEmpty()) {
                         moduleAdapter.setModuleList(modules);
                         recyclerViewModules.setVisibility(View.VISIBLE);
@@ -169,7 +198,7 @@ public class ListModulesFragment extends Fragment implements ModuleAdapter.OnMod
                         moduleAdapter.setModuleList(new ArrayList<>());
                         recyclerViewModules.setVisibility(View.GONE);
                         tvEmptyView.setVisibility(View.VISIBLE);
-                        
+
                         // Check if user is monitor and set appropriate message
                         SessionManager sessionManager = SessionManager.getInstance(requireContext());
                         if (RolePermissionHelper.isMonitor(sessionManager.getUser())) {
@@ -205,6 +234,26 @@ public class ListModulesFragment extends Fragment implements ModuleAdapter.OnMod
         } else {
             tvEmptyView.setText(R.string.error_loading_modules);
         }
+    }
+
+    private void sortModulesByDate() {
+        Collections.sort(filteredModulesList, (m1, m2) -> {
+            String d1 = m1.getCreatedAt();
+            String d2 = m2.getCreatedAt();
+            return sortAsc ? d1.compareTo(d2) : d2.compareTo(d1);
+        });
+        moduleAdapter.setModuleList(filteredModulesList);
+    }
+
+    private void filterModulesByName(String query) {
+        List<Module> filtered = new ArrayList<>();
+        for (Module module : modulesList) {
+            if (module.getName().toLowerCase().contains(query.toLowerCase())) {
+                filtered.add(module);
+            }
+        }
+        filteredModulesList = filtered;
+        moduleAdapter.setModuleList(filteredModulesList);
     }
     
     public void refreshModules() {

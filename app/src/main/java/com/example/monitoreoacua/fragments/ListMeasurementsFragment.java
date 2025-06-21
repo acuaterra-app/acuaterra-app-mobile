@@ -1,11 +1,13 @@
 package com.example.monitoreoacua.fragments;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,9 +26,14 @@ import com.example.monitoreoacua.service.request.ListMeasurementRequest;
 import com.example.monitoreoacua.service.response.ListMeasurementResponse;
 import com.example.monitoreoacua.views.measurements.MeasurementsAdapter;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -48,6 +55,19 @@ public class ListMeasurementsFragment extends Fragment implements MeasurementsAd
     private ProgressBar progressBar;
     private MeasurementsAdapter measurementAdapter;
 
+    // Filtrado por fechas
+    private Button btnFromDate;
+    private Button btnToDate;
+    private Button btnApplyDateFilter;
+    private Button btnClearDateFilter;
+    
+    private Calendar fromDate;
+    private Calendar toDate;
+    private SimpleDateFormat dateFormatter;
+    
+    // Lista completa de mediciones (sin filtrar)
+    private List<Measurement> allMeasurements;
+    
     private String moduleId;
     private String sensorId;
 
@@ -99,6 +119,19 @@ public class ListMeasurementsFragment extends Fragment implements MeasurementsAd
         progressBar = view.findViewById(R.id.progressBar);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         tvEmptyView = view.findViewById(R.id.tvEmptyView);
+        
+        // Initialize date filter controls
+        btnFromDate = view.findViewById(R.id.btnFromDate);
+        btnToDate = view.findViewById(R.id.btnToDate);
+        btnApplyDateFilter = view.findViewById(R.id.btnApplyDateFilter);
+        btnClearDateFilter = view.findViewById(R.id.btnClearDateFilter);
+        
+        // Initialize date formatter and lists
+        dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        allMeasurements = new ArrayList<>();
+        
+        // Setup date filter listeners
+        setupDateFilterListeners();
 
         // Set up RecyclerView
         // Set up RecyclerView
@@ -191,11 +224,21 @@ public class ListMeasurementsFragment extends Fragment implements MeasurementsAd
                         // Update UI based on response
                         if (measurements != null && !measurements.isEmpty()) {
                             Log.d(TAG, "Se recibieron " + measurements.size() + " mediciones");
+                            
+                            // Store all measurements for filtering
+                            allMeasurements.clear();
+                            allMeasurements.addAll(measurements);
+                            
+                            // Display measurements in adapter
                             measurementAdapter.setMeasurementList(measurements);
                             recyclerViewMeasurements.setVisibility(View.VISIBLE);
                             tvEmptyView.setVisibility(View.GONE);
                         } else {
                             Log.d(TAG, "No se recibieron mediciones");
+                            
+                            // Clear stored measurements
+                            allMeasurements.clear();
+                            
                             measurementAdapter.setMeasurementList(new ArrayList<>());
                             recyclerViewMeasurements.setVisibility(View.GONE);
                             tvEmptyView.setVisibility(View.VISIBLE);
@@ -279,5 +322,175 @@ public class ListMeasurementsFragment extends Fragment implements MeasurementsAd
      */
     public void refreshMeasurements() {
         fetchMeasurements();
+    }
+
+    /**
+     * Setup listeners for date filter controls
+     */
+    private void setupDateFilterListeners() {
+        // From date button
+        btnFromDate.setOnClickListener(v -> showDatePicker(true));
+        
+        // To date button
+        btnToDate.setOnClickListener(v -> showDatePicker(false));
+        
+        // Apply filter button
+        btnApplyDateFilter.setOnClickListener(v -> applyDateFilter());
+        
+        // Clear filter button
+        btnClearDateFilter.setOnClickListener(v -> clearDateFilter());
+    }
+
+    /**
+     * Show date picker dialog
+     * @param isFromDate true if selecting from date, false for to date
+     */
+    private void showDatePicker(boolean isFromDate) {
+        Calendar calendar = Calendar.getInstance();
+        
+        // Set initial date if already selected
+        if (isFromDate && fromDate != null) {
+            calendar = fromDate;
+        } else if (!isFromDate && toDate != null) {
+            calendar = toDate;
+        }
+        
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+            getContext(),
+            (view, year, month, dayOfMonth) -> {
+                Calendar selectedDate = Calendar.getInstance();
+                selectedDate.set(year, month, dayOfMonth);
+                
+                if (isFromDate) {
+                    fromDate = selectedDate;
+                    btnFromDate.setText(dateFormatter.format(selectedDate.getTime()));
+                } else {
+                    toDate = selectedDate;
+                    btnToDate.setText(dateFormatter.format(selectedDate.getTime()));
+                }
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        );
+        
+        datePickerDialog.show();
+    }
+
+    /**
+     * Apply date filter to measurements
+     */
+    private void applyDateFilter() {
+        if (fromDate == null && toDate == null) {
+            Toast.makeText(getContext(), "Selecciona al menos una fecha", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        
+        if (fromDate != null && toDate != null && fromDate.after(toDate)) {
+            Toast.makeText(getContext(), "La fecha 'Desde' debe ser anterior a la fecha 'Hasta'", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        
+        List<Measurement> filteredMeasurements = new ArrayList<>();
+        
+        for (Measurement measurement : allMeasurements) {
+            if (isDateInRange(measurement)) {
+                filteredMeasurements.add(measurement);
+            }
+        }
+        
+        // Update adapter with filtered list
+        measurementAdapter.setMeasurementList(filteredMeasurements);
+        
+        // Update UI visibility
+        if (filteredMeasurements.isEmpty()) {
+            recyclerViewMeasurements.setVisibility(View.GONE);
+            tvEmptyView.setVisibility(View.VISIBLE);
+            tvEmptyView.setText("No se encontraron mediciones en el rango de fechas seleccionado");
+        } else {
+            recyclerViewMeasurements.setVisibility(View.VISIBLE);
+            tvEmptyView.setVisibility(View.GONE);
+        }
+        
+        Toast.makeText(getContext(), "Filtro aplicado: " + filteredMeasurements.size() + " mediciones encontradas", Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Clear date filter and show all measurements
+     */
+    private void clearDateFilter() {
+        fromDate = null;
+        toDate = null;
+        
+        btnFromDate.setText("Seleccionar fecha");
+        btnToDate.setText("Seleccionar fecha");
+        
+        // Show all measurements
+        measurementAdapter.setMeasurementList(allMeasurements);
+        
+        // Update UI visibility
+        if (allMeasurements.isEmpty()) {
+            recyclerViewMeasurements.setVisibility(View.GONE);
+            tvEmptyView.setVisibility(View.VISIBLE);
+            tvEmptyView.setText(getString(R.string.empty_measurements_list));
+        } else {
+            recyclerViewMeasurements.setVisibility(View.VISIBLE);
+            tvEmptyView.setVisibility(View.GONE);
+        }
+        
+        Toast.makeText(getContext(), "Filtro eliminado", Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Check if a measurement's date is within the selected range
+     * @param measurement The measurement to check
+     * @return true if the measurement is within the date range
+     */
+    private boolean isDateInRange(Measurement measurement) {
+        if (measurement.getDate() == null || measurement.getDate().isEmpty()) {
+            return false;
+        }
+        
+        try {
+            Date measurementDate = dateFormatter.parse(measurement.getDate());
+            
+            if (measurementDate == null) {
+                return false;
+            }
+            
+            // Check from date
+            if (fromDate != null) {
+                Calendar fromCal = Calendar.getInstance();
+                fromCal.setTime(fromDate.getTime());
+                fromCal.set(Calendar.HOUR_OF_DAY, 0);
+                fromCal.set(Calendar.MINUTE, 0);
+                fromCal.set(Calendar.SECOND, 0);
+                fromCal.set(Calendar.MILLISECOND, 0);
+                
+                if (measurementDate.before(fromCal.getTime())) {
+                    return false;
+                }
+            }
+            
+            // Check to date
+            if (toDate != null) {
+                Calendar toCal = Calendar.getInstance();
+                toCal.setTime(toDate.getTime());
+                toCal.set(Calendar.HOUR_OF_DAY, 23);
+                toCal.set(Calendar.MINUTE, 59);
+                toCal.set(Calendar.SECOND, 59);
+                toCal.set(Calendar.MILLISECOND, 999);
+                
+                if (measurementDate.after(toCal.getTime())) {
+                    return false;
+                }
+            }
+            
+            return true;
+            
+        } catch (ParseException e) {
+            Log.e(TAG, "Error parsing measurement date: " + measurement.getDate(), e);
+            return false;
+        }
     }
 }
