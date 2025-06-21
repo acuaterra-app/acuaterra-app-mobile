@@ -66,6 +66,7 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
     private RecyclerView recyclerViewMonitors;
     private TextView tvNoUsers;
     private MaterialButton btnEditModule;
+    private MaterialButton btnRealTimeCharts;
 
     // UI elements
     private TextView textModuleName;
@@ -147,6 +148,7 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
         tvErrorMessage = view.findViewById(R.id.tv_error_message);
         btnRetry = view.findViewById(R.id.btn_retry);
         btnEditModule = view.findViewById(R.id.btn_edit_module);
+        btnRealTimeCharts = view.findViewById(R.id.btn_real_time_charts);
 
         if (btnRetry != null) {
             btnRetry.setOnClickListener(v -> loadModuleData());
@@ -157,6 +159,11 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
             btnEditModule.setOnClickListener(v -> navigateToEditModule());
         } else if (btnEditModule != null) {
             btnEditModule.setVisibility(View.GONE);
+        }
+        
+        // Configurar botón de gráficos en tiempo real
+        if (btnRealTimeCharts != null) {
+            btnRealTimeCharts.setOnClickListener(v -> navigateToRealTimeCharts());
         }
 
 
@@ -473,6 +480,40 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
             transaction.replace(R.id.fragmentContainer, editFragment);
             transaction.addToBackStack("EditModule");
             transaction.commit();
+        } else {
+            Log.e(TAG, "Error: No se pudo obtener el FragmentManager");
+            Toast.makeText(getContext(), "Error interno de navegación", Toast.LENGTH_SHORT).show();
+        }
+    }
+    
+    /**
+     * Navega al fragmento de gráficos en tiempo real
+     */
+    private void navigateToRealTimeCharts() {
+        if (moduleId <= 0) {
+            Toast.makeText(getContext(), "Error: ID de módulo inválido", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Log.d(TAG, "Navegando a gráficos en tiempo real con ID de módulo: " + moduleId);
+        
+        // Crear el fragmento de gráficos en tiempo real con el ID del módulo
+        RealTimeChartsFragment chartsFragment = RealTimeChartsFragment.newInstance(moduleId);
+        
+        // Realizar la transición al fragmento de gráficos
+        if (getParentFragmentManager() != null) {
+            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(
+                R.anim.slide_in_right,
+                R.anim.slide_out_left,
+                R.anim.slide_in_left,
+                R.anim.slide_out_right
+            );
+            transaction.replace(R.id.fragmentContainer, chartsFragment);
+            transaction.addToBackStack("RealTimeCharts");
+            transaction.commit();
+            
+            Toast.makeText(getContext(), "Cargando gráficos en tiempo real...", Toast.LENGTH_SHORT).show();
         } else {
             Log.e(TAG, "Error: No se pudo obtener el FragmentManager");
             Toast.makeText(getContext(), "Error interno de navegación", Toast.LENGTH_SHORT).show();

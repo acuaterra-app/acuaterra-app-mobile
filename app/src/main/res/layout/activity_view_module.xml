@@ -183,6 +183,21 @@
                     android:textStyle="bold"
                     android:drawableLeft="@android:drawable/ic_menu_edit"
                     android:drawablePadding="8dp"/>
+
+                <!-- Botón para gráficos en tiempo real -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_real_time_charts"
+                    style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:backgroundTint="@android:color/holo_green_dark"
+                    android:elevation="4dp"
+                    android:text="Gráficos en Tiempo Real"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:drawableLeft="@android:drawable/ic_menu_view"
+                    android:drawablePadding="8dp"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView

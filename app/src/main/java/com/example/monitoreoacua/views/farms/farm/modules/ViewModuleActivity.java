@@ -3,11 +3,15 @@ package com.example.monitoreoacua.views.farms.farm.modules;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.monitoreoacua.R;
 import com.example.monitoreoacua.business.models.Sensor;
+import com.example.monitoreoacua.fragments.RealTimeChartsFragment;
 import com.example.monitoreoacua.fragments.ViewModuleFragment;
 import com.example.monitoreoacua.views.BaseActivity;
 import com.example.monitoreoacua.views.measurements.SensorMeasurementsActivity;
