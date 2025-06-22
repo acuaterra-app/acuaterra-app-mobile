@@ -414,9 +414,12 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
             }
         }
         List<User> result = new ArrayList<>();
-        for (User user : allUsers) {
-            if (!assignedIds.contains(user.getId())) {
-                result.add(user);
+        // Verificar que allUsers no sea null antes de iterar
+        if (allUsers != null) {
+            for (User user : allUsers) {
+                if (!assignedIds.contains(user.getId())) {
+                    result.add(user);
+                }
             }
         }
         return result;
