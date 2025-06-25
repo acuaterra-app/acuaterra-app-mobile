@@ -72,6 +72,9 @@ dependencies {
     implementation(libs.logging.interceptor)
     implementation("com.google.code.gson:gson:2.10.1")
     
+    // Google Play Services
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+    
     // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics) {
