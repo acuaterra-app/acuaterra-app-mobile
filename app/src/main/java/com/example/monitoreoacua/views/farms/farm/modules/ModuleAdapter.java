@@ -38,7 +38,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
     private Context context;
     private RecyclerView recyclerViewModules;
     private boolean isMonitor;
-    
+
     // Constantes para SharedPreferences
     private static final String PREF_NAME = "module_states";
     private static final String STATE_PREFIX = "module_state_";
@@ -63,7 +63,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
 
     /**
      * Set the module click listener
-     * 
+     *
      * @param listener The listener for module click events
      */
     public void setOnModuleClickListener(OnModuleClickListener listener) {
@@ -72,12 +72,12 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
 
     /**
      * Update the module list and refresh the adapter
-     * 
+     *
      * @param moduleList The new list of modules to display
      */
     public void setModuleList(List<Module> moduleList) {
         this.moduleList = moduleList;
-        
+
         // Aplicar estados almacenados a los módulos
         for (int i = 0; i < moduleList.size(); i++) {
             Module module = moduleList.get(i);
@@ -87,10 +87,10 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
                 moduleList.set(i, module);
             }
         }
-        
+
         notifyDataSetChanged();
     }
-    
+
     /**
      * Guarda el estado de un módulo en SharedPreferences
      */
@@ -100,7 +100,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
             prefs.edit().putBoolean(STATE_PREFIX + moduleId, state).apply();
         }
     }
-    
+
     /**
      * Recupera el estado almacenado de un módulo
      * @return El estado almacenado o null si no existe
@@ -123,13 +123,13 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
             SessionManager sessionManager = SessionManager.getInstance(context);
             isMonitor = RolePermissionHelper.isMonitor(sessionManager.getUser());
         }
-        
-        int layoutResId = isMonitor ? 
-            R.layout.recycle_view_item_module_monitor : 
-            R.layout.recycle_view_item_module;
-        
+
+        int layoutResId = isMonitor ?
+                R.layout.recycle_view_item_module_monitor :
+                R.layout.recycle_view_item_module;
+
         Log.d("ModuleAdapter", "Using layout: " + (isMonitor ? "monitor layout" : "owner layout"));
-            
+
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(layoutResId, parent, false);
         if (context == null) {
@@ -147,14 +147,14 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
     @Override
     public void onBindViewHolder(@NonNull ModuleViewHolder holder, int position) {
         Module module = moduleList.get(position);
-        
-        // Recuperar estado almacenado (ya debería estar aplicado en setModuleList, 
+
+        // Recuperar estado almacenado (ya debería estar aplicado en setModuleList,
         // pero verificamos por si acaso)
         Boolean storedState = getStoredModuleState(module.getId());
         if (storedState != null) {
             module.setActive(storedState);
         }
-        
+
         // Configurar el borde del CardView según el estado
         MaterialCardView cardView = (MaterialCardView) holder.itemView;
         if (module.isActive()) {
@@ -166,10 +166,10 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
             cardView.setStrokeColor(ContextCompat.getColor(holder.itemView.getContext(), android.R.color.holo_red_dark));
             cardView.setStrokeWidth(4);
         }
-        
+
         // Set name and location (existing fields)
         holder.tvModuleName.setText(module.getName() != null ? module.getName() : "Sin nombre");
-        
+
         // Set text color based on active state
         if (module.isActive()) {
             holder.tvModuleName.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), android.R.color.black));
@@ -177,24 +177,24 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
             holder.tvModuleName.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), android.R.color.holo_red_dark));
         }
         holder.tvModuleLocation.setText("Ubicación: " + (module.getLocation() != null ? module.getLocation() : "No especificada"));
-        
+
         // Set new fields with null checks
-        holder.tvModuleLatitude.setText("Latitud: " + (module.getLatitude() != null && !module.getLatitude().isEmpty() ? 
+        holder.tvModuleLatitude.setText("Latitud: " + (module.getLatitude() != null && !module.getLatitude().isEmpty() ?
                 module.getLatitude() : "N/A"));
-        
-        holder.tvModuleLongitude.setText("Longitud: " + (module.getLongitude() != null && !module.getLongitude().isEmpty() ? 
+
+        holder.tvModuleLongitude.setText("Longitud: " + (module.getLongitude() != null && !module.getLongitude().isEmpty() ?
                 module.getLongitude() : "N/A"));
-        
-        holder.tvModuleSpeciesFish.setText("Especie: " + (module.getSpeciesFish() != null && !module.getSpeciesFish().isEmpty() ? 
+
+        holder.tvModuleSpeciesFish.setText("Especie: " + (module.getSpeciesFish() != null && !module.getSpeciesFish().isEmpty() ?
                 module.getSpeciesFish() : "No especificada"));
-        
-        holder.tvModuleFishQuantity.setText("Cantidad: " + (module.getFishQuantity() != null && !module.getFishQuantity().isEmpty() ? 
+
+        holder.tvModuleFishQuantity.setText("Cantidad: " + (module.getFishQuantity() != null && !module.getFishQuantity().isEmpty() ?
                 module.getFishQuantity() : "0"));
-        
-        holder.tvModuleFishAge.setText("Edad: " + (module.getFishAge() != null && !module.getFishAge().isEmpty() ? 
+
+        holder.tvModuleFishAge.setText("Edad: " + (module.getFishAge() != null && !module.getFishAge().isEmpty() ?
                 module.getFishAge() : "0 días"));
-        
-        holder.tvModuleDimensions.setText("Dimensiones: " + (module.getDimensions() != null && !module.getDimensions().isEmpty() ? 
+
+        holder.tvModuleDimensions.setText("Dimensiones: " + (module.getDimensions() != null && !module.getDimensions().isEmpty() ?
                 module.getDimensions() : "No especificadas"));
 
         // Only setup toggle button for non-monitor users
@@ -256,51 +256,123 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
     public interface OnModuleClickListener {
         void onModuleClick(Module module);
     }
-    
+
     /**
      * Actualiza el estado del módulo a través de la API
      */
     private void updateModuleStatus(Module module, int position) {
         ApiModulesService apiService = ApiClient.getClient().create(ApiModulesService.class);
         String token = new BaseRequest().getAuthToken();
-        
-        // Cambiar el estado
+
+        if (token == null) {
+            Toast.makeText(context, "Error de autenticación. Por favor, inicie sesión nuevamente.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Usar el token directamente sin prefijo Bearer
+        //String authToken = token;
+
+        // Determinar el nuevo estado
         final boolean newState = !module.isActive();
+
+        // Actualizar estado localmente primero
         module.setActive(newState);
-        
-        // Guardar el estado en SharedPreferences
         saveModuleState(module.getId(), newState);
-        
-        // Actualizar la lista y la vista
         moduleList.set(position, module);
         notifyItemChanged(position);
-        
-        // Mostrar feedback
-        Toast.makeText(context, 
-            newState ? "Módulo activado" : "Módulo desactivado", 
-            Toast.LENGTH_SHORT).show();
-        
-        // Notificar al servidor del cambio
-        apiService.toggleModuleStatus(token, module.getId()).enqueue(new Callback<ApiResponse<Void>>() {
-            @Override
-            public void onResponse(Call<ApiResponse<Void>> call, Response<ApiResponse<Void>> response) {
-                if (context instanceof android.app.Activity) {
-                    ((android.app.Activity) context).runOnUiThread(() -> {
-                        if (!response.isSuccessful() || response.body() == null) {
-                            Toast.makeText(context, "Error al sincronizar con el servidor", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-            }
 
-            @Override
-            public void onFailure(Call<ApiResponse<Void>> call, Throwable t) {
-                if (context instanceof android.app.Activity) {
-                    ((android.app.Activity) context).runOnUiThread(() -> {
-                        Toast.makeText(context, "Error de conexión con el servidor", Toast.LENGTH_SHORT).show();
-                    });
+        // Mostrar feedback inmediato
+        Toast.makeText(context,
+                newState ? "Activando módulo..." : "Desactivando módulo...",
+                Toast.LENGTH_SHORT).show();
+
+        // Llamar al endpoint apropiado según el nuevo estado
+        if (newState) {
+            // Activar módulo (reactivate)
+            apiService.reactivateModule(token, module.getId()).enqueue(new Callback<ApiResponse<Void>>() {
+                @Override
+                public void onResponse(Call<ApiResponse<Void>> call, Response<ApiResponse<Void>> response) {
+                    if (context instanceof android.app.Activity) {
+                        ((android.app.Activity) context).runOnUiThread(() -> {
+                            if (response.isSuccessful() && response.body() != null) {
+                                Toast.makeText(context, "Módulo activado correctamente", Toast.LENGTH_SHORT).show();
+                            } else {
+                                // Revertir cambio local en caso de error
+                                module.setActive(!newState);
+                                saveModuleState(module.getId(), !newState);
+                                moduleList.set(position, module);
+                                notifyItemChanged(position);
+
+                                String errorMsg = "Error al activar módulo: " + response.code();
+                                if (response.code() == 401) {
+                                    errorMsg = "Error de autenticación. Verifique sus credenciales.";
+                                } else if (response.code() == 404) {
+                                    errorMsg = "Módulo no encontrado.";
+                                }
+                                Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
                 }
-            }
-        });
+
+                @Override
+                public void onFailure(Call<ApiResponse<Void>> call, Throwable t) {
+                    if (context instanceof android.app.Activity) {
+                        ((android.app.Activity) context).runOnUiThread(() -> {
+                            // Revertir cambio local en caso de error
+                            module.setActive(!newState);
+                            saveModuleState(module.getId(), !newState);
+                            moduleList.set(position, module);
+                            notifyItemChanged(position);
+
+                            Toast.makeText(context, "Error de conexión al activar módulo", Toast.LENGTH_SHORT).show();
+                        });
+                    }
+                }
+            });
+        } else {
+            // Desactivar módulo (deactivate)
+            apiService.deactivateModule(token, module.getId()).enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (context instanceof android.app.Activity) {
+                        ((android.app.Activity) context).runOnUiThread(() -> {
+                            if (response.isSuccessful()) {
+                                Toast.makeText(context, "Módulo desactivado correctamente", Toast.LENGTH_SHORT).show();
+                            } else {
+                                // Revertir cambio local en caso de error
+                                module.setActive(!newState);
+                                saveModuleState(module.getId(), !newState);
+                                moduleList.set(position, module);
+                                notifyItemChanged(position);
+
+                                String errorMsg = "Error al desactivar módulo: " + response.code();
+                                if (response.code() == 401) {
+                                    errorMsg = "Error de autenticación. Verifique sus credenciales.";
+                                } else if (response.code() == 404) {
+                                    errorMsg = "Módulo no encontrado.";
+                                }
+                                Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    if (context instanceof android.app.Activity) {
+                        ((android.app.Activity) context).runOnUiThread(() -> {
+                            // Revertir cambio local en caso de error
+                            module.setActive(!newState);
+                            saveModuleState(module.getId(), !newState);
+                            moduleList.set(position, module);
+                            notifyItemChanged(position);
+
+                            Toast.makeText(context, "Error de conexión al desactivar módulo", Toast.LENGTH_SHORT).show();
+                        });
+                    }
+                }
+            });
+        }
     }
 }
