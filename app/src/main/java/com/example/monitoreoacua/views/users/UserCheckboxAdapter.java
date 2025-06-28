@@ -23,6 +23,10 @@ public class UserCheckboxAdapter extends RecyclerView.Adapter<UserCheckboxAdapte
     private final List<User> users = new ArrayList<>();
     private final List<Integer> selectedUserIds = new ArrayList<>();
 
+    public List<User> getUsers() {
+        return new ArrayList<>(users); // Devuelve una copia para evitar modificaciones externas
+    }
+
     public void setUsers(List<User> users) {
         this.users.clear();
         if (users != null) {

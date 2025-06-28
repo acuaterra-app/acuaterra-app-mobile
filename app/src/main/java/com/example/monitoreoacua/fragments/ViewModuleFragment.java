@@ -190,6 +190,12 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
             if (btnAssignMonitors != null) {
                 btnAssignMonitors.setOnClickListener(v -> assignMonitors());
             }
+            
+            // Configurar botón de desasignación
+            Button btnUnassignMonitors = view.findViewById(R.id.btn_unassign_users);
+            if (btnUnassignMonitors != null) {
+                btnUnassignMonitors.setOnClickListener(v -> unassignMonitors());
+            }
         }
 
 
@@ -455,6 +461,89 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
     private void loadAssignedUsers() {
         // Implementación para cargar usuarios asignados
         Toast.makeText(getContext(), "Cargar usuarios asignados aún no implementado", Toast.LENGTH_SHORT).show();
+    }
+
+    private void unassignMonitors() {
+        // Obtener el adaptador de monitores
+        MonitorUserAdapter monitorAdapter = (MonitorUserAdapter) recyclerViewMonitors.getAdapter();
+        if (monitorAdapter == null) {
+            Toast.makeText(getContext(), "No hay monitores para desasignar", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        
+        List<Integer> selectedUserIds = monitorAdapter.getSelectedUserIds();
+        if (selectedUserIds.isEmpty()) {
+            Toast.makeText(getContext(), "Seleccione al menos un monitor para desasignar", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        
+        // Verificar que los monitores seleccionados estén realmente asignados
+        List<Integer> validUserIds = new ArrayList<>();
+        List<User> monitorsToUnassign = new ArrayList<>(); // Lista para guardar los objetos User completos
+        if (module != null && module.getUsers() != null) {
+            List<Integer> assignedUserIds = new ArrayList<>();
+            for (User user : module.getUsers()) {
+                assignedUserIds.add(user.getId());
+                // Guardar el usuario completo si está seleccionado para desasignar
+                if (selectedUserIds.contains(user.getId())) {
+                    validUserIds.add(user.getId());
+                    monitorsToUnassign.add(user);
+                }
+            }
+            
+            // Si no hay usuarios válidos para desasignar, mostrar mensaje y salir
+            if (validUserIds.isEmpty()) {
+                Toast.makeText(getContext(), "Los monitores seleccionados ya están desasignados", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+
+        progressBar.setVisibility(View.VISIBLE);
+
+        // Crear el cuerpo de la solicitud solo con los IDs válidos
+        new AssignMonitorsRequest().unassignMonitors(moduleId, validUserIds, new OnApiRequestCallback<ApiResponse, Throwable>() {
+            @Override
+            public void onSuccess(ApiResponse response) {
+                if (isAdded() && getContext() != null) {
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getContext(), "Monitores desasignados exitosamente", Toast.LENGTH_SHORT).show();
+                    
+                    // Actualizar inmediatamente la UI para evitar intentos de desasignación repetidos
+                    if (module != null && module.getUsers() != null) {
+                        // Remover los usuarios desasignados de la lista de asignados
+                        List<User> updatedUsersList = new ArrayList<>();
+                        for (User user : module.getUsers()) {
+                            if (!validUserIds.contains(user.getId())) {
+                                updatedUsersList.add(user);
+                            }
+                        }
+                        module.setUsers(updatedUsersList);
+                        updateUI();
+                        
+                        // Añadir los usuarios desasignados a la lista de disponibles
+                        if (userCheckboxAdapter != null && !monitorsToUnassign.isEmpty()) {
+                            List<User> currentAvailableUsers = new ArrayList<>(userCheckboxAdapter.getUsers());
+                            currentAvailableUsers.addAll(monitorsToUnassign);
+                            userCheckboxAdapter.setUsers(currentAvailableUsers);
+                        }
+                        
+                        // Limpiar las selecciones en el adaptador
+                        monitorAdapter.clearSelections();
+                    }
+                    
+                    // Luego recargar los datos completos del servidor para asegurar sincronización
+                    loadModuleDataAndFetchUsers();
+                }
+            }
+
+            @Override
+            public void onFail(Throwable error) {
+                if (isAdded() && getContext() != null) {
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getContext(), "Error al desasignar monitores: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
     /**
