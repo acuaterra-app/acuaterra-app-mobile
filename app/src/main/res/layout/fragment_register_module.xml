@@ -87,25 +87,43 @@
                     android:layout_marginTop="8dp"/>
 
                 <!-- Campo 3: Latitud -->
-                <TextView
-                    android:id="@+id/tvLatitude"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Latitud"
-                    android:textSize="16sp"
-                    android:textColor="@android:color/black"
-                    android:layout_marginTop="16dp"/>
+                    android:orientation="horizontal"
+                    android:layout_marginTop="16dp">
+                    
+                    <TextView
+                        android:id="@+id/tvLatitude"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Latitud"
+                        android:textSize="16sp"
+                        android:textColor="@android:color/black"/>
+                    
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnGetLocation"
+                        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
+                        android:text="📍 Ubicación actual"
+                        android:textSize="12sp"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:textColor="@color/white"
+                        android:layout_marginStart="8dp"/>
+                </LinearLayout>
 
                 <EditText
                     android:id="@+id/etLatitude"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@color/colorBackground"
-                    android:hint="Ej: 4.6097 (rango -90 a 90)"
+                    android:hint="Ej: 4.610 (rango -90 a 90)"
                     android:inputType="numberDecimal|numberSigned"
                     android:textSize="16sp"
                     android:padding="10dp"
-                    android:maxLength="10"
+                    android:maxLength="8"
                     android:layout_marginTop="8dp"/>
 
                 <!-- Campo 4: Longitud -->
@@ -123,11 +141,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@color/colorBackground"
-                    android:hint="Ej: -74.0817 (rango -180 a 180)"
+                    android:hint="Ej: -74.082 (rango -180 a 180)"
                     android:inputType="numberDecimal|numberSigned"
                     android:textSize="16sp"
                     android:padding="10dp"
-                    android:maxLength="11"
+                    android:maxLength="9"
                     android:layout_marginTop="8dp"/>
 
                 <!-- Campo 5: Especie de pez -->

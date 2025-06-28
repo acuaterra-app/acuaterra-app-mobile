@@ -1,6 +1,8 @@
 package com.example.monitoreoacua.fragments;
 
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -20,6 +22,7 @@ import com.example.monitoreoacua.interfaces.OnApiRequestCallback;
 import com.example.monitoreoacua.service.request.GetModuleRequest;
 import com.example.monitoreoacua.service.request.UpdateModuleRequest;
 import com.example.monitoreoacua.service.response.RegisterModuleResponse;
+import com.example.monitoreoacua.utils.LocationHelper;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
@@ -33,7 +36,7 @@ import java.util.Objects;
 public class EditModuleFragment extends Fragment {
 
     private EditText etModuleName, etLocation, etLatitude, etLongitude, etFishType, etFishQuantity, etFishAge, etVolumeUnit;
-    private MaterialButton btnUpdateModulo, btnCancelar;
+    private MaterialButton btnUpdateModulo, btnCancelar, btnGetLocation;
     private ProgressBar progressBar;
     private TextView tvTitle;
     private static final String TAG = "EditModuleFragment";
@@ -100,6 +103,7 @@ public class EditModuleFragment extends Fragment {
         progressBar = view.findViewById(R.id.progressBar);
         btnUpdateModulo = view.findViewById(R.id.btnRegisterModulo);
         btnCancelar = view.findViewById(R.id.btnCancelar);
+        btnGetLocation = view.findViewById(R.id.btnGetLocation);
         tvTitle = view.findViewById(R.id.tvTitle);
 
         // Cambiar el título y texto del botón para indicar que es edición
@@ -121,6 +125,9 @@ public class EditModuleFragment extends Fragment {
         btnCancelar.setOnClickListener(v -> {
             closeFragment();
         });
+
+        // Set up location button click listener
+        btnGetLocation.setOnClickListener(v -> getCurrentLocation());
     }
 
     /**
@@ -159,8 +166,8 @@ public class EditModuleFragment extends Fragment {
         if (currentModule != null) {
             etModuleName.setText(currentModule.getName());
             etLocation.setText(currentModule.getLocation());
-            etLatitude.setText(currentModule.getLatitude());
-            etLongitude.setText(currentModule.getLongitude());
+            etLatitude.setText(LocationHelper.formatCoordinate(Double.parseDouble(currentModule.getLatitude())));
+            etLongitude.setText(LocationHelper.formatCoordinate(Double.parseDouble(currentModule.getLongitude())));
             etFishType.setText(currentModule.getSpeciesFish());
             etFishQuantity.setText(currentModule.getFishQuantity());
             etFishAge.setText(currentModule.getFishAge());
@@ -192,7 +199,7 @@ public class EditModuleFragment extends Fragment {
         // Validar Latitud
         String latitude = etLatitude.getText().toString().trim();
         if (TextUtils.isEmpty(latitude)) {
-            etLatitude.setError("La latitud es requerida (ejemplo: -12.345)");
+            etLatitude.setError("La latitud es requerida (ejemplo: 4.610)");
             Log.e(TAG, "Validation error: Latitud vacía");
             isValid = false;
         } else {
@@ -204,7 +211,7 @@ public class EditModuleFragment extends Fragment {
                     isValid = false;
                 }
             } catch (NumberFormatException e) {
-                etLatitude.setError("La latitud debe ser un número decimal válido (ejemplo: -12.345)");
+                etLatitude.setError("La latitud debe ser un número decimal válido (ejemplo: 4.610)");
                 Log.e(TAG, "Validation error: Formato de latitud inválido: " + latitude);
                 isValid = false;
             }
@@ -213,7 +220,7 @@ public class EditModuleFragment extends Fragment {
         // Validar Longitud
         String longitude = etLongitude.getText().toString().trim();
         if (TextUtils.isEmpty(longitude)) {
-            etLongitude.setError("La longitud es requerida (ejemplo: 78.123)");
+            etLongitude.setError("La longitud es requerida (ejemplo: -74.082)");
             Log.e(TAG, "Validation error: Longitud vacía");
             isValid = false;
         } else {
@@ -225,7 +232,7 @@ public class EditModuleFragment extends Fragment {
                     isValid = false;
                 }
             } catch (NumberFormatException e) {
-                etLongitude.setError("La longitud debe ser un número decimal válido (ejemplo: 78.123)");
+                etLongitude.setError("La longitud debe ser un número decimal válido (ejemplo: -74.082)");
                 Log.e(TAG, "Validation error: Formato de longitud inválido: " + longitude);
                 isValid = false;
             }
@@ -397,7 +404,7 @@ public class EditModuleFragment extends Fragment {
                     } else if (error.getMessage().contains("location")) {
                         errorMessage = "La ubicación proporcionada no es válida";
                     } else if (error.getMessage().contains("longitude") || error.getMessage().contains("latitude")) {
-                        errorMessage = "Las coordenadas deben estar en formato decimal válido (ejemplo: -12.345, 78.123)";
+                        errorMessage = "Las coordenadas deben estar en formato decimal válido (ejemplo: 4.610, -74.082)";
                     } else {
                         errorMessage = "Error al actualizar módulo: " + error.getMessage();
                     }
@@ -424,6 +431,44 @@ public class EditModuleFragment extends Fragment {
         }
         if (btnUpdateModulo != null) {
             btnUpdateModulo.setEnabled(!show);
+        }
+    }
+
+    /**
+     * Obtiene la ubicación actual del dispositivo y actualiza los campos de latitud y longitud.
+     */
+    private void getCurrentLocation() {
+        if (!LocationHelper.hasLocationPermissions(requireContext())) {
+            LocationHelper.requestLocationPermissions(requireActivity());
+            return;
+        }
+
+        LocationHelper.getCurrentLocation(requireContext(), new LocationHelper.LocationCallback() {
+            @Override
+            public void onLocationReceived(double latitude, double longitude) {
+                etLatitude.setText(LocationHelper.formatCoordinate(latitude));
+                etLongitude.setText(LocationHelper.formatCoordinate(longitude));
+            }
+
+            @Override
+            public void onLocationError(String error) {
+                Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    /**
+     * Método para manejar la respuesta de permisos del usuario.
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == LocationHelper.LOCATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getCurrentLocation();
+            } else {
+                Toast.makeText(getContext(), "Permisos de ubicación denegados", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
