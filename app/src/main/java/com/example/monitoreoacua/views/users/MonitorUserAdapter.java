@@ -4,6 +4,7 @@ package com.example.monitoreoacua.views.users;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,9 +18,19 @@ import java.util.List;
 
 public class MonitorUserAdapter extends RecyclerView.Adapter<MonitorUserAdapter.UserViewHolder>{
     private final List<User> users;
+    private final List<Integer> selectedUserIds = new ArrayList<>();
 
     public MonitorUserAdapter(List<User> users) {
         this.users = users;
+    }
+
+    public List<Integer> getSelectedUserIds() {
+        return selectedUserIds;
+    }
+    
+    public void clearSelections() {
+        selectedUserIds.clear();
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -33,6 +44,17 @@ public class MonitorUserAdapter extends RecyclerView.Adapter<MonitorUserAdapter.
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
         User user = users.get(position);
         holder.name.setText(user.getName());
+        
+        // Configurar el checkbox
+        holder.checkBox.setOnCheckedChangeListener(null);
+        holder.checkBox.setChecked(selectedUserIds.contains(user.getId()));
+        holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                selectedUserIds.add(user.getId());
+            } else {
+                selectedUserIds.remove((Integer) user.getId());
+            }
+        });
     }
 
     @Override
@@ -41,11 +63,13 @@ public class MonitorUserAdapter extends RecyclerView.Adapter<MonitorUserAdapter.
     }
 
     static class UserViewHolder extends RecyclerView.ViewHolder {
-        TextView name, email;
+        TextView name;
+        CheckBox checkBox;
 
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.text_user_name);
+            checkBox = itemView.findViewById(R.id.checkbox_user);
         }
     }
 }

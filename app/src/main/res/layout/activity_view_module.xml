@@ -237,6 +237,15 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:itemCount="3"
                     tools:listitem="@layout/recycler_view_item_user_monitor" />
+
+                <Button
+                    android:id="@+id/btn_unassign_users"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Desasignar Monitores"
+                    android:layout_marginTop="8dp"
+                    android:backgroundTint="@color/pastelRed"
+                    android:textColor="@android:color/black" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -291,8 +300,10 @@
             android:id="@+id/btn_assign_users"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Asignar Usuarios"
-            android:layout_marginTop="16dp" />
+            android:text="Asignar Monitores"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/pastelGreen"
+            android:textColor="@android:color/black" />
 
     </LinearLayout>
     </ScrollView>

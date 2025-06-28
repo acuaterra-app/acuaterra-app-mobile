@@ -51,4 +51,43 @@ public class AssignMonitorsRequest extends BaseRequest {
             }
         });
     }
+    
+    public void unassignMonitors(int moduleId, List<Integer> monitorIds, OnApiRequestCallback<ApiResponse, Throwable> callback) {
+        ApiUserService apiUserService = ApiClient.getClient().create(ApiUserService.class);
+
+        // Crear el cuerpo de la solicitud
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("action", "unassign");
+        requestBody.put("monitorIds", monitorIds);
+
+        // Verificar que hay monitores para desasignar
+        if (monitorIds == null || monitorIds.isEmpty()) {
+            callback.onSuccess(new ApiResponse()); // Enviar respuesta de éxito vacía si no hay nada que hacer
+            return;
+        }
+
+        apiUserService.assignMonitors(getAuthToken(), moduleId, requestBody).enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<ApiResponse> call, @NonNull Response<ApiResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body());
+                } else {
+                    Log.d(TAG, "Error with response: " + response);
+                    if (response.code() == 404) {
+                        // Manejar el error 404 como si hubiera sido exitoso
+                        // Probablemente el monitor ya fue desasignado
+                        callback.onSuccess(new ApiResponse());
+                    } else {
+                        callback.onFail(new Throwable("Error with response: " + response.code()));
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ApiResponse> call, @NonNull Throwable t) {
+                Log.d(TAG, "Error with response: " + t);
+                callback.onFail(t);
+            }
+        });
+    }
 }
