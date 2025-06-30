@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.Manifest;
+import com.example.monitoreoacua.utils.ToastTranslator;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -82,18 +83,18 @@ public class LoginActivity extends AppCompatActivity {
 
 
         if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Please complete all fields", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, ToastTranslator.translate("Please complete all fields"), Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            Toast.makeText(this, "Please enter a valid email", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, ToastTranslator.translate("Please enter a valid email"), Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (loginAttempts >= MAX_LOGIN_ATTEMPTS) {
             btnLogin.setEnabled(false);
-            Toast.makeText(this, "Access blocked due to multiple failed attempts", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, ToastTranslator.translate("Access blocked due to multiple failed attempts"), Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -106,7 +107,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (!task.isSuccessful()) {
                             btnLogin.setEnabled(true);
                             Toast.makeText(LoginActivity.this,
-                                    "Failed to get device token. Please try again.",
+                                    ToastTranslator.translate("Failed to get device token. Please try again."),
                                     Toast.LENGTH_SHORT).show();
                             return;
                         }
@@ -176,7 +177,7 @@ public class LoginActivity extends AppCompatActivity {
                         AuthToken authToken = loginResponse.getToken();
                         String token = authToken != null ? authToken.getToken() : null;
                         if (token == null) {
-                            Toast.makeText(LoginActivity.this, "Authentication error: Invalid response", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, ToastTranslator.translate("Authentication error: Invalid response"), Toast.LENGTH_SHORT).show();
                             return;
                         }
 
@@ -189,7 +190,7 @@ public class LoginActivity extends AppCompatActivity {
                                        loginResponse.getUser().getName() : "User";
                         }
                         
-                        Toast.makeText(LoginActivity.this, "Welcome, " + userName, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, ToastTranslator.translateWelcome(userName), Toast.LENGTH_SHORT).show();
                         loginAttempts = 0;
 
                         // Guardar información del usuario en SharedPreferences - Versión simplificada
@@ -246,12 +247,12 @@ public class LoginActivity extends AppCompatActivity {
                         new Handler().postDelayed(() -> finish(), 100);
                     } catch (Exception e) {
                         Log.e(TAG, "Error processing login data", e);
-                        Toast.makeText(LoginActivity.this, "Error processing login data", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, ToastTranslator.translate("Error processing login data"), Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     loginAttempts++;
 
-                    String errorMessage = "Invalid credentials. Attempt " + loginAttempts + " of " + MAX_LOGIN_ATTEMPTS;
+                    String errorMessage = ToastTranslator.translateInvalidCredentials(loginAttempts, MAX_LOGIN_ATTEMPTS);
                     if (response.errorBody() != null) {
                         try {
                             errorMessage += " - " + response.errorBody().string();
@@ -267,7 +268,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onFailure(@NonNull Call<LoginResponse> call, @NonNull Throwable t) {
                 btnLogin.setEnabled(true);
                 Log.e(TAG, "Error logging in", t);
-                Toast.makeText(LoginActivity.this, "Error connecting to server: " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this, ToastTranslator.translate("Error connecting to server:") + " " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }

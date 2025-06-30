@@ -40,6 +40,7 @@ import com.example.monitoreoacua.views.users.MonitorUserAdapter;
 import com.example.monitoreoacua.views.users.RegisterUserFragment;
 import com.example.monitoreoacua.views.users.UserCheckboxAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.example.monitoreoacua.utils.ToastTranslator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -400,14 +401,20 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
             @Override
             public void onSuccess(List<User> users) {
                 progressBar.setVisibility(View.GONE);
-                List<User> assignableUsers = getAssignableUsers(users, module != null ? module.getUsers() : null);
-                userCheckboxAdapter.setUsers(assignableUsers);
+                // Verificar que users no sea null antes de procesar
+                if (users != null) {
+                    List<User> assignableUsers = getAssignableUsers(users, module != null ? module.getUsers() : null);
+                    userCheckboxAdapter.setUsers(assignableUsers);
+                } else {
+                    Log.d(TAG, "Lista de usuarios recibida es null");
+                    userCheckboxAdapter.setUsers(new ArrayList<>());
+                }
             }
 
             @Override
             public void onFail(Throwable t) {
                 progressBar.setVisibility(View.GONE);
-                Toast.makeText(getContext(), "Error de conexión: " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), ToastTranslator.translate("Error de conexión:") + " " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -416,14 +423,16 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
         List<Integer> assignedIds = new ArrayList<>();
         if (assignedUsers != null) {
             for (User u : assignedUsers) {
-                assignedIds.add(u.getId());
+                if (u != null) { // Verificación adicional de seguridad
+                    assignedIds.add(u.getId());
+                }
             }
         }
         List<User> result = new ArrayList<>();
         // Verificar que allUsers no sea null antes de iterar
         if (allUsers != null) {
             for (User user : allUsers) {
-                if (!assignedIds.contains(user.getId())) {
+                if (user != null && !assignedIds.contains(user.getId())) { // Verificación adicional de seguridad
                     result.add(user);
                 }
             }
@@ -434,7 +443,7 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
     private void assignMonitors() {
         List<Integer> selectedUserIds = userCheckboxAdapter.getSelectedUserIds();
         if (selectedUserIds.isEmpty()) {
-            Toast.makeText(getContext(), "Seleccione al menos un monitor", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), ToastTranslator.translate("Select at least one monitor"), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -444,7 +453,7 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
             @Override
             public void onSuccess(ApiResponse response) {
                 progressBar.setVisibility(View.GONE);
-                Toast.makeText(getContext(), "Monitores asignados exitosamente", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), ToastTranslator.translate("Monitors assigned successfully"), Toast.LENGTH_SHORT).show();
                 loadModuleDataAndFetchUsers(); // Recargar datos del módulo
                 selectedUserIds.clear();
             }
@@ -452,7 +461,7 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
             @Override
             public void onFail(Throwable error) {
                 progressBar.setVisibility(View.GONE);
-                Toast.makeText(getContext(), "Error al asignar monitores: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), ToastTranslator.translate("Error assigning monitors") + ": " + error.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -467,7 +476,7 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
         // Obtener el adaptador de monitores
         MonitorUserAdapter monitorAdapter = (MonitorUserAdapter) recyclerViewMonitors.getAdapter();
         if (monitorAdapter == null) {
-            Toast.makeText(getContext(), "No hay monitores para desasignar", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), ToastTranslator.translate("No monitors to unassign"), Toast.LENGTH_SHORT).show();
             return;
         }
         
@@ -506,7 +515,7 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
             public void onSuccess(ApiResponse response) {
                 if (isAdded() && getContext() != null) {
                     progressBar.setVisibility(View.GONE);
-                    Toast.makeText(getContext(), "Monitores desasignados exitosamente", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), ToastTranslator.translate("Monitors unassigned successfully"), Toast.LENGTH_SHORT).show();
                     
                     // Actualizar inmediatamente la UI para evitar intentos de desasignación repetidos
                     if (module != null && module.getUsers() != null) {
@@ -540,7 +549,7 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
             public void onFail(Throwable error) {
                 if (isAdded() && getContext() != null) {
                     progressBar.setVisibility(View.GONE);
-                    Toast.makeText(getContext(), "Error al desasignar monitores: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), ToastTranslator.translate("Error unassigning monitors") + ": " + error.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -605,7 +614,7 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
             transaction.addToBackStack("RealTimeCharts");
             transaction.commit();
             
-            Toast.makeText(getContext(), "Cargando gráficos en tiempo real...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), ToastTranslator.translate("Loading...") + " gráficos en tiempo real", Toast.LENGTH_SHORT).show();
         } else {
             Log.e(TAG, "Error: No se pudo obtener el FragmentManager");
             Toast.makeText(getContext(), "Error interno de navegación", Toast.LENGTH_SHORT).show();
