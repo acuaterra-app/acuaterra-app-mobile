@@ -13,6 +13,7 @@ import com.example.monitoreoacua.service.response.ListMonitorUserResponse;
 import com.example.monitoreoacua.service.response.ListUserResponse;
 import com.example.monitoreoacua.service.response.UserMonitorResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -36,7 +37,8 @@ public class ListUsersRequest extends BaseRequest{
                 if (response.isSuccessful() && response.body() != null) {
                     ListUserResponse listUserResponse = response.body();
                     List<User> users = listUserResponse.getData();
-                    callback.onSuccess(users);
+                    // Asegurar que nunca retornemos null
+                    callback.onSuccess(users != null ? users : new ArrayList<>());
                 } else {
                     Log.d(TAG, "Error with response: " + response);
                     callback.onFail(new Throwable("Error with response"));

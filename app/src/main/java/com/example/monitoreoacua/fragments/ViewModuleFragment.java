@@ -400,8 +400,14 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
             @Override
             public void onSuccess(List<User> users) {
                 progressBar.setVisibility(View.GONE);
-                List<User> assignableUsers = getAssignableUsers(users, module != null ? module.getUsers() : null);
-                userCheckboxAdapter.setUsers(assignableUsers);
+                // Verificar que users no sea null antes de procesar
+                if (users != null) {
+                    List<User> assignableUsers = getAssignableUsers(users, module != null ? module.getUsers() : null);
+                    userCheckboxAdapter.setUsers(assignableUsers);
+                } else {
+                    Log.d(TAG, "Lista de usuarios recibida es null");
+                    userCheckboxAdapter.setUsers(new ArrayList<>());
+                }
             }
 
             @Override
@@ -416,14 +422,16 @@ public class ViewModuleFragment extends Fragment implements SensorAdapter.OnSens
         List<Integer> assignedIds = new ArrayList<>();
         if (assignedUsers != null) {
             for (User u : assignedUsers) {
-                assignedIds.add(u.getId());
+                if (u != null) { // Verificación adicional de seguridad
+                    assignedIds.add(u.getId());
+                }
             }
         }
         List<User> result = new ArrayList<>();
         // Verificar que allUsers no sea null antes de iterar
         if (allUsers != null) {
             for (User user : allUsers) {
-                if (!assignedIds.contains(user.getId())) {
+                if (user != null && !assignedIds.contains(user.getId())) { // Verificación adicional de seguridad
                     result.add(user);
                 }
             }
