@@ -49,16 +49,26 @@ public class SupportFragment extends Fragment {
         btnWhatsApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openWhatsApp("+573001234567"); // Change this number to the actual support number
+                makePhoneCall("3167845095");
             }
         });
 
         btnEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendCorreo("soporte@acuaterratech.com", "Consulta de soporte", "Hola, necesito ayuda con...");
+                sendCorreo("acuaterra@gmail.com", "Consulta de soporte", "Hola, necesito ayuda con...");
             }
         });
+    }
+
+    private void makePhoneCall(String phoneNumber) {
+        try {
+            Intent callIntent = new Intent(Intent.ACTION_DIAL);
+            callIntent.setData(Uri.parse("tel:" + phoneNumber));
+            startActivity(callIntent);
+        } catch (Exception e) {
+            Log.e(TAG, "No se pudo realizar la llamada: " + e.getMessage());
+        }
     }
 
     private void openWhatsApp(String numberPhone) {
@@ -73,17 +83,35 @@ public class SupportFragment extends Fragment {
     }
 
     private void sendCorreo(String destinatario, String asunto, String mensaje) {
-        Intent intent = new Intent(Intent.ACTION_SENDTO);
-        intent.setData(Uri.parse("mailto:")); // Solo las apps de correo pueden manejar esto
-        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{destinatario});
-        intent.putExtra(Intent.EXTRA_SUBJECT, asunto);
-        intent.putExtra(Intent.EXTRA_TEXT, mensaje);
-
         Context context = getContext();
-        if (context != null && intent.resolveActivity(context.getPackageManager()) != null) {
-            startActivity(intent);
-        } else {
-            Log.e(TAG, "No email app found or context is null");
+        if (context == null) {
+            Log.e(TAG, "Context is null");
+            return;
+        }
+
+        try {
+            // Crear intent de email que funcione con Gmail y otras apps
+            Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+            emailIntent.setData(Uri.parse("mailto:" + destinatario));
+            emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{destinatario});
+            emailIntent.putExtra(Intent.EXTRA_SUBJECT, asunto);
+            emailIntent.putExtra(Intent.EXTRA_TEXT, mensaje);
+
+            // Verificar si hay apps de email disponibles
+            if (emailIntent.resolveActivity(context.getPackageManager()) != null) {
+                startActivity(emailIntent);
+            } else {
+                // Fallback a chooser si no hay apps de email específicas
+                Intent fallbackIntent = new Intent(Intent.ACTION_SEND);
+                fallbackIntent.setType("message/rfc822");
+                fallbackIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{destinatario});
+                fallbackIntent.putExtra(Intent.EXTRA_SUBJECT, asunto);
+                fallbackIntent.putExtra(Intent.EXTRA_TEXT, mensaje);
+                
+                startActivity(Intent.createChooser(fallbackIntent, "Enviar correo con:"));
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "No se pudo abrir ninguna aplicación de correo: " + e.getMessage());
         }
     }
 }
