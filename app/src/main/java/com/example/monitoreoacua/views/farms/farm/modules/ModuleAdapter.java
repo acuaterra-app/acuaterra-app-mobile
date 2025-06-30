@@ -27,6 +27,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import com.google.android.material.card.MaterialCardView;
+import android.os.Handler;
+import android.os.Looper;
 
 /**
  * Adapter for displaying modules in a RecyclerView
@@ -42,6 +44,10 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
     // Constantes para SharedPreferences
     private static final String PREF_NAME = "module_states";
     private static final String STATE_PREFIX = "module_state_";
+    
+    // Constantes para reintentos
+    private static final int MAX_RETRIES = 3;
+    private static final int RETRY_DELAY_MS = 1000;
 
     /**
      * Constructor for ModuleAdapter
@@ -264,8 +270,16 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
         ApiModulesService apiService = ApiClient.getClient().create(ApiModulesService.class);
         String token = new BaseRequest().getAuthToken();
         
-        // Cambiar el estado
+        // Validar token
+        if (token == null) {
+            Toast.makeText(context, "Error de autenticación. Por favor, inicie sesión nuevamente.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        
+        // Determinar el nuevo estado
         final boolean newState = !module.isActive();
+        
+        // Actualizar estado localmente primero
         module.setActive(newState);
         
         // Guardar el estado en SharedPreferences
@@ -275,32 +289,145 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
         moduleList.set(position, module);
         notifyItemChanged(position);
         
-        // Mostrar feedback
-        Toast.makeText(context, 
-            newState ? "Módulo activado" : "Módulo desactivado", 
-            Toast.LENGTH_SHORT).show();
+        // Mostrar feedback inmediato
+        Toast.makeText(context,
+                newState ? "Activando módulo..." : "Desactivando módulo...",
+                Toast.LENGTH_SHORT).show();
         
-        // Notificar al servidor del cambio
-        apiService.toggleModuleStatus(token, module.getId()).enqueue(new Callback<ApiResponse<Void>>() {
+        // Llamar al endpoint apropiado según el nuevo estado
+        if (newState) {
+            // Activar módulo (reactivate) con reintentos automáticos
+            attemptModuleActivation(apiService, token, module, position, newState, 1);
+        } else {
+            // Desactivar módulo (deactivate)
+            apiService.deactivateModule(token, module.getId()).enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (context instanceof android.app.Activity) {
+                        ((android.app.Activity) context).runOnUiThread(() -> {
+                            if (response.isSuccessful()) {
+                                Toast.makeText(context, "Módulo desactivado correctamente", Toast.LENGTH_SHORT).show();
+                            } else {
+                                // Para desactivación, revertir solo en caso de errores críticos
+                                if (response.code() == 401) {
+                                    // Error de autenticación: revertir y requerir nueva autenticación
+                                    revertModuleState(module, position, newState);
+                                    Toast.makeText(context, "Error de autenticación. Verifique sus credenciales.", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    // Otros errores: mantener estado y permitir reintentos
+                                    String errorMsg;
+                                    if (response.code() == 404) {
+                                        errorMsg = "Módulo no encontrado. Puede intentar nuevamente.";
+                                    } else {
+                                        errorMsg = "Error al desactivar módulo: " + response.code() + ". Puede intentar nuevamente.";
+                                    }
+                                    Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+                }
+                
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    if (context instanceof android.app.Activity) {
+                        ((android.app.Activity) context).runOnUiThread(() -> {
+                            // Error de conexión: mantener estado y permitir reintentos
+                            Toast.makeText(context, "Error de conexión al desactivar módulo. Puede intentar nuevamente.", Toast.LENGTH_SHORT).show();
+                        });
+                    }
+                }
+            });
+        }
+    }
+    
+    /**
+     * Restaura el estado del botón después de un error
+     */
+    private void restoreButton(int position, boolean isActive) {
+        if (recyclerViewModules != null) {
+            RecyclerView.ViewHolder viewHolder = recyclerViewModules.findViewHolderForAdapterPosition(position);
+            if (viewHolder instanceof ModuleViewHolder) {
+                ModuleViewHolder moduleHolder = (ModuleViewHolder) viewHolder;
+                if (moduleHolder.btnToggleModule != null) {
+                    moduleHolder.btnToggleModule.setEnabled(true);
+                    if (isActive) {
+                        moduleHolder.btnToggleModule.setText("Desactivar");
+                        moduleHolder.btnToggleModule.setBackgroundColor(ContextCompat.getColor(context, android.R.color.holo_green_dark));
+                    } else {
+                        moduleHolder.btnToggleModule.setText("Activar");
+                        moduleHolder.btnToggleModule.setBackgroundColor(ContextCompat.getColor(context, android.R.color.holo_red_dark));
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     * Intenta activar un módulo con reintentos automáticos en caso de error 404
+     */
+    private void attemptModuleActivation(ApiModulesService apiService, String token, Module module, 
+                                       int position, boolean newState, int attemptNumber) {
+        apiService.reactivateModule(token, module.getId()).enqueue(new Callback<ApiResponse<Void>>() {
             @Override
             public void onResponse(Call<ApiResponse<Void>> call, Response<ApiResponse<Void>> response) {
                 if (context instanceof android.app.Activity) {
                     ((android.app.Activity) context).runOnUiThread(() -> {
-                        if (!response.isSuccessful() || response.body() == null) {
-                            Toast.makeText(context, "Error al sincronizar con el servidor", Toast.LENGTH_SHORT).show();
+                        if (response.isSuccessful() && response.body() != null) {
+                            // Éxito: mostrar mensaje solo si es el primer intento o después de reintentos
+                            Toast.makeText(context, "Módulo activado correctamente", Toast.LENGTH_SHORT).show();
+                        } else {
+                            // Manejar errores según el código de respuesta
+                            if (response.code() == 404 && attemptNumber < MAX_RETRIES) {
+                                // Error 404: reintentar silenciosamente después de un delay
+                                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                                    attemptModuleActivation(apiService, token, module, position, newState, attemptNumber + 1);
+                                }, RETRY_DELAY_MS);
+                            } else {
+                                // Error definitivo: mostrar mensaje pero MANTENER el estado visual actualizado
+                                // No revertir para permitir que el usuario pueda intentar nuevamente
+                                String errorMsg;
+                                if (response.code() == 401) {
+                                    errorMsg = "Error de autenticación. Verifique sus credenciales.";
+                                } else if (response.code() == 404) {
+                                    errorMsg = ":)";
+                                } else {
+                                    errorMsg = "Error al activar módulo: " + response.code() + ". Puede intentar nuevamente.";
+                                }
+                                Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show();
+                            }
                         }
                     });
                 }
             }
-
+            
             @Override
             public void onFailure(Call<ApiResponse<Void>> call, Throwable t) {
                 if (context instanceof android.app.Activity) {
                     ((android.app.Activity) context).runOnUiThread(() -> {
-                        Toast.makeText(context, "Error de conexión con el servidor", Toast.LENGTH_SHORT).show();
+                        if (attemptNumber < MAX_RETRIES) {
+                            // Reintentar silenciosamente en caso de falla de conexión
+                            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                                attemptModuleActivation(apiService, token, module, position, newState, attemptNumber + 1);
+                            }, RETRY_DELAY_MS);
+                        } else {
+                            // Error definitivo: mostrar mensaje pero MANTENER estado para permitir reintentos
+                            Toast.makeText(context, "Error de conexión al activar módulo. Puede intentar nuevamente.", Toast.LENGTH_SHORT).show();
+                        }
                     });
                 }
             }
         });
     }
+    
+    /**
+     * Revierte el estado del módulo en caso de error definitivo
+     */
+    private void revertModuleState(Module module, int position, boolean newState) {
+        module.setActive(!newState);
+        saveModuleState(module.getId(), !newState);
+        moduleList.set(position, module);
+        notifyItemChanged(position);
+    }
+    
 }
