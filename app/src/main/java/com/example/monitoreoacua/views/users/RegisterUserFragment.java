@@ -19,6 +19,7 @@ import com.example.monitoreoacua.service.request.RegisterUserRequest;
 import com.example.monitoreoacua.service.request.UserRequest;
 import com.example.monitoreoacua.service.response.UserRegisterResponse;
 import com.example.monitoreoacua.service.response.UserUpdateResponse;
+import com.example.monitoreoacua.utils.ApiErrorUtils;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -259,33 +260,13 @@ public class RegisterUserFragment extends Fragment {
         String errorDetails = error.getMessage() != null ? error.getMessage() : "Unknown error";
         Log.e(TAG, "API Error Details: " + errorDetails);
 
-        String errorMessage;
-        if (error.getMessage() != null) {
-            if (error.getMessage().contains("dni")) {
-                errorMessage = ERROR_DNI_EXISTS;
-                Log.e(TAG, "DNI validation error: " + errorDetails);
-            } else if (error.getMessage().contains("email")) {
-                errorMessage = ERROR_EMAIL_EXISTS;
-                Log.e(TAG, "Email validation error: " + errorDetails);
-            } else if (error.getMessage().contains("contact")) {
-                errorMessage = ERROR_CONTACT_FORMAT;
-                Log.e(TAG, "Contact validation error: " + errorDetails);
-            } else if (error.getMessage().contains("name")) {
-                errorMessage = "El nombre ingresado no es válido";
-                Log.e(TAG, "Name validation error: " + errorDetails);
-            } else if (error.getMessage().contains("address")) {
-                errorMessage = "La dirección ingresada no es válida";
-                Log.e(TAG, "Address validation error: " + errorDetails);
-            } else {
-                errorMessage = "Error al " + (isUpdate ? "actualizar" : "registrar") + " usuario: " + error.getMessage();
-                Log.e(TAG, "Unspecified error: " + errorDetails);
-            }
-        } else {
-            errorMessage = "Error al " + (isUpdate ? "actualizar" : "registrar") + " usuario. Verifique los datos e intente nuevamente.";
-            Log.e(TAG, "Unknown error occurred");
-        }
+        String errorMessage = ApiErrorUtils.parseUserApiErrorMessage(error, isUpdate);
+        
+        // Resaltar el campo problemático
+        ApiErrorUtils.highlightUserErrorField(error, dniEditText, emailEditText, contactEditText, nameEditText, addressEditText);
         
         Log.e(TAG, "Final error message shown to user: " + errorMessage);
         return errorMessage;
     }
+    
 }

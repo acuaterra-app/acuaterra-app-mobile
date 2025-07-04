@@ -361,24 +361,10 @@ public class RegisterModuleFragment extends Fragment {
                 Log.e(TAG, "Error registering module: " + error.getMessage(), error);
 
                 // Determinar el tipo de error y mostrar un mensaje más específico
-                String errorMessage;
-                if (error.getMessage() != null) {
-                    if (error.getMessage().contains("Fish age must be a positive integer")) {
-                        errorMessage = "La edad de los peces debe ser un número entero positivo (ejemplo: 6 para 6 meses)";
-                    } else if (error.getMessage().contains("volume_unit")) {
-                        errorMessage = "El formato de las dimensiones debe ser anchoxlargoxalto (ejemplo: 2x3x1.5)";
-                    } else if (error.getMessage().contains("quantity")) {
-                        errorMessage = "La cantidad de peces debe ser un número entero positivo";
-                    } else if (error.getMessage().contains("location")) {
-                        errorMessage = "La ubicación proporcionada no es válida";
-                    } else if (error.getMessage().contains("longitude") || error.getMessage().contains("latitude")) {
-                        errorMessage = "Las coordenadas deben estar en formato decimal válido (ejemplo: 4.610, -74.082)";
-                    } else {
-                        errorMessage = "Error al registrar módulo: " + error.getMessage();
-                    }
-                } else {
-                    errorMessage = "Error al registrar módulo. Verifique los datos e intente nuevamente.";
-                }
+                String errorMessage = parseApiErrorMessage(error);
+                
+                // Resaltar el campo problemático si es posible
+                highlightErrorField(error);
 
                 // Show error message
                 Snackbar.make(
@@ -427,6 +413,69 @@ public class RegisterModuleFragment extends Fragment {
             }
         }
     }
+
+    /**
+     * Parsea el mensaje de error de la API y devuelve un mensaje amigable para el usuario.
+     */
+    private String parseApiErrorMessage(Throwable error) {
+        String errorMessage = error.getMessage() != null ? error.getMessage().toLowerCase() : "";
+        
+        if (errorMessage.contains("fish age") || errorMessage.contains("edad")) {
+            return "❌ Edad de peces: Debe ser un número entero positivo (ejemplo: 6 para 6 meses)";
+        } else if (errorMessage.contains("volume_unit") || errorMessage.contains("dimension")) {
+            return "❌ Dimensiones: Use el formato anchoxlargoxalto (ejemplo: 2x3x1.5)";
+        } else if (errorMessage.contains("quantity") || errorMessage.contains("cantidad")) {
+            return "❌ Cantidad de peces: Debe ser un número entero positivo";
+        } else if (errorMessage.contains("location") || errorMessage.contains("ubicacion")) {
+            return "❌ Ubicación: Ingrese una ubicación válida";
+        } else if (errorMessage.contains("longitude") || errorMessage.contains("latitude") || errorMessage.contains("coordenada")) {
+            return "❌ Coordenadas: Deben estar en formato decimal válido (lat: 4.610, lon: -74.082)";
+        } else if (errorMessage.contains("name") || errorMessage.contains("nombre")) {
+            return "❌ Nombre del módulo: No puede estar vacío y debe ser único";
+        } else if (errorMessage.contains("fish") || errorMessage.contains("especie")) {
+            return "❌ Especie de pez: Ingrese una especie válida";
+        } else if (errorMessage.contains("farm") || errorMessage.contains("granja")) {
+            return "❌ Error de granja: Verifique que la granja sea válida";
+        } else if (errorMessage.contains("duplicate") || errorMessage.contains("duplicado")) {
+            return "❌ Ya existe un módulo con estos datos. Verifique el nombre y ubicación";
+        } else {
+            return "❌ Error al registrar módulo: " + (error.getMessage() != null ? error.getMessage() : "Verifique todos los campos e intente nuevamente");
+        }
+    }
+    
+    /**
+     * Resalta el campo que tiene el error según el mensaje de la API.
+     */
+    private void highlightErrorField(Throwable error) {
+        String errorMessage = error.getMessage() != null ? error.getMessage().toLowerCase() : "";
+        
+        if (errorMessage.contains("fish age") || errorMessage.contains("edad")) {
+            etFishAge.setError("Ingrese solo el número de meses (ejemplo: 6)");
+            etFishAge.requestFocus();
+        } else if (errorMessage.contains("volume_unit") || errorMessage.contains("dimension")) {
+            etVolumeUnit.setError("Formato: anchoxlargoxalto (ejemplo: 2x3x1.5)");
+            etVolumeUnit.requestFocus();
+        } else if (errorMessage.contains("quantity") || errorMessage.contains("cantidad")) {
+            etFishQuantity.setError("Debe ser un número entero positivo");
+            etFishQuantity.requestFocus();
+        } else if (errorMessage.contains("location") || errorMessage.contains("ubicacion")) {
+            etLocation.setError("Ingrese una ubicación válida");
+            etLocation.requestFocus();
+        } else if (errorMessage.contains("longitude")) {
+            etLongitude.setError("Formato inválido (ejemplo: -74.082)");
+            etLongitude.requestFocus();
+        } else if (errorMessage.contains("latitude")) {
+            etLatitude.setError("Formato inválido (ejemplo: 4.610)");
+            etLatitude.requestFocus();
+        } else if (errorMessage.contains("name") || errorMessage.contains("nombre")) {
+            etModuleName.setError("El nombre no puede estar vacío y debe ser único");
+            etModuleName.requestFocus();
+        } else if (errorMessage.contains("fish") || errorMessage.contains("especie")) {
+            etFishType.setError("Ingrese una especie de pez válida");
+            etFishType.requestFocus();
+        }
+    }
+
 
     /**
      * Closes the current fragment and returns to the previous screen.
