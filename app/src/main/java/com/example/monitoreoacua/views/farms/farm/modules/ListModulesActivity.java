@@ -74,8 +74,9 @@ public class ListModulesActivity extends BaseActivity implements ListModulesFrag
     @Override
     protected void onResume() {
         super.onResume();
-        // Refresh modules list when returning to this activity
+        // Refresh modules list when returning to this activity to ensure sync with backend
         if (modulesFragment != null) {
+            Log.d("ListModulesActivity", "onResume: Refreshing modules to sync with backend state");
             modulesFragment.refreshModules();
         }
     }

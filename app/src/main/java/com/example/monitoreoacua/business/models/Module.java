@@ -68,7 +68,7 @@ public class Module extends BaseRequest implements Serializable, Parcelable {
     private List<Integer> userIds;
 
     @SerializedName("is_active")
-    private boolean isActive = false;
+    private boolean isActive = true;
 
     public Module() {
         // Constructor vacío
@@ -79,7 +79,7 @@ public class Module extends BaseRequest implements Serializable, Parcelable {
                   String speciesFish, String fishQuantity, String fishAge,
                   String dimensions, int idFarm, List<Integer> users) {
         this(name, location, latitude, longitude, speciesFish, fishQuantity, 
-             fishAge, dimensions, idFarm, users, false);
+             fishAge, dimensions, idFarm, users, true);
     }
 
     public Module(String name, String location, String latitude, String longitude,
@@ -176,6 +176,16 @@ public class Module extends BaseRequest implements Serializable, Parcelable {
     public void setSensors(List<Sensor> sensors) { this.sensors = sensors; }
     public boolean isActive() { return isActive; }
     public void setActive(boolean isActive) { this.isActive = isActive; }
+    
+    /**
+     * Determina si el módulo está realmente activo considerando tanto isActive como deletedAt
+     * Un módulo se considera inactivo si:
+     * - isActive es false, O
+     * - deletedAt no es null ni vacío
+     */
+    public boolean isReallyActive() {
+        return isActive && (deletedAt == null || deletedAt.trim().isEmpty());
+    }
 
 
 }

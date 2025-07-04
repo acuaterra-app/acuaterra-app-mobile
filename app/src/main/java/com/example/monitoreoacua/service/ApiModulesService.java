@@ -6,6 +6,8 @@ import retrofit2.http.Header;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.DELETE;
+import retrofit2.http.PATCH;
 import retrofit2.http.Path;
 import com.example.monitoreoacua.business.models.Module;
 import com.example.monitoreoacua.service.request.ListModulesRequest;
@@ -39,11 +41,11 @@ public interface ApiModulesService {
             @Path("id") int id
     );
 
-    @PUT("/api/v2/owner/modules/{id}/toggle-status")
-    Call<ApiResponse<Void>> toggleModuleStatus(
-            @Header("Authorization") String token,
-            @Path("id") int id
-    );
+    @DELETE("/api/v2/owner/modules/{id}")
+    Call<Void> deactivateModule(@Header("Authorization") String token, @Path("id") int id);
+
+    @PATCH("/api/v2/owner/modules/{id}")
+    Call<ApiResponse<Void>> reactivateModule(@Header("Authorization") String token, @Path("id") int id);
 
     @PUT("/api/v2/owner/modules/{id}")
     Call<RegisterModuleResponse> updateModule(

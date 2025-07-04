@@ -185,16 +185,26 @@ public class ListModulesFragment extends Fragment implements ModuleAdapter.OnMod
                 if (response.isSuccessful() && response.body() != null) {
                     ListModuleResponse moduleResponse = response.body();
                     List<Module> modules = moduleResponse.getData();
-
-                    modulesList = new ArrayList<>(modules);
-                    filteredModulesList = new ArrayList<>(modules);
-                    moduleAdapter.setModuleList(filteredModulesList);
+                    
+                    // Log para debuggear el estado de los módulos recibidos de la API
+                    if (modules != null) {
+                        for (Module module : modules) {
+                            Log.d("ListModulesFragment", "Module " + module.getName() + 
+                                ": isActive=" + module.isActive() + 
+                                ", deletedAt=" + module.getDeletedAt() + 
+                                ", isReallyActive=" + module.isReallyActive());
+                        }
+                    }
 
                     if (modules != null && !modules.isEmpty()) {
-                        moduleAdapter.setModuleList(modules);
+                        modulesList = new ArrayList<>(modules);
+                        filteredModulesList = new ArrayList<>(modules);
+                        moduleAdapter.setModuleList(filteredModulesList);
                         recyclerViewModules.setVisibility(View.VISIBLE);
                         tvEmptyView.setVisibility(View.GONE);
                     } else {
+                        modulesList = new ArrayList<>();
+                        filteredModulesList = new ArrayList<>();
                         moduleAdapter.setModuleList(new ArrayList<>());
                         recyclerViewModules.setVisibility(View.GONE);
                         tvEmptyView.setVisibility(View.VISIBLE);
